@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<select id="loginMember" parameterType="String" resultType="com.aboutrip.app.member.Member">
+		SELECT userNum, userId, userPwd, nickName, enable, FailCnt, profile_pic FROM member1 
+		WHERE userId = #{userId} AND enable == 0
+	</select>
+	<insert id="insertMember1" parameterType="com.aboutrip.app.member.Member">
+		<if test='profile_pic != null'>
+			INSERT INTO member1(userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic)
+			VALUES (member_seq.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{nickName}, 0, 0, #{profile_pic})
+		</if>
+		<if test='profile_pic == null'>
+			INSERT INTO member1(userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic)
+			VALUES (member_seq.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{nickName}, 0, 0, #{profile_pic})
+		</if>
+	</insert>
+	<insert id="insertMember2" parameterType="com.aboutrip.app.member.Member">
+			INSERT INTO member2(userNum, address1, address2, tel, birth, gender, paymentNum)
+			VALUES (member2_seq.NEXTVAL, #{address1}, #{address2}, #{tel}, #{gender}, #{paymentNum})
+	</insert>
+	<select id="readMember1" parameterType="String" resultType="com.aboutrip.app.member.Member">
+		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
+		address2, tel, birth, gender, paymentNum, created_date FROM member m1
+		LEFT OUTER JOIN member1 m1 ON m1.userNum = m2.userNum 
+		WHERE m1.userNum = #{userNum}
+	</select>
+	<select id="readMember2" parameterType="String" resultType="com.aboutrip.app.member.Member">
+		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
+		address2, tel, birth, gender, paymentNum, created_date FROM member m1
+		LEFT OUTER JOIN member1 m1 ON m1.userNum = m2.userNum 
+		WHERE nickName = #{nickName}
+	</select>
+	
+	
+	<update id="updateMember1" parameterType="com.aboutrip.app.member.Member">
+		UPDATE member1 SET userPwd=#{userPwd}, nickName=#{nickName}, profile_pic=#{profile_pic} WHERE userNum = #{userNum}
+	</update>
+	<update id="updateMember2" parameterType="com.aboutrip.app.member.Member">
+		UPDATE member2 SET address1=#{address1}, address2=#{address2}, tel=#{tel}, birth=#{birth}, paymentNum=#{paymentNum}
+	</update>
+	
+	<delete id="deleteMember1" parameterType="Integer">
+		DELETE FROM member1 WHERE userNum = #{userNum}
+	</delete>
+	<delete id="deleteMember2" parameterType="Integer">
+		DELETE FROM member2 WHERE userNum = #{userNum}
+	</delete>
+	
+	<select id="listMember" parameterType="map" resultType="com.aboutrip.app.member.Member">
+		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
+		address2, tel, birth, gender, paymentNum, created_date FROM member m1
+		LEFT OUTER JOIN member1 m1 ON m1.userNum = m2.userNum 
+		ORDER BY groupNum DESC, orderNo ASC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+</mapper>

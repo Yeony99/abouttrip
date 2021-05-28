@@ -1,0 +1,4 @@
+/build/
+jdbc.properties
+/target/
+/spring/
