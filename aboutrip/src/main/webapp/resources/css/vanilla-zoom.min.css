@@ -35,3 +35,11 @@
   margin-bottom: 5px;
 }
 
+img {
+  width: 5em;
+}
+
+.clean-block.clean-hero {
+  min-height: 980px;
+}
+

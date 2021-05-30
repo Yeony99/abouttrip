@@ -43,7 +43,12 @@ public class MemberController {
 	
 	@RequestMapping(value="login", method=RequestMethod.GET)
 	public String loginForm(Model model) {
-		return "/member/login";
+		return "/main_W/login";
+	}
+	
+	@RequestMapping(value="main", method=RequestMethod.GET)
+	public String main(Model model) {
+		return "/main_W/main";
 	}
 	
 }

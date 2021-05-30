@@ -63,6 +63,7 @@
 			<!-- 제외 -->
 			<exclude-mapping path="/"/>
 			<exclude-mapping path="/resources/**"/>
+			<exclude-mapping path="/member/main"/>
 			<exclude-mapping path="/member/login"/>
 			<exclude-mapping path="/member/logout"/>
 			<exclude-mapping path="/member/member"/>
