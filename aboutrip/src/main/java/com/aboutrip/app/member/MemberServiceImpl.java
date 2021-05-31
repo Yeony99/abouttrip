@@ -3,17 +3,24 @@ package com.aboutrip.app.member;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.aboutrip.app.common.dao.AboutDAO;
 
 @Service("member.memberService")
 public class MemberServiceImpl implements MemberService{
-
+	@Autowired
+	private AboutDAO dao;
+	
+	
 	@Override
 	public Member loginMember(String userId) {
 		Member dto= null;
 		
 		try {
 			//MemberMapper - member.loginMember, userId
+			dto = dao.selectOne("member.loginMember", userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
