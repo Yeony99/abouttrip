@@ -22,7 +22,7 @@
 				
 				<button data-bs-toggle="collapse" class="navbar-toggler"
 					data-bs-target="#navcol-1">
-					<span class="visually-hidden">toggle</span><span
+					<span class="visually-hidden"></span><span
 						class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navcol-1">

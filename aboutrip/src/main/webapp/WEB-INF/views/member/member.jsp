@@ -19,9 +19,11 @@
     <main class="page landing-page">
         <section class="login-dark" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
             <form method="post">
-                <h2 class="visually-hidden">Joining Form</h2>
-                <div class="mb-3"><input class="form-control" type="text" name="id" placeholder="id"></div>
-                <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="password"></div>
+                <h2 class="visually-hidden">회원가입</h2>
+                <br>
+                <div class="mb-3"><input class="form-control" type="text" name="userId" placeholder="아이디"></div>
+                <div class="mb-3"><input class="form-control" type="password" name="userPwd" placeholder="패스워드"></div>
+                <div class="mb-3"><input class="form-control" type="text" name="userName" placeholder="성명"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="nickName" placeholder="닉네임"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="address1" placeholder="주소"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="address2" placeholder="상세주소"></div>
