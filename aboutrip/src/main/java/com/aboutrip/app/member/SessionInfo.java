@@ -5,7 +5,16 @@ public class SessionInfo {
 	private int userNum;
 	private String nickName;
 	private int enable;
+	private String userId;
 	
+	
+	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public int getUserNum() {
 		return userNum;
 	}
