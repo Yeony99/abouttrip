@@ -14,7 +14,7 @@ public interface MemberService {
 	
 	public void deleteMember(int userNum) throws Exception;
 	public List<Member> listMember(Map<String,Object> map);
-	public int dataCount(Map<String, Object> map);
+	public int dataCount();
 
 	
 }

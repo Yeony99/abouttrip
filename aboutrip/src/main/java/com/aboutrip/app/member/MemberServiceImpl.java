@@ -3,17 +3,24 @@ package com.aboutrip.app.member;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.aboutrip.app.common.dao.AboutDAO;
 
 @Service("member.memberService")
 public class MemberServiceImpl implements MemberService{
-
+	@Autowired
+	private AboutDAO dao;
+	
+	
 	@Override
 	public Member loginMember(String userId) {
 		Member dto= null;
 		
 		try {
 			//MemberMapper - member.loginMember, userId
+			dto = dao.selectOne("member.loginMember", userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -29,8 +36,11 @@ public class MemberServiceImpl implements MemberService{
 			}
 			//MemberMapper - member.insertMember1,dto
 			//MemberMapper - member.insertMember2,dto
+			dao.insertData("member.insertMember1", dto);
+			dao.insertData("member.insertMember2", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
 		
 	}
@@ -43,6 +53,10 @@ public class MemberServiceImpl implements MemberService{
 			}
 			//MemberMapper - member.updateMember1, dto
 			//MemberMapper - member.updateMember2, dto
+			
+			dao.updateData("member.updateMember1", dto);
+			dao.updateData("member.updateMember2", dto);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -55,17 +69,16 @@ public class MemberServiceImpl implements MemberService{
 		
 		try {
 			//memberMapper - member.readMember1, userNum
+			dto = dao.selectOne("member.readMember1", userNum);
 			
-			/*
-			 * if(dto!=null) { 
-			 * 	if(dto.getTel()!=null) { 
-			 * 		String [] s=dto.getTel().split("-");
-			 * 		dto.setTel1(s[0]); 
-			 * 		dto.setTel2(s[1]); 
-			 * 		dto.setTel3(s[2]); 
-			 * 	} 
-			 * }
-			 */
+			if(dto!=null) { 
+				if(dto.getTel()!=null) { 
+			 	String [] s=dto.getTel().split("-");
+				dto.setTel1(s[0]); 
+		 		dto.setTel2(s[1]); 
+		 		dto.setTel3(s[2]); 
+		 	} 
+		 }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,17 +92,17 @@ public class MemberServiceImpl implements MemberService{
 		
 		try {
 			//memberMapper - member.readMember2, nickName
+			dto = dao.selectOne("member.readMember2", nickName);
 			
-			/*
-			 * if(dto!=null) { 
-			 * 	if(dto.getTel()!=null) { 
-			 * 		String [] s=dto.getTel().split("-");
-			 * 		dto.setTel1(s[0]); 
-			 * 		dto.setTel2(s[1]); 
-			 * 		dto.setTel3(s[2]); 
-			 * 	} 
-			 * }
-			 */
+			if(dto!=null) { 
+				if(dto.getTel()!=null) { 
+			 	String [] s=dto.getTel().split("-");
+				dto.setTel1(s[0]); 
+		 		dto.setTel2(s[1]); 
+		 		dto.setTel3(s[2]); 
+				}
+			}
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -99,9 +112,14 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void deleteMember(int userNum) throws Exception {
+		Member dto = null;
 		try {
 			//MemberMapper - deleteMember2,userNum
 			//MemberMapper - deleteMember1,userNum
+			dto = readMember(userNum);
+			dao.selectOne("member.deleteMember2", dto);
+			dao.selectOne("member.deleteMember1", dto);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -110,19 +128,29 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public List<Member> listMember(Map<String, Object> map) {
+		List<Member> list = null;
 		try {
 			//MemberMapper - listMember, map
+			list = dao.selectList("member.listMember", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return list;
 	}
 
 	@Override
-	public int dataCount(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int dataCount() {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("member.dataCount");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
+
 
 	//DAO 차후 추가
 	
