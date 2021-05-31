@@ -1,18 +1,10 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page trimDirectiveWhitespaces="true" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-<title>AboutTrip</title>
-</head>
-
-<body>
-<footer class="page-footer dark">
+<div class="container">
+	<div class="page-footer dark">
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
@@ -52,9 +44,6 @@
             </div>
         </div>
         <div class="footer-copyright"></div>
-    </footer>
-</body>
+	</div>
+</div>
 
-
-</body>
-</html>

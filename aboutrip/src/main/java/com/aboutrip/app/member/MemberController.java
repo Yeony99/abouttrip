@@ -67,7 +67,7 @@ public class MemberController {
 	
 	@RequestMapping(value="login", method=RequestMethod.GET)
 	public String loginForm(Model model) {
-		return "/member/login";
+		return ".member.login";
 	}
 	
 	@RequestMapping(value="login", method=RequestMethod.POST)
@@ -97,7 +97,7 @@ public class MemberController {
 	@RequestMapping(value="main")
 	public String main() {
 	
-		return "/member/main";
+		return ".member.main";
 	}
 	
 	@RequestMapping(value="logout")
