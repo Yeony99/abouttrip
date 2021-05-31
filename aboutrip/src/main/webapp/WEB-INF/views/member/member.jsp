@@ -10,7 +10,11 @@
     <title>main</title>
 	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 </head>
+<script type="text/javascript">
+// 주소 및 날짜 valid 체크 
+</script>
 
+<script src="${pageContext.request.contextPath}/resources/js/valid.js"></script>
 <body>
     <header>
 		<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
@@ -18,7 +22,7 @@
 	
     <main class="page landing-page">
         <section class="login-dark" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
-            <form method="post">
+            <form method="post" name="memberForm">
                 <h5 class="visually-hidden">sign up</h5>
                 <br>
                 <div class="mb-3"><input class="form-control" type="text" name="userId" placeholder="아이디"></div>
@@ -35,7 +39,7 @@
   				<input type="radio" id="female" name="gender" value="female">
   				<label for="female">여성</label>
                 </div>
-                <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">회원가입</button></div>
+                <div class="mb-3"><button class="btn btn-primary d-block w-100" type="button" onclick="memberValid();">회원가입</button></div>
             </form>
         </section>
     </main>
