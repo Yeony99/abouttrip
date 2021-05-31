@@ -62,7 +62,7 @@ public class MemberController {
 		if(message==null || message.length()==0)
 			return "redirect:/";
 		
-		return "/member/complete";
+		return ".member.complete";
 	}
 	
 	@RequestMapping(value="login", method=RequestMethod.GET)

@@ -26,12 +26,7 @@ function memberValid() {
 		f.userPwd.focus();
 		return;
 	}
-	f.userPwd.value = str;
-	if (str != f.userPwdCheck.value) {
-		alert("패스워드가 일치하지 않습니다. ");
-		f.userPwdCheck.focus();
-		return;
-	}
+
 	str = f.userName.value;
 	str = str.trim();
 	if (!str) {
@@ -41,11 +36,11 @@ function memberValid() {
 	}
 	f.userName.value = str;
 	
-	str = f.email.value;
+	str = f.nickName.value;
 	str = str.trim();
 	if (!str) {
-		alert("이메일을 입력하세요. ");
-		f.email.focus();
+		alert("닉네임을 입력하세요. ");
+		f.nickName.focus();
 		return;
 	}
 	str = f.birth.value;
@@ -68,12 +63,31 @@ function memberValid() {
 		return;
 	}
 	
-	if (document.getElementById('tos').checked == false) {
+/*	if (document.getElementById('tos').checked == false) {
 		  alert('이용 약관에 동의해주세요.');
 		return;
-	}
+	}*/
 	
-	f.action = "${pageContext.request.contextPath}/";
+	f.action = "${pageContext.request.contextPath}/member/${mode}";
 	f.submit();
-	alert("가입되었습니다. 로그인해주세요.");
+}
+
+function isValidDateFormat(data){
+	  var regexp = /^[12][0-9]{3}[\.|\-|\/]?[0-9]{2}[\.|\-|\/]?[0-9]{2}$/;
+	    if(! regexp.test(data))
+	        return false;
+
+	    regexp=/(\.)|(\-)|(\/)/g;
+	    data=data.replace(regexp, "");
+	    
+		var y=parseInt(data.substr(0, 4));
+	    var m=parseInt(data.substr(4, 2));
+	    if(m<1||m>12) 
+	    	return false;
+	    var d=parseInt(data.substr(6));
+	    var lastDay = (new Date(y, m, 0)).getDate();
+	    if(d<1||d>lastDay)
+	    	return false;
+			
+		return true;
 }
