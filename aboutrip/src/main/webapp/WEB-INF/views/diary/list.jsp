@@ -7,7 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
 <script type="text/javascript">
 function searchList() {
 	var f = document.searchForm;
@@ -102,6 +101,5 @@ function printGuest(data) {
 			<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
 		</div>
 	</footer>
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
 </body>
 </html>

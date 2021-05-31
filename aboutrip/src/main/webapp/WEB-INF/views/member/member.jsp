@@ -8,7 +8,6 @@
 <head>
     <meta charset="utf-8">
     <title>main</title>
-	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 </head>
 <script type="text/javascript">
 // 주소 및 날짜 valid 체크 
@@ -47,7 +46,6 @@
     <div class="footer">
     	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
     </div>
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>  
 </body>
 
 </html>
