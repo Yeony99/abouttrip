@@ -62,13 +62,19 @@ public class MemberController {
 		}
 		
 		SessionInfo info = new SessionInfo();
-		info.setUserId(dto.getUserId());
+		info.setUserNum(dto.getUserNum());
 		info.setNickName(dto.getNickName());
 		
 		session.setMaxInactiveInterval(60*60); // 세션 한시간 유지
 		
 		session.setAttribute("member", info);
 		
+		return "redirect:/member/main";
+	}
+	
+	@RequestMapping(value="main")
+	public String main() {
+	
 		return "/member/main";
 	}
 	
