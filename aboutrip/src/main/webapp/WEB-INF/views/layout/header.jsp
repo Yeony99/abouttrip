@@ -38,7 +38,7 @@
 	            <div class="collapse navbar-collapse" id="navcol-1">
 	                <ul class="navbar-nav ms-auto">
 	                	<c:if test="${not empty sessionScope.member}">
-			                <li class="nav-item">${sessionScope.member.userName}</li>님
+			                <li class="nav-item">${sessionScope.member.nickName}</li>님
 			                <li class="nav-item">
 			                <a class="nav-link" href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
 			                &nbsp;|&nbsp;
