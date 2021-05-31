@@ -45,9 +45,21 @@ public class MemberController {
 		return "/member/login";
 	}
 	
-	@RequestMapping(value="main", method=RequestMethod.GET)
-	public String main(Model model) {
+	@RequestMapping(value="main", method=RequestMethod.POST)
+	public String main(
+			Model model
+			
+			) {
+		
+		try {
+			
+			
+			
+		} catch (Exception e) {
+			return "member/login";
+		}
 		return "/member/main";
 	}
+	
 	
 }
