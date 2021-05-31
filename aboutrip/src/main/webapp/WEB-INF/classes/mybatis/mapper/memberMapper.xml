@@ -4,7 +4,7 @@
 <mapper namespace="member">
 	<select id="loginMember" parameterType="String" resultType="com.aboutrip.app.member.Member">
 		SELECT userNum, userId, userPwd, nickName, enable, FailCnt, profile_pic FROM member1 
-		WHERE userId = #{userId} AND enable == 0
+		WHERE userId = #{userId} AND enable == 1
 	</select>
 	<insert id="insertMember1" parameterType="com.aboutrip.app.member.Member">
 		<if test='profile_pic != null'>
@@ -20,7 +20,7 @@
 			INSERT INTO member2(userNum, address1, address2, tel, birth, gender, paymentNum)
 			VALUES (member2_seq.NEXTVAL, #{address1}, #{address2}, #{tel}, #{gender}, #{paymentNum})
 	</insert>
-	<select id="readMember1" parameterType="String" resultType="com.aboutrip.app.member.Member">
+	<select id="readMember1" parameterType="Integer" resultType="com.aboutrip.app.member.Member">
 		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
 		address2, tel, birth, gender, paymentNum, created_date FROM member m1
 		LEFT OUTER JOIN member1 m1 ON m1.userNum = m2.userNum 
