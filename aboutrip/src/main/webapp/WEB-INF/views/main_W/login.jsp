@@ -19,7 +19,7 @@
     <main class="page landing-page">
         <section class="login-dark" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
             <form method="post">
-                <h2 class="visually-hidden">Login Form</h2>
+                <h4 class="visually-hidden"> </h4>
                 <div class="illustration"><img src="${pageContext.request.contextPath}/resources/img/img/favicon.svg" style="width: 100px;height: 100px;"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="id" placeholder="id"></div>
                 <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="password"></div>
