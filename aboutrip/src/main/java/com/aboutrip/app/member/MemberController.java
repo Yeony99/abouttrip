@@ -20,7 +20,7 @@ public class MemberController {
 		model.addAttribute("mode", "member");
 		// tiles-defs에서 .에 관해서 설정해놓음
 		// 화면결합을 위하면 tiles를 사용
-		return ".member.member";
+		return "/member/member";
 	}
 	
 	@RequestMapping(value="member", method=RequestMethod.POST)
@@ -33,9 +33,8 @@ public class MemberController {
 		} catch (DuplicateKeyException e) {
 			model.addAttribute("mode", "member");
 			model.addAttribute("message", "아이디 중복으로 회원가입이 실패했습니다.");
-			return ".member.member";
+			return "/member/member";
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		
 		return "redirect:/member/complete";
