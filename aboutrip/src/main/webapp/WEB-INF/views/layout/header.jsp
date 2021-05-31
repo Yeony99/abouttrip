@@ -37,8 +37,16 @@
 	            </div>
 	            <div class="collapse navbar-collapse" id="navcol-1">
 	                <ul class="navbar-nav ms-auto">
-	                    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/login">로그인</a></li>
-	                    <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/member">회원가입</a></li>
+	                	<c:if test="${not empty sessionScope.member}">
+			                <li class="nav-item">${sessionScope.member.userName}</li>님
+			                <li class="nav-item">
+			                <a class="nav-link" href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
+			                &nbsp;|&nbsp;
+			                <c:if test="${sessionScope.member.userId=='admin'}">
+			                    &nbsp;|&nbsp;
+			                    <a href="${pageContext.request.contextPath}/admin">관리자</a>
+			                </c:if>
+			            </c:if>
 	                </ul>
 	            </div>
 	        </div>

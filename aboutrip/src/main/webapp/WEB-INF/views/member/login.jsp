@@ -45,7 +45,7 @@ function sendMember(){
                 <div class="mb-3"><input class="form-control" type="text" name="userId" id="userId" placeholder="아이디"></div>
                 <div class="mb-3"><input class="form-control" type="password" name="userPwd" id="userPwd" placeholder="패스워드"></div>
                 <div class="mb-3"><button class="btn btn-primary d-block w-100" onclick="sendMember();">로그인</button></div>
-                <a class="forgot" href="#">아이디 또는 비밀번호 찾기</a>
+                <a class="forgot" href="${pageContext.request.contextPath}/member/member">회원가입</a>
             </form>
         </section>
        
