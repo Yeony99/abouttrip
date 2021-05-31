@@ -31,9 +31,9 @@
                 <div class="mb-3"><input class="form-control" type="date" name="birth" placeholder="생년월일"></div>
                 <div class="mb-3">
                 <input type="radio" id="male" name="gender" value="male">
-  				<label for="male">Male</label>
+  				<label for="male">남성</label>
   				<input type="radio" id="female" name="gender" value="female">
-  				<label for="female">Female</label>
+  				<label for="female">여성</label>
                 </div>
                 <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">회원가입</button></div>
             </form>
