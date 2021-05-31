@@ -12,7 +12,7 @@
 </head>
 
 <body>
-	    <footer class="page-footer dark">
+<footer class="page-footer dark">
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
@@ -20,7 +20,7 @@
                     <ul>
                         <li><a href="#">AboutTrip pick</a></li>
                         <li><a href="#">한국관광공사 pick</a></li>
-                        <li><a href="#">나만의 여행다이어리</a></li>
+                        <li><a href="#">여행 다이어리</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
@@ -45,6 +45,8 @@
                         <li><a href="#">공지사항</a></li>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">문의하기</a></li>
+                        <li><a href="#">이벤트</a></li>
+                        <li><a href="#">시스템 개선/제안</a></li>
                     </ul>
                 </div>
             </div>

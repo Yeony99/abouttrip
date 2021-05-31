@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 
 <!DOCTYPE html>
 <html>
@@ -13,13 +14,11 @@
 </head>
 
 <body>
-	<header>
-		<div class="header">
-			<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
-		</div>
+	<header class="header">
+		<tiles:insertAttribute name="header"/>
 	</header>
 	
-    <main class="body">
+   <main class="body">
         <section class="clean-block clean-hero" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/bg.jpg&quot;);color: rgba(9, 162, 255, 0.3);">
             <div class="text">
             	 <h2 style="font-size: 60px;text-shadow: 0px 0px;font-family: Actor, sans-serif;"><img src="${pageContext.request.contextPath}/resources/img/img/logo.svg"></h2>
@@ -29,9 +28,7 @@
     </main>
     
     <footer>
-	    <div class="footer">
-	    	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
-	    </div>
+    	<tiles:insertAttribute name="footer"/>
     </footer>
 <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>    
 </body>
