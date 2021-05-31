@@ -25,7 +25,7 @@ public class MemberController {
 		model.addAttribute("mode", "member");
 		// tiles-defs에서 .에 관해서 설정해놓음
 		// 화면결합을 위하면 tiles를 사용
-		return "/member/member";
+		return ".member.member";
 	}
 	
 	@RequestMapping(value="member", method=RequestMethod.POST)
@@ -38,15 +38,15 @@ public class MemberController {
 		} catch (DuplicateKeyException e) {
 			model.addAttribute("mode", "member");
 			model.addAttribute("message", "아이디 중복으로 회원가입이 실패했습니다.");
-			return "/member/member";
+			return ".member.member";
 		} catch (DataIntegrityViolationException e) {
 			model.addAttribute("mode", "member");
 			model.addAttribute("message", "제약조건 위반으로 회원가입이 실패했습니다.");
-			return "/member/member";
+			return ".member.member";
 		} catch (Exception e) {
 			model.addAttribute("mode", "member");
 			model.addAttribute("message", "회원가입이 실패했습니다.");
-			return "/member/member";
+			return ".member.member";
 		}
 		String s;
 		s = dto.getUserName() + "(" +dto.getNickName() + ")님의 회원 가입이 정상적으로 처리되었습니다.<br>";		

@@ -2,11 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+
 <script type="text/javascript">
 function searchList() {
 	var f = document.searchForm;
@@ -50,15 +46,8 @@ function printGuest(data) {
 	
 }
 </script>
-</head>
-<body>
-	<header>
-		<div class="header">
-			<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
-		</div>
-	</header>
-	
-	<main>
+
+
 		<div>
 			<h3>다이어리</h3>
 		</div>
@@ -94,12 +83,3 @@ function printGuest(data) {
 			</table>
 			
 		</div>
-	</main>
-	
-	<footer>
-		<div class="footer">
-			<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
-		</div>
-	</footer>
-</body>
-</html>
