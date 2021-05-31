@@ -31,9 +31,6 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void insertMember(Member dto) throws Exception {
 		try {
-			if(dto.getTel1().length()!=0 && dto.getTel2().length()!=0 && dto.getTel3().length()!=0) {
-				dto.setTel(dto.getTel1() + "-" + dto.getTel2() + "-" + dto.getTel3());
-			}
 			//MemberMapper - member.insertMember1,dto
 			//MemberMapper - member.insertMember2,dto
 			dao.insertData("member.insertMember1", dto);
@@ -144,6 +141,32 @@ public class MemberServiceImpl implements MemberService{
 		
 		try {
 			result = dao.selectOne("member.dataCount");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int checkId(String userId) {
+		int result=0;
+		
+		try {
+			result = dao.selectOne("member.readMember3", userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int checkNickName(String nickName) {
+		int result=0;
+		
+		try {
+			result = dao.selectOne("member.readMember2", nickName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

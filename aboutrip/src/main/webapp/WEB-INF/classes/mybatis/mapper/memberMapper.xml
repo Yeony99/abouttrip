@@ -7,18 +7,21 @@
 		WHERE userId = #{userId} AND enable = 1
 	</select>
 	<insert id="insertMember1" parameterType="com.aboutrip.app.member.Member">
+		<selectKey keyProperty="userNum" resultType="int" order="BEFORE">
+				select member_seq.NEXTVAL FROM dual
+			</selectKey>
 		<if test='profile_pic != null'>
 			INSERT INTO member1(userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic)
-			VALUES (member_seq.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{nickName}, 0, 0, #{profile_pic})
+			VALUES (#{userNum}, #{userId}, #{userPwd}, #{userName}, #{nickName}, 1, 0, #{profile_pic})
 		</if>
 		<if test='profile_pic == null'>
-			INSERT INTO member1(userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic)
-			VALUES (member_seq.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{nickName}, 0, 0, #{profile_pic})
+			INSERT INTO member1(userNum, userId, userPwd, userName, nickName, enable, FailCnt)
+			VALUES (#{userNum}, #{userId}, #{userPwd}, #{userName}, #{nickName}, 1, 0)
 		</if>
 	</insert>
 	<insert id="insertMember2" parameterType="com.aboutrip.app.member.Member">
-			INSERT INTO member2(userNum, address1, address2, tel, birth, gender, paymentNum)
-			VALUES (member2_seq.NEXTVAL, #{address1}, #{address2}, #{tel}, #{gender}, #{paymentNum})
+			INSERT INTO member2(userNum, address1, address2, tel, birth, gender)
+			VALUES (#{userNum}, #{address1}, #{address2}, #{tel},#{birth}, #{gender})
 	</insert>
 	<select id="readMember1" parameterType="Integer" resultType="com.aboutrip.app.member.Member">
 		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
@@ -31,6 +34,9 @@
 		address2, tel, birth, gender, paymentNum, created_date FROM member m1
 		LEFT OUTER JOIN member1 m1 ON m1.userNum = m2.userNum 
 		WHERE nickName = #{nickName}
+	</select>
+	<select id="checkId" parameterType="String" resultType="com.aboutrip.app.member.Member">
+		SELECT COUNT(*) FROM member1 WHERE userId = #{userId}
 	</select>
 	
 	
