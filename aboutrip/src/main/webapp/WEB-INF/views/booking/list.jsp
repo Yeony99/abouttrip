@@ -9,7 +9,8 @@ function searchList() {
 	f.submit();
 }
 </script>
-
+<div class="body-container">
+	<div class="body-main">
 		<div>
 			<h3>상품</h3>
 		</div>
@@ -49,3 +50,5 @@ function searchList() {
 			</table>
 			
 		</div>
+	</div>
+</div>
