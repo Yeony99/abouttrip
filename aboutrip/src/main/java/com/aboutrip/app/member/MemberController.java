@@ -19,20 +19,17 @@ import com.mongodb.DuplicateKeyException;
 public class MemberController {
 	@Autowired
 	private MemberService service;
-	
-	@RequestMapping(value="member", method=RequestMethod.GET)
-	public String memberForm(Model model) {
+
+	@RequestMapping(value = "member", method = RequestMethod.GET)
+	public String memberForm(Model model) throws Exception {
 		model.addAttribute("mode", "member");
 		// tiles-defs에서 .에 관해서 설정해놓음
 		// 화면결합을 위하면 tiles를 사용
 		return ".member.member";
 	}
-	
-	@RequestMapping(value="member", method=RequestMethod.POST)
-	public String memberSubmit(
-			Member dto, 
-			final RedirectAttributes reAttr, 
-			Model model) {
+
+	@RequestMapping(value = "member", method = RequestMethod.POST)
+	public String memberSubmit(Member dto, final RedirectAttributes reAttr, Model model) throws Exception {
 		try {
 			service.insertMember(dto);
 		} catch (DuplicateKeyException e) {
@@ -49,61 +46,120 @@ public class MemberController {
 			return ".member.member";
 		}
 		String s;
-		s = dto.getUserName() + "(" +dto.getNickName() + ")님의 회원 가입이 정상적으로 처리되었습니다.<br>";		
+		s = dto.getUserName() + "(" + dto.getNickName() + ")님의 회원 가입이 정상적으로 처리되었습니다.<br>";
 		s += "로그인창으로 이동하여 로그인 하시기 바랍니다.<br>";
-		
+
 		reAttr.addFlashAttribute("message", s);
 		reAttr.addFlashAttribute("title", "회원 가입");
 		return "redirect:/member/complete";
 	}
-	
-	@RequestMapping(value="complete")
-	public String complete(@ModelAttribute("message") String message) throws Exception{
-		if(message==null || message.length()==0)
+
+	@RequestMapping(value = "complete")
+	public String complete(@ModelAttribute("message") String message) throws Exception {
+		if (message == null || message.length() == 0)
 			return "redirect:/";
-		
+
 		return ".member.complete";
 	}
-	
-	@RequestMapping(value="login", method=RequestMethod.GET)
-	public String loginForm(Model model) {
+
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String loginForm(Model model) throws Exception {
 		return ".member.login";
 	}
-	
-	@RequestMapping(value="login", method=RequestMethod.POST)
-	public String loginsubmit(
-			@RequestParam String userId,
-			@RequestParam String userPwd,
-			HttpSession session,
-			Model model	) {
-			
+
+	@RequestMapping(value = "login", method = RequestMethod.POST)
+	public String loginsubmit(@RequestParam String userId, @RequestParam String userPwd, HttpSession session,
+			Model model) throws Exception {
+
 		Member dto = service.loginMember(userId);
-		if (dto==null || !userPwd.equals(dto.getUserPwd())) {
+		if (dto == null || !userPwd.equals(dto.getUserPwd())) {
 			model.addAttribute("message", "아이디 또는 패스워드가 일치하지 않습니다.");
 			return ".member.login";
 		}
-		
+
 		SessionInfo info = new SessionInfo();
 		info.setUserNum(dto.getUserNum());
 		info.setNickName(dto.getNickName());
-		
-		session.setMaxInactiveInterval(60*60); // 세션 한시간 유지
-		
+
+		session.setMaxInactiveInterval(60 * 60); // 세션 한시간 유지
+
 		session.setAttribute("member", info);
-		
+
 		return "redirect:/member/main";
 	}
-	
-	@RequestMapping(value="main")
+
+	@RequestMapping(value = "main")
 	public String main() {
-	
+
 		return ".member.main";
 	}
-	
-	@RequestMapping(value="logout")
-	public String logout(HttpSession session) {
+
+	@RequestMapping(value = "logout")
+	public String logout(HttpSession session) throws Exception {
 		session.removeAttribute("member");
 		session.invalidate();
 		return "redirect:/member/login";
+	}
+
+	@RequestMapping(value = "emailfind", method = RequestMethod.GET)
+	public String emailFind(HttpSession session) throws Exception {
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		if (info != null) {
+			return "redirect:/";
+		}
+		return ".member.emailFind";
+	}
+
+	@RequestMapping(value = "emailfind", method = RequestMethod.POST)
+	public String emailFindSubmit(@RequestParam String userName, @RequestParam String tel,
+			final RedirectAttributes reAttr, Model model) throws Exception {
+		Member dto = service.readMember(userName, tel);
+
+		if (dto == null || dto.getUserId() == null || dto.getEnable() != 1) {
+			model.addAttribute("message", "등록된 정보가 없습니다.");
+			return "redirect:/member/complete";
+		}
+
+		String s;
+		s = dto.getUserName() + "님이 가입한 이메일주소는 '<h3>" + dto.getUserId() + "</h3>' 입니다.<br>";
+		s += "로그인창으로 이동하여 로그인 하시기 바랍니다.";
+
+		reAttr.addFlashAttribute("message", s);
+		reAttr.addFlashAttribute("title", "이메일 찾기");
+		return "redirect:/member/complete";
+	}
+
+	@RequestMapping(value = "emailfind", method = RequestMethod.GET)
+	public String findPwd(HttpSession session) throws Exception {
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		if (info != null) {
+			return "redirect:/";
+		}
+		return ".member.pwdFind";
+	}
+
+	@RequestMapping(value = "emailfind", method = RequestMethod.POST)
+	public String findPwdSubmit(@RequestParam String userId, final RedirectAttributes reAttr, Model model)
+			throws Exception {
+		// readMember << userName과 tel로 찾는거 있어야함
+		Member dto = service.readMember(userId);
+		if (dto == null || dto.getUserId() == null || dto.getEnable() != 1) {
+			model.addAttribute("message", "등록된 정보가 없습니다.");
+			return "redirect:/member/complete";
+		}
+		try {
+			service.generatePwd(dto);
+		} catch (Exception e) {
+			model.addAttribute("message", "이메일 전송이 실패했습니다.");
+			return ".member.pwdFind";
+		}
+		String s;
+		s = "회원님의 이메일로 임시 패스워드를 전송했습니다.<br>";
+		s += "로그인 후 패스워드를 변경하시기 바랍니다.";
+
+		reAttr.addFlashAttribute("message", s);
+		reAttr.addFlashAttribute("title", "이메일 찾기");
+
+		return "redirect:/member/complete";
 	}
 }
