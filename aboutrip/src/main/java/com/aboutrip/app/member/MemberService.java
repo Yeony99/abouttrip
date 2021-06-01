@@ -9,11 +9,10 @@ public interface MemberService {
 	public void insertMember(Member dto) throws Exception;
 	public void updateMember(Member dto) throws Exception;
 	
-	public Member readMember(int userNum);
-	public Member readMember(String nickName);
+	public Member readMember(String userId);
 	public Member readMember(String userName, String tel);
 	
-	public void deleteMember(int userNum) throws Exception;
+	public void deleteMember(String userId) throws Exception;
 	public List<Member> listMember(Map<String,Object> map);
 	public int dataCount();
 
