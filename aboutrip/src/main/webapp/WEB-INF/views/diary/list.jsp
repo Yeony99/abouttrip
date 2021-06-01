@@ -46,10 +46,10 @@ function printGuest(data) {
 	
 }
 </script>
-
-
+<div class="body-container">
+	<div class="body-main">
 		<div>
-			<h3>다이어리</h3>
+			<h3 style="font: bold;">다이어리</h3>
 		</div>
 		<table>
 			<tr>
@@ -81,5 +81,6 @@ function printGuest(data) {
 				</td>
 			</c:forEach>
 			</table>
-			
 		</div>
+	</div>
+</div>

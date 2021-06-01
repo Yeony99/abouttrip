@@ -12,22 +12,22 @@
 <script
 	src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <div>
-	<h3>한국 관광공사의 추천 🛫</h3>
+	<h3>어바웃 트립의 추천 🛫</h3>
 </div>
 <div id="container">
 	<div class="main-container">
 		<ul class="bxslider">
 			<li><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/img/img/seongsan.jpg"
-					alt="감천 문화마을" title="img1"
+					alt="성산 일출봉" title="img1"
 					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
 			<li><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/img/img/baekyak.jpg"
-					alt="수원 화성" title="img2"
+					alt="백약이오름" title="img2"
 					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
 			<li><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/img/img/udo.jpg"
-					alt="북촌 한옥마을" title="img3"
+					alt="우도" title="img3"
 					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
 
 		</ul>
@@ -38,7 +38,7 @@
 	<tr>
 		<td>
 			<form name="searchForm"
-				action="${pageContext.request.contextPath}/place/list.jsp"
+				action="${pageContext.request.contextPath}/place/mdPick.jsp"
 				method="post">
 				<input type="text" name="placeName" value="${placeName}"
 					placeholder="검색할 장소를 입력하세요.">

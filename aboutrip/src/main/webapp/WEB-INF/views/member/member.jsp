@@ -92,6 +92,21 @@ function isValidDateFormat(data){
 			
 		return true;
 }
+
+function bringEmail() {
+	var f = document.memberForm;
+	
+	var str = f.selectEmail.value;
+	if(str != "direct") {
+		f.email2.value=str;
+		f.email2.readOnly = true;
+		f.email1.focus();
+	} else {
+		f.email2.value="";
+		f.email2.readOnly = false;
+		f.email1.focus();
+	}
+}
 </script>
 <div class="body-container">        
         <section class="login-dark" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
@@ -99,15 +114,15 @@ function isValidDateFormat(data){
                 <h5 class="visually-hidden">sign up</h5>
                 <br>
                 <div class="mb-3">
-                <select name="selectEmail" onchange="changeEmail();" class="selectField">
+                <select name="selectEmail" onchange="bringEmail();">
 					<option value="">선 택</option>
 					<option value="naver.com" ${dto.email2=="naver.com" ? "selected='selected'" : ""}>네이버</option>
 					<option value="gmail.com" ${dto.email2=="gmail.com" ? "selected='selected'" : ""}>지메일</option>
 					<option value="direct">직접입력</option>
 				</select>
-                <input type="text" name="email1" maxlength="30" class="boxTF md" value="${dto.email1}" >
+                <input class="form-control" type="text" name="email1" maxlength="30" value="${dto.email1}" >
 				<span>@</span> 
-				<input type="text" name="email2" maxlength="30" class="boxTF md" value="${dto.email2}" readonly="readonly">
+				<input class="form-control" type="text" name="email2" maxlength="30" value="${dto.email2}" readonly="readonly">
                 </div>
                 <div class="mb-3"><input class="form-control" type="password" name="userPwd" placeholder="패스워드"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="userName" placeholder="성명"></div>
@@ -160,7 +175,6 @@ function isValidDateFormat(data){
             }
         }).open();
     }
-    
     
 	</script>
 </div>

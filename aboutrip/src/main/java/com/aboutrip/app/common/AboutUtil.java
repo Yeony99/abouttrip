@@ -3,6 +3,7 @@ package com.aboutrip.app.common;
 import org.springframework.stereotype.Service;
 
 @Service("aboutUtil")
+
 public class AboutUtil {
 	
 	/**
