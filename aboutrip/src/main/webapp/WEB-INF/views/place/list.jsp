@@ -10,26 +10,24 @@
 	}
 </script>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
 	src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <div>
-	<h3>어바웃 트립의 추천 🛫</h3>
+	<h3>한국 관광공사의 추천 🛫</h3>
 </div>
 <div id="container">
 	<div class="main-container">
 		<ul class="bxslider">
 			<li><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/img/img/seongsan.jpg"
-					alt="성산 일출봉" title="img1"
+					alt="감천 문화마을" title="img1"
 					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
 			<li><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/img/img/baekyak.jpg"
-					alt="백약이오름" title="img2"
+					alt="수원 화성" title="img2"
 					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
 			<li><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/img/img/udo.jpg"
-					alt="우도" title="img3"
+					alt="북촌 한옥마을" title="img3"
 					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
 
 		</ul>
