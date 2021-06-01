@@ -103,10 +103,7 @@ public class MemberController {
 
 	@RequestMapping(value = "emailfind", method = RequestMethod.GET)
 	public String emailFind(HttpSession session) throws Exception {
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		if (info != null) {
-			return "redirect:/";
-		}
+
 		return ".member.emailFind";
 	}
 

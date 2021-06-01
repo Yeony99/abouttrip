@@ -36,6 +36,8 @@ function sendMember(){
                 <div class="mb-3"><input class="form-control" type="password" name="userPwd" id="userPwd" placeholder="패스워드"></div>
                 <div class="mb-3"><button class="btn btn-primary d-block w-100" onclick="sendMember();">로그인</button></div>
                 <a class="forgot" href="${pageContext.request.contextPath}/member/member">회원가입</a>
+                <a class="forgot" href="${pageContext.request.contextPath}/member/emailfind">아이디찾기</a>
+                <a class="forgot" href="${pageContext.request.contextPath}/member/pwdfind">비밀번호찾기</a>
             </form>
         </section>
     </div>
