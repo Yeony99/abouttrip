@@ -143,7 +143,7 @@ public class MemberServiceImpl implements MemberService{
 			dto1 = dao.selectOne("member.checkName", userName);
 			dto2 = dao.selectOne("member.checkTel", tel);
 			
-			if(dto1.getUserId().equals(dto2.getUserId())) {
+			if(dto1.getUserNum()==dto2.getUserNum()) {
 				dto= dto1;
 			} else {
 				throw new Exception("입력한 이름과 전화번호가 일치하는 회원이 없습니다.");
