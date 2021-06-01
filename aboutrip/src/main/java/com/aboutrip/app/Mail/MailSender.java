@@ -39,8 +39,8 @@ public class MailSender {
 	private class SMTPAuthenticator extends javax.mail.Authenticator {
 		  @Override
 	      public PasswordAuthentication getPasswordAuthentication() {  
-	           String username =  "teststs210601"; // gmail 사용자;  
-	          String password = "q1w2e3r4@@"; // 패스워드;  
+	           String username =  "aboutrip123"; // gmail 사용자;  
+	          String password = "aboutrip$!"; // 패스워드;  
 	          return new PasswordAuthentication(username, password);  
 	       }  
 	}
