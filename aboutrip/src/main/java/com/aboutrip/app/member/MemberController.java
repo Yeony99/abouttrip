@@ -129,7 +129,7 @@ public class MemberController {
 		return "redirect:/member/complete";
 	}
 
-	@RequestMapping(value = "emailfind", method = RequestMethod.GET)
+	@RequestMapping(value = "pwdfind", method = RequestMethod.GET)
 	public String findPwd(HttpSession session) throws Exception {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		if (info != null) {
@@ -138,7 +138,7 @@ public class MemberController {
 		return ".member.pwdFind";
 	}
 
-	@RequestMapping(value = "emailfind", method = RequestMethod.POST)
+	@RequestMapping(value = "pwdfind", method = RequestMethod.POST)
 	public String findPwdSubmit(@RequestParam String userId, final RedirectAttributes reAttr, Model model)
 			throws Exception {
 		// readMember << userName과 tel로 찾는거 있어야함
