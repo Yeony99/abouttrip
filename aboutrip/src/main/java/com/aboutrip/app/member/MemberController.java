@@ -103,7 +103,10 @@ public class MemberController {
 
 	@RequestMapping(value = "emailfind", method = RequestMethod.GET)
 	public String emailFind(HttpSession session) throws Exception {
-
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		if (info != null) {
+			return "redirect:/";
+		}
 		return ".member.emailFind";
 	}
 
@@ -148,7 +151,7 @@ public class MemberController {
 			service.generatePwd(dto);
 		} catch (Exception e) {
 			model.addAttribute("message", "이메일 전송이 실패했습니다.");
-			return ".member.pwdFind";
+			return "redirect:/member/complete";
 		}
 		String s;
 		s = "회원님의 이메일로 임시 패스워드를 전송했습니다.<br>";
