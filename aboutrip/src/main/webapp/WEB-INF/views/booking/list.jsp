@@ -12,7 +12,7 @@ function searchList() {
 <div class="body-container">
 	<div class="body-main">
 		<div>
-			<h3>상품</h3>
+			<h3 style="font: bold;">상품</h3>
 		</div>
 		<table class="table table-header">
 		<tr>

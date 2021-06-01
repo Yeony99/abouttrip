@@ -114,7 +114,7 @@ function bringEmail() {
                 <h5 class="visually-hidden">sign up</h5>
                 <br>
                 <div class="mb-3">
-                <select name="selectEmail" onchange="bringEmail();" class="selectField">
+                <select name="selectEmail" onchange="bringEmail();">
 					<option value="">선 택</option>
 					<option value="naver.com" ${dto.email2=="naver.com" ? "selected='selected'" : ""}>네이버</option>
 					<option value="gmail.com" ${dto.email2=="gmail.com" ? "selected='selected'" : ""}>지메일</option>

@@ -12,7 +12,7 @@
 
 <div>
 	<div>
-		<h3>상품</h3>
+		<h3 style="font: bold;">상품</h3>
 	</div>
 	
 	<div>
