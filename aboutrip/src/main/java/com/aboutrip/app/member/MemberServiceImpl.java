@@ -158,7 +158,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member checkAccount(String userName, String tel) {
+	public Member readMember(String userName, String tel) {
 		Member dto = null;
 		Member dto1 = null;
 		Member dto2 = null;
