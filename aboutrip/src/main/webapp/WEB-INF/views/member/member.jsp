@@ -98,7 +98,7 @@ function isValidDateFormat(data){
             <form method="post" name="memberForm">
                 <h5 class="visually-hidden">sign up</h5>
                 <br>
-                <div class="mb-3"><input class="form-control" type="text" name="userId" placeholder="아이디"></div>
+                <div class="mb-3"><input class="form-control" type="text" name="userId" placeholder="aboutrip@aboutrip.com"></div>
                 <div class="mb-3"><input class="form-control" type="password" name="userPwd" placeholder="패스워드"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="userName" placeholder="성명"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="nickName" placeholder="닉네임"></div>
