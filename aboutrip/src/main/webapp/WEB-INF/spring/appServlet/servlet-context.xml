@@ -68,6 +68,8 @@
 			<exclude-mapping path="/member/member"/>
 			<exclude-mapping path="/member/userIdCheck"/>
 			<exclude-mapping path="/member/complete"/>
+			<exclude-mapping path="/member/emailfind"/>
+			<exclude-mapping path="/member/pwdfind"/>
 			
 			<beans:bean class="com.aboutrip.app.member.LoginCheckInterceptor"/>
 		</interceptor>
