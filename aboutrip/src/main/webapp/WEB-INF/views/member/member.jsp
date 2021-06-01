@@ -98,7 +98,17 @@ function isValidDateFormat(data){
             <form method="post" name="memberForm">
                 <h5 class="visually-hidden">sign up</h5>
                 <br>
-                <div class="mb-3"><input class="form-control" type="text" name="userId" placeholder="aboutrip@aboutrip.com"></div>
+                <div class="mb-3">
+                <select name="selectEmail" onchange="changeEmail();" class="selectField">
+					<option value="">선 택</option>
+					<option value="naver.com" ${dto.email2=="naver.com" ? "selected='selected'" : ""}>네이버</option>
+					<option value="gmail.com" ${dto.email2=="gmail.com" ? "selected='selected'" : ""}>지메일</option>
+					<option value="direct">직접입력</option>
+				</select>
+                <input type="text" name="email1" maxlength="30" class="boxTF md" value="${dto.email1}" >
+				<span>@</span> 
+				<input type="text" name="email2" maxlength="30" class="boxTF md" value="${dto.email2}" readonly="readonly">
+                </div>
                 <div class="mb-3"><input class="form-control" type="password" name="userPwd" placeholder="패스워드"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="userName" placeholder="성명"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="nickName" placeholder="닉네임"></div>

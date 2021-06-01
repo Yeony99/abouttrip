@@ -2,7 +2,7 @@ package com.aboutrip.app.member;
 
 public class Member {
 	private int userNum;
-	private String userId;
+	private String userId, email1, email2;
 	private String userPwd;
 	private String nickName;
 	private int enable;
@@ -17,8 +17,6 @@ public class Member {
 	private int paymentNum;
 	private String userName;
 	private String created_date;
-	
-	
 	
 	public String getCreated_date() {
 		return created_date;
@@ -127,6 +125,18 @@ public class Member {
 	}
 	public void setProfile_pic(String profile_pic) {
 		this.profile_pic = profile_pic;
+	}
+	public String getEmail2() {
+		return email2;
+	}
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+	public String getEmail1() {
+		return email1;
+	}
+	public void setEmail1(String email1) {
+		this.email1 = email1;
 	}
 	
 	

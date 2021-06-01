@@ -31,6 +31,10 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void insertMember(Member dto) throws Exception {
 		try {
+			if(dto.getEmail1().length()!=0 && dto.getEmail2().length()!=0) {
+				dto.setUserId(dto.getEmail1()+"@"+dto.getEmail2());
+			}
+			
 			//MemberMapper - member.insertMember1,dto
 			//MemberMapper - member.insertMember2,dto
 			dao.insertData("member.insertMember1", dto);
@@ -47,6 +51,9 @@ public class MemberServiceImpl implements MemberService{
 		try {
 			if(dto.getTel1().length()!=0 && dto.getTel2().length()!=0 && dto.getTel3().length()!=0) {
 				dto.setTel(dto.getTel1() + "-" + dto.getTel2() + "-" + dto.getTel3());
+			}
+			if(dto.getEmail1().length()!=0 && dto.getEmail2().length()!=0) {
+				dto.setUserId(dto.getEmail1()+"@"+dto.getEmail2());
 			}
 			//MemberMapper - member.updateMember1, dto
 			//MemberMapper - member.updateMember2, dto
@@ -68,14 +75,21 @@ public class MemberServiceImpl implements MemberService{
 			//memberMapper - member.readMember1, userNum
 			dto = dao.selectOne("member.readMember1", userNum);
 			
-			if(dto!=null) { 
+			if(dto != null) {
+				if(dto.getUserId()!=null) {
+					String [] s = dto.getUserId().split("@");
+					dto.setEmail1(s[0]);
+					dto.setEmail2(s[1]);
+				}
+				
 				if(dto.getTel()!=null) { 
-			 	String [] s=dto.getTel().split("-");
-				dto.setTel1(s[0]); 
-		 		dto.setTel2(s[1]); 
-		 		dto.setTel3(s[2]); 
-		 	} 
-		 }
+				 	String [] s=dto.getTel().split("-");
+					dto.setTel1(s[0]); 
+			 		dto.setTel2(s[1]); 
+			 		dto.setTel3(s[2]); 
+				}
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -92,11 +106,17 @@ public class MemberServiceImpl implements MemberService{
 			dto = dao.selectOne("member.readMember2", nickName);
 			
 			if(dto!=null) { 
-				if(dto.getTel()!=null) { 
-			 	String [] s=dto.getTel().split("-");
-				dto.setTel1(s[0]); 
-		 		dto.setTel2(s[1]); 
-		 		dto.setTel3(s[2]); 
+				if(dto.getTel()!=null) {
+					String [] s=dto.getTel().split("-");
+					dto.setTel1(s[0]); 
+					dto.setTel2(s[1]); 
+					dto.setTel3(s[2]);
+				}
+				
+				if(dto.getUserId()!=null) {
+					String [] s=dto.getUserId().split("@");
+					dto.setEmail1(s[0]);
+					dto.setEmail2(s[1]);
 				}
 			}
 				
