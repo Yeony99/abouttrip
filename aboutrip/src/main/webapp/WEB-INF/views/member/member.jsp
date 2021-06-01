@@ -98,7 +98,7 @@ function isValidDateFormat(data){
             <form method="post" name="memberForm">
                 <h5 class="visually-hidden">sign up</h5>
                 <br>
-                <div class="mb-3"><input class="form-control" type="text" name="userId" placeholder="아이디"></div>
+                <div class="mb-3"><input class="form-control" type="text" name="userId" placeholder="aboutrip@aboutrip.com"></div>
                 <div class="mb-3"><input class="form-control" type="password" name="userPwd" placeholder="패스워드"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="userName" placeholder="성명"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="nickName" placeholder="닉네임"></div>
@@ -111,7 +111,7 @@ function isValidDateFormat(data){
                 </div>
                 <div class="mb-3">
                 	<input style="color:white; background:none; border:none; border-bottom: 1px solid #434a52; width: 64%;" type="text" name="zip" id="zip" value="${dto.zip}" readonly="readonly">
-					<button style="border-radius: 10px; color: #214a80; background: white;" type="button" onclick="daumPostcode();">우편번호</button>
+					<button style="border-radius: 5px; color: white; background: #214a80; float: right; padding: 6px; font-size: 13px; border: none;" type="button" onclick="daumPostcode();">우편번호</button>
 				</div>
 				<div class="mb-3"><input class="form-control" type="text" name="address1" id="address1" placeholder="주소" readonly="readonly" value="${dto.address1}"></div>
 				<div class="mb-3"><input class="form-control" type="text" name="address2" id="address2" placeholder="상세주소" value="${dto.address2}"></div>
