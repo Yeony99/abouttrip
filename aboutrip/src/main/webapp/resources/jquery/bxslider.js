@@ -4,7 +4,7 @@
 		speed: 500, 
 		pause: 7000,  
 		mode: 'horizontal', 
-		autoControls: false, 
+		autoControls: false,
 		pager: false, 
 		captions: false
 	});

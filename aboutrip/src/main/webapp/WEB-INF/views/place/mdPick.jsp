@@ -10,8 +10,6 @@
 	}
 </script>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
 	src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <div>
 	<h3>어바웃 트립의 추천 🛫</h3>
@@ -40,7 +38,7 @@
 	<tr>
 		<td>
 			<form name="searchForm"
-				action="${pageContext.request.contextPath}/place/list.jsp"
+				action="${pageContext.request.contextPath}/place/mdPick.jsp"
 				method="post">
 				<input type="text" name="placeName" value="${placeName}"
 					placeholder="검색할 장소를 입력하세요.">
