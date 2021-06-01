@@ -60,8 +60,8 @@ public class MemberServiceImpl implements MemberService{
 			//MemberMapper - member.updateMember1, dto
 			//MemberMapper - member.updateMember2, dto
 			
-			dao.updateData("member.updateMember1", dto);
-			dao.updateData("member.updateMember2", dto);
+			dao.updateData("member.updateMember1", dto.getUserNum());
+			dao.updateData("member.updateMember2", dto.getUserNum());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,35 +70,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member readMember(int userNum) {
-		Member dto = null;
-		
-		try {
-			//memberMapper - member.readMember1, userNum
-			dto = dao.selectOne("member.readMember1", userNum);
-			
-			if(dto != null) {
-				if(dto.getUserId()!=null) {
-					String [] s = dto.getUserId().split("@");
-					dto.setEmail1(s[0]);
-					dto.setEmail2(s[1]);
-				}
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return dto;
-	}
-
-	@Override
-	public Member readMember(String nickName) {
+	public Member readMember(String userId) {
 		Member dto = null;
 		
 		try {
 			//memberMapper - member.readMember2, nickName
-			dto = dao.selectOne("member.readMember2", nickName);
+			dto = dao.selectOne("member.readMember", userId);
 			
 			if(dto!=null) { 
 							
@@ -117,14 +94,14 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void deleteMember(int userNum) throws Exception {
+	public void deleteMember(String userId) throws Exception {
 		Member dto = null;
 		try {
 			//MemberMapper - deleteMember2,userNum
 			//MemberMapper - deleteMember1,userNum
-			dto = readMember(userNum);
-			dao.selectOne("member.deleteMember2", dto);
-			dao.selectOne("member.deleteMember1", dto);
+			dto = readMember(userId);
+			dao.selectOne("member.deleteMember2", dto.getUserNum());
+			dao.selectOne("member.deleteMember1", dto.getUserNum());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
