@@ -112,11 +112,12 @@ public class MemberController {
 
 	@RequestMapping(value = "emailfind", method = RequestMethod.POST)
 	public String emailFindSubmit(@RequestParam String userName, @RequestParam String tel,
-			final RedirectAttributes reAttr, Model model) throws Exception {
+			final RedirectAttributes reAttr) throws Exception {
 		Member dto = service.readMember(userName, tel);
 
 		if (dto == null || dto.getUserId() == null || dto.getEnable() != 1) {
-			model.addAttribute("message", "등록된 정보가 없습니다.");
+			reAttr.addFlashAttribute("message", "등록된 정보가 없습니다.");
+			reAttr.addFlashAttribute("title", "이메일 찾기");
 			return "redirect:/member/complete";
 		}
 
@@ -125,7 +126,7 @@ public class MemberController {
 		s += "로그인창으로 이동하여 로그인 하시기 바랍니다.";
 
 		reAttr.addFlashAttribute("message", s);
-		reAttr.addFlashAttribute("title", "이메일 찾기");
+		reAttr.addFlashAttribute("title", "비밀번호 찾기");
 		return "redirect:/member/complete";
 	}
 
@@ -139,18 +140,20 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "pwdfind", method = RequestMethod.POST)
-	public String findPwdSubmit(@RequestParam String userId, final RedirectAttributes reAttr, Model model)
+	public String findPwdSubmit(@RequestParam String userId, final RedirectAttributes reAttr)
 			throws Exception {
 		// readMember << userName과 tel로 찾는거 있어야함
 		Member dto = service.readMember(userId);
 		if (dto == null || dto.getUserId() == null || dto.getEnable() != 1) {
-			model.addAttribute("message", "등록된 정보가 없습니다.");
+			reAttr.addFlashAttribute("message", "등록된 정보가 없습니다.");
+			reAttr.addFlashAttribute("title", "이메일 찾기");
 			return "redirect:/member/complete";
 		}
 		try {
 			service.generatePwd(dto);
 		} catch (Exception e) {
-			model.addAttribute("message", "이메일 전송이 실패했습니다.");
+			reAttr.addFlashAttribute("message", "이메일 전송이 실패했습니다.");
+			reAttr.addFlashAttribute("title", "이메일 찾기");
 			return "redirect:/member/complete";
 		}
 		String s;
