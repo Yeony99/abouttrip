@@ -104,7 +104,7 @@ function isValidDateFormat(data){
                 <div class="mb-3"><input class="form-control" type="text" name="nickName" placeholder="닉네임"></div>
 				<div class="mb-3"><input class="form-control" type="date" name="birth" placeholder="생년월일"></div>
 				<div class="mb-3">
-                <input type="radio" id="male" name="gender" value="male">
+                <input type="radio" id="male" name="gender" value="male" checked="checked">
   				<label for="male">남성</label>
   				<input type="radio" id="female" name="gender" value="female">
   				<label for="female">여성</label>
