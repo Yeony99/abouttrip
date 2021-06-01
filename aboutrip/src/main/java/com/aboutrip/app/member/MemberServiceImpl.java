@@ -2,10 +2,13 @@ package com.aboutrip.app.member;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.aboutrip.app.Mail.Mail;
+import com.aboutrip.app.Mail.MailSender;
 import com.aboutrip.app.common.dao.AboutDAO;
 
 @Service("member.memberService")
@@ -13,6 +16,8 @@ public class MemberServiceImpl implements MemberService{
 	@Autowired
 	private AboutDAO dao;
 	
+	@Autowired
+	private MailSender	mailSender;
 	
 	@Override
 	public Member loginMember(String userId) {
@@ -49,9 +54,6 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void updateMember(Member dto) throws Exception {
 		try {
-			if(dto.getTel1().length()!=0 && dto.getTel2().length()!=0 && dto.getTel3().length()!=0) {
-				dto.setTel(dto.getTel1() + "-" + dto.getTel2() + "-" + dto.getTel3());
-			}
 			if(dto.getEmail1().length()!=0 && dto.getEmail2().length()!=0) {
 				dto.setUserId(dto.getEmail1()+"@"+dto.getEmail2());
 			}
@@ -81,13 +83,6 @@ public class MemberServiceImpl implements MemberService{
 					dto.setEmail1(s[0]);
 					dto.setEmail2(s[1]);
 				}
-				
-				if(dto.getTel()!=null) { 
-				 	String [] s=dto.getTel().split("-");
-					dto.setTel1(s[0]); 
-			 		dto.setTel2(s[1]); 
-			 		dto.setTel3(s[2]); 
-				}
 			}
 			
 		} catch (Exception e) {
@@ -106,13 +101,7 @@ public class MemberServiceImpl implements MemberService{
 			dto = dao.selectOne("member.readMember2", nickName);
 			
 			if(dto!=null) { 
-				if(dto.getTel()!=null) {
-					String [] s=dto.getTel().split("-");
-					dto.setTel1(s[0]); 
-					dto.setTel2(s[1]); 
-					dto.setTel3(s[2]);
-				}
-				
+							
 				if(dto.getUserId()!=null) {
 					String [] s=dto.getUserId().split("@");
 					dto.setEmail1(s[0]);
@@ -195,7 +184,36 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 
-	//DAO 차후 추가
+	@Override
+	public void generatePwd(Member dto) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Random rd=new Random();
+		String s="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxtz";	
+		for(int i=0;i<10;i++) {
+			int n = rd.nextInt(s.length());
+			sb.append(s.substring(n,n+1));
+		}
+		
+		String result;
+		result = dto.getEmail1()+"님의 새로 발급된 임시 패스워드는 <b>"+sb.toString()+"</b> 이며, "
+				+"로그인 후 반드시 패스워드를 변경하시기 바랍니다.";
+		Mail mail = new Mail();
+		mail.setReceiverEmail(dto.getUserId());
+		
+		mail.setSenderEmail("teststs210601@gmail.com");
+		mail.setSenderName("Admin");
+		mail.setSubject("임시 패스워드 발급");
+		mail.setContent(result);
+		
+		boolean b = mailSender.mailSend(mail);
+		
+		if(b) {
+			dto.setUserPwd(sb.toString());
+			updateMember(dto);
+		} else {
+			throw new Exception();
+		}
+	}
 	
 
 }
