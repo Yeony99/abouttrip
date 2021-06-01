@@ -20,25 +20,35 @@
 		</if>
 	</insert>
 	<insert id="insertMember2" parameterType="com.aboutrip.app.member.Member">
-			INSERT INTO member2(userNum, address1, address2, tel, birth, gender)
-			VALUES (#{userNum}, #{address1}, #{address2}, #{tel},#{birth}, #{gender})
+			INSERT INTO member2(userNum, address1, address2, tel, birth, gender, zip)
+			VALUES (#{userNum}, #{address1}, #{address2}, #{tel},#{birth}, #{gender}, #{zip})
 	</insert>
 	<select id="readMember1" parameterType="Integer" resultType="com.aboutrip.app.member.Member">
 		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
-		address2, tel, birth, gender, paymentNum, created_date FROM member m1
+		address2, tel, birth, gender, paymentNum, created_date, zip FROM member1 m1
 		LEFT OUTER JOIN member1 m1 ON m1.userNum = m2.userNum 
 		WHERE m1.userNum = #{userNum}
 	</select>
 	<select id="readMember2" parameterType="String" resultType="com.aboutrip.app.member.Member">
 		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
-		address2, tel, birth, gender, paymentNum, created_date FROM member m1
+		address2, tel, birth, gender, paymentNum, created_date, zip FROM member1 m1
 		LEFT OUTER JOIN member1 m1 ON m1.userNum = m2.userNum 
 		WHERE nickName = #{nickName}
 	</select>
-	<select id="checkId" parameterType="String" resultType="com.aboutrip.app.member.Member">
+	
+	<select id="checkMember" parameterType="String" resultType="com.aboutrip.app.member.Member">
 		SELECT COUNT(*) FROM member1 WHERE userId = #{userId}
 	</select>
 	
+	<select id="checkName" parameterType="String" resultType="com.aboutrip.app.member.Member">
+		SELECT userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic FROM member1
+		WHERE userName = #{userName}
+	</select>
+	
+	<select id="checkTel" parameterType="String" resultType="com.aboutrip.app.member.Member">
+		SELECT userNum, address1, address2, tel, birth, gender, paymentNum, created_date, zip FROM member2
+		WHERE tel = #{tel}
+	</select>
 	
 	<update id="updateMember1" parameterType="com.aboutrip.app.member.Member">
 		UPDATE member1 SET userPwd=#{userPwd}, nickName=#{nickName}, profile_pic=#{profile_pic} WHERE userNum = #{userNum}

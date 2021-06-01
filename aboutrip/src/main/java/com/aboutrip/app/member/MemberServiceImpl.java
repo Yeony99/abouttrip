@@ -158,31 +158,25 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int checkId(String userId) {
-		int result=0;
-		
+	public Member checkAccount(String userName, String tel) {
+		Member dto = null;
+		Member dto1 = null;
+		Member dto2 = null;
 		try {
-			result = dao.selectOne("member.readMember3", userId);
+			dto1 = dao.selectOne("member.checkName", userName);
+			dto2 = dao.selectOne("member.checkTel", tel);
+			
+			if(dto1.getUserId().equals(dto2.getUserId())) {
+				dto= dto1;
+			} else {
+				throw new Exception("입력한 이름과 전화번호가 일치하는 회원이 없습니다.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return result;
+		return dto;
 	}
-
-	@Override
-	public int checkNickName(String nickName) {
-		int result=0;
-		
-		try {
-			result = dao.selectOne("member.readMember2", nickName);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-
 
 	@Override
 	public void generatePwd(Member dto) throws Exception {
