@@ -8,6 +8,7 @@ public interface MemberService {
 	
 	public void insertMember(Member dto) throws Exception;
 	public void updateMember(Member dto) throws Exception;
+	public void updatePwd(Member dto) throws Exception;
 	
 	public Member readMember(String userId);
 	public Member readMember(String userName, String tel);

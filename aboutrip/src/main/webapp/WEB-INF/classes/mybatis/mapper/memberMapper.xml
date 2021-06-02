@@ -43,7 +43,9 @@
 		SELECT userNum, address1, address2, tel, birth, gender, paymentNum, created_date, zip FROM member2
 		WHERE tel = #{tel}
 	</select>
-	
+	<update id="updatepwd" parameterType="com.aboutrip.app.member.Member">
+		UPDATE member1 SET userPwd=#{userPwd} WHERE userNum = #{userNum}
+	</update>
 	<update id="updateMember1" parameterType="com.aboutrip.app.member.Member">
 		UPDATE member1 SET userPwd=#{userPwd}, nickName=#{nickName}, profile_pic=#{profile_pic} WHERE userNum = #{userNum}
 	</update>

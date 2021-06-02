@@ -68,7 +68,17 @@ public class MemberServiceImpl implements MemberService{
 		}
 		
 	}
-
+	
+	@Override
+	public void updatePwd(Member dto) throws Exception {
+		try {
+			dao.updateData("member.updatepwd", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	@Override
 	public Member readMember(String userId) {
 		Member dto = null;
@@ -171,7 +181,7 @@ public class MemberServiceImpl implements MemberService{
 		Mail mail = new Mail();
 		mail.setReceiverEmail(dto.getUserId());
 		
-		mail.setSenderEmail("aboutrip123@gmail.com");
+		mail.setSenderEmail("teststs210601@gmail.com");
 		mail.setSenderName("Admin");
 		mail.setSubject("임시 패스워드 발급");
 		mail.setContent(result);
@@ -180,7 +190,7 @@ public class MemberServiceImpl implements MemberService{
 		
 		if(b) {
 			dto.setUserPwd(sb.toString());
-			updateMember(dto);
+			updatePwd(dto);
 		} else {
 			throw new Exception();
 		}
