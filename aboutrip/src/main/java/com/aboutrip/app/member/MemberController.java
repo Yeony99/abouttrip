@@ -122,7 +122,7 @@ public class MemberController {
 		}
 
 		String s;
-		s = dto.getUserName() + "님이 가입한 이메일주소는 '<h3>" + dto.getUserId() + "</h3>' 입니다.<br>";
+		s = dto.getUserName() + "님이 가입한 이메일주소는 '" + dto.getUserId() + "' 입니다.<br>";
 		s += "로그인창으로 이동하여 로그인 하시기 바랍니다.";
 
 		reAttr.addFlashAttribute("message", s);
