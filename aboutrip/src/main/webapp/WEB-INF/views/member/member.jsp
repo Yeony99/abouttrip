@@ -57,6 +57,20 @@ function memberValid(){
 		f.birth.focus();
 		return;
 	}
+	str = f.adress1.value;
+	if (!str) {
+		alert("주소를 입력하세요. ");
+		f.adress2.focus();
+		return;
+	}
+	
+	str = f.adress2.value;
+	if (!str) {
+		alert("상세주소를 입력하세요. ");
+		f.adress2.focus();
+		return;
+	}
+	
 	str = f.tel.value;
 	str = str.trim();
 	if (!str) {
@@ -69,6 +83,7 @@ function memberValid(){
 		f.tel.focus();
 		return;
 	}
+	
 	
 	f.action = "${pageContext.request.contextPath}/member/${mode}";
 	f.submit();
