@@ -83,8 +83,8 @@ public class MemberController {
 
 		session.setMaxInactiveInterval(60 * 60); // 세션 한시간 유지
 		session.setAttribute("member", info);
-		if(dto.getUserId() == "aboutrip123@gmail.com") {
-			return "redirect:/admin/main/main";
+		if(dto.getUserId().equals("admin")) {
+			return "redirect:/admin/main";
 		}
 		return "redirect:/member/main";
 	}
