@@ -35,8 +35,8 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">스케줄</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/main">캘린더</a><a class="dropdown-item"
-								href="#">동선관리</a><a class="dropdown-item" href="#">그룹정산</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/main">캘린더</a>
+							<a class="dropdown-item" href="#">여행루트공유</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
@@ -64,11 +64,13 @@
 					<c:if test="${not empty sessionScope.member}">
 						<li class="nav-item"><a class="nav-link" style="color: blue">${sessionScope.member.nickName}님
 						</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
+						<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
 							<c:if test="${sessionScope.member.userId=='admin'}">
 								<a href="${pageContext.request.contextPath}/admin">관리자</a>
 							</c:if>
+						<c:if test="${sessionScope.member.userId!='admin'}">
+							<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/mypage">마이페이지</a>
+						</c:if>
 					</c:if>
 				</ul>
 			</div>

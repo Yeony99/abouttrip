@@ -18,9 +18,8 @@
                 <div class="col-sm-3">
                     <h5>스케줄</h5>
                     <ul>
-                        <li><a href="#">캘린더</a></li>
-                        <li><a href="#">동선관리</a></li>
-                        <li><a href="#">그룹정산</a></li>
+						<li><a href="${pageContext.request.contextPath}/scheduler/main">캘린더</a></li>
+						<li><a href="#">여행루트공유</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
