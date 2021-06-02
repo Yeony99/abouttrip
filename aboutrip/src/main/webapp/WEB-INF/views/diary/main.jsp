@@ -231,7 +231,6 @@ $(function(){
 			$(".article .btnDelete").attr("data-diaryImgNum", diaryImgNum);
 		}
 	}
-	
 });
 
 $(function(){

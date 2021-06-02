@@ -39,6 +39,7 @@ public class DiaryController {
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String hashTag
 			) throws Exception {
+		
 		int rows = 8;
 		int total_page;
 		int dataCount;

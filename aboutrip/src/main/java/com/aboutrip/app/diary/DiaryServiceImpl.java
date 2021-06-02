@@ -21,7 +21,6 @@ public class DiaryServiceImpl implements DiaryService {
 	@Override
 	public void insertDiary(Diary dto, String pathname) throws Exception {
 		
-		
 	}
 
 	@Override
@@ -50,7 +49,6 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public void updateDiary(Diary dto, String pathname) throws Exception {
-		
 		
 	}
 

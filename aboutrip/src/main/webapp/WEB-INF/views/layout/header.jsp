@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-
 <div class="container">
 	<nav
 		class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
