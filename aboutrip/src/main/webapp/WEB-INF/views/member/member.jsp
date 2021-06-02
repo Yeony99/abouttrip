@@ -8,16 +8,16 @@
 function memberValid(){
 	var f = document.memberForm;
 	var str;
-	str = f.userId.value;
+	str = f.email1.value;
 	str = str.trim();
 	if (!str) {
-		alert("아이디를 입력하세요. ");
-		f.userId.focus();
+		alert("이메일을 입력하세요. ");
+		f.email1.focus();
 		return;
 	}
 	if (!/^[a-z][a-z0-9_]{4,9}$/i.test(str)) {
-		alert("아이디는 5~10자이며 첫글자는 영문자이어야 합니다.");
-		f.userId.focus();
+		alert("이메일을 5~10자이며 첫글자는 영문자이어야 합니다.");
+		f.email1.focus();
 		return;
 	}
 	f.userId.value = str;
