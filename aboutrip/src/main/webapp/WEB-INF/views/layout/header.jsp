@@ -21,22 +21,22 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">여행명소</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">AboutTrip pick</a><a
-								class="dropdown-item" href="#">한국관광공사 pick</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/place/mdPick">AboutTrip pick</a><a
+								class="dropdown-item" href="${pageContext.request.contextPath}/place/list">한국관광공사 pick</a>
 						</div></li>
 					<li class="nav-item dropdown"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">다이어리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">여행 다이어리</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/diary/list">여행 다이어리</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">스케줄</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">캘린더</a><a class="dropdown-item"
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/main">캘린더</a><a class="dropdown-item"
 								href="#">동선관리</a><a class="dropdown-item" href="#">그룹정산</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
@@ -44,9 +44,9 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">여행상품</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">초특가 여행상품</a><a
-								class="dropdown-item" href="#">BEST 인기상품</a><a
-								class="dropdown-item" href="#">패키지/티켓/유심&amp;wifi</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/booking/event">초특가 여행상품</a><a
+								class="dropdown-item" href="${pageContext.request.contextPath}/booking/best">BEST 인기상품</a><a
+								class="dropdown-item" href="${pageContext.request.contextPath}/booking/list">패키지/티켓/유심&amp;wifi</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
