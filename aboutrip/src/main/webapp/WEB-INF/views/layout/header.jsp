@@ -28,7 +28,7 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">다이어리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/diary/list">여행 다이어리</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/diary/main">여행 다이어리</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
