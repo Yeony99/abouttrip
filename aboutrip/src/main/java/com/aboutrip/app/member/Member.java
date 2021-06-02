@@ -5,6 +5,7 @@ public class Member {
 	private String userId, email1, email2;
 	private String userPwd;
 	private String nickName;
+	private String zip;
 	private int enable;
 	private int FailCnt;
 	private String profile_pic;
@@ -138,6 +139,11 @@ public class Member {
 	public void setEmail1(String email1) {
 		this.email1 = email1;
 	}
-	
+	public String getZip() {
+		return zip;
+	}
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
 	
 }
