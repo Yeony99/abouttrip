@@ -20,7 +20,7 @@ function memberValid(){
 		f.email1.focus();
 		return;
 	}
-	f.userId.value = str;
+	f.email1.value = str;
 	str = f.userPwd.value;
 	str = str.trim();
 	if (!str) {
