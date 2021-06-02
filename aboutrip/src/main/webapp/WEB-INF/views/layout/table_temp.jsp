@@ -85,7 +85,7 @@
 						     </tr>
 						     
 						     <tr align="center" height="30" style="border-bottom: 1px solid #cccccc;">
-								  <td><img src="https://www.milkcocoa.co.kr/board/_skin/market//img/i_notice.gif"></td>
+								  <td><img src="${pageContext.request.contextPath}/resources/img/img/notice.gif"></td>
 								  <td>  </td>
 								  <td style="padding-left: 10px; text-align: left">
 									   <a href="">	★위의 공지글을 확인 후 글을 작성하여 주세요★ </a>
