@@ -53,7 +53,7 @@ public class MailSender {
 		
 		Properties p = new Properties();   
 
-		p.put("mail.smtp.user", "teststs210601");   
+		p.put("mail.smtp.user", "aboutrip123");   
   
 
 		p.put("mail.smtp.host", "smtp.gmail.com"); 

@@ -171,7 +171,7 @@ public class MemberServiceImpl implements MemberService{
 		Mail mail = new Mail();
 		mail.setReceiverEmail(dto.getUserId());
 		
-		mail.setSenderEmail("teststs210601@gmail.com");
+		mail.setSenderEmail("aboutrip123@gmail.com");
 		mail.setSenderName("Admin");
 		mail.setSubject("임시 패스워드 발급");
 		mail.setContent(result);
