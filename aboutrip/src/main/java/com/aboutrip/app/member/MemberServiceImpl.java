@@ -195,6 +195,18 @@ public class MemberServiceImpl implements MemberService{
 			throw new Exception();
 		}
 	}
+
+	@Override
+	public void checkIpAddr(Member dto) throws Exception {
+		try {
+			int loginseq = dao.selectOne("member.loginseq");
+			dto.setLogNum(loginseq);
+			dto = dao.selectOne("member.insertIpaddr",dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 
 }

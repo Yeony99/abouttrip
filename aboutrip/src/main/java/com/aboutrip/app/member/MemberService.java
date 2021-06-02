@@ -18,4 +18,5 @@ public interface MemberService {
 	public int dataCount();
 
 	public void generatePwd(Member dto) throws Exception;
+	public void checkIpAddr(Member dto) throws Exception;
 }

@@ -1,5 +1,6 @@
 package com.aboutrip.app.member;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,9 +70,11 @@ public class MemberController {
 
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String loginsubmit(@RequestParam String userId, @RequestParam String userPwd, HttpSession session,
-			Model model) throws Exception {
+			Model model,HttpServletRequest req) throws Exception {
 
 		Member dto = service.loginMember(userId);
+		dto.setIpaddr(req.getRemoteAddr());
+		service.checkIpAddr(dto);
 		if (dto == null || !userPwd.equals(dto.getUserPwd())) {
 			model.addAttribute("message", "아이디 또는 패스워드가 일치하지 않습니다.");
 			return ".member.login";

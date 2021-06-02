@@ -18,7 +18,23 @@ public class Member {
 	private int paymentNum;
 	private String userName;
 	private String created_date;
+	private String ipaddr;
+	private int logNum;
 	
+	
+	
+	public int getLogNum() {
+		return logNum;
+	}
+	public void setLogNum(int logNum) {
+		this.logNum = logNum;
+	}
+	public String getIpaddr() {
+		return ipaddr;
+	}
+	public void setIpaddr(String ipaddr) {
+		this.ipaddr = ipaddr;
+	}
 	public String getCreated_date() {
 		return created_date;
 	}

@@ -73,4 +73,10 @@
 	<select id="dataCount" parameterType="com.aboutrip.app.member.Member">
 		SELECT NVL(COUNT(userNum),0) FROM member1
 	</select>
+	<select id="loginseq" resultType="Integer">
+       SELECT login_seq.NEXTVAL FROM dual 
+    </select>
+	<insert id="insertIpaddr" parameterType="com.aboutrip.app.member.Member">
+		INSERT INTO logRecored(logNum, userNum, ipaddr, logDate) VALUES (#{logNum}, #{userNum}, #{ipaddr}, SYSDATE)
+	</insert>
 </mapper>
