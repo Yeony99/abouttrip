@@ -138,6 +138,7 @@ public class DiaryController {
 			Diary dto,
 			HttpSession session
 			) throws Exception {
+		
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		dto.setUserId(info.getUserId());
 		

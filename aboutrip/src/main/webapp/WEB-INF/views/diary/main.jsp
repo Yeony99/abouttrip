@@ -280,7 +280,6 @@ $(function(){
 	});
 });
 
-
 $(function(){
 	// 글보기-글리스트
 	$(".btnList").click(function(){

@@ -55,6 +55,5 @@ public class DiaryServiceImpl implements DiaryService {
 	@Override
 	public void deleteDiary(int diaryNum, String pathname) throws Exception {
 		
-		
 	}
 }
