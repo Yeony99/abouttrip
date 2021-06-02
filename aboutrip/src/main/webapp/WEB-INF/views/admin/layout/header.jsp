@@ -27,10 +27,10 @@
 					<li class="nav-item dropdown"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
 						data-toggle="dropdown" href="#"
-						style="color: var(- -bs-dark); text-align: left;">여행명소 등록</a>
+						style="color: var(- -bs-dark); text-align: left;">여행명소 관리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">AboutTrip pick</a>
-							<a class="dropdown-item" href="#">한국관광공사 pick</a>
+							<a class="dropdown-item" href="#">AboutTrip pick 관리</a>
+							<a class="dropdown-item" href="#">한국관광공사 pick 관리</a>
 						</div></li>
 					<li class="nav-item dropdown"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
@@ -43,13 +43,12 @@
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
 						data-toggle="dropdown" href="#"
-						style="color: var(- -bs-dark); text-align: left;">여행상품 등록</a>
+						style="color: var(- -bs-dark); text-align: left;">여행상품 관리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">초특가 여행상품</a>
-							<a class="dropdown-item" href="#">BEST 인기상품</a>
-							<a class="dropdown-item" href="#">패키지/티켓/유심&amp;wifi</a>
-							<a class="dropdown-item" href="#">회원예약관리</a>
-							<a class="dropdown-item" href="#">매출 분석</a>	
+							<a class="dropdown-item" href="#">여행상품 관리</a>
+							<a class="dropdown-item" href="#">회원구매 및 취소내역관리</a>
+							<a class="dropdown-item" href="#">매출현황 분석</a>	
+							<a class="dropdown-item" href="#">상품별 QNA 관리</a>	
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
