@@ -11,7 +11,6 @@
 	font-size: small;
 	padding-bottom: 5px;
 }
-
 .selectField {
 	height: 45px;
 	padding-left: 20px;
@@ -24,13 +23,11 @@
 	margin-left: 250px;
 	margin-top: 53px;
 }
-
 .boxTFdiv {
 	float: left;
 	margin-top: 53px;
 	height: 47px;
 }
-
 .boxTF {
 	width: 425px;
 	height: 43px;
@@ -40,7 +37,6 @@
 	float: left;
 	margin-right: 5px;
 }
-
 .btnSearch {
 	width: 43px;
 	height: 43px;
@@ -48,7 +44,6 @@
 	border: 1px solid #ddd;
 	cursor: pointer;
 }
-
 .btnCreate {
 	width: 60px;
 	height: 40px;
@@ -59,7 +54,6 @@
 	margin-left: 1040px;
 	margin-bottom: 30px;
 }
-
 .btnDelete {
 	width: 50px;
 	height: 30px;
@@ -125,11 +119,9 @@
 						action="${pageContext.request.contextPath}/"
 						method="post">
 						<select name="condition" class="selectField">
-							<option value="subject"
-								${condition=="subject"?"selected='selected'":""}>제목</option>
-							<option value="content"
-								${condition=="content"?"selected='selected'":"" }>내용</option>
-							<option value="all" ${condition=="all"?"selecte='selected'":""}>제목+내용</option>
+							<option value="subject">제목</option>
+							<option value="content">내용</option>
+							<option value="all">제목+내용</option>
 						</select>
 						<div class="boxTFdiv">
 							<input type="text" name="keyword" class="boxTF"
@@ -168,9 +160,7 @@
 							style="border-bottom: 1px solid #ddd;">
 							<td width="60">${dto.listNum}</td>
 							<td align="left" style="padding-left: 10px; text-align: center;">
-								<c:forEach var="n" begin="1" end="${dto.depth}">&nbsp;&nbsp;</c:forEach>
-								<c:if test="${dto.depth!=0}">&#10551;&nbsp;&nbsp;[Re]&nbsp;</c:if>
-								<a href="${articleUrl}=${dto.}">${dto.subject}</a>
+								<a href="">${dto.subject}</a>
 							</td>
 							<td width="100">${dto.userName}</td>
 							<td width="200">${dto.created}</td>
