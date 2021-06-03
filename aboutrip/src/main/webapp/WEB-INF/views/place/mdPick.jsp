@@ -3,19 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-			<!-- <li><a href="#"><img
-					src="${pageContext.request.contextPath}/resources/img/img/seongsan.jpg"
-					alt="성산 일출봉" title="img1"
-					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
-			<li><a href="#"><img
-					src="${pageContext.request.contextPath}/resources/img/img/baekyak.jpg"
-					alt="백약이오름" title="img2"
-					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
-			<li><a href="#"><img
-					src="${pageContext.request.contextPath}/resources/img/img/udo.jpg"
-					alt="우도" title="img3"
-					style="min-height: 400px; min-width: 1300px; overflow: hidden"></a></li>
-		-->
 <style type="text/css">
 .allDataCount {
 	width: 100%;
@@ -25,6 +12,7 @@
 	font-size: small;
 	padding-bottom: 5px;
 }
+
 .selectField {
 	height: 45px;
 	padding-left: 20px;
@@ -37,11 +25,13 @@
 	margin-left: 250px;
 	margin-top: 53px;
 }
+
 .boxTFdiv {
 	float: left;
 	margin-top: 53px;
 	height: 47px;
 }
+
 .boxTF {
 	width: 425px;
 	height: 43px;
@@ -51,6 +41,7 @@
 	float: left;
 	margin-right: 5px;
 }
+
 .btnSearch {
 	width: 43px;
 	height: 43px;
@@ -58,6 +49,7 @@
 	border: 1px solid #ddd;
 	cursor: pointer;
 }
+
 .btnCreate {
 	width: 60px;
 	height: 40px;
@@ -68,6 +60,7 @@
 	margin-left: 1040px;
 	margin-bottom: 30px;
 }
+
 .btnDelete {
 	width: 50px;
 	height: 30px;
@@ -101,7 +94,7 @@
 						style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
 						<a href="#"><img class="box-img"
 							src="${pageContext.request.contextPath}/resources/img/img/seongsan.jpg"
-							alt="감천 문화마을" title="img1"
+							alt="성산 일출봉" title="img1"
 							style="width: 100%; height: 100%; object-fit: cover;"></a>
 					</div>
 
@@ -109,7 +102,7 @@
 						style="width: 300px; height: 300px; background-color: red; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
 						<a href="#"><img class="box-img"
 							src="${pageContext.request.contextPath}/resources/img/img/baekyak.jpg"
-							alt="수원 화성" title="img1"
+							alt="백약이오름" title="img2"
 							style="width: 100%; height: 100%; object-fit: cover;"></a>
 					</div>
 
@@ -117,7 +110,7 @@
 						style="width: 300px; height: 300px; background-color: blue; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
 						<a href="#"><img class="box-img"
 							src="${pageContext.request.contextPath}/resources/img/img/udo.jpg"
-							alt="북촌 한옥마을" title="img1"
+							alt="우도" title="img3"
 							style="width: 100%; height: 100%; object-fit: cover;"></a>
 					</div>
 				</div>
@@ -130,8 +123,7 @@
 			<tr>
 				<td align="center" style="width: 100%; border-top: 2px solid #111;">
 					<form name="listSearchForm"
-						action="${pageContext.request.contextPath}/"
-						method="post">
+						action="${pageContext.request.contextPath}/" method="post">
 						<select name="condition" class="selectField">
 							<option value="subject">제목</option>
 							<option value="content">내용</option>
