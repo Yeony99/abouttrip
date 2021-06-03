@@ -34,8 +34,10 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">스케줄</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/schedule/scheduler">캘린더</a>
-							<a class="dropdown-item" href="#">여행루트공유</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/mycalendar">캘린더</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/share">여행루트공유</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/mate">트립메이트</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/review">여행후기</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
@@ -51,10 +53,11 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">고객센터</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">공지사항</a><a
-								class="dropdown-item" href="#">FAQ</a><a class="dropdown-item"
-								href="#">문의하기</a><a class="dropdown-item" href="#">이벤트</a><a
-								class="dropdown-item" href="#">시스템 개선/제안</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/notice/list">공지사항</a><a
+								class="dropdown-item" href="${pageContext.request.contextPath}/faq/list">FAQ</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/qna/list">문의하기</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/event/list">이벤트</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/sug/list">시스템 개선/제안</a>
 						</div></li>
 				</ul>
 			</div>

@@ -18,8 +18,10 @@
                 <div class="col-sm-3">
                     <h5>스케줄</h5>
                     <ul>
-						<li><a href="${pageContext.request.contextPath}/schedule/scheduler">캘린더</a></li>
-						<li><a href="#">여행루트공유</a></li>
+						<li><a href="${pageContext.request.contextPath}/scheduler/mycalendar">캘린더</a></li>
+						<li><a href="${pageContext.request.contextPath}/scheduler/share">여행루트공유</a></li>
+						<li><a href="${pageContext.request.contextPath}/scheduler/mate">트립메이트</a></li>
+						<li><a href="${pageContext.request.contextPath}/scheduler/review">여행후기</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
@@ -33,11 +35,11 @@
                 <div class="col-sm-3">
                     <h5>고객센터</h5>
                     <ul>
-                        <li><a href="#">공지사항</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">문의하기</a></li>
-                        <li><a href="#">이벤트</a></li>
-                        <li><a href="#">시스템 개선/제안</a></li>
+                        <li><a href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
+                        <li><a href="${pageContext.request.contextPath}/faq/list">FAQ</a></li>
+                        <li><a href="${pageContext.request.contextPath}/qna/list">문의하기</a></li>
+                        <li><a href="${pageContext.request.contextPath}/event/list">이벤트</a></li>
+                        <li><a href="${pageContext.request.contextPath}/sug/list">시스템 개선/제안</a></li>
                     </ul>
                 </div>
             </div>
