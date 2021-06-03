@@ -34,7 +34,7 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">스케줄</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/main">캘린더</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/schedule/scheduler">캘린더</a>
 							<a class="dropdown-item" href="#">여행루트공유</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a

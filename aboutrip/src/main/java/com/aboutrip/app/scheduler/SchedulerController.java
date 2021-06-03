@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller("scheduler.schedulerController")
-@RequestMapping("/scheduler/*")
+@RequestMapping("/schedule/*")
 public class SchedulerController {
 
-	@RequestMapping(value = "main", method=RequestMethod.GET)
-	public String main() throws Exception {
+	@RequestMapping(value = "scheduler", method=RequestMethod.GET)
+	public String schduler() throws Exception {
 		
 		return ".scheduler.main";
 	}

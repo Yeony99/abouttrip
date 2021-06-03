@@ -18,4 +18,6 @@ public class PlaceController {
 	public ModelAndView mdPick() throws Exception{
 		return new ModelAndView(".place.mdPick");
 	}
+	
+	
 }
