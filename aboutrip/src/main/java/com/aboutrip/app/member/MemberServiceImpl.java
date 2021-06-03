@@ -60,8 +60,8 @@ public class MemberServiceImpl implements MemberService{
 			//MemberMapper - member.updateMember1, dto
 			//MemberMapper - member.updateMember2, dto
 			
-			dao.updateData("member.updateMember1", dto.getUserNum());
-			dao.updateData("member.updateMember2", dto.getUserNum());
+			dao.updateData("member.updateMember1", dto);
+			dao.updateData("member.updateMember2", dto);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

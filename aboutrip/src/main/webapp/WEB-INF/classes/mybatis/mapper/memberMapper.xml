@@ -25,7 +25,7 @@
 	</insert>
 	<select id="readMember" parameterType="String" resultType="com.aboutrip.app.member.Member">
 		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
-		address2, tel, birth, gender, paymentNum, created_date, zip FROM member1 m1
+		address2, tel, TO_CHAR(birth, 'YYYY-MM-DD')birth, gender, paymentNum, created_date, zip FROM member1 m1
 		LEFT OUTER JOIN member2 m2 ON m1.userNum = m2.userNum 
 		WHERE userId = #{userId}
 	</select>
@@ -47,11 +47,10 @@
 		UPDATE member1 SET userPwd=#{userPwd} WHERE userNum = #{userNum}
 	</update>
 	<update id="updateMember1" parameterType="com.aboutrip.app.member.Member">
-		UPDATE member1 SET userPwd=#{userPwd}, nickName=#{nickName}, profile_pic=#{profile_pic} WHERE userNum = #{userNum}
+		UPDATE member1 SET userPwd=#{userPwd}, nickName=#{nickName},profile_pic=#{profile_pic} WHERE userNum = #{userNum}
 	</update>
 	<update id="updateMember2" parameterType="com.aboutrip.app.member.Member">
-		UPDATE member2 SET address1=#{address1}, address2=#{address2}, tel=#{tel}, birth=#{birth}, paymentNum=#{paymentNum}
-		WHERE userNum = #{userNum}
+		UPDATE member2 SET address1=#{address1}, address2=#{address2}, tel=#{tel}, birth=#{birth} WHERE userNum = #{userNum}
 	</update>
 	
 	<update id="deleteMember1" parameterType="com.aboutrip.app.member.Member">

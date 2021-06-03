@@ -57,17 +57,17 @@ function memberValid(){
 		f.birth.focus();
 		return;
 	}
-	str = f.adress1.value;
+	str = f.address1.value;
 	if (!str) {
 		alert("주소를 입력하세요. ");
-		f.adress2.focus();
+		f.address2.focus();
 		return;
 	}
 	
-	str = f.adress2.value;
+	str = f.address2.value;
 	if (!str) {
 		alert("상세주소를 입력하세요. ");
-		f.adress2.focus();
+		f.address2.focus();
 		return;
 	}
 	
@@ -122,6 +122,18 @@ function bringEmail() {
 		f.email1.focus();
 	}
 }
+function imageView() {
+	var file = event.target.files[0];
+	if(! file.type.match("image.*")) {
+		return false;
+	}
+	
+	var reader = new FileReader();
+	reader.onload = function(e) {
+		document.getElementById("preImageView").setAttribute("src", e.target.result);
+	}
+	reader.readAsDataURL(file);
+}
 </script>
 <div class="body-container">        
         <section class="login-dark" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
@@ -129,20 +141,23 @@ function bringEmail() {
                 <h5 class="visually-hidden">sign up</h5>
                 <br>
                 <div class="mb-3">
+                <div class="mb-3" style="text-align: center;"><img id="preImageView" style="vertical-align: middle;" width="120" height="100" > <div class="preImageViewLayout" style="display: inline-block;"></div></div>
+            	<div class="mb-3"><input type="file" name="profile_pic" onchange="imageView()"></div>
+                
                 <select name="selectEmail" onchange="bringEmail();">
 					<option value="">선 택</option>
 					<option value="naver.com" ${dto.email2=="naver.com" ? "selected='selected'" : ""}>네이버</option>
 					<option value="gmail.com" ${dto.email2=="gmail.com" ? "selected='selected'" : ""}>지메일</option>
 					<option value="direct">직접입력</option>
 				</select>
-                <input class="form-control" type="text" name="email1" maxlength="30" value="${dto.email1}" >
+                <input class="form-control" type="text" name="email1" maxlength="30" value="${dto.email1}" ${mode=="update" ? "readonly='readonly' ":""} >
 				<span>@</span> 
 				<input class="form-control" type="text" name="email2" maxlength="30" value="${dto.email2}" readonly="readonly">
                 </div>
                 <div class="mb-3"><input class="form-control" type="password" name="userPwd" placeholder="패스워드"></div>
-                <div class="mb-3"><input class="form-control" type="text" name="userName" placeholder="성명"></div>
-                <div class="mb-3"><input class="form-control" type="text" name="nickName" placeholder="닉네임"></div>
-				<div class="mb-3"><input class="form-control" type="date" name="birth" placeholder="생년월일"></div>
+                <div class="mb-3"><input class="form-control" type="text" name="userName" placeholder="성명" value="${dto.userName }" ${mode=="update" ? "readonly='readonly' ":""}></div>
+                <div class="mb-3"><input class="form-control" type="text" name="nickName" placeholder="닉네임" value="${dto.nickName }"></div>
+				<div class="mb-3"><input class="form-control" type="date" name="birth" placeholder="생년월일" value="${dto.birth }" ></div>
 				<div class="mb-3">
                 <input type="radio" id="male" name="gender" value="male" checked="checked">
   				<label for="male">남성</label>
@@ -155,8 +170,8 @@ function bringEmail() {
 				</div>
 				<div class="mb-3"><input class="form-control" type="text" name="address1" id="address1" placeholder="주소" readonly="readonly" value="${dto.address1}"></div>
 				<div class="mb-3"><input class="form-control" type="text" name="address2" id="address2" placeholder="상세주소" value="${dto.address2}"></div>
-                <div class="mb-3"><input class="form-control" type="text" name="tel" placeholder="전화번호"></div>
-                <div class="mb-3"><button class="btn btn-primary d-block w-100" type="button" onclick="memberValid();">회원가입</button></div>
+                <div class="mb-3"><input class="form-control" type="text" name="tel" placeholder="전화번호" value="${dto.tel }"></div>
+                <div class="mb-3"><button class="btn btn-primary d-block w-100" type="button" onclick="memberValid();">${mode=="update" ? "수정완료":"회원가입"}</button></div>
             </form>
         </section>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
