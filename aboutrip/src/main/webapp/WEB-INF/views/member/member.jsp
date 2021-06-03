@@ -142,7 +142,7 @@ function imageView() {
                 <br>
                 <div class="mb-3">
                 <div class="mb-3" style="text-align: center;"><img id="preImageView" style="vertical-align: middle;" width="120" height="100" > <div class="preImageViewLayout" style="display: inline-block;"></div></div>
-            	<div class="mb-3"><input type="file" name="profile_pic" onchange="imageView()"></div>
+            	<div class="mb-3"><input type="file" name="profile_pic" onchange="imageView()">${dto.profile_pic }</div>
                 
                 <select name="selectEmail" onchange="bringEmail();">
 					<option value="">선 택</option>
@@ -154,7 +154,7 @@ function imageView() {
 				<span>@</span> 
 				<input class="form-control" type="text" name="email2" maxlength="30" value="${dto.email2}" readonly="readonly">
                 </div>
-                <div class="mb-3"><input class="form-control" type="password" name="userPwd" placeholder="패스워드"></div>
+                <div class="mb-3"><input class="form-control" type="password" name="userPwd" placeholder="패스워드" value="${dto.userPwd }"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="userName" placeholder="성명" value="${dto.userName }" ${mode=="update" ? "readonly='readonly' ":""}></div>
                 <div class="mb-3"><input class="form-control" type="text" name="nickName" placeholder="닉네임" value="${dto.nickName }"></div>
 				<div class="mb-3"><input class="form-control" type="date" name="birth" placeholder="생년월일" value="${dto.birth }" ></div>
