@@ -83,6 +83,7 @@ public class MemberController {
 		SessionInfo info = new SessionInfo();
 		info.setUserNum(dto.getUserNum());
 		info.setNickName(dto.getNickName());
+		info.setUserId(dto.getUserId());
 
 		session.setMaxInactiveInterval(60 * 60); // 세션 한시간 유지
 		session.setAttribute("member", info);
@@ -168,5 +169,41 @@ public class MemberController {
 		reAttr.addFlashAttribute("title", "이메일 찾기");
 
 		return "redirect:/member/complete";
+	}
+	
+	@RequestMapping(value = "mypage")
+	public String updateForm(Model model, HttpSession session) {
+		
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		Member dto = service.readMember(info.getUserId());
+		
+		if(dto.getEmail1().length()!=0 && dto.getEmail2().length()!=0) {
+			dto.setUserId(dto.getEmail1()+"@"+dto.getEmail2());
+		}
+		
+		model.addAttribute("mode","update");
+		model.addAttribute("dto",dto);
+		
+		return".member.member";
+	}
+	
+	@RequestMapping(value = "update")
+	public String updateSubmit(Member dto,final RedirectAttributes reAttr,HttpSession session) {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		try {
+			dto.setUserNum(info.getUserNum());
+			service.updateMember(dto);
+		} catch (Exception e) {
+		}
+		StringBuilder sb=new StringBuilder();
+		sb.append(dto.getUserName()+ "님의 회원정보가 정상적으로 변경되었습니다.<br>");
+		sb.append("메인화면으로 이동 하시기 바랍니다.<br>");
+		
+		reAttr.addFlashAttribute("title", "회원 정보 수정");
+		reAttr.addFlashAttribute("message", sb.toString());
+		
+		return"redirect:/member/main";
 	}
 }
