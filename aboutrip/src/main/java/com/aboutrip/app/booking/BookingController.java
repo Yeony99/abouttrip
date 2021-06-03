@@ -21,7 +21,6 @@ public class BookingController {
 	}
 	
 	
-	
 	@RequestMapping(value="list", method=RequestMethod.GET)
 	public String list() throws Exception{
 		
