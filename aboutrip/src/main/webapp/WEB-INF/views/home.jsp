@@ -1,14 +1,18 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <html>
 <head>
-	<title>Home</title>
+	<title>Aboutrip</title>
 </head>
 <body>
 <h1>
-	Hello world!  
+	여행전문 웹사이트 Aboutrip 입니다!  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+<P>  현재시간 ${serverTime}. </P>
+<p> <a href="${pageContext.request.contextPath}/member/login">홈페이지로 가기</a>
 </body>
 </html>

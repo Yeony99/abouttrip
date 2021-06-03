@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.common.FileManager;
 
-@Controller("notice.noticeController")
-public class NoticeController {
+@Controller("cs.csController")
+public class CsController {
 	@Autowired
 	private NoticeService service;	
 	@Autowired
