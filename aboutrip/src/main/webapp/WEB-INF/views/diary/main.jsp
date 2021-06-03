@@ -3,6 +3,56 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<style type="text/css">
+ul li {
+	list-style-type: none;
+}
+.list-footer {
+	
+	border: 1px solid red;
+}
+.list-footer .item-left {
+	box-sizing: border-box; 
+	float: left;
+	text-align: left;
+}
+.list-footer .item-center {
+	box-sizing: border-box; 
+	float: left;
+	text-align: center;
+}
+.list-footer .item-right {
+	box-sizing: border-box; 
+	float: left;
+	cursor: pointer;
+	border: none;
+	width: 55px;
+	height: 55px;
+	line-height: 55px;
+	border-radius:45px;
+	background: blue;
+	text-align: center;
+	font-size: 9px;
+	font-family: 나눔고딕
+}	
+.imgPreView {
+	cursor: pointer;
+	border: 1px solid #ccc;
+	width: 45px;
+	height: 45px;
+	line-height: 45px;
+	border-radius:45px;
+	background: #eee;
+	position: relative;
+	z-index: 9999;
+	background-repeat : no-repeat;
+	background-size : cover;
+	text-align: center;
+	font-size: 9px;
+	font-family: 나눔고딕
+}
+</style>
+
 <script type="text/javascript">
 function login() {
 	location.href="${pageContext.request.contextPath}/member/login";
@@ -326,30 +376,54 @@ $(function(){
 		
 	});
 });
+
+// 다중 파일 업로드
+$(function(){
+  	$("body").on("change", "#tb input[name=upload]", function(){
+  		if(! $(this).val()) {
+  			return;	
+  		}
+  		
+  		var b=false;
+  		$("#tb input[name=upload]").each(function(){
+  			if(! $(this).val()) {
+  				b=true;
+  				return false;
+  			}
+  		});
+  		if(b) {
+  			return false;
+  		}
+  		
+  		var $tr = $(this).closest("tr").clone(true);
+        $tr.find("input").val("");
+        $("#tb").append($tr);      		
+  	});
+});
 </script>
-<div class="body-container">
+<div class="body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
 	<div>
 		<h3 style="font: bold;">다이어리</h3>
 	</div>
 	
-	<div class="body-main">
-		<div class="list clear">
+	<div class="body-main" style="margin-top: 100px;">
+		<div class="list">
 			<!-- 리스트 -->
-			<div class="list-body clear" data-pageNo="0"></div>
-			<div class="list-paging clear"></div>
-			<div class="list-footer clear">
+			<div class="list-body" data-pageNo="0"></div>
+			<div class="list-paging"></div>
+			<div class="list-footer">
 				<ul>
-					<li>
+					<li class="item-left">
 						<button type="button">새로고침</button>
 					</li>
-					<li>
+					<li class="item-center">
 						<form name="searchForm" method="post">
 							<input type="text" name="hashTag" placeholder="해쉬태그">
 							<button type="button" class="btn btnSearch">검색</button>
 						</form>
 					</li>
 					<li class="item-right">
-						<button type="button" class="btn btnInsertForm">새글 등록</button>
+						<button type="button" class="btn btnInsertForm">새글</button>
 					</li>
 				</ul>
 			</div>
@@ -357,7 +431,7 @@ $(function(){
 		<div class="clear"></div>
 		
 		<!-- 등록 -->
-		<div class="writer clear" style="display: none;">
+		<div class="writer" style="display: none;">
 			<form name="diaryForm" method="post"  enctype="multipart/form-data">
 			<table>
 				<tr>
@@ -381,11 +455,10 @@ $(function(){
 			</tr>
 			<tr>
 				<td>첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
-				<td>
-					<div class="imgPreView"></div>
-					<input type="file" name="upload" accept="image/*" style="display: none;">
+				<td> 
+					<input type="file" name="upload">
 				</td>
-			</tr>
+			</tr> 
 		</table>
 		<table>
 			<tr> 
@@ -404,7 +477,7 @@ $(function(){
 		</div>
 		
 		<!-- 리스트 -->
-		<div class="article clear" style="display: none;">
+		<div class="article" style="display: none;">
 			<table class="table table-content">
 				<tr>
 					<td colspan="2" align="center">
