@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.aboutrip.app.Mail.Mail;
 import com.aboutrip.app.Mail.MailSender;
+import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.common.dao.AboutDAO;
 
 @Service("member.memberService")
@@ -18,6 +19,9 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired
 	private MailSender	mailSender;
+	
+	@Autowired
+	private FileManager fileManager;
 	
 	@Override
 	public Member loginMember(String userId) {
@@ -34,12 +38,13 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void insertMember(Member dto) throws Exception {
+	public void insertMember(Member dto,String pathname) throws Exception {
 		try {
 			if(dto.getEmail1().length()!=0 && dto.getEmail2().length()!=0) {
 				dto.setUserId(dto.getEmail1()+"@"+dto.getEmail2());
 			}
-			
+			String saveFilename = fileManager.doFileUpload(dto.getSelectFile(), pathname);
+			dto.setProfile_pic(saveFilename);
 			//MemberMapper - member.insertMember1,dto
 			//MemberMapper - member.insertMember2,dto
 			dao.insertData("member.insertMember1", dto);
@@ -52,14 +57,15 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void updateMember(Member dto) throws Exception {
+	public void updateMember(Member dto,String pathname) throws Exception {
 		try {
 			if(dto.getEmail1().length()!=0 && dto.getEmail2().length()!=0) {
 				dto.setUserId(dto.getEmail1()+"@"+dto.getEmail2());
 			}
 			//MemberMapper - member.updateMember1, dto
 			//MemberMapper - member.updateMember2, dto
-			
+			String saveFilename = fileManager.doFileUpload(dto.getSelectFile(), pathname);
+			dto.setProfile_pic(saveFilename);
 			dao.updateData("member.updateMember1", dto);
 			dao.updateData("member.updateMember2", dto);
 			

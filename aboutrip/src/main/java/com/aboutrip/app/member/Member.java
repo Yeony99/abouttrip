@@ -1,5 +1,7 @@
 package com.aboutrip.app.member;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Member {
 	private int userNum;
 	private String userId, email1, email2;
@@ -9,6 +11,7 @@ public class Member {
 	private int enable;
 	private int FailCnt;
 	private String profile_pic;
+	private MultipartFile selectFile;
 	private String address1;
 	private String address2;
 	private String tel;
@@ -19,32 +22,71 @@ public class Member {
 	private String created_date;
 	private String ipaddr;
 	private int logNum;
-	
-	
-	
-	public int getLogNum() {
-		return logNum;
+	public int getUserNum() {
+		return userNum;
 	}
-	public void setLogNum(int logNum) {
-		this.logNum = logNum;
+	public void setUserNum(int userNum) {
+		this.userNum = userNum;
 	}
-	public String getIpaddr() {
-		return ipaddr;
+	public String getUserId() {
+		return userId;
 	}
-	public void setIpaddr(String ipaddr) {
-		this.ipaddr = ipaddr;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public String getCreated_date() {
-		return created_date;
+	public String getEmail1() {
+		return email1;
 	}
-	public void setCreated_date(String created_date) {
-		this.created_date = created_date;
+	public void setEmail1(String email1) {
+		this.email1 = email1;
 	}
-	public String getUserName() {
-		return userName;
+	public String getEmail2() {
+		return email2;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+	public String getUserPwd() {
+		return userPwd;
+	}
+	public void setUserPwd(String userPwd) {
+		this.userPwd = userPwd;
+	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public String getZip() {
+		return zip;
+	}
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
+	public int getEnable() {
+		return enable;
+	}
+	public void setEnable(int enable) {
+		this.enable = enable;
+	}
+	public int getFailCnt() {
+		return FailCnt;
+	}
+	public void setFailCnt(int failCnt) {
+		FailCnt = failCnt;
+	}
+	public String getProfile_pic() {
+		return profile_pic;
+	}
+	public void setProfile_pic(String profile_pic) {
+		this.profile_pic = profile_pic;
+	}
+	public MultipartFile getSelectFile() {
+		return selectFile;
+	}
+	public void setSelectFile(MultipartFile selectFile) {
+		this.selectFile = selectFile;
 	}
 	public String getAddress1() {
 		return address1;
@@ -82,65 +124,31 @@ public class Member {
 	public void setPaymentNum(int paymentNum) {
 		this.paymentNum = paymentNum;
 	}
-	public int getUserNum() {
-		return userNum;
+	public String getUserName() {
+		return userName;
 	}
-	public void setUserNum(int userNum) {
-		this.userNum = userNum;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-	public String getUserId() {
-		return userId;
+	public String getCreated_date() {
+		return created_date;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setCreated_date(String created_date) {
+		this.created_date = created_date;
 	}
-	public String getUserPwd() {
-		return userPwd;
+	public String getIpaddr() {
+		return ipaddr;
 	}
-	public void setUserPwd(String userPwd) {
-		this.userPwd = userPwd;
+	public void setIpaddr(String ipaddr) {
+		this.ipaddr = ipaddr;
 	}
-	public String getNickName() {
-		return nickName;
+	public int getLogNum() {
+		return logNum;
 	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setLogNum(int logNum) {
+		this.logNum = logNum;
 	}
-	public int getEnable() {
-		return enable;
-	}
-	public void setEnable(int enable) {
-		this.enable = enable;
-	}
-	public int getFailCnt() {
-		return FailCnt;
-	}
-	public void setFailCnt(int failCnt) {
-		FailCnt = failCnt;
-	}
-	public String getProfile_pic() {
-		return profile_pic;
-	}
-	public void setProfile_pic(String profile_pic) {
-		this.profile_pic = profile_pic;
-	}
-	public String getEmail2() {
-		return email2;
-	}
-	public void setEmail2(String email2) {
-		this.email2 = email2;
-	}
-	public String getEmail1() {
-		return email1;
-	}
-	public void setEmail1(String email1) {
-		this.email1 = email1;
-	}
-	public String getZip() {
-		return zip;
-	}
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
+	
+
 	
 }

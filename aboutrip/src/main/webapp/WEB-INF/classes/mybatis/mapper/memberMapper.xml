@@ -10,14 +10,8 @@
 		<selectKey keyProperty="userNum" resultType="int" order="BEFORE">
 				select member_seq.NEXTVAL FROM dual
 			</selectKey>
-		<if test='profile_pic != null'>
-			INSERT INTO member1(userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic)
-			VALUES (#{userNum}, #{userId}, #{userPwd}, #{userName}, #{nickName}, 1, 0, #{profile_pic})
-		</if>
-		<if test='profile_pic == null'>
-			INSERT INTO member1(userNum, userId, userPwd, userName, nickName, enable, FailCnt)
-			VALUES (#{userNum}, #{userId}, #{userPwd}, #{userName}, #{nickName}, 1, 0)
-		</if>
+		INSERT INTO member1(userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic)
+		VALUES (#{userNum}, #{userId}, #{userPwd}, #{userName}, #{nickName}, 1, 0, #{profile_pic, jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertMember2" parameterType="com.aboutrip.app.member.Member">
 			INSERT INTO member2(userNum, address1, address2, tel, birth, gender, zip)
@@ -35,7 +29,7 @@
 	</select>
 	
 	<select id="checkName" parameterType="String" resultType="com.aboutrip.app.member.Member">
-		SELECT userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic FROM member1
+		SELECT userNum, userId, userPwd, userName, nickName, enable, FailCnt FROM member1
 		WHERE userName = #{userName}
 	</select>
 	
@@ -47,7 +41,7 @@
 		UPDATE member1 SET userPwd=#{userPwd} WHERE userNum = #{userNum}
 	</update>
 	<update id="updateMember1" parameterType="com.aboutrip.app.member.Member">
-		UPDATE member1 SET userPwd=#{userPwd}, nickName=#{nickName},profile_pic=#{profile_pic} WHERE userNum = #{userNum}
+		UPDATE member1 SET userPwd=#{userPwd}, nickName=#{nickName}, profile_pic=#{profile_pic, jdbcType=VARCHAR} WHERE userNum = #{userNum}
 	</update>
 	<update id="updateMember2" parameterType="com.aboutrip.app.member.Member">
 		UPDATE member2 SET address1=#{address1}, address2=#{address2}, tel=#{tel}, birth=#{birth} WHERE userNum = #{userNum}

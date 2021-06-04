@@ -1,5 +1,7 @@
 package com.aboutrip.app.member;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.aboutrip.app.common.FileManager;
 import com.mongodb.DuplicateKeyException;
 
 @Controller("member.memberController")
@@ -20,6 +23,9 @@ import com.mongodb.DuplicateKeyException;
 public class MemberController {
 	@Autowired
 	private MemberService service;
+	
+	@Autowired
+	private FileManager fileManager;
 
 	@RequestMapping(value = "member", method = RequestMethod.GET)
 	public String memberForm(Model model) throws Exception {
@@ -30,9 +36,11 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "member", method = RequestMethod.POST)
-	public String memberSubmit(Member dto, final RedirectAttributes reAttr, Model model) throws Exception {
+	public String memberSubmit(Member dto, final RedirectAttributes reAttr, Model model, HttpSession session) throws Exception {
 		try {
-			service.insertMember(dto);
+			String root=session.getServletContext().getRealPath("/");
+			String pathname=root+"uploads"+File.separator+"member";
+			service.insertMember(dto,pathname);
 		} catch (DuplicateKeyException e) {
 			model.addAttribute("mode", "member");
 			model.addAttribute("message", "아이디 중복으로 회원가입이 실패했습니다.");
@@ -193,8 +201,10 @@ public class MemberController {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		try {
+			String root=session.getServletContext().getRealPath("/");
+			String pathname=root+"uploads"+File.separator+"member";
 			dto.setUserNum(info.getUserNum());
-			service.updateMember(dto);
+			service.updateMember(dto,pathname);
 		} catch (Exception e) {
 		}
 		StringBuilder sb=new StringBuilder();

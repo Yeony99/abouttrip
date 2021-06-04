@@ -6,8 +6,8 @@ import java.util.Map;
 public interface MemberService {
 	public Member loginMember(String userId);
 	
-	public void insertMember(Member dto) throws Exception;
-	public void updateMember(Member dto) throws Exception;
+	public void insertMember(Member dto,String pathname) throws Exception;
+	public void updateMember(Member dto,String pathname) throws Exception;
 	public void updatePwd(Member dto) throws Exception;
 	
 	public Member readMember(String userId);
