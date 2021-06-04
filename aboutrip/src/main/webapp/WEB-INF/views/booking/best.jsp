@@ -9,6 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-Best 인기상품
+땡처리
 </body>
 </html>
