@@ -15,9 +15,10 @@ public class Diary {
 	private String diaryCreated;
 	
 	private int diaryImgNum;
-	private String originalImgName;
-	private String saveImgName;
+	private String originalFilename;
+	private String saveFilename;
 	private String hashNum;
+	private String hashName;
 	private int categoryNum;
 	private String categoryName;
 	private int hitCount;
@@ -86,23 +87,29 @@ public class Diary {
 	public void setDiaryImgNum(int diaryImgNum) {
 		this.diaryImgNum = diaryImgNum;
 	}
-	public String getOriginalImgName() {
-		return originalImgName;
+	public String getOriginalFilename() {
+		return originalFilename;
 	}
-	public void setOriginalImgName(String originalImgName) {
-		this.originalImgName = originalImgName;
+	public void setOriginalFilename(String originalFilename) {
+		this.originalFilename = originalFilename;
 	}
-	public String getSaveImgName() {
-		return saveImgName;
+	public String getSaveFilename() {
+		return saveFilename;
 	}
-	public void setSaveImgName(String saveImgName) {
-		this.saveImgName = saveImgName;
+	public void setSaveFilename(String saveFilename) {
+		this.saveFilename = saveFilename;
 	}
 	public String getHashNum() {
 		return hashNum;
 	}
 	public void setHashNum(String hashNum) {
 		this.hashNum = hashNum;
+	}
+	public String getHashName() {
+		return hashName;
+	}
+	public void setHashName(String hashName) {
+		this.hashName = hashName;
 	}
 	public int getCategoryNum() {
 		return categoryNum;
@@ -140,4 +147,6 @@ public class Diary {
 	public void setSavePathname(List<String> savePathname) {
 		this.savePathname = savePathname;
 	}
+	
+	
 }

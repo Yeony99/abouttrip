@@ -5,45 +5,8 @@
 
 <script type="text/javascript">
 function searchList() {
-	var f = document.searchForm;
+	var f=document.searchForm;
 	f.submit();
-}
-
-var pageNo = 1;
-var total_page = 1;
-$(function(){
-	$(window).scroll(function(){
-		if($(window).scrollTop()+70>=$(document).height()-$(window).height()) {
-			if(pageNo<total_page) {
-				++pageNo;
-				listPage(pageNo);
-			}
-		}
-	});
-});
-
-function listPage(page) {
-	var url="${pageContext.request.contextPath}/diary/list";
-	var query="pageNo="+page;
-	
-	var fn = function(data) {
-		printGuest(data);
-	}
-	
-	ajaxFun(url, "get", query, "json", fn);
-}
-
-function printGuest(data) {
-	
-	$("#").append(out); // html은 기존 내용이 지워지고, append는 기존 내용이 지워지지 않는다.
-	
-	if(! checkScrollBar()) {
-		if(page < totalPage) {
-			++page;
-			listPage(page);
-		}
-	}
-	
 }
 </script>
 <div class="body-container">
@@ -55,7 +18,7 @@ function printGuest(data) {
 			<tr>
 				<td>
 					<form name="searchForm" action="${pageContext.request.contextPath}/diary/list.jsp" method="post">
-						<input type="text" name="hashTag" value="${hashTag}" placeholder="해쉬태그">
+						<input type="text" name="keyword" value="${dto.hashName}" placeholder="해쉬태그">
 						<button type="button" onclick="searchList()">검색</button>
 					</form>
 				</td>
@@ -73,10 +36,11 @@ function printGuest(data) {
 				</c:if>
 				
 				<td>
-					<div onclick="location.href='${url}'">
-						<img src="${pageContext.request.contextPath}/uploads/diary/${dto.diaryImgNum}#">
-						<span>${dto.product_name}</span><br>
-						<span>${dto.price}</span><br>
+					<div onclick="location.href='${url}&diaryNum=${dto.diaryNum}';">
+						<img src="${pageContext.request.contextPath}/uploads/diary/${dto.originalImgName}">
+						<span>${dto.diaryTitle}</span><br>
+						<span>${dto.hashName}</span><br>
+						<span>${dto.diaryCreated}</span><br>
 					</div>
 				</td>
 			</c:forEach>

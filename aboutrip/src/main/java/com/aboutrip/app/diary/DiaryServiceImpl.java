@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.common.dao.AboutDAO;
@@ -15,40 +16,30 @@ public class DiaryServiceImpl implements DiaryService {
 	private AboutDAO dao;
 	
 	@Autowired
-	private FileManager fileManager;
+	private FileManager fm;
 
 	@Override
 	public void insertDiary(Diary dto, String pathname) throws Exception {
-		/*
+
 		for(MultipartFile mf : dto.getUpload()) {
 			try {
 				
-				String saveImgName = fileManager.doFileUpload(dto.getUpload(), pathname);
-				if(saveImgName != null) {
-					dto.getSavePathname().add(pathname+File.separator+saveImgName);
-					String originalImgName = mf.getOriginalFilename();
-					dto.setSaveImgName(dto.getUpload().get);
-				
+				String saveFilename = fm.doFileUpload(mf, pathname);
+				if(saveFilename != null) {
+					//dto.getSavePathname().add(pathname+File.separator+saveImgName);
+					
+					String originalFilename = mf.getOriginalFilename();
+					
+					dto.setSaveFilename(saveFilename);
+					dto.setOriginalFilename(originalFilename);				
 				}
+				
+				dao.insertData("diary.insertDiary", dto);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw e;
 			}
 		}
-		
-		try {
-			String diaryImgNum = fileManager.doFileUpload(dto.getUpload(), pathname);
-			if(diaryImgNum != null) {
-				dto.setDiaryImgNum(diaryImgNum);
-				dto.setDiaryImgName(dto.getUpload().getOriginalFilename());
-			}
-			dao.insertData("diary.insertDiary", dto);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-		*/
 	}
 
 	@Override
@@ -81,7 +72,8 @@ public class DiaryServiceImpl implements DiaryService {
 	}
 
 	@Override
-	public void deleteDiary(int diaryNum, String pathname) throws Exception {
+	public void deleteDiary(int diaryNum, String pathname, String userId) throws Exception {
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -108,4 +100,6 @@ public class DiaryServiceImpl implements DiaryService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+
 }

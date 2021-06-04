@@ -4,19 +4,39 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <style type="text/css">
+    function sendOk() {
+        var f = document.diaryForm;
 
+    	var str = f.diaryTitle.value;
+        if(!str) {
+            alert("제목을 입력하세요. ");
+            f.diaryTitle.focus();
+            return;
+        }
+
+    	str = f.diaryContent.value;
+        if(!str) {
+            alert("내용을 입력하세요. ");
+            f.diaryContent.focus();
+            return;
+        }
+
+    	f.action="${pageContext.request.contextPath}/diary/${mode}";
+
+        f.submit();
+    }
 </style>
 
 <script type="text/javascript">
 
 </script>
 
-<div>
-	<div>
+<div class="body-container">
+	<div class="body-title">
 		<h3 style="font: bold;">다이어리</h3>
 	</div>
 	
-	<div>
+	<div class="body-main">
 		<form name="diaryForm" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
@@ -28,12 +48,13 @@
 			<tr>
 				<td>작성자</td>
 				<td>
-					<input type="text" name="nickName" value="${dto.nickName}">
+					${sessionScope.member.nickName}
 				</td>
 			</tr>
 			<tr>
+				<td>내용</td>
 				<td>
-					<textarea name="diaryContent">${dto.content}</textarea>
+					<textarea name="diaryContent">${dto.diaryContent}</textarea>
 				</td>
 			</tr>
 			<tr>
@@ -47,10 +68,10 @@
 				<tr>
 					<td>이미지</td>
 					<td>
-						<c:if test="${not empty dto.diaryImgName}">
-							<a href="${pageContext.request.contextPath}/bbs/deleteFile?num=${dto.diaryImgNum}&page=${page}"><i class="far fa-trash-alt"></i></a>
+						<c:if test="${not empty dto.saveImgName}">
+							<a href="${pageContext.request.contextPath}/diary/deleteFile?num=${dto.diaryNum}&page=${page}"><i class="far fa-trash-alt"></i></a>
 						</c:if>
-						${dto.diaryImgName}
+						${dto.originalImgName}
 					</td>
 				</tr>
 			</c:if>
@@ -63,7 +84,8 @@
 					<button type="button" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 						<c:if test="${mode=='update'}">
 							<input type="hidden" name="diaryNum" value="${dto.diaryNum}">
-							<input type="hidden" name="diaryImgName" value="${dto.diaryImgName}">
+							<input type="hidden" name="saveImgName" value="${dto.saveImgName}">
+							<input type="hidden" name="originalImgName" value="${dto.originalImgName}">
 							<input type="hidden" name="page" value="${page}">
 						</c:if>
 				</td>
