@@ -32,4 +32,10 @@ public class SchedulerController {
 		return ".scheduler.review";
 	}
 	
+	@RequestMapping(value="create", method=RequestMethod.GET)
+	public String createdForm() throws Exception {
+		
+		return ".scheduler.create";
+	}
+
 }
