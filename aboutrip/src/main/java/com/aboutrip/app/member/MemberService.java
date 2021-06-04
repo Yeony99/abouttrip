@@ -16,7 +16,11 @@ public interface MemberService {
 	public void deleteMember(String userId) throws Exception;
 	public List<Member> listMember(Map<String,Object> map);
 	public int dataCount();
+	public int payCount(Map<String,Object> map);
+	
+	public List<Member> payList(Map<String, Object> map);
 
 	public void generatePwd(Member dto) throws Exception;
 	public void checkIpAddr(Member dto) throws Exception;
+	public void insertPayment(Member dto) throws Exception;
 }

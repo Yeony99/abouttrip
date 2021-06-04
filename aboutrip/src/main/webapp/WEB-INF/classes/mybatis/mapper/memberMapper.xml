@@ -14,8 +14,8 @@
 		VALUES (#{userNum}, #{userId}, #{userPwd}, #{userName}, #{nickName}, 1, 0, #{profile_pic, jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertMember2" parameterType="com.aboutrip.app.member.Member">
-			INSERT INTO member2(userNum, address1, address2, tel, birth, gender, zip)
-			VALUES (#{userNum}, #{address1}, #{address2}, #{tel},#{birth}, #{gender}, #{zip})
+			INSERT INTO member2(userNum, address1, address2, tel, birth, gender, zip,created_date)
+			VALUES (#{userNum}, #{address1}, #{address2}, #{tel},#{birth}, #{gender}, #{zip},SYSDATE)
 	</insert>
 	<select id="readMember" parameterType="String" resultType="com.aboutrip.app.member.Member">
 		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
@@ -66,10 +66,25 @@
 	<select id="dataCount" parameterType="com.aboutrip.app.member.Member">
 		SELECT NVL(COUNT(userNum),0) FROM member1
 	</select>
+	<select id="payCount" parameterType="String" resultType="com.aboutrip.app.member.Member">
+		SELECT NVL(COUNT(cardNum),0) FROM payment WHERE userNum = #{userNum}
+	</select>
 	<select id="loginseq" resultType="Integer">
        SELECT login_seq.NEXTVAL FROM dual 
+    </select>
+    <select id="paymentseq" resultType="Integer">
+       SELECT payment_seq.NEXTVAL FROM dual 
     </select>
 	<insert id="insertIpaddr" parameterType="com.aboutrip.app.member.Member">
 		INSERT INTO logRecored(logNum, userNum, ipaddr, logDate) VALUES (#{logNum}, #{userNum}, #{ipaddr}, SYSDATE)
 	</insert>
+	<insert id="insertPayment" parameterType="com.aboutrip.app.member.Member">
+		INSERT INTO payment(cardNum, cardName, paymentCode, userNum, created_date) VALUES(#{cardNum}, #{cardName}, #{paymentCode}, #{userNum}, SYSDATE)
+	</insert>
+	<select id="listPayment" parameterMap="map" resultType="com.aboutrip.app.member.Member">
+		SELECT cardNum, cardName, paymentCode, userNum,created_date FROM payment
+		ORDER BY cardNum DESC, orderNo ASC
+		WHERE userNum = #{userNum}
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
 </mapper>

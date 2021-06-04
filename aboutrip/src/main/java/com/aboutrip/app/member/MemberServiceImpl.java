@@ -149,7 +149,20 @@ public class MemberServiceImpl implements MemberService{
 		
 		return result;
 	}
-
+	
+	@Override
+	public int payCount(Map<String, Object> map) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("member.payCount",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	@Override
 	public Member readMember(String userName, String tel) {
 		Member dto = null;
@@ -212,6 +225,30 @@ public class MemberServiceImpl implements MemberService{
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public void insertPayment(Member dto) throws Exception {
+		try {
+			int paymentseq = dao.selectOne("member.paymentseq");
+			dto.setCardNum(paymentseq);
+			dto = dao.selectOne("member.insertPayment",dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public List<Member> payList(Map<String, Object> map) {
+		List<Member> paylist = null;
+		
+		try {
+			paylist = dao.selectList("member.listPayment", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return paylist;
 	}
 	
 

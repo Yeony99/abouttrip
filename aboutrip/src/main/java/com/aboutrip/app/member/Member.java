@@ -22,6 +22,28 @@ public class Member {
 	private String created_date;
 	private String ipaddr;
 	private int logNum;
+	private int cardNum;
+	private String cardName;
+	private String paymentCode;
+	
+	public int getCardNum() {
+		return cardNum;
+	}
+	public void setCardNum(int cardNum) {
+		this.cardNum = cardNum;
+	}
+	public String getCardName() {
+		return cardName;
+	}
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
+	}
+	public String getPaymentCode() {
+		return paymentCode;
+	}
+	public void setPaymentCode(String paymentCode) {
+		this.paymentCode = paymentCode;
+	}
 	public int getUserNum() {
 		return userNum;
 	}

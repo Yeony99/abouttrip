@@ -172,6 +172,9 @@ function imageView() {
 				<div class="mb-3"><input class="form-control" type="text" name="address2" id="address2" placeholder="상세주소" value="${dto.address2}"></div>
                 <div class="mb-3"><input class="form-control" type="text" name="tel" placeholder="전화번호" value="${dto.tel }"></div>
                 <div class="mb-3"><button class="btn btn-primary d-block w-100" type="button" onclick="memberValid();">${mode=="update" ? "수정완료":"회원가입"}</button></div>
+                <c:if test="">
+                	<div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit" onclick="${pageContext.request.contextPath}/member/delete">회원탈퇴</button></div>
+                </c:if>
             </form>
         </section>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>

@@ -1,6 +1,9 @@
 package com.aboutrip.app.member;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,8 +16,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.common.FileManager;
 import com.mongodb.DuplicateKeyException;
 
@@ -26,6 +31,9 @@ public class MemberController {
 	
 	@Autowired
 	private FileManager fileManager;
+	
+	@Autowired
+	private AboutUtil aboutUtil;
 
 	@RequestMapping(value = "member", method = RequestMethod.GET)
 	public String memberForm(Model model) throws Exception {
@@ -179,7 +187,13 @@ public class MemberController {
 		return "redirect:/member/complete";
 	}
 	
-	@RequestMapping(value = "mypage")
+	@RequestMapping(value="mypage")
+	public String update() {
+		
+		return".member.myPage";
+	}
+	
+	@RequestMapping(value = "update", method = RequestMethod.GET)
 	public String updateForm(Model model, HttpSession session) {
 		
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
@@ -196,7 +210,7 @@ public class MemberController {
 		return".member.member";
 	}
 	
-	@RequestMapping(value = "update")
+	@RequestMapping(value = "update", method = RequestMethod.POST)
 	public String updateSubmit(Member dto,final RedirectAttributes reAttr,HttpSession session) {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
@@ -215,5 +229,73 @@ public class MemberController {
 		reAttr.addFlashAttribute("message", sb.toString());
 		
 		return"redirect:/member/main";
+	}
+	
+	@RequestMapping(value = "payment")
+	public ModelAndView paymentForm(Model model) {
+			
+		return new ModelAndView(".member.payment");
+	}
+	
+	@RequestMapping(value = "paymentList")
+	public Map<String, Object> paymentList(@RequestParam(value="pageNo", defaultValue = "1") int current_page
+			,HttpSession session) throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+
+        map.put("userNum", info.getUserNum());
+		int rows=5;
+		int dataCount = service.payCount(map);
+		int total_page = aboutUtil.pageCount(rows, dataCount);
+		if(current_page>total_page)
+			current_page=total_page;
+		int offset = (current_page-1) * rows;
+		if(offset < 0) offset = 0;
+        map.put("offset", offset);
+        map.put("rows", rows);
+        
+        List<Member> paylist = service.payList(map);
+        for(Member dto : paylist) {
+        	dto.setPaymentCode(dto.getPaymentCode().replaceAll("\n", "<br>"));
+        }
+        
+        Map<String, Object> model = new HashMap<>();
+		
+		model.put("dataCount", dataCount);
+		model.put("total_page", total_page);
+		model.put("pageNo", current_page);
+
+		model.put("list", paylist);
+        
+        
+        
+		return model;
+		
+	}
+	
+	@RequestMapping(value = "payCreated", method = RequestMethod.GET)
+	public String createdPayment(Member dto, HttpSession session, Model model) {
+		
+		try {
+			SessionInfo info=(SessionInfo)session.getAttribute("member");
+			dto = service.readMember(info.getUserId());
+			model.addAttribute("dto",dto);
+			model.addAttribute("mode","payCreated");
+		} catch (Exception e) {
+		}
+		
+		return".member.payCreated";
+	}
+	@RequestMapping(value = "payCreated", method = RequestMethod.POST)
+	public String paymentSubmit(Member dto, HttpSession session) {
+		
+		try {
+			SessionInfo info=(SessionInfo)session.getAttribute("member");
+			dto.setUserNum(info.getUserNum());
+			service.insertPayment(dto);
+		} catch (Exception e) {
+		}
+		
+		return"redirect:/member/payment";
 	}
 }
