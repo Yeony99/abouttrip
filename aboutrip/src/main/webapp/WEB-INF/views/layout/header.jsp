@@ -67,10 +67,7 @@
 						<li class="nav-item"><a class="nav-link" style="color: blue">${sessionScope.member.nickName}님
 						</a></li>
 						<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
-							<c:if test="${sessionScope.member.userId=='admin'}">
-								<a href="${pageContext.request.contextPath}/admin">관리자</a>
-							</c:if>
-						<c:if test="${sessionScope.member.userId!='admin'}">
+						<c:if test= "${sessionScope.member.userId!='admin'}">
 							<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/mypage">마이페이지</a>
 						</c:if>
 					</c:if>
