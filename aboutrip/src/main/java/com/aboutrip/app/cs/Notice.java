@@ -11,7 +11,8 @@ public class Notice {
 	private String content;
 	private String reg_date;
 	private int AdminNum;
-	
+	private String UserId;
+
 	private int NfileNum;
 	private String originalFilename;
 	private String saveFilename;
@@ -44,6 +45,7 @@ public class Notice {
 	public void setNotice(int notice) {
 		this.notice = notice;
 	}
+	
 
 	public String getTitle() {
 		return title;
@@ -77,6 +79,14 @@ public class Notice {
 		AdminNum = adminNum;
 	}
 
+	public String getUserId() {
+		return UserId;
+	}
+	
+	public void setUserId(String userId) {
+		UserId = userId;
+	}
+	
 	public int getNfileNum() {
 		return NfileNum;
 	}

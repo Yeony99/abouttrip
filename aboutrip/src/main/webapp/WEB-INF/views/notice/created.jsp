@@ -85,7 +85,7 @@ $(function(){
     function sendOk() {
         var f = document.noticeForm;
 
-    	var str = f.subject.value;
+    	var str = f.title.value;
         if(!str) {
             alert("제목을 입력하세요. ");
             f.title.focus();

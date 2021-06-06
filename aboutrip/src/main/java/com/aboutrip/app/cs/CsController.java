@@ -27,6 +27,7 @@ import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.member.SessionInfo;
 
 @Controller("cs.csController")
+@RequestMapping("/notice/*")
 public class CsController {
 	@Autowired
 	private NoticeService service;	
@@ -123,7 +124,7 @@ public class CsController {
 		return ".notice.list";
 	}
 	
-	@RequestMapping(value="create", method=RequestMethod.GET)
+	@RequestMapping(value="created", method=RequestMethod.GET)
 	public String createdForm(
 			Model model,
 			HttpSession session
@@ -134,12 +135,12 @@ public class CsController {
 			return "redirect:/notice/list";
 		}
 		
-		model.addAttribute("mode", "create");
+		model.addAttribute("mode", "created");
 		
-		return ".notice.create";
+		return ".notice.created";
 	}
 
-	@RequestMapping(value="create", method=RequestMethod.POST)
+	@RequestMapping(value="created", method=RequestMethod.POST)
 	public String createdSubmit(
 			Notice dto,
 			HttpSession session) throws Exception {
@@ -154,7 +155,8 @@ public class CsController {
 			String root = session.getServletContext().getRealPath("/");
 			String pathname = root + "uploads" + File.separator + "notice";		
 			
-			dto.setAdminNum(info.getUserNum());
+			//dto.setAdminNum(info.getUserNum());
+			dto.setUserId(info.getUserId());
 			service.insertNotice(dto, pathname);
 		} catch (Exception e) {
 		}
@@ -231,7 +233,7 @@ public class CsController {
 		model.addAttribute("dto", dto);
 		model.addAttribute("listFile", listFile);
 		
-		return ".notice.create";
+		return ".notice.created";
 	}
 
 	@RequestMapping(value="update", method=RequestMethod.POST)
@@ -249,7 +251,8 @@ public class CsController {
 			String root = session.getServletContext().getRealPath("/");
 			String pathname = root + File.separator + "uploads" + File.separator + "notice";		
 			
-			dto.setAdminNum(info.getUserNum());
+			//dto.setAdminNum(info.getUserNum());
+			dto.setUserId(info.getUserId());
 			service.updateNotice(dto, pathname);
 		} catch (Exception e) {
 		}

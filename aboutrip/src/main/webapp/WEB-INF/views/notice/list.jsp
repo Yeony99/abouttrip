@@ -45,6 +45,7 @@
 .table-footer tr {
 	height: 45px;
 }
+
 </style>
 
 <script type="text/javascript">
@@ -126,7 +127,7 @@
 				<table class="table table-footer">
 					<tr>
 						<td align="left" width="100">
-							<button type="button" class="btn"
+							<button type="button" class="btnReset"
 								onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list';">새로고침</button>
 						</td>
 						<td align="center">
@@ -146,12 +147,12 @@
 										${condition=="created"?"selected='selected'":""}>등록일</option>
 								</select> <input type="text" name="keyword" value="${keyword}"
 									class="boxTF">
-								<button type="button" class="btn" onclick="searchList()">검색</button>
+								<button type="button" class="btnSearch" onclick="searchList()">검색</button>
 							</form>
 						</td>
 						<td align="right" width="100"><c:if
 								test="${sessionScope.member.userId=='admin'}">
-								<button type="button" class="btn"
+								<button type="button" class="btnCreate"
 									onclick="javascript:location.href='${pageContext.request.contextPath}/notice/created';">글올리기</button>
 							</c:if></td>
 					</tr>

@@ -44,7 +44,14 @@
                 </div>
             </div>
         </div>
-        <div class="footer-copyright"></div>
+        <div class="footer-copyright" style="color: white">
+        	<span> 회사소개 | </span>
+        	<span> 인재채용 | </span>
+        	<span> 제휴제안 | </span>
+        	<span> 개인정보처리방침 | </span>
+        	<span> 어바웃트립 정책 | </span>
+        	<span> ⓒ Aboutrip Corp. </span>
+        </div>
 	</div>
 </div>
 
