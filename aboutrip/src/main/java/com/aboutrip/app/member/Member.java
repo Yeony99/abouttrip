@@ -26,6 +26,7 @@ public class Member {
 	private String cardName;
 	private String paymentCode;
 	
+	
 	public int getCardNum() {
 		return cardNum;
 	}
