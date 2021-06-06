@@ -15,23 +15,12 @@
 	
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/jquery/css/smoothness/jquery-ui.min.css" type="text/css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" type="text/css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap4/css/bootstrap-icons.css" type="text/css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Actor">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Adamina">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alegreya">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aleo">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alike">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dela+Gothic+One">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/fonts/simple-line-icons.min.css" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/Login-Form-Dark.css" type="text/css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vanilla-zoom.min.css" type="text/css">
 	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 	<script	src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/vanilla-zoom.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/theme.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 	
 </head>
@@ -53,7 +42,6 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script	src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/vanilla-zoom.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/theme.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.ui.datepicker-ko.js"></script>
 </body>

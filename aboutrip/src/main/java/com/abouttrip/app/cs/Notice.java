@@ -10,7 +10,7 @@ public class Notice {
 	private String title;
 	private String content;
 	private String reg_date;
-	private String AdminNum;
+	private int AdminNum;
 	
 	private int NfileNum;
 	private String originalFilename;
@@ -69,11 +69,11 @@ public class Notice {
 		this.reg_date = reg_date;
 	}
 
-	public String getAdminNum() {
+	public int getAdminNum() {
 		return AdminNum;
 	}
 
-	public void setAdminNum(String adminNum) {
+	public void setAdminNum(int adminNum) {
 		AdminNum = adminNum;
 	}
 
@@ -124,6 +124,8 @@ public class Notice {
 	public void setGap(long gap) {
 		this.gap = gap;
 	}
+	
+	
 	
 	
 }

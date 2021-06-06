@@ -81,7 +81,7 @@
 	<insert id="insertPayment" parameterType="com.aboutrip.app.member.Member">
 		INSERT INTO payment(cardNum, cardName, paymentCode, userNum, created_date) VALUES(#{cardNum}, #{cardName}, #{paymentCode}, #{userNum}, SYSDATE)
 	</insert>
-	<select id="listPayment" parameterMap="map" resultType="com.aboutrip.app.member.Member">
+	<select id="listPayment" parameterType="map" resultType="com.aboutrip.app.member.Member">
 		SELECT cardNum, cardName, paymentCode, userNum,created_date FROM payment
 		ORDER BY cardNum DESC, orderNo ASC
 		WHERE userNum = #{userNum}
