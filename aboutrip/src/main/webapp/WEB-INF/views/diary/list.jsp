@@ -9,7 +9,8 @@ function searchList() {
 	f.submit();
 }
 </script>
-<div class="body-container">
+
+<div class="body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
 	<div class="body-main">
 		<div>
 			<h3 style="font: bold;">다이어리</h3>
@@ -18,7 +19,11 @@ function searchList() {
 			<tr>
 				<td>
 					<form name="searchForm" action="${pageContext.request.contextPath}/diary/list.jsp" method="post">
-						<input type="text" name="keyword" value="${dto.hashName}" placeholder="해쉬태그">
+						<select name="condition" class="selectField">
+							<option value="all" ${condition=="all"?"selected='selected'":""}>전체</option>
+							<option value="hashName" ${condition=="hashName"?"selected='selected'":""}>해쉬태그</option>
+						</select>
+						<input type="text" name="keyword" value="${dto.keyword}">
 						<button type="button" onclick="searchList()">검색</button>
 					</form>
 				</td>
@@ -36,7 +41,7 @@ function searchList() {
 				</c:if>
 				
 				<td>
-					<div onclick="location.href='${url}&diaryNum=${dto.diaryNum}';">
+					<div onclick="location.href='${listUrl}&diaryNum=${dto.diaryNum}';">
 						<img src="${pageContext.request.contextPath}/uploads/diary/${dto.originalImgName}">
 						<span>${dto.diaryTitle}</span><br>
 						<span>${dto.hashName}</span><br>

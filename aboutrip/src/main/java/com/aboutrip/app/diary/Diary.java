@@ -22,7 +22,7 @@ public class Diary {
 	private int categoryNum;
 	private String categoryName;
 	private int hitCount;
-	private int boardLikeCount;
+	private int diaryLikeCount;
 	
 	private List<MultipartFile> upload;
 	private List<String> savePathname = new ArrayList<>();
@@ -129,11 +129,11 @@ public class Diary {
 	public void setHitCount(int hitCount) {
 		this.hitCount = hitCount;
 	}
-	public int getBoardLikeCount() {
-		return boardLikeCount;
+	public int getDiaryLikeCount() {
+		return diaryLikeCount;
 	}
-	public void setBoardLikeCount(int boardLikeCount) {
-		this.boardLikeCount = boardLikeCount;
+	public void setDiaryLikeCount(int diaryLikeCount) {
+		this.diaryLikeCount = diaryLikeCount;
 	}
 	public List<MultipartFile> getUpload() {
 		return upload;
@@ -147,6 +147,4 @@ public class Diary {
 	public void setSavePathname(List<String> savePathname) {
 		this.savePathname = savePathname;
 	}
-	
-	
 }
