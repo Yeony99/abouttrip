@@ -95,5 +95,15 @@ public class AboutBatisDAOImpl implements AboutDAO{
 		}
 		return list;
 	}
+
+	@Override
+	public <T> List<T> selectList(String id) throws Exception {
+		try {
+			return sqlSession.selectOne(id);
+		} catch (Exception e) {
+			logger.error(e.toString());
+			throw e;
+		}
+	}
 	
 }

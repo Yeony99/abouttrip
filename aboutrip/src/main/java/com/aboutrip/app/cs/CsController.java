@@ -1,4 +1,4 @@
-package com.abouttrip.app.cs;
+package com.aboutrip.app.cs;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -52,7 +52,6 @@ public class CsController {
 			keyword = URLDecoder.decode(keyword, "utf-8");
 		}
 		
-		// 전체 페이지수
 		Map<String, Object> map = new HashMap<String, Object>();
         map.put("condition", condition);
         map.put("keyword", keyword);
@@ -61,26 +60,21 @@ public class CsController {
         if(dataCount != 0)
             total_page = aboututil.pageCount(rows,  dataCount) ;
 
-        // 다른 사람이 자료를 삭제하여 전체 페이지수가 변화 된 경우
         if(total_page < current_page) 
             current_page = total_page;
 
-        // 1페이지인 경우 공지리스트 가져오기
         List<Notice> noticeList = null;
         if(current_page==1) {
           noticeList=service.listNoticeTop();
         }
         
-        // 리스트에 출력할 데이터를 가져오기
         int offset = (current_page-1) * rows;
 		if(offset < 0) offset = 0;
         map.put("offset", offset);
         map.put("rows", rows);
-
-        // 글 리스트
+        
         List<Notice> list = service.listNotice(map);
 
-        // 리스트의 번호
         Date endDate = new Date();
         long gap;
         int listNum, n = 0;
@@ -101,16 +95,16 @@ public class CsController {
         
         String cp=req.getContextPath();
         String query = "";
-        String listUrl = cp+"/cs/notice/list";
-        String articleUrl = cp+"/cs/notice/article?page=" + current_page;
+        String listUrl = cp+"/notice/list";
+        String articleUrl = cp+"/notice/article?page=" + current_page;
         if(keyword.length()!=0) {
         	query = "condition=" + condition + 
         	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
         }
         
         if(query.length()!=0) {
-        	listUrl = cp+"/cs/notice/list?" + query;
-        	articleUrl = cp+"/cs/notice/article?page=" + current_page + "&"+ query;
+        	listUrl = cp+"/notice/list?" + query;
+        	articleUrl = cp+"/notice/article?page=" + current_page + "&"+ query;
         }
         
         String paging = aboututil.paging(current_page, total_page, listUrl);
@@ -126,7 +120,7 @@ public class CsController {
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
 		
-		return ".cs.notice.list";
+		return ".notice.list";
 	}
 	
 	@RequestMapping(value="create", method=RequestMethod.GET)
@@ -137,12 +131,12 @@ public class CsController {
 
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		if(! info.getUserId().equals("admin")) {
-			return "redirect:/cs/notice/list";
+			return "redirect:/notice/list";
 		}
 		
-		model.addAttribute("mode", "created");
+		model.addAttribute("mode", "create");
 		
-		return ".notice.created";
+		return ".notice.create";
 	}
 
 	@RequestMapping(value="create", method=RequestMethod.POST)
@@ -153,7 +147,7 @@ public class CsController {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		if(! info.getUserId().equals("admin")) {
-			return "redirect:/cs/notice/list";	
+			return "redirect:/notice/list";	
 		}
 
 		try {
@@ -165,7 +159,7 @@ public class CsController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/cs/notice/list";
+		return "redirect:/notice/list";
 	}
 
 	@RequestMapping(value="article")
@@ -186,7 +180,7 @@ public class CsController {
 
 		Notice dto = service.readNotice(NOTICEnum);
 		if(dto==null) {
-			return "redirect:/cs/notice/list?"+query;
+			return "redirect:/notice/list?"+query;
 		}
 		
         dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
@@ -210,7 +204,7 @@ public class CsController {
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
 		
-		return ".cs.notice.article";
+		return ".notice.article";
 	}
 
 	@RequestMapping(value="update", method=RequestMethod.GET)
@@ -222,12 +216,12 @@ public class CsController {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		if(! info.getUserId().equals("admin")) {
-			return "redirect:/cs/notice/list?page="+page;
+			return "redirect:/notice/list?page="+page;
 		}
 
 		Notice dto = service.readNotice(NOTICEnum);
 		if(dto==null) {
-			return "redirect:/cs/notice/list?page="+page;
+			return "redirect:/notice/list?page="+page;
 		}
 		
 		List<Notice> listFile=service.listFile(NOTICEnum);
@@ -237,7 +231,7 @@ public class CsController {
 		model.addAttribute("dto", dto);
 		model.addAttribute("listFile", listFile);
 		
-		return ".cs.notice.created";
+		return ".notice.create";
 	}
 
 	@RequestMapping(value="update", method=RequestMethod.POST)
@@ -260,7 +254,7 @@ public class CsController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/cs/notice/list?page="+page;
+		return "redirect:/notice/list?page="+page;
 	}
 
 	@RequestMapping(value="delete")
@@ -289,7 +283,7 @@ public class CsController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/cs/notice/list?"+query;
+		return "redirect:/notice/list?"+query;
 	}
 
 	@RequestMapping(value="download")

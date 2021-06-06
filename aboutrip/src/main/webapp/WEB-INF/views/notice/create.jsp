@@ -72,10 +72,10 @@ $(function(){
 });
 
   <c:if test="${mode=='update'}">
-  function deleteFile(fileNum) {
+  function deleteFile(NfileNum) {
 		var url="${pageContext.request.contextPath}/notice/deleteFile";
-		$.post(url, {fileNum:fileNum}, function(data){
-			$("#f"+fileNum).remove();
+		$.post(url, {NfileNum:NfileNum}, function(data){
+			$("#f"+NfileNum).remove();
 		}, "json");
   }
 </c:if>
@@ -88,7 +88,7 @@ $(function(){
     	var str = f.subject.value;
         if(!str) {
             alert("제목을 입력하세요. ");
-            f.subject.focus();
+            f.title.focus();
             return;
         }
 
@@ -135,7 +135,7 @@ $(function(){
 				<tr> 
 					<td>작성자</td>
 					<td> 
-						${sessionScope.member.userName}
+						${sessionScope.member.AdminNum}
 					</td>
 				</tr>
 			
@@ -157,10 +157,10 @@ $(function(){
 			<c:if test="${mode=='update'}">
 				<tfoot>
 					<c:forEach var="vo" items="${listFile}">
-						<tr id="f${vo.fileNum}"> 
+						<tr id="f${vo.NfileNum}"> 
 							<td>첨부된파일</td>
 							<td> 
-								<a href="javascript:deleteFile('${vo.fileNum}');"><i class="far fa-trash-alt"></i></a> 
+								<a href="javascript:deleteFile('${vo.NfileNum}');"><i class="far fa-trash-alt"></i></a> 
 								${vo.originalFilename}
 							</td>
 						  </tr>
@@ -176,7 +176,7 @@ $(function(){
 					<button type="reset" class="btn">다시입력</button>
 					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 					<c:if test="${mode=='update'}">
-						<input type="hidden" name="num" value="${dto.num}">
+						<input type="hidden" name="num" value="${dto.NOTICEnum}">
 						<input type="hidden" name="page" value="${page}">
 					</c:if>
 				</td>
@@ -184,5 +184,5 @@ $(function(){
 		</table>
 		</form>
 	</div>
-    
+    </div>
 </div>

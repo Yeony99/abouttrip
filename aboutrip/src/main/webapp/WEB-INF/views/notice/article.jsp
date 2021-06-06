@@ -61,16 +61,16 @@
 		<table class="table table-content">
 			<tr>
 				<td colspan="2" align="center">
-					${dto.subject}
+					${dto.title}
 				</td>
 			</tr>
 			
 			<tr>
 				<td width="50%" align="left">
-					이름 : ${dto.userName}
+					이름 : ${dto.AdminNum}
 				</td>
 				<td width="50%" align="right">
-					${dto.created} | 조회 ${dto.hitCount}
+					${dto.reg_date} 
 				</td>
 			</tr>
 			
@@ -83,7 +83,7 @@
 			<c:forEach var="vo" items="${listFile}">
 				<tr>
 					<td colspan="2">
-						<a href="${pageContext.request.contextPath}/notice/download?fileNum=${vo.fileNum}">${vo.originalFilename}</a>
+						<a href="${pageContext.request.contextPath}/notice/download?fileNum=${vo.NfileNum}">${vo.originalFilename}</a>
 						(<fmt:formatNumber value="${vo.fileSize/1024}" pattern="0.00"/> KByte)
 					</td>
 				</tr>
@@ -93,7 +93,7 @@
 				<td colspan="2">
 					이전글 :
 					<c:if test="${not empty preReadDto}">
-						<a href="${pageContext.request.contextPath}/notice/article?${query}&num=${preReadDto.num}">${preReadDto.subject}</a>
+						<a href="${pageContext.request.contextPath}/notice/article?${query}&num=${preReadDto.NOTICEnum}">${preReadDto.title}</a>
 					</c:if>
 				</td>
 			</tr>
@@ -102,7 +102,7 @@
 				<td colspan="2">
 					다음글 :
 					<c:if test="${not empty nextReadDto}">
-						<a href="${pageContext.request.contextPath}/notice/article?${query}&num=${nextReadDto.num}">${nextReadDto.subject}</a>
+						<a href="${pageContext.request.contextPath}/notice/article?${query}&num=${nextReadDto.NOTICEnum}">${nextReadDto.title}</a>
 					</c:if>
 				</td>
 			</tr>
@@ -113,7 +113,7 @@
 				<td width="50%" align="left">
 					<c:choose>
 						<c:when test="${sessionScope.member.userId=='admin'}">
-			    			<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/update?num=${dto.num}&page=${page}';">수정</button>
+			    			<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/update?num=${dto.NOTICEnum}&page=${page}';">수정</button>
 			    		</c:when>
 			    		<c:otherwise>
 			    			<button type="button" class="btn" disabled="disabled">수정</button>

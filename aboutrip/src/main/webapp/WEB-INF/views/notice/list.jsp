@@ -69,7 +69,7 @@
 				<table class="table table-header">
 					<tr>
 						<td align="left" width="50%">
-							${dataCount}개(${page}/${total_page} 페이지)</td>
+							
 						<td align="right">&nbsp;</td>
 					</tr>
 				</table>
@@ -88,11 +88,11 @@
 							<td><span><img src="${pageContext.request.contextPath}/resources/img/img/notice.gif"></span></td>
 							<td><a href="${articleUrl}&num=${dto.NOTICEnum}">${dto.title}</a>
 							</td>
-							<td>${dto.nickName}</td>
-							<td>${dto.created}</td>
+							<td>${dto.AdminNum}</td>
+							<td>${dto.reg_date}</td>
 							<td><c:if test="${dto.fileCount != 0}">
 									<a
-										href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.num}"><i
+										href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.NOTICEnum}"><i
 										class="far fa-file"></i></a>
 								</c:if></td>
 						</tr>
@@ -101,16 +101,16 @@
 					<c:forEach var="dto" items="${list}">
 						<tr>
 							<td>${dto.listNum}</td>
-							<td><a href="${articleUrl}&num=${dto.num}">${dto.subject}</a>
+							<td><a href="${articleUrl}&num=${dto.NOTICEnum}">${dto.title}</a>
 								<c:if test="${dto.gap < 1}">
 									<img
 										src='${pageContext.request.contextPath}/resources/images/new.gif'>
 								</c:if></td>
-							<td>${dto.nickName}</td>
-							<td>${dto.created}</td>
+							<td>${dto.AdminNum}</td>
+							<td>${dto.reg_date}</td>
 							<td><c:if test="${dto.fileCount != 0}">
 									<a
-										href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.num}"><i
+										href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.NOTICEnum}"><i
 										class="far fa-file"></i></a>
 								</c:if></td>
 						</tr>

@@ -1,4 +1,4 @@
-package com.abouttrip.app.cs;
+package com.aboutrip.app.cs;
 
 import java.util.List;
 

@@ -10,5 +10,5 @@ public interface AboutDAO {
 	public int deleteData(String id, Object value)	throws Exception;
 	
 	public <T> List<T> selectList(String id, Object value) throws Exception;
-	
+	public <T> List<T> selectList(String id) throws Exception;
 }

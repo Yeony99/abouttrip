@@ -1,4 +1,4 @@
-package com.abouttrip.app.cs;
+package com.aboutrip.app.cs;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +82,7 @@ public class NoticeServiceImpl implements NoticeService {
 		List<Notice> list=null;
 		
 		try {
-			//list=dao.selectList("notice.listNoticeTop");
+			list=dao.selectList("notice.listNoticeTop");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -134,7 +134,6 @@ public class NoticeServiceImpl implements NoticeService {
 		try {
 			dao.updateData("notice.updateNotice", dto);
 
-			// 파일 업로드
 			if( ! dto.getUpload().isEmpty()) {
 				for(MultipartFile mf : dto.getUpload()) {
 					String saveFilename = fileManager.doFileUpload(mf, pathname);
@@ -160,7 +159,6 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public void deleteNotice(int NOTICEnum, String pathname) throws Exception {
 		try {
-			// 파일 지우기
 			List<Notice> listFile=listFile(NOTICEnum);
 			if(listFile!=null) {
 				for(Notice dto:listFile) {
@@ -168,7 +166,6 @@ public class NoticeServiceImpl implements NoticeService {
 				}
 			}
 			
-			// 파일 테이블 내용 지우기
 			Map<String, Object> map=new HashMap<String, Object>();
 			map.put("field", "num");
 			map.put("num", NOTICEnum);
