@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notice">
+	<select id="seq" resultType="Integer">
+		SELECT notice_seq.NEXTVAL FROM dual
+	</select>
+	
+	<insert id="insertNotice" parameterType="com.aboutrip.app.cs.Notice">
+		INSERT INTO notice(NOTICEnum, notice, title, content, AdminNum, reg_date) 
+			VALUES(#{noticeNum}, #{notice}, #{title}, #{content}, #{adminNum}, SYSDATE)
+	</insert>
+	
+	<sql id="where-list">
+		<if test="condition=='all'">
+			( INSTR(title, #{keyword} &gt; 0
+				OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0)
+		</if>
+		<if test="condition=='subject'">
+			INSTR(subject, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='reg_date'">
+			( TO_CHAR(reg_date, 'YYYY-MM-DD') = #{keyword}
+				OR TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword} )
+		</if>
+	</sql>
+	
+	<select id="listNoticeTop" resultType="com.aboutrip.app.cs.Notice">
+		SELECT n.NOTICEnum, notice, n.AdminNum, title, nickName,
+			TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date,
+			NVL(fileCount, 0) fileCount
+		FROM notice n 
+		JOIN member1 m ON n.AdminNum = m.userNum
+		LEFT OUTER JOIN (
+			SELECT NOTICEnum, COUNT(*) fileCount FROM noticeFile
+			GROUP BY NOTICEnum
+		) f ON n.NOTICEnum=f.NOTICEnum
+		WHERE notice = 1
+		ORDER BY NOTICEnum DESC
+	</select>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM notice n
+		JOIN member1 m ON n.AdminNum = m.userNum
+		<where>
+			<if test="keyword != null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+		</where>
+	</select>
+	
+	<select id="listNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
+		SELECT n.NOTICEnum, notice, n.AdminNum, title, reg_date, nickName,
+		NVL(fileCount, 0) fileCount
+		FROM notice n
+		JOIN member1 m ON n.AdminNum = m.userNum
+		LEFT OUTER JOIN(
+			SELECT NOTICEnum, COUNT(*) fileCount FROM noticeFile
+			GROUP BY NOTICEnum
+			) f ON n.NOTICEnum = f.NOTICEnum
+	<where>
+		<if test="keyword != null and keyword != ''">
+			<include refid="where-list"/>
+		</if>
+	</where>
+	ORDER BY NOTICEnum DESC
+	OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	
+	<select id="readNotice" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
+		SELECT NOTICEnum, n.AdminNum, title, content, reg_date, notice, nickName
+		FROM notice n
+		JOIN member1 m ON n.AdminNum = m.userNum
+		WHERE NOTICEnum = #{noticeNum}
+	</select>
+	
+	<select id="preReadNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
+		SELECT NOTICEnum, title
+		FROM notice n
+		JOIN member1 m ON n.AdminNum = m.UserNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (NOTICEnum &gt; #{noticeNum})
+		</where>
+		ORDER BY NOTICEnum ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<select id="nextReadNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
+		SELECT NOTICEnum, title
+		FROM notice n
+		JOIN member1 m ON n.AdminNum = m.UserNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (NOTICEnum &lt; #{noticeNum})
+		</where>
+		ORDER BY NOTICEnum DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<update id="updateNotice" parameterType="com.aboutrip.app.cs.Notice">
+		UPDATE notice SET title = #{title}, content=#{content}, notice=#{notice}
+		WHERE NOTICEnum=#{noticeNum}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="Integer">
+		DELETE FROM notice WHRER NOTICEnum=#{noticeNum}
+	</delete>
+	
+	<insert id="insertFile" parameterType="com.aboutrip.app.cs.Notice">
+		INSERT INTO noticeFile(NfileNum, NOTICEnum, saveFilename, originalFilename) 
+			VALUES(noticeFile_seq.NEXTVAL, #{noticeNum}, #{saveFilename}, 
+				#{originalFilename})
+	</insert>
+	
+	<select id="readFile" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
+		SELECT NfileNum, NOTICEnum, saveFilename, originalFilename
+		FROM noticeFile
+		WHERE NfileNum=#{nfileNum}
+	</select>
+	
+	<delete id="deleteFile" parameterType="map">
+		DELETE FROM noticeFile WHERE ${field}=#{noticeNum}
+	</delete>
+	
+</mapper>
