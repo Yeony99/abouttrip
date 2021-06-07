@@ -109,7 +109,7 @@ public class DiaryController {
 			) throws Exception {
 		
 		model.addAttribute("mode", "create");
-		return ".bbs.create";
+		return ".diary.create";
 	}
 	
 	@RequestMapping(value="/diary/create", method = RequestMethod.POST)

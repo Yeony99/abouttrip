@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aboutrip.app.common.AboutUtil;
-import com.aboutrip.app.common.FileManager;
 import com.mongodb.DuplicateKeyException;
 
 @Controller("member.memberController")
@@ -29,8 +27,9 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	@Autowired
-	private FileManager fileManager;
+	/*
+	 * @Autowired private FileManager fileManager;
+	 */
 	
 	@Autowired
 	private AboutUtil aboutUtil;
@@ -232,45 +231,59 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "payment")
-	public ModelAndView paymentForm(Model model) {
-			
-		return new ModelAndView(".member.payment");
-	}
-	
-	@RequestMapping(value = "paymentList")
-	public Map<String, Object> paymentList(@RequestParam(value="pageNo", defaultValue = "1") int current_page
-			,HttpSession session) throws Exception{
-		Map<String, Object> map = new HashMap<String, Object>();
+	public String paymentForm(Model model, HttpSession session,HttpServletRequest req,
+			@RequestParam(value="page", defaultValue="1") int current_page) {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
-
+		String cp = req.getContextPath();
+   	    
+		int rows = 10; // 한 화면에 보여주는 게시물 수
+		int total_page = 0;
+		int dataCount = 0;
+		
+        // 전체 페이지 수
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("userNum", info.getUserNum());
-		int rows=5;
-		int dataCount = service.payCount(map);
-		int total_page = aboutUtil.pageCount(rows, dataCount);
-		if(current_page>total_page)
-			current_page=total_page;
-		int offset = (current_page-1) * rows;
+        dataCount = service.payCount(map);
+        if(dataCount != 0)
+            total_page = aboutUtil.pageCount(rows, dataCount) ;
+
+        // 다른 사람이 자료를 삭제하여 전체 페이지수가 변화 된 경우
+        if(total_page < current_page) 
+            current_page = total_page;
+
+        // 리스트에 출력할 데이터를 가져오기
+        int offset = (current_page-1) * rows;
 		if(offset < 0) offset = 0;
         map.put("offset", offset);
         map.put("rows", rows);
-        
-        List<Member> paylist = service.payList(map);
-        for(Member dto : paylist) {
-        	dto.setPaymentCode(dto.getPaymentCode().replaceAll("\n", "<br>"));
+        map.put("userNum", info.getUserNum());
+        // 글 리스트
+        List<Member> list = service.payList(map);
+
+        // 리스트의 번호
+        int listNum, n = 0;
+        for(Member dto : list) {
+            listNum = dataCount - (offset + n);
+            dto.setCardNum(listNum);
+            n++;
         }
         
-        Map<String, Object> model = new HashMap<>();
-		
-		model.put("dataCount", dataCount);
-		model.put("total_page", total_page);
-		model.put("pageNo", current_page);
+        String query = "";
+        String listUrl = cp+"/member/payment";
+        
+        if(query.length()!=0) {
+        	listUrl = cp+"/bbs/list?" + query;
+        }
+        
+        String paging = aboutUtil.paging(current_page, total_page, listUrl);
 
-		model.put("list", paylist);
-        
-        
-        
-		return model;
+        model.addAttribute("list", list);
+        model.addAttribute("page", current_page);
+        model.addAttribute("dataCount", dataCount);
+        model.addAttribute("total_page", total_page);
+        model.addAttribute("paging", paging);
 		
+		return ".member.payment";
 	}
 	
 	@RequestMapping(value = "payCreated", method = RequestMethod.GET)

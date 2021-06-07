@@ -63,10 +63,10 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 	
-	<select id="dataCount" parameterType="com.aboutrip.app.member.Member">
+	<select id="dataCount" parameterType="Integer">
 		SELECT NVL(COUNT(userNum),0) FROM member1
 	</select>
-	<select id="payCount" parameterType="String" resultType="com.aboutrip.app.member.Member">
+	<select id="payCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(cardNum),0) FROM payment WHERE userNum = #{userNum}
 	</select>
 	<select id="loginseq" resultType="Integer">
@@ -83,8 +83,8 @@
 	</insert>
 	<select id="listPayment" parameterType="map" resultType="com.aboutrip.app.member.Member">
 		SELECT cardNum, cardName, paymentCode, userNum,created_date FROM payment
-		ORDER BY cardNum DESC, orderNo ASC
 		WHERE userNum = #{userNum}
+		ORDER BY cardNum DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 </mapper>

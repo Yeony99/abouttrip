@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.common.dao.AboutDAO;
 
-@Service("diary.diaryServiceImpl")
+@Service("diary.diaryService")
 public class DiaryServiceImpl implements DiaryService {
 	@Autowired
 	private AboutDAO dao;
@@ -45,7 +45,15 @@ public class DiaryServiceImpl implements DiaryService {
 	@Override
 	public int dataCount(Map<String, Object> map) {
 		
-		return 0;
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("diary.dataCount", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -63,43 +71,100 @@ public class DiaryServiceImpl implements DiaryService {
 	@Override
 	public Diary readDiary(int diaryNum) {
 		
-		return null;
+		Diary dto = null;
+		
+		try {
+			dto=dao.selectOne("diary.readDiary", diaryNum);
+		} catch (Exception e) {e.printStackTrace();// TODO: handle exception
+		}
+		
+		return dto;
 	}
 
 	@Override
 	public void updateDiary(Diary dto, String pathname) throws Exception {
-		
+		for(MultipartFile mf : dto.getUpload()) {
+			try {
+				String saveFilename = fm.doFileUpload(mf, pathname);
+				if(saveFilename != null) {
+					if(dto.getSaveFilename() != null && dto.getSaveFilename().length() != 0)
+						fm.doFileDelete(dto.getSaveFilename(), pathname);
+					
+					String originalFilename = mf.getOriginalFilename();
+					
+					dto.setSaveFilename(saveFilename);
+					dto.setOriginalFilename(originalFilename);
+				}
+				dao.updateData("diary.updateDiary", dto);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
 	}
 
 	@Override
 	public void deleteDiary(int diaryNum, String pathname, String userId) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try{
+			Diary dto=readDiary(diaryNum);
+			if(dto==null || (! userId.equals("admin") && ! userId.equals(dto.getUserId())))
+				return;
+			
+			fm.doFileDelete(dto.getSaveFilename(), pathname);
+			
+			dao.deleteData("diary.deleteDiary", diaryNum);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}		
 	}
 
 	@Override
 	public void insertDiaryLike(Map<String, Object> map) throws Exception {
-		// TODO Auto-generated method stub
-		
+		try {
+			dao.insertData("diary.insertDiaryLike", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@Override
 	public int diaryLikeCount(int diaryNum) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result=0;
+		
+		try {
+			result = dao.selectOne("diary.DiaryLikeCount", diaryNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 
 	@Override
 	public boolean isDiaryLikeUser(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result=false;
+		try {
+			int cnt = dao.selectOne("diary.diaryLikeUserCount", map);
+			if(cnt > 0) {
+				result=true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	@Override
 	public int DiaryLikeDelete(Map<String, Object> map) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		try {
+			result = dao.deleteData("diary.diaryLikeDelete", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
-
-
 }
