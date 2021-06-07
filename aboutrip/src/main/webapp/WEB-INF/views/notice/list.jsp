@@ -84,7 +84,7 @@
 						<th width="50">첨부</th>
 					</tr>
 
-					<c:forEach var="dto" items="${noticeList}">
+					<c:forEach var="dto" items="${list}">
 						<tr>
 							<td><span><img src="${pageContext.request.contextPath}/resources/img/img/notice.gif"></span></td>
 							<td><a href="${articleUrl}&num=${dto.NOTICEnum}">${dto.title}</a>

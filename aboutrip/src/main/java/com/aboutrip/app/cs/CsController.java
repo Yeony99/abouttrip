@@ -131,10 +131,12 @@ public class CsController {
 			) throws Exception {
 
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
 		if(! info.getUserId().equals("admin")) {
 			return "redirect:/notice/list";
 		}
-		
+		String nickName = info.getNickName();
+		model.addAttribute("nickName", nickName);
 		model.addAttribute("mode", "created");
 		
 		return ".notice.created";
@@ -146,6 +148,8 @@ public class CsController {
 			HttpSession session) throws Exception {
 		
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		System.out.println(info.getUserId());
 		
 		if(! info.getUserId().equals("admin")) {
 			return "redirect:/notice/list";	
