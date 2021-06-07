@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="booking">
+	<select id = "event_list" parameterType="String" resultType="com.aboutrip.app.Booking">
+		SELECT 
+	</select>
+
+	<insert id="insert_product" parameterMap="com.aboutrip.app.Booking">
+		INSERT INTO product(code, product_name, product_detail, start_date, end_date, ishidden, Upload_date, update_date, category_num)
+		VALUES(product_seq.NEXTVAL, #{name}, #{detail}, #{start_date}, #{end_date}, #{isHidden}, SYSDATE, SYSDATE, #{category_num});
+	</insert>
+</mapper>
