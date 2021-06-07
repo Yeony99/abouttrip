@@ -250,6 +250,92 @@ public class MemberServiceImpl implements MemberService{
 		}
 		return paylist;
 	}
+
+	@Override
+	public int logCount(Map<String, Object> map) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("member.logCount",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<Member> logList(Map<String, Object> map) {
+		List<Member> loglist = null;
+		
+		try {
+			loglist = dao.selectList("member.logList", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return loglist;
+	}
+
+	@Override
+	public int followingCount(Map<String, Object> map) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("member.followingCount",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int followerCount(Map<String, Object> map) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("member.followerCount",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<Member> followingList(Map<String, Object> map) {
+		List<Member> followinglist = null;
+		
+		try {
+			followinglist = dao.selectList("member.followinglist", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return followinglist;
+	}
+
+	@Override
+	public List<Member> followerList(Map<String, Object> map) {
+		List<Member> followerList = null;
+		
+		try {
+			followerList = dao.selectList("member.followerlist", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return followerList;
+	}
+
+	@Override
+	public void deleteFollow(Map<String, Object> map) throws Exception {
+		try {
+			dao.selectOne("member.deleteFollower",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	
 
 }

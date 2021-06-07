@@ -35,12 +35,33 @@ public class AboutUtil {
 			list_url+="?";
 		}
 		
-		// currentPageSetup : 표시할 첫 페이지 -1
 		currentPageSetup=(current_page/numPerBlock)*numPerBlock;
 		if(current_page%numPerBlock==0) {
 			currentPageSetup=currentPageSetup-numPerBlock;
 		}
-		return "";
+		
+		sb.append("<div id='paginate'>");
+		n=current_page-numPerBlock;
+		if(total_page > numPerBlock && currentPageSetup > 0) {
+			sb.append("<a href='"+list_url+"page=1'>처음</a>");
+			sb.append("<a href='"+list_url+"page="+n+"'>이전</a>");
+		}
+		page=currentPageSetup+1;
+		while(page<=total_page && page <=(currentPageSetup+numPerBlock)) {
+			if(page==current_page) {
+				sb.append("<span class='curBox'>"+page+"</span>");
+			} else {
+				sb.append("<a href='"+list_url+"page="+page+"' class='numBox'>&nbsp;"+page+"</a>");
+			}
+			page++;
+		}
+		n=current_page+numPerBlock;
+		if(n>total_page) n=total_page;
+		if(total_page-currentPageSetup>numPerBlock) {
+			sb.append("<a href='"+list_url+"page="+n+"'>다음</a>");
+			sb.append("<a href='"+list_url+"page="+total_page+"'>끝</a>");
+		}
+		return sb.toString();
 	}
 	public String htmlSymbols(String str) {
 		if(str==null||str.length()==0) {

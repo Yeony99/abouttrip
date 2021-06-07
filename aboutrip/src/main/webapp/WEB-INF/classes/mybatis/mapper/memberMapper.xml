@@ -69,11 +69,23 @@
 	<select id="payCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(cardNum),0) FROM payment WHERE userNum = #{userNum}
 	</select>
+	<select id="logCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(logNum),0) FROM logrecored WHERE userNum = #{userNum}
+	</select>
+	<select id="followingCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(followingNum),0) FROM follow WHERE followerUser= #{followerUser}
+	</select>
+	<select id="followerCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(followingNum),0) FROM follow WHERE followingUser= #{followingUser}
+	</select>
 	<select id="loginseq" resultType="Integer">
        SELECT login_seq.NEXTVAL FROM dual 
     </select>
     <select id="paymentseq" resultType="Integer">
        SELECT payment_seq.NEXTVAL FROM dual 
+    </select>
+    <select id="follow_seq" resultType="Integer">
+       SELECT follow_seq.NEXTVAL FROM dual 
     </select>
 	<insert id="insertIpaddr" parameterType="com.aboutrip.app.member.Member">
 		INSERT INTO logRecored(logNum, userNum, ipaddr, logDate) VALUES (#{logNum}, #{userNum}, #{ipaddr}, SYSDATE)
@@ -87,4 +99,36 @@
 		ORDER BY cardNum DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
+	
+	<select id="logList" parameterType="map" resultType="com.aboutrip.app.member.Member">
+		SELECT LogNum, userNum, ipAddr, LogDate FROM logrecored
+		WHERE userNum = #{userNum}
+		ORDER BY LogNum DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	<insert id="insertfollow1">
+		INSERT INTO follow(followNum, following_date, followingUser, followerUser) VALUES(#{followNum}, SYSDATE, #{follow}, #{nickName})
+	</insert>
+	<insert id="insertfollow2">
+		INSERT INTO follow(followNum, following_date, followingUser, followerUser) VALUES(#{followNum}, SYSDATE, #{nickName}, #{follow})
+	</insert>
+	<select id="followinglist" parameterType="map" resultType="com.aboutrip.app.member.Member">
+		SELECT followingNum, following_date, f.followingUser, f.followerUser,  m1.nickName followingNickname, m2.nickName followerNickname FROM follow f
+		LEFT OUTER JOIN member1 m1 ON f.followingUser = m1.userNum
+		LEFT OUTER JOIN member1 m2 ON f.followerUser = m2.userNum
+		WHERE followerUser = #{followerUser}
+		ORDER BY followingNum DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	<select id="followerlist" parameterType="map" resultType="com.aboutrip.app.member.Member">
+		SELECT followingNum, following_date, f.followingUser, f.followerUser, m1.nickName followingNickname, m2.nickName followerNickname  FROM follow f
+		LEFT OUTER JOIN member1 m1 ON f.followingUser = m1.userNum
+		LEFT OUTER JOIN member1 m2 ON f.followerUser = m2.userNum
+		WHERE followingUser = #{followingUser}
+		ORDER BY followingNum DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	<delete id="deleteFollwer" parameterType="map">
+		delete from follow WHERE followingUser =#{followingUser} AND followerUser=#{followerUser}
+	</delete>
 </mapper>

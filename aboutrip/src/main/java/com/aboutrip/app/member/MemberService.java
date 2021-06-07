@@ -17,10 +17,19 @@ public interface MemberService {
 	public List<Member> listMember(Map<String,Object> map);
 	public int dataCount();
 	public int payCount(Map<String,Object> map);
+	public int logCount(Map<String, Object> map);
+	public int followingCount(Map<String, Object> map);
+	public int followerCount(Map<String, Object> map);
 	
 	public List<Member> payList(Map<String, Object> map);
+	public List<Member> logList(Map<String, Object> map);
+	public List<Member> followingList(Map<String, Object> map);
+	public List<Member> followerList(Map<String, Object> map);
 
 	public void generatePwd(Member dto) throws Exception;
 	public void checkIpAddr(Member dto) throws Exception;
 	public void insertPayment(Member dto) throws Exception;
+	
+	public void deleteFollow(Map<String, Object> map) throws Exception;
+
 }

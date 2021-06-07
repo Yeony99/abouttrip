@@ -8,6 +8,9 @@
        <ul class="navbar-nav ms-auto">
 			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/update">정보수정</a>
 			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/payment">결제수단등록</a>		
+			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/loginLog">로그인 기록</a>
+			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/following">팔로잉 목록</a>
+			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/follower">팔로워 목록</a>
 		</ul>
 	</div>
 </div>

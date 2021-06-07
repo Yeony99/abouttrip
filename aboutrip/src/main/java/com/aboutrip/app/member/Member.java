@@ -25,8 +25,62 @@ public class Member {
 	private int cardNum;
 	private String cardName;
 	private String paymentCode;
+	private String logDate;
+	private int followingNum;
+	private String following_date;
+	private String followingNickname;
+	private String followerNickname;
+	private int followingUserNum;
+	private int followerUserNum;
 	
 	
+	
+	
+	
+	
+	
+	public int getFollowingUserNum() {
+		return followingUserNum;
+	}
+	public void setFollowingUserNum(int followingUserNum) {
+		this.followingUserNum = followingUserNum;
+	}
+	public int getFollowerUserNum() {
+		return followerUserNum;
+	}
+	public void setFollowerUserNum(int followerUserNum) {
+		this.followerUserNum = followerUserNum;
+	}
+	public String getFollowingNickname() {
+		return followingNickname;
+	}
+	public void setFollowingNickname(String followingNickname) {
+		this.followingNickname = followingNickname;
+	}
+	public String getFollowerNickname() {
+		return followerNickname;
+	}
+	public void setFollowerNickname(String followerNickname) {
+		this.followerNickname = followerNickname;
+	}
+	public int getFollowingNum() {
+		return followingNum;
+	}
+	public void setFollowingNum(int followingNum) {
+		this.followingNum = followingNum;
+	}
+	public String getFollowing_date() {
+		return following_date;
+	}
+	public void setFollowing_date(String following_date) {
+		this.following_date = following_date;
+	}
+	public String getLogDate() {
+		return logDate;
+	}
+	public void setLogDate(String logDate) {
+		this.logDate = logDate;
+	}
 	public int getCardNum() {
 		return cardNum;
 	}
