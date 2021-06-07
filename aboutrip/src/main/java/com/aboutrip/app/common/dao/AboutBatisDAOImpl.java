@@ -99,7 +99,7 @@ public class AboutBatisDAOImpl implements AboutDAO{
 	@Override
 	public <T> List<T> selectList(String id) throws Exception {
 		try {
-			return sqlSession.selectOne(id);
+			return sqlSession.selectList(id);
 		} catch (Exception e) {
 			logger.error(e.toString());
 			throw e;

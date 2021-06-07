@@ -131,10 +131,12 @@ public class CsController {
 			) throws Exception {
 
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
 		if(! info.getUserId().equals("admin")) {
 			return "redirect:/notice/list";
 		}
-		
+		String nickName = info.getNickName();
+		model.addAttribute("nickName", nickName);
 		model.addAttribute("mode", "created");
 		
 		return ".notice.created";
@@ -147,6 +149,8 @@ public class CsController {
 		
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
+		System.out.println(info.getUserId());
+		
 		if(! info.getUserId().equals("admin")) {
 			return "redirect:/notice/list";	
 		}
@@ -155,8 +159,7 @@ public class CsController {
 			String root = session.getServletContext().getRealPath("/");
 			String pathname = root + "uploads" + File.separator + "notice";		
 			
-			//dto.setAdminNum(info.getUserNum());
-			dto.setUserId(info.getUserId());
+			dto.setAdminNum(info.getUserNum());
 			service.insertNotice(dto, pathname);
 		} catch (Exception e) {
 		}
@@ -166,7 +169,7 @@ public class CsController {
 
 	@RequestMapping(value="article")
 	public String article(
-			@RequestParam int NOTICEnum,
+			@RequestParam int noticeNum,
 			@RequestParam String page,
 			@RequestParam(defaultValue="all") String condition,
 			@RequestParam(defaultValue="") String keyword,
@@ -180,7 +183,7 @@ public class CsController {
 		}
 		
 
-		Notice dto = service.readNotice(NOTICEnum);
+		Notice dto = service.readNotice(noticeNum);
 		if(dto==null) {
 			return "redirect:/notice/list?"+query;
 		}
@@ -191,13 +194,13 @@ public class CsController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
-		map.put("num", NOTICEnum);
+		map.put("noticeNum", noticeNum);
 
 		Notice preReadDto = service.preReadNotice(map);
 		Notice nextReadDto = service.nextReadNotice(map);
         
 		// 파일
-		List<Notice> listFile=service.listFile(NOTICEnum);
+		List<Notice> listFile=service.listFile(noticeNum);
 				
 		model.addAttribute("dto", dto);
 		model.addAttribute("preReadDto", preReadDto);
@@ -211,7 +214,7 @@ public class CsController {
 
 	@RequestMapping(value="update", method=RequestMethod.GET)
 	public String updateForm(
-			@RequestParam int NOTICEnum,
+			@RequestParam int noticeNum,
 			@RequestParam String page,
 			HttpSession session,			
 			Model model	) throws Exception {
@@ -221,12 +224,12 @@ public class CsController {
 			return "redirect:/notice/list?page="+page;
 		}
 
-		Notice dto = service.readNotice(NOTICEnum);
+		Notice dto = service.readNotice(noticeNum);
 		if(dto==null) {
 			return "redirect:/notice/list?page="+page;
 		}
 		
-		List<Notice> listFile=service.listFile(NOTICEnum);
+		List<Notice> listFile=service.listFile(noticeNum);
 			
 		model.addAttribute("mode", "update");
 		model.addAttribute("page", page);
@@ -251,8 +254,7 @@ public class CsController {
 			String root = session.getServletContext().getRealPath("/");
 			String pathname = root + File.separator + "uploads" + File.separator + "notice";		
 			
-			//dto.setAdminNum(info.getUserNum());
-			dto.setUserId(info.getUserId());
+			dto.setAdminNum(info.getUserNum());
 			service.updateNotice(dto, pathname);
 		} catch (Exception e) {
 		}
@@ -262,7 +264,7 @@ public class CsController {
 
 	@RequestMapping(value="delete")
 	public String delete(
-			@RequestParam int NOTICEnum,
+			@RequestParam int noticeNum,
 			@RequestParam String page,
 			@RequestParam(defaultValue="all") String condition,
 			@RequestParam(defaultValue="") String keyword,
@@ -282,7 +284,7 @@ public class CsController {
 		try {
 			String root = session.getServletContext().getRealPath("/");
 			String pathname = root + "uploads" + File.separator + "notice";
-			service.deleteNotice(NOTICEnum, pathname);
+			service.deleteNotice(noticeNum, pathname);
 		} catch (Exception e) {
 		}
 		
@@ -291,7 +293,7 @@ public class CsController {
 
 	@RequestMapping(value="download")
 	public void download(
-			@RequestParam int NfileNum,
+			@RequestParam int nfileNum,
 			HttpServletResponse resp,
 			HttpSession session) throws Exception {
 		String root = session.getServletContext().getRealPath("/");
@@ -299,7 +301,7 @@ public class CsController {
 
 		boolean b = false;
 		
-		Notice dto = service.readFile(NfileNum);
+		Notice dto = service.readFile(nfileNum);
 		if(dto!=null) {
 			String saveFilename = dto.getSaveFilename();
 			String originalFilename = dto.getOriginalFilename();
@@ -320,7 +322,7 @@ public class CsController {
 	
 	@RequestMapping(value="zipdownload")
 	public void zipdownload(
-			@RequestParam int NOTICEnum,
+			@RequestParam int noticeNum,
 			HttpServletResponse resp,
 			HttpSession session) throws Exception {
 		
@@ -329,11 +331,11 @@ public class CsController {
 		
 		boolean b = false;
 		
-		List<Notice> listFile = service.listFile(NOTICEnum);
+		List<Notice> listFile = service.listFile(noticeNum);
 		if(listFile.size()>0) {
 			String sources[] = new String[listFile.size()];
 			String originals[] = new String[listFile.size()];
-			String zipFilename = NOTICEnum+".zip";
+			String zipFilename = noticeNum+".zip";
 			
 			for (int i = 0; i < listFile.size(); i++) {
 				sources[i]=pathname+File.separator+listFile.get(i).getSaveFilename();
@@ -357,20 +359,20 @@ public class CsController {
 	@RequestMapping(value="deleteFile", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> deleteFile(
-			@RequestParam int NfileNum,
+			@RequestParam int nfileNum,
 			HttpSession session) throws Exception {
 		
 		String root = session.getServletContext().getRealPath("/");
 		String pathname = root + "uploads" + File.separator + "notice";
 		
-		Notice dto=service.readFile(NfileNum);
+		Notice dto=service.readFile(nfileNum);
 		if(dto!=null) {
 			fileManager.doFileDelete(dto.getSaveFilename(), pathname);
 		}
 		
 		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("field", "NfileNum");
-		map.put("num", NfileNum);
+		map.put("field", "nfileNum");
+		map.put("num", nfileNum);
 		service.deleteFile(map);
 		
 		
