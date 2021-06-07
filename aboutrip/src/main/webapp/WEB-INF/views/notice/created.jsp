@@ -72,10 +72,10 @@ $(function(){
 });
 
   <c:if test="${mode=='update'}">
-  function deleteFile(NfileNum) {
+  function deleteFile(nfileNum) {
 		var url="${pageContext.request.contextPath}/notice/deleteFile";
-		$.post(url, {NfileNum:NfileNum}, function(data){
-			$("#f"+NfileNum).remove();
+		$.post(url, {nfileNum:nfileNum}, function(data){
+			$("#f"+nfileNum).remove();
 		}, "json");
   }
 </c:if>
@@ -157,10 +157,10 @@ $(function(){
 			<c:if test="${mode=='update'}">
 				<tfoot>
 					<c:forEach var="vo" items="${listFile}">
-						<tr id="f${vo.NfileNum}"> 
+						<tr id="f${vo.nfileNum}"> 
 							<td>첨부된파일</td>
 							<td> 
-								<a href="javascript:deleteFile('${vo.NfileNum}');"><i class="far fa-trash-alt"></i></a> 
+								<a href="javascript:deleteFile('${vo.nfileNum}');"><i class="far fa-trash-alt"></i></a> 
 								${vo.originalFilename}
 							</td>
 						  </tr>
@@ -175,9 +175,9 @@ $(function(){
 					<button type="button" class="btn" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
 					<button type="reset" class="btn">다시입력</button>
 					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list';">${mode=='update'?'수정취소':'등록취소'}</button>
-						<input type="hidden" name="AdminNum" value="${sessionScope.member.userNum}">
+						<input type="hidden" name="adminNum" value="${sessionScope.member.userNum}">
 					<c:if test="${mode=='update'}">
-						<input type="hidden" name="num" value="${dto.NOTICEnum}">
+						<input type="hidden" name="num" value="${dto.noticeNum}">
 						<input type="hidden" name="page" value="${page}">
 					</c:if>
 				</td>

@@ -56,12 +56,12 @@
 </script>
 
 <div class="body-container">
-	<div class="body-main">
+	<div class="body-main" style="width: 90%; padding-left: 100px">
 		<div class="body-title">
 			<div style="text-align: left; color: black">
-
-				<h2>NOTICE</h2>
-				<p>AboutTrip 공지사항</p>
+				<br>
+				<br>
+				<br>
 				<hr>
 				<br>
 			</div>
@@ -69,9 +69,9 @@
 			<div class="body-main">
 				<table class="table table-header">
 					<tr>
-						<td align="left" width="50%">
+						<td align="left" width="50%"><h3>NOTICE</h3></td>
 							
-						<td align="right">&nbsp;</td>
+						<td align="right">page</td>
 					</tr>
 				</table>
 
@@ -80,20 +80,20 @@
 						<th width="60">번호</th>
 						<th>제목</th>
 						<th width="100">작성자</th>
-						<th width="80">작성일</th>
+						<th width="200">작성일</th>
 						<th width="50">첨부</th>
 					</tr>
 
 					<c:forEach var="dto" items="${list}">
 						<tr>
 							<td><span><img src="${pageContext.request.contextPath}/resources/img/img/notice.gif"></span></td>
-							<td><a href="${articleUrl}&num=${dto.NOTICEnum}">${dto.title}</a>
+							<td><a href="${articleUrl}&num=${dto.noticeNum}">${dto.title}</a>
 							</td>
-							<td>${dto.AdminNum}</td>
+							<td>관리자</td>
 							<td>${dto.reg_date}</td>
 							<td><c:if test="${dto.fileCount != 0}">
 									<a
-										href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.NOTICEnum}"><i
+										href="${pageContext.request.contextPath}/notice/zipdownload?noticeNum=${dto.noticeNum}"><i
 										class="far fa-file"></i></a>
 								</c:if></td>
 						</tr>
@@ -102,16 +102,16 @@
 					<c:forEach var="dto" items="${list}">
 						<tr>
 							<td>${dto.listNum}</td>
-							<td><a href="${articleUrl}&num=${dto.NOTICEnum}">${dto.title}</a>
+							<td><a href="${articleUrl}&num=${dto.noticeNum}">${dto.title}</a>
 								<c:if test="${dto.gap < 1}">
 									<img
 										src='${pageContext.request.contextPath}/resources/images/new.gif'>
 								</c:if></td>
-							<td>${dto.AdminNum}</td>
+							<td>관리자</td>
 							<td>${dto.reg_date}</td>
 							<td><c:if test="${dto.fileCount != 0}">
 									<a
-										href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.NOTICEnum}"><i
+										href="${pageContext.request.contextPath}/notice/zipdownload?noticeNum=${dto.noticeNum}"><i
 										class="far fa-file"></i></a>
 								</c:if></td>
 						</tr>
@@ -152,6 +152,7 @@
 						</td>
 						<td align="right" width="100"><c:if
 								test="${sessionScope.member.userId=='admin'}">
+								<input type="hidden" name="adminNum" value="${sessionScope.member.userNum}">
 								<button type="button" class="btnCreate"
 									onclick="javascript:location.href='${pageContext.request.contextPath}/notice/created';">글올리기</button>
 							</c:if></td>

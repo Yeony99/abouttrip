@@ -5,15 +5,14 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Notice {
-	private int listNum, NOTICEnum;
+	private int listNum, noticeNum;
 	private int notice;
 	private String title;
 	private String content;
 	private String reg_date;
-	private int AdminNum;
-	private String UserId;
+	private int adminNum;
 
-	private int NfileNum;
+	private int nfileNum;
 	private String originalFilename;
 	private String saveFilename;
 	private int fileCount;
@@ -30,12 +29,12 @@ public class Notice {
 		this.listNum = listNum;
 	}
 
-	public int getNOTICEnum() {
-		return NOTICEnum;
+	public int getNoticeNum() {
+		return noticeNum;
 	}
 
-	public void setNOTICEnum(int nOTICEnum) {
-		NOTICEnum = nOTICEnum;
+	public void setNoticeNum(int noticeNum) {
+		this.noticeNum = noticeNum;
 	}
 
 	public int getNotice() {
@@ -45,7 +44,6 @@ public class Notice {
 	public void setNotice(int notice) {
 		this.notice = notice;
 	}
-	
 
 	public String getTitle() {
 		return title;
@@ -72,27 +70,19 @@ public class Notice {
 	}
 
 	public int getAdminNum() {
-		return AdminNum;
+		return adminNum;
 	}
 
 	public void setAdminNum(int adminNum) {
-		AdminNum = adminNum;
+		this.adminNum = adminNum;
 	}
 
-	public String getUserId() {
-		return UserId;
-	}
-	
-	public void setUserId(String userId) {
-		UserId = userId;
-	}
-	
 	public int getNfileNum() {
-		return NfileNum;
+		return nfileNum;
 	}
 
 	public void setNfileNum(int nfileNum) {
-		NfileNum = nfileNum;
+		this.nfileNum = nfileNum;
 	}
 
 	public String getOriginalFilename() {
@@ -134,8 +124,7 @@ public class Notice {
 	public void setGap(long gap) {
 		this.gap = gap;
 	}
-	
-	
+
 	
 	
 }
