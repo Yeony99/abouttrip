@@ -67,6 +67,7 @@ public class DiaryServiceImpl implements DiaryService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return list;
 	}
 
@@ -98,7 +99,6 @@ public class DiaryServiceImpl implements DiaryService {
 					insertImg(dto);
 				}
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

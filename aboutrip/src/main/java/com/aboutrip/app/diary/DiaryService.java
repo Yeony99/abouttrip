@@ -21,4 +21,5 @@ public interface DiaryService {
 	public int diaryLikeCount(int diaryNum);
 	public boolean isDiaryLikeUser(Map<String, Object> map);
 	public int DiaryLikeDelete(Map<String, Object> map) throws Exception;
+	
 }

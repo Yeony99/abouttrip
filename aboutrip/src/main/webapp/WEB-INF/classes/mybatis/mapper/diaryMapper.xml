@@ -33,8 +33,9 @@
 	</select>
 	
 	<select id="listDiary" parameterType="map" resultType="com.aboutrip.app.diary.Diary">
-		SELECT d.diaryNum, userId, diaryTitle, saveImgName
+		SELECT d.diaryNum, d.userNum, nickName, diaryTitle, saveImgName
 		FROM diary d
+		JOIN member1 m ON d.userNum = m.userNum
 		LEFT OUTER JOIN (
 			SELECT diaryImgNum, diaryNum, saveImgName FROM ( 
 				SELECT diaryImgNum, diaryNum, saveImgName, 
@@ -75,6 +76,7 @@
 		DELETE FROM diary WHERE diaryNum=#{diaryNum}
 	</delete>
 	
+	<!-- 이미지파일 -->
 	<insert id="insertImg" parameterType="com.aboutrip.app.diary.Diary">
 		INSERT INTO diaryImg(diaryImgNum, diaryNum, saveImgName) VALUES
 				(diaryImg_seq.NEXTVAL, #{diaryNum}, #{saveImgName})

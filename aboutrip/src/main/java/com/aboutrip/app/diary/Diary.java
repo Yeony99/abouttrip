@@ -18,7 +18,6 @@ public class Diary {
 	private String hashNum;
 	private String hashName;
 	private int diaryLikeCount;
-	
 	private List<MultipartFile> upload;
 
 	public int getListNum() {

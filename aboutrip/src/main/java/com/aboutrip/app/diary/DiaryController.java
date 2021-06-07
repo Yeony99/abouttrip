@@ -11,17 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.member.SessionInfo;
 
-@RestController("diary.diaryController")
+@Controller("diary.diaryController")
 @RequestMapping("/diary/*")
 public class DiaryController {
 	@Autowired
@@ -37,11 +38,9 @@ public class DiaryController {
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
 			HttpServletRequest req,
-			HttpSession session,
 			Model model
 			) throws Exception {
 		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		String cp = req.getContextPath();
 		
 		int rows = 8;
@@ -53,13 +52,10 @@ public class DiaryController {
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", info.getUserId());
 		map.put("condition", condition);
 		map.put("keyword", keyword);
 		
 		dataCount = service.dataCount(map);
-		total_page = aboutUtil.pageCount(rows, dataCount);
-		
 		if(dataCount != 0) {
 			total_page = aboutUtil.pageCount(rows, dataCount);
 		}
@@ -263,7 +259,8 @@ public class DiaryController {
 		return "redirect:/diary/list?"+query;		
 	}
 	
-	@RequestMapping(value="deleteImg")
+	@RequestMapping(value="deleteImg", method=RequestMethod.POST)
+	@ResponseBody
 	public Map<String, Object> deleteImg(
 			@RequestParam int diaryImgNum,
 			HttpSession session
