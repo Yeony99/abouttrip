@@ -81,7 +81,7 @@
 <div class="body-container">
 	<div class="body-main" style="margin-top: 8rem;">
 		<div style="display: flex; justify-content: center">
-			<h3>한국 관광공사의 추천 🛫</h3>
+			<h3>어바웃 트립 MD 추천 🛫</h3>
 		</div>
 		<div id="main-container">
 			<div class="img-container">
@@ -153,7 +153,6 @@
 					<tr align="center" height="55">
 						<th width="60">번호</th>
 						<th>제목</th>
-						<th width="100">작성자</th>
 						<th width="200">등록일</th>
 						<th width="107">조회수</th>
 					</tr>
@@ -165,7 +164,6 @@
 							<td align="left" style="padding-left: 10px; text-align: center;">
 								<a href="">${dto.subject}</a>
 							</td>
-							<td width="100">${dto.userName}</td>
 							<td width="200">${dto.created}</td>
 							<td width="107">${dto.hitCount}</td>
 					</c:forEach>
@@ -179,9 +177,9 @@
 				</tr>
 			</table>
 
-			<span> <c:if test="${sessionScope.member.userId!=null}">
+			<span> <c:if test="${sessionScope.member.userId=='admin'}">
 					<button type="button" class="btnCreate"
-						onclick="javascript:location.href='${pageContext.request.contextPath}/qna/created.do';">등록</button>
+						onclick="javascript:location.href='${pageContext.request.contextPath}/place/createMd';">등록</button>
 				</c:if>
 			</span>
 		</div>
