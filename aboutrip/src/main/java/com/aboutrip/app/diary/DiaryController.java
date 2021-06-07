@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,9 +37,11 @@ public class DiaryController {
 			@RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
 			HttpServletRequest req,
+			HttpSession session,
 			Model model
 			) throws Exception {
 		
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		String cp = req.getContextPath();
 		
 		int rows = 8;
@@ -52,10 +53,13 @@ public class DiaryController {
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", info.getUserId());
 		map.put("condition", condition);
 		map.put("keyword", keyword);
 		
 		dataCount = service.dataCount(map);
+		total_page = aboutUtil.pageCount(rows, dataCount);
+		
 		if(dataCount != 0) {
 			total_page = aboutUtil.pageCount(rows, dataCount);
 		}
@@ -65,7 +69,6 @@ public class DiaryController {
 		
 		int offset = (current_page - 1) * rows;
 		if(offset < 0) offset = 0;
-		
 		map.put("offset", offset);
 		map.put("rows", rows);
 		
@@ -80,6 +83,7 @@ public class DiaryController {
         
         String query = "";
         String listUrl = cp+"/diary/list";
+        String articleUrl = cp+"/diary/article?page="+current_page;
         if(keyword.length()!=0) {
         	query = "condition=" +condition + 
         	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
@@ -87,11 +91,13 @@ public class DiaryController {
         
         if(query.length()!=0) {
         	listUrl = cp+"/diary/list?" + query;
+        	articleUrl = cp+"/diary/article?page="+current_page+"&"+query;
         }
         
 		String paging = aboutUtil.pagingMethod(current_page, total_page, listUrl);
 
 		model.addAttribute("list", list);
+		model.addAttribute("articleUrl", articleUrl);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("page", current_page);
 		model.addAttribute("total_page", total_page);
@@ -100,20 +106,22 @@ public class DiaryController {
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
 		
+		model.addAttribute("menuIndex", 5);
+		
 		return ".diary.list";
 	}
 	
 	@RequestMapping(value="create", method=RequestMethod.GET)
-	public String createdForm(
-			Model model
-			) throws Exception {
+	public String createForm(Model model) throws Exception {
 		
 		model.addAttribute("mode", "create");
+		model.addAttribute("menuIndex", 5);
+		
 		return ".diary.create";
 	}
 	
-	@RequestMapping(value="/diary/create", method = RequestMethod.POST)
-	public String createdSubmit(
+	@RequestMapping(value="create", method = RequestMethod.POST)
+	public String createSubmit(
 			Diary dto,
 			HttpSession session
 			) throws Exception {
@@ -133,7 +141,7 @@ public class DiaryController {
 		return "redirect:/diary/list";
 	}
 	
-	@RequestMapping(value="article")
+	@RequestMapping(value="article", method=RequestMethod.GET)
 	public String article(
 			@RequestParam int diaryNum, 
 			@RequestParam String page,
@@ -143,6 +151,7 @@ public class DiaryController {
 			Model model
 			) throws Exception {
 		
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		keyword = URLDecoder.decode(keyword, "utf-8");
 		
 		String query = "page="+page;
@@ -154,7 +163,18 @@ public class DiaryController {
 		if(dto == null)
 			return "redirect:/diary/list?"+query;
 		
-		dto.setDiaryContent(aboutUtil.htmlSymbols(dto.getDiaryContent()));
+		if(! dto.getUserId().equals(info.getUserId()))
+			return "redirect:/";
+		
+		dto.setDiaryContent(dto.getDiaryContent().replaceAll("\n","<br>"));
+		
+		List<Diary> listImg = service.listImg(diaryNum);
+		
+		model.addAttribute("dto", dto);
+		model.addAttribute("listImg", listImg);
+		model.addAttribute("page", page);
+		model.addAttribute("query", query);
+		model.addAttribute("menuIndex", 5);
 		
 		return ".diary.article";
 	}
@@ -176,9 +196,13 @@ public class DiaryController {
 			return "redirect:/diary/list?page="+page;
 		}
 		
+		List<Diary> listImg = service.listImg(diaryNum);
+		
 		model.addAttribute("dto", dto);
+		model.addAttribute("listImg", listImg);
 		model.addAttribute("mode", "update");
 		model.addAttribute("page", page);
+		model.addAttribute("menuIndex", 5);
 		
 		return ".diary.create";
 	}
@@ -201,43 +225,8 @@ public class DiaryController {
 		return "redirect:/diary/list?page="+page;
 	}
 	
-	@RequestMapping(value="deleteFile")
-	public String deleteFile(
-			@RequestParam int diaryNum,
-			@RequestParam String page,
-			HttpSession session
-			) throws Exception {
-		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		
-		String root = session.getServletContext().getRealPath("/");
-		String pathname=root+"uploads"+File.separator+"diary";
-		
-		Diary dto = service.readDiary(diaryNum);
-		
-		if(dto == null) {
-			return "redirect:/diary/list?page="+page;
-		}
-		
-		if(! info.getUserId().equals(dto.getUserId())) {
-			return "redirect:/diary/list?page="+page;
-		}
-		
-		try {
-			if(dto.getSaveFilename() != null) {
-				fm.doFileDelete(dto.getSaveFilename(), pathname);
-				dto.setSaveFilename("");
-				dto.setOriginalFilename("");
-				service.updateDiary(dto, pathname);
-			}
-		} catch (Exception e) {
-		}
-		
-		return "redirect:/diary/update?num="+diaryNum+"&page="+page;
-	}
-	
-	@PostMapping(value="delete")
-	public String deleteSubmit(
+	@RequestMapping(value="delete", method=RequestMethod.GET)
+	public String delete(
 			@RequestParam int diaryNum, 
 			@RequestParam String page,
 			@RequestParam(defaultValue = "all") String condition,
@@ -256,9 +245,48 @@ public class DiaryController {
 		String root = session.getServletContext().getRealPath("/");
 		String pathname = root+"uploads"+File.separator+"diary";
 		
-		service.deleteDiary(diaryNum, pathname, info.getUserId());
+		Diary dto = service.readDiary(diaryNum);
+		
+		if(dto == null) {
+			return "redirect:/diary/list?page="+page;
+		}
+		
+		if(! dto.getUserId().equals(info.getUserId())) {
+			return "redirect:/";
+		}
+		
+		try {
+			service.deleteDiary(diaryNum, pathname);
+		} catch (Exception e) {
+		}
 		
 		return "redirect:/diary/list?"+query;		
+	}
+	
+	@RequestMapping(value="deleteImg")
+	public Map<String, Object> deleteImg(
+			@RequestParam int diaryImgNum,
+			HttpSession session
+			) throws Exception {
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname=root+"uploads"+File.separator+"diary";
+		
+		Diary dto = service.readImg(diaryImgNum);
+		
+		if(dto!=null) {
+			fm.doFileDelete(dto.getSaveImgName(), pathname);
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("field", "diaryImgNum");
+		map.put("diaryNum", diaryImgNum);
+		service.deleteImg(map);
+		
+		Map<String, Object> model = new HashMap<>();
+		map.put("state", "true");
+		
+		return model;
 	}
 	
 	/*

@@ -10,7 +10,7 @@ function searchList() {
 }
 </script>
 
-<div class="body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
+<div class="container body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
 	<div class="body-main">
 		<div>
 			<h3 style="font: bold;">다이어리</h3>
@@ -41,8 +41,8 @@ function searchList() {
 				</c:if>
 				
 				<td>
-					<div onclick="location.href='${listUrl}&diaryNum=${dto.diaryNum}';">
-						<img src="${pageContext.request.contextPath}/uploads/diary/${dto.originalImgName}">
+					<div onclick="location.href='${articleUrl}&diaryNum=${dto.diaryNum}';">
+						<img src="${pageContext.request.contextPath}/uploads/diary/${dto.saveImgName}">
 						<span>${dto.diaryTitle}</span><br>
 						<span>${dto.hashName}</span><br>
 						<span>${dto.diaryCreated}</span><br>

@@ -1,5 +1,6 @@
 package com.aboutrip.app.diary;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,31 +21,32 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public void insertDiary(Diary dto, String pathname) throws Exception {
+		try {
+			int seq=dao.selectOne("diary.seq");
+			dto.setDiaryNum(seq);
 
-		for(MultipartFile mf : dto.getUpload()) {
-			try {
-				
-				String saveFilename = fm.doFileUpload(mf, pathname);
-				if(saveFilename != null) {
-					//dto.getSavePathname().add(pathname+File.separator+saveImgName);
+			dao.insertData("diary.insertDiary", dto);
+			
+			// 파일 업로드
+			if(! dto.getUpload().isEmpty()) {
+				for(MultipartFile mf:dto.getUpload()) {
+					String saveImgName=fm.doFileUpload(mf, pathname);
+					if(saveImgName==null) continue;
 					
-					String originalFilename = mf.getOriginalFilename();
+					dto.setSaveImgName(saveImgName);
 					
-					dto.setSaveFilename(saveFilename);
-					dto.setOriginalFilename(originalFilename);				
+					insertImg(dto);
 				}
-				
-				dao.insertData("diary.insertDiary", dto);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw e;
 			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
 	@Override
 	public int dataCount(Map<String, Object> map) {
-		
 		int result = 0;
 		
 		try {
@@ -70,12 +72,12 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public Diary readDiary(int diaryNum) {
-		
 		Diary dto = null;
 		
 		try {
 			dto=dao.selectOne("diary.readDiary", diaryNum);
-		} catch (Exception e) {e.printStackTrace();// TODO: handle exception
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return dto;
@@ -83,40 +85,94 @@ public class DiaryServiceImpl implements DiaryService {
 
 	@Override
 	public void updateDiary(Diary dto, String pathname) throws Exception {
-		for(MultipartFile mf : dto.getUpload()) {
-			try {
-				String saveFilename = fm.doFileUpload(mf, pathname);
-				if(saveFilename != null) {
-					if(dto.getSaveFilename() != null && dto.getSaveFilename().length() != 0)
-						fm.doFileDelete(dto.getSaveFilename(), pathname);
+		try {
+			dao.updateData("diary.updateDiary", dto);
+			
+			if(! dto.getUpload().isEmpty()) {
+				for(MultipartFile mf:dto.getUpload()) {
+					String saveImgName=fm.doFileUpload(mf, pathname);
+					if(saveImgName==null) continue;
 					
-					String originalFilename = mf.getOriginalFilename();
+					dto.setSaveImgName(saveImgName);
 					
-					dto.setSaveFilename(saveFilename);
-					dto.setOriginalFilename(originalFilename);
+					insertImg(dto);
 				}
-				dao.updateData("diary.updateDiary", dto);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw e;
 			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
 	@Override
-	public void deleteDiary(int diaryNum, String pathname, String userId) throws Exception {
-		try{
-			Diary dto=readDiary(diaryNum);
-			if(dto==null || (! userId.equals("admin") && ! userId.equals(dto.getUserId())))
-				return;
+	public void deleteDiary(int diaryNum, String pathname) throws Exception {
+		try {
+			// 파일 지우기
+			List<Diary> listImg=listImg(diaryNum);
+			if(listImg!=null) {
+				for(Diary dto:listImg) {
+					fm.doFileDelete(dto.getSaveImgName(), pathname);
+				}
+			}
 			
-			fm.doFileDelete(dto.getSaveFilename(), pathname);
+			// 파일 테이블 내용 지우기
+			Map<String, Object> map=new HashMap<String, Object>();
+			map.put("field", "diaryNum");
+			map.put("diaryNum", diaryNum);
+			deleteImg(map);
 			
 			dao.deleteData("diary.deleteDiary", diaryNum);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
-		}		
+		}	
+	}
+
+	@Override
+	public void insertImg(Diary dto) throws Exception {
+		try {
+			dao.insertData("diary.insertImg", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public List<Diary> listImg(int diaryNum) {
+		List<Diary> listImg=null;
+		
+		try {
+			listImg=dao.selectList("diary.listImg", diaryNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return listImg;
+	}
+	
+	@Override
+	public Diary readImg(int diaryImgNum) {
+		Diary dto=null;
+		
+		try {
+			dto=dao.selectOne("diary.readImg", diaryImgNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+	
+	@Override
+	public void deleteImg(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("diary.deleteImg", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@Override
