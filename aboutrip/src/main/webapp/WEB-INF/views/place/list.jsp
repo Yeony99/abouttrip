@@ -51,8 +51,7 @@
 	color: white;
 	border: 1px solid #ddd;
 	cursor: pointer;
-	margin-left: 1040px;
-	margin-bottom: 30px;
+	margin-bottom: 3rem;
 }
 .btnDelete {
 	width: 50px;
@@ -146,7 +145,6 @@
 					<tr align="center" height="55">
 						<th width="60">번호</th>
 						<th>제목</th>
-						<th width="100">작성자</th>
 						<th width="200">등록일</th>
 						<th width="107">조회수</th>
 					</tr>
@@ -158,7 +156,6 @@
 							<td align="left" style="padding-left: 10px; text-align: center;">
 								<a href="">${dto.subject}</a>
 							</td>
-							<td width="100">${dto.userName}</td>
 							<td width="200">${dto.created}</td>
 							<td width="107">${dto.hitCount}</td>
 					</c:forEach>
@@ -172,9 +169,9 @@
 				</tr>
 			</table>
 
-			<span> <c:if test="${sessionScope.member.userId!=null}">
+			<span> <c:if test="${sessionScope.member.userId=='admin'}">
 					<button type="button" class="btnCreate"
-						onclick="javascript:location.href='${pageContext.request.contextPath}/qna/created.do';">등록</button>
+						onclick="javascript:location.href='${pageContext.request.contextPath}/place/create';">등록</button>
 				</c:if>
 			</span>
 		</div>
@@ -182,7 +179,3 @@
 
 	</div>
 </div>
-
-
-<!--<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/jquery/bxslider.js"></script>-->

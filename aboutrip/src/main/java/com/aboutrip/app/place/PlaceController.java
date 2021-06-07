@@ -19,5 +19,27 @@ public class PlaceController {
 		return new ModelAndView(".place.mdPick");
 	}
 	
+	@RequestMapping(value = "create", method = RequestMethod.GET)
+	public String createForm() throws Exception{
+		return ".place.create";
+	}
+	
+	@RequestMapping(value = "create", method = RequestMethod.POST)
+	public String createSubmit() throws Exception{
+		return "redirect:/place/list";
+	}
+	
+	@RequestMapping(value = "createMd", method = RequestMethod.GET)
+	public String createMdForm() throws Exception{
+		return ".place.createMd";
+	}
+	
+	@RequestMapping(value = "createMd", method = RequestMethod.POST)
+	public String createMdSubmit() throws Exception{
+		return "redirect:/place/mdPick";
+	}
+	
+	
+	
 	
 }

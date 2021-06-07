@@ -9,7 +9,7 @@
 	<nav
 		class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
 		<div class="container">
-			<a href="${pageContext.request.contextPath}/member/main"><img
+			<a href="${pageContext.request.contextPath}/admin/main"><img
 				src="${pageContext.request.contextPath}/resources/img/img/logo.svg"></a>
 			<button data-bs-toggle="collapse" data-target="#navcol-1" class="navbar-toggler">
 				<span class="visually-hidden"></span><span class="navbar-toggler-icon"></span>
@@ -29,8 +29,8 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">여행명소 관리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">AboutTrip pick 관리</a>
-							<a class="dropdown-item" href="#">한국관광공사 pick 관리</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/place/mdPick">AboutTrip pick 관리</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/place/list">한국관광공사 pick 관리</a>
 						</div></li>
 					<li class="nav-item dropdown"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
