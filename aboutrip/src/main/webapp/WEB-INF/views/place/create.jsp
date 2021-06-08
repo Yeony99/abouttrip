@@ -40,27 +40,53 @@
 	border: none;
 }
 </style>
+<script>
+function sendQna(){
+	var f = document.listForm;
+	var str;
+	
+	str = f.placeName.value;
+	str = str.trim();
+	if (!str) {
+		alert("제목을 입력하세요. ");
+		f.placeName.focus();
+		return;
+	}
+	
+	str = f.placeContent.value;
+	str = str.trim();
+	if (!str) {
+		alert("내용을 입력하세요. ");
+		f.placeContent.focus();
+		return;
+	}	
+	
+	f.action = "${pageContext.request.contextPath}/place/${mode}";
+	f.submit();
+}
+
+</script>
 	<div style="margin-top: 8rem">
 		<div>
 			<div class="body_title">
-				<span>한국관광공사 추천 여행지 등록</span>
+				<span>${pick=="mdPick" ? "MD의 추천":"한국 관광공사의 추천"}</span>
 			</div>
 
 			<div>
-				<form name="listForm" method="post">
+				<form name="listForm" method="post" enctype="multipart/form-data">
 					<table
 						style="width: 100%; margin: 30px auto; border-spacing: 0px; border-collapse: collapse; border-top: 2px solid #111;">
 						<tr align="left" height=100px;
 							style="border-bottom: 1px solid #ddd;">
 							<td style="text-align: center;">제목</td>
 							<td style="padding-left: 10px;"><input type="text"
-								name="subject" maxlength="50" class="boxTF"
-								value="${dto.subject}" placeholder="제목을 입력하세요."></td>
+								name="placeName" maxlength="50" class="boxTF"
+								value="${dto.placeName}" placeholder="제목을 입력하세요."></td>
 						</tr>
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
 							<td style="text-align: center; width: 250px;">내용</td>
-							<td valign="top"><textarea name="content" class="boxTA" placeholder="내용을 입력하세요."></textarea>
+							<td valign="top"><textarea name="placeContent" class="boxTA" placeholder="내용을 입력하세요.">${dto.palceContent }</textarea>
 							</td>
 						</tr>
 					</table>
@@ -70,7 +96,7 @@
 							<td align="center" style="padding-bottom: 30px;">
 								<button type="button" class="btn" onclick="sendQna();">${mode=='update'?'수정':'등록'}</button>
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/place/list';">${mode=='update'?'수정취소':'등록취소'}</button>
+									onclick="javascript:location.href='${pageContext.request.contextPath}/place/${pick}';">${mode=='update'?'수정취소':'등록취소'}</button>
 								<button type="reset" class="btn">재입력</button> 
 								<c:if
 									test="${mode=='update'}">

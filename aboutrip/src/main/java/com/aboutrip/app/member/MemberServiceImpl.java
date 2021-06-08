@@ -116,8 +116,20 @@ public class MemberServiceImpl implements MemberService{
 			//MemberMapper - deleteMember2,userNum
 			//MemberMapper - deleteMember1,userNum
 			dto = readMember(userId);
+			dao.selectOne("member.deletePayment", dto.getUserNum());
+			dao.selectOne("member.deletefollowing", dto.getUserNum());
+			dao.selectOne("member.deletefollower", dto.getUserNum());
 			dao.selectOne("member.deleteMember2", dto.getUserNum());
-			dao.selectOne("member.deleteMember1", dto.getUserNum());
+			StringBuilder sb = new StringBuilder();
+			Random rd=new Random();
+			String s="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxtz";	
+			for(int i=0;i<10;i++) {
+				int n = rd.nextInt(s.length());
+				sb.append(s.substring(n,n+1));
+			}
+			//dto.setUserPwd(sb.toString());
+			//updatePwd(dto);
+			//dao.selectOne("member.deleteMember1", dto.getUserNum());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

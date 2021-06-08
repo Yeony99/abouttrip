@@ -51,14 +51,23 @@
 		UPDATE member1 SET ENABLE = 2, profile_pic = null, userName= '-' WHERE userNum = #{userNum}
 	</update>
 	<update id="deleteMember2" parameterType="com.aboutrip.app.member.Member">
-		UPDATE member2 SET address1 = '-', address2='-', tel='-', birth='-', gender='-', paymentNum=null, zip='-'
+		UPDATE member2 SET address1 = '-', address2='-', tel='-', birth=TO_DATE('0001-01-01','YYYY-MM-DD'), gender='-', paymentNum=null, zip='-'
 		WHERE userNum = #{userNum} 
+	</update>
+	<update id="deletePayment" parameterType="com.aboutrip.app.member.Member">
+		DELETE from payment WHERE userNum = #{userNum}
+	</update>
+	<update id="deletefollowing" parameterType="com.aboutrip.app.member.Member">
+		DELETE from follow WHERE followingUser = #{userNum}
+	</update>
+	<update id="deletefollower" parameterType="com.aboutrip.app.member.Member">
+		DELETE from follow WHERE followerUser = #{userNum}
 	</update>
 	
 	<select id="listMember" parameterType="map" resultType="com.aboutrip.app.member.Member">
 		SELECT m1.userNum, userId, userPwd, userName, nickName, enable, FailCnt, profile_pic, address1,
 		address2, tel, birth, gender, paymentNum, created_date FROM member m1
-		LEFT OUTER JOIN member1 m1 ON m1.userNum = m2.userNum 
+		LEFT OUTER JOIN member2 m2 ON m1.userNum = m2.userNum 
 		ORDER BY groupNum DESC, orderNo ASC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>

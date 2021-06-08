@@ -27,9 +27,6 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	/*
-	 * @Autowired private FileManager fileManager;
-	 */
 	
 	@Autowired
 	private AboutUtil aboutUtil;
@@ -37,8 +34,6 @@ public class MemberController {
 	@RequestMapping(value = "member", method = RequestMethod.GET)
 	public String memberForm(Model model) throws Exception {
 		model.addAttribute("mode", "member");
-		// tiles-defs에서 .에 관해서 설정해놓음
-		// 화면결합을 위하면 tiles를 사용
 		return ".member.member";
 	}
 
@@ -94,7 +89,9 @@ public class MemberController {
 			model.addAttribute("message", "아이디 또는 패스워드가 일치하지 않습니다.");
 			return ".member.login";
 		}
-
+		if(!(dto.getEnable()==0||dto.getEnable()==1)) {
+			return ".member.login";
+		}
 		SessionInfo info = new SessionInfo();
 		info.setUserNum(dto.getUserNum());
 		info.setNickName(dto.getNickName());
@@ -457,5 +454,19 @@ public class MemberController {
         model.addAttribute("paging", paging);
 		
 		return".member.follow";
+	}
+	
+	@RequestMapping(value = "delete")
+	public String deleteMember(HttpSession session,Model model)throws Exception{
+		
+		try {
+			SessionInfo info=(SessionInfo)session.getAttribute("member");
+			service.deleteMember(info.getUserId());
+			model.addAttribute("mode","delete");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return".member.login";
 	}
 }

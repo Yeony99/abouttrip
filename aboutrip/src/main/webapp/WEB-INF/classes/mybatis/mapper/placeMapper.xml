@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="place">
+	<insert id="insertPlace" parameterType="com.aboutrip.app.place.Place">
+		INSERT INTO place(placeNum, placeName, placeContent, mdPick,hitCount, created_date) 
+		VALUES(#{placeNum}, #{placeName}, #{placeContent, jdbcType=VARCHAR}, #{mdPick},0,SYSDATE)
+	</insert>
+	<insert id="insertPlaceImg" parameterType="com.aboutrip.app.place.Place">
+		INSERT INTO placeImg(placeImgNum, placeImgName, placeNum) value (#{placeNum}, #{placeImgName}, #{placeNum}) 
+	</insert>
+	
+	<select id="placeNumseq" resultType="Integer">
+       SELECT place_seq.NEXTVAL FROM dual 
+    </select>
+    <select id="ctgNumseq" resultType="Integer">
+       SELECT placeImg_seq.NEXTVAL FROM dual 
+    </select>
+    
+    
+    <sql id="where-list">
+		<choose>
+			<when test="condition == 'all' ">
+			   AND ( INSTR(subject, #{keyword}) &gt; 0
+		          OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
+			</when>
+			<when test="condition == 'content'">
+			   AND DBMS_LOB.INSTR(content, #{keyword}) &gt; 0
+			</when>
+			<otherwise>
+			   AND INSTR(${condition}, #{keyword}) &gt; 0
+			</otherwise>
+		</choose>
+	</sql>
+    
+    <select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(placeNum),0) FROM place 
+		<where>
+		 	mdPick = #{mdPick}
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+		</where>
+	</select>
+    
+    <select id="listPlace" parameterType="map" resultType="com.aboutrip.app.place.Place">
+    	SELECT p.placeNum, placeName, placeContent, mdPick, ctgNum, hitCount, created_date, placeImgNum, placeImgName
+    	FROM place p
+    	LEFT OUTER JOIN placeImg pi ON p.placeNum = pi.placeNum
+    	<where>
+    		mdPick = #{mdPick}
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+		</where>
+    	ORDER BY p.placeNum DESC
+    	OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+    </select>
+    
+</mapper>
