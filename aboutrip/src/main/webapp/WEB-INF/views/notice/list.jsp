@@ -46,6 +46,36 @@
 	height: 45px;
 }
 
+a {
+	text-decoration: none;
+}
+
+.btnCreate {
+	border: none;
+	background-color: #055ada;
+	color: #fff;
+	border-radius: 7px;
+}
+
+.btnReset {
+	border: none;
+	background-color: #87CEFA;
+	color: black;
+	border-radius: 7px;
+	
+}
+
+.btnSearch{
+	border: none;
+	background-color: #EAEAEA;
+	color: black;
+	border-radius: 7px;
+}
+
+.boxTF{
+	height: 23px;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -56,17 +86,16 @@
 </script>
 
 <div class="body-container">
-	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top:30px; padding-bottom: 50px;">
-		<div class="body-title">
-			<div style="text-align: left; color: black;">
-			</div>
+	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top:50px; padding-bottom: 50px;">
+		<div class="body-title" style="width: 90%;">
+			<h2>NOTICE</h2>
+		</div>
 
 			<div class="body-main">
 				<table class="table table-header">
 					<tr>
-						<td align="left" width="50%"><h3>NOTICE</h3></td>
-							
-						<td align="right">${dataCount}개(${page}/${total_page} 페이지)</td>
+						<td align="left" width="50%"></td>
+						<td align="right" width="50%">${dataCount}개(${page}/${total_page} 페이지)</td>
 					</tr>
 				</table>
 
@@ -81,8 +110,9 @@
 
 					<c:forEach var="dto" items="${noticeList}">
 						<tr>
-							<td><span style="display: inline-block; padding:1px 3px; background: blue; color: #fff">공지</span></td>
-							<td><a href="${articleUrl}&num=${dto.num}">${dto.title}</a>
+							<td>
+							<span style="display: inline-block; padding:1px 3px; background: blue; color: #fff">공지</span></td>
+							<td><a href="${articleUrl}&num=${dto.num}"><strong>${dto.title}</strong></a>
 							</td>
 							<td>${sessionScope.member.nickName}</td>
 							<td>${dto.reg_date}</td>

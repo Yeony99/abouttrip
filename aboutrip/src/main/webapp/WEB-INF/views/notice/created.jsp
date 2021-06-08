@@ -43,6 +43,39 @@
 	height:45px;
 	text-align: center;
 }
+
+form textarea{
+	min-height: 200px;
+	max-height: 500px;
+
+}
+
+a {
+	text-decoration: none;
+}
+
+.btnCreate {
+	border: none;
+	background-color: #055ada;
+	color: #fff;
+	border-radius: 7px;
+}
+
+.btnReset {
+	border: none;
+	background-color: #87CEFA;
+	color: black;
+	border-radius: 7px;
+	
+}
+
+.btnList{
+	border: none;
+	background-color: #EAEAEA;
+	color: black;
+	border-radius: 7px;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -106,13 +139,12 @@ $(function(){
 </script>
 
 <div class="body-container">
-	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top:30px; padding-bottom: 50px;">
+	<div class="body-title" style="width: 90%; padding-left: 100px; padding-top: 50px;">
+			<h2>NOTICE</h2>
+	</div>
+	<div class="body-main" style="width: 90%; padding-left: 100px; padding-bottom: 50px;">
 		<form name="noticeForm" method="post" enctype="multipart/form-data">
 		<table class="table table-content">
-			<thead>
-				<h2>NOTICE</h2>
-			</thead>
-			
 			<tbody id="tb">
 				<tr> 
 					<td>제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
@@ -168,9 +200,9 @@ $(function(){
 		<table class="table table-footer">
 			<tr height="45"> 
 				<td align="center" >
-					<button type="button" class="btnUpdate" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
+					<button type="button" class="btnCreate" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
 					<button type="reset" class="btnReset">다시입력</button>
-					<button type="button" class="btnlist" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list';">${mode=='update'?'수정취소':'등록취소'}</button>
+					<button type="button" class="btnList" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 						<input type="hidden" name="adminNum" value="${sessionScope.member.userNum}">
 					<c:if test="${mode=='update'}">
 						<input type="hidden" name="num" value="${dto.num}">

@@ -32,6 +32,33 @@
 .table-footer tr {
 	height:45px;
 }
+
+.btnupdate {
+	border: none;
+	background-color: #055ada;
+	color: #fff;
+	border-radius: 7px;
+}
+
+.btndelete {
+	border: none;
+	background-color: #87CEFA;
+	color: black;
+	border-radius: 7px;
+	
+}
+
+.btnList{
+	border: none;
+	background-color: #EAEAEA;
+	color: black;
+	border-radius: 7px;
+}
+
+
+a {
+	text-decoration: none;
+}
 </style>
 
 <script type="text/javascript">
@@ -48,21 +75,19 @@
 </script>
 
 <div class="body-container">
-	<div class="body-title" style="width: 90%; padding-left: 100px; padding-top:30px; ">
-		<div>
-				<h2>NOTICE</h2>
-		</div>
+	<div class="body-title" style="width: 90%; padding-left: 100px; padding-top: 50px;">
+			<h2>NOTICE</h2>
 	</div>
     
 	<div class="body-main" style="width: 90%; padding-left: 100px; padding-bottom: 50px;">
 		<table class="table table-content">
 			<tr>
-				<td colspan="2" align="center">
+				<td colspan="2" align="center" style="color: blue; font-weight: 600;">
 				  ${dto.num} &nbsp;&nbsp; | &nbsp;&nbsp; ${dto.title}
 				</td>
 			</tr>
 			
-			<tr>
+			<tr style="font-weight: 600;">
 				<td width="50%" align="left">
 					${sessionScope.member.nickName}
 				</td>
@@ -72,7 +97,7 @@
 			</tr>
 			
 			<tr>
-				<td colspan="2" valign="top" height="200">
+				<td colspan="2" valign="top" height="200" style="padding-left: 10px;">
 					${dto.content}
 				</td>
 			</tr>
@@ -128,7 +153,7 @@
 				</td>
 			
 				<td align="right">
-					<button type="button" class="btnlist" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list?${query}';">리스트</button>
+					<button type="button" class="btnList" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list?${query}';">리스트</button>
 				</td>
 			</tr>
 		</table>
