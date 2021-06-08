@@ -18,8 +18,11 @@
 			( INSTR(subject, #{keyword}) &gt; 0
 				OR INSTR(content, #{keyword}) &gt; 0 )
 		</if>
-		<if test="condition=='hashName' ">
-			INSTR(${hashName}, #{keyword}) &gt; 0
+		<if test="condition=='diaryTitle' ">
+			INSTR(${diaryTitle}, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='diaryContent' ">
+			INSTR(${diaryContent}, #{keyword}) &gt; 0
 		</if>
 	</sql>
 		

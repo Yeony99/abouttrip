@@ -4,31 +4,47 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <style type="text/css">
-    function sendOk() {
-        var f = document.diaryForm;
-
-    	var str = f.diaryTitle.value;
-        if(!str) {
-            alert("제목을 입력하세요. ");
-            f.diaryTitle.focus();
-            return;
-        }
-
-    	str = f.diaryContent.value;
-        if(!str) {
-            alert("내용을 입력하세요. ");
-            f.diaryContent.focus();
-            return;
-        }
-
-    	f.action="${pageContext.request.contextPath}/diary/${mode}";
-
-        f.submit();
-    }
+.body-container {
+	margin-top: 100px;
+}
 </style>
 
 <script type="text/javascript">
+function sendOk() {
+    var f = document.diaryForm;
 
+    if(! f.diaryTitle.value) {
+        alert("제목을 입력하세요. ");
+        f.diaryTitle.focus();
+        return;
+    }
+    
+    if(! f.diaryType.value) {
+        alert("공개여부를 입력하세요. ");
+        f.diaryType.focus();
+        return;
+    }
+
+    if(! f.diaryContent.value) {
+        alert("내용을 입력하세요. ");
+        f.diaryContent.focus();
+        return;
+    }
+    
+    var mode = "${mode}";
+	if(mode=="created") {
+		str = f.selectImg.value;
+		if(!str) {
+			alert("사진을 첨부하세요. ");
+			f.selectImg.focus();
+			return;
+		}
+	}
+
+	f.action="${pageContext.request.contextPath}/diary/${mode}";
+
+    f.submit();
+}
 </script>
 
 <div class="body-container">
@@ -44,6 +60,11 @@
 				<td>
 					<input type="text" name="diaryTitle" maxlength="50" value="${dto.diaryTitle}">
 				</td>
+				<td>공개여부</td>
+				<td>
+					<input type="radio" name="diaryType" value="1" checked="checked">공개
+					<input type="radio" name="diaryType" value="2">비공개
+				</td>
 			</tr>
 			<tr>
 				<td>작성자</td>
@@ -58,20 +79,20 @@
 				</td>
 			</tr>
 			<tr>
-				<td>첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+				<td>사진</td>
 				<td > 
-					<input type="file" name="upload" class="boxTF">
+					<input type="file" name="selectImg" accept="image/*" multiple="multiple">
 				</td>
 			</tr>
 			  
 			<c:if test="${mode=='update'}">
-				<tr>
-					<td>이미지</td>
-					<td>
+				<tr id="f${vo.diaryImgNum}"> 
+					<td>등록이미지</td>
+					<td> 
 						<c:if test="${not empty dto.saveImgName}">
-							<a href="${pageContext.request.contextPath}/diary/deleteFile?num=${dto.diaryNum}&page=${page}"><i class="far fa-trash-alt"></i></a>
+							<a href="${pageContext.request.contextPath}/diary/deleteImg?diaryNum=${dto.diaryNum}&page=${page}"><i class="icofont-bin"></i></a>
 						</c:if>
-						${dto.originalImgName}
+						${dto.saveImgName}
 					</td>
 				</tr>
 			</c:if>
@@ -85,7 +106,6 @@
 						<c:if test="${mode=='update'}">
 							<input type="hidden" name="diaryNum" value="${dto.diaryNum}">
 							<input type="hidden" name="saveImgName" value="${dto.saveImgName}">
-							<input type="hidden" name="originalImgName" value="${dto.originalImgName}">
 							<input type="hidden" name="page" value="${page}">
 						</c:if>
 				</td>

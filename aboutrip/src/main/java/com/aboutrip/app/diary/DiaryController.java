@@ -286,6 +286,36 @@ public class DiaryController {
 		return model;
 	}
 	
+	// 게시글 좋아요 추가 :  : AJAX-JSON
+		@RequestMapping(value="insertDiaryLike", method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> insertDiaryLike(
+				@RequestParam int diaryNum,
+				HttpSession session
+				) {
+			String state="true";
+			int diaryLikeCount=0;
+			SessionInfo info=(SessionInfo)session.getAttribute("member");
+			
+			Map<String, Object> paramMap=new HashMap<>();
+			paramMap.put("diaryNum", diaryNum);
+			paramMap.put("userId", info.getUserId());
+			
+			try {
+				service.insertDiaryLike(paramMap);
+			} catch (Exception e) {
+				state="false";
+			}
+				
+			diaryLikeCount = service.diaryLikeCount(diaryNum);
+			
+			Map<String, Object> model=new HashMap<>();
+			model.put("state", state);
+			model.put("diaryLikeCount", diaryLikeCount);
+			
+			return model;
+		}
+	
 	/*
 	// 세션에 있는게 userNum인지 UserId인지 다시 확인하고 수정하기
 		@PostMapping("insert")
