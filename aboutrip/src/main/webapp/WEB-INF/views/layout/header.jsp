@@ -5,7 +5,7 @@
 
 <div class="container">
 	<nav
-		class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+		class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar" style="position: static">
 		<div class="container">
 			<a href="${pageContext.request.contextPath}/member/main"><img
 				src="${pageContext.request.contextPath}/resources/img/img/logo.svg"></a>
