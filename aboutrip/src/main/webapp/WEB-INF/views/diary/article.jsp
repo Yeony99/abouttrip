@@ -118,22 +118,22 @@ function imageViewer(img) {
 			    			<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/update?num=${dto.diaryNum}&page=${page}';">수정</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="btn" disabled="disabled">수정</button>
+			    			<button type="button" class="createBtn" disabled="disabled">수정</button>
 			    		</c:otherwise>
 			    	</c:choose>
 			    	
 			    	<c:choose>
 			    		<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
-			    			<button type="button" class="btn" onclick="deleteDiary();">삭제</button>
+			    			<button type="button" class="createBtn" class="btn" onclick="deleteDiary();">삭제</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="btn" disabled="disabled">삭제</button>
+			    			<button type="button" class="createBtn" class="btn" disabled="disabled">삭제</button>
 			    		</c:otherwise>
 			    	</c:choose>
 				</td>
 			
 				<td align="right">
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/list?${query}';">리스트</button>
+					<button type="button" class="createBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/list?${query}';">리스트</button>
 				</td>
 			</tr>
 		</table>

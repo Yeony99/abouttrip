@@ -7,6 +7,29 @@
 .body-container {
 	margin-top: 100px;
 }
+
+.createBtn {
+	color: #46CCFF;
+	margin: 5px;
+	box-sizing: border-box; 
+	float: left;
+	cursor: pointer;
+	width: 45px;
+	height: 45px;
+	line-height: 45px;
+	border-radius:45px;
+	border: none;
+	font-weight: bold;
+	text-align: center;
+	font-size: 13px;
+	background: #f8f9fa
+}
+
+.createBtn:hover {
+	color: #f8f9fa;
+	border: 1px solid #f8f9fa;
+	background-color: transparent;
+}
 </style>
 
 <script type="text/javascript">
@@ -100,9 +123,9 @@ function sendOk() {
 		<table>
 			<tr> 
 				<td>
-					<button type="button" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
-					<button type="reset">다시입력</button>
-					<button type="button" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/list';">${mode=='update'?'수정취소':'등록취소'}</button>
+					<button type="button" class="createBtn" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
+					<button type="reset" class="createBtn">다시입력</button>
+					<button type="button" class="createBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 						<c:if test="${mode=='update'}">
 							<input type="hidden" name="diaryNum" value="${dto.diaryNum}">
 							<input type="hidden" name="saveImgName" value="${dto.saveImgName}">
