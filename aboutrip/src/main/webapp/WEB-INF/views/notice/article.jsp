@@ -48,7 +48,7 @@
 </script>
 
 <div class="body-container">
-	<div class="body-title" style="width: 90%; padding-left: 100px; padding-top: 150px;">
+	<div class="body-title" style="width: 90%; padding-left: 100px; padding-top:30px; ">
 		<div>
 				<h2>NOTICE</h2>
 		</div>
@@ -81,8 +81,7 @@
 				<tr>
 					<td colspan="2">
 						<a href="${pageContext.request.contextPath}/notice/download?fileNum=${vo.fileNum}">
-						📑 ${vo.originalFilename}</a>
-						(<fmt:formatNumber value="${vo.fileSize/1024}" pattern="0.00"/> kByte)
+						📃 ${vo.originalFilename}</a>
 					</td>
 				</tr>
 			</c:forEach>

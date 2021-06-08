@@ -56,7 +56,7 @@
 </script>
 
 <div class="body-container">
-	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top: 150px; padding-bottom: 50px;">
+	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top:30px; padding-bottom: 50px;">
 		<div class="body-title">
 			<div style="text-align: left; color: black;">
 			</div>
@@ -81,7 +81,7 @@
 
 					<c:forEach var="dto" items="${noticeList}">
 						<tr>
-							<td><span style="display: inline-block;padding:1px 3px; background: blue; color: #fff">공지</span></td>
+							<td><span style="display: inline-block; padding:1px 3px; background: blue; color: #fff">공지</span></td>
 							<td><a href="${articleUrl}&num=${dto.num}">${dto.title}</a>
 							</td>
 							<td>${sessionScope.member.nickName}</td>

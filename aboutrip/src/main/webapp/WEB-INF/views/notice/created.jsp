@@ -106,7 +106,7 @@ $(function(){
 </script>
 
 <div class="body-container">
-	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top: 150px; padding-bottom: 50px;">
+	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top:30px; padding-bottom: 50px;">
 		<form name="noticeForm" method="post" enctype="multipart/form-data">
 		<table class="table table-content">
 			<thead>
