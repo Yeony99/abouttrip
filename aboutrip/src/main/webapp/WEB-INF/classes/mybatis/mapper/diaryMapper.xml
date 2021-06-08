@@ -9,7 +9,7 @@
 	
 	<insert id="insertDiary" parameterType="com.aboutrip.app.diary.Diary">
 		INSERT INTO diary(diaryNum, diaryType, diaryTitle, diaryContent, diaryCreated, userNum)
-			VALUES (diary_seq.NEXTVAL, #{diaryType}, #{diaryTitle},  
+			VALUES (#{diaryNum}, #{diaryType}, #{diaryTitle},  
 					#{diaryContent}, SYSDATE, ${userNum})
 	</insert>
 	
