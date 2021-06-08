@@ -24,7 +24,7 @@ public class NoticeServiceImpl implements NoticeService {
 	public void insertNotice(Notice dto, String pathname) throws Exception {
 		try {
 			int seq=dao.selectOne("notice.seq");
-			dto.setNoticeNum(seq);
+			dto.setNum(seq);
 
 			dao.insertData("notice.insertNotice", dto);
 			
@@ -91,11 +91,11 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public Notice readNotice(int noticeNum) {
+	public Notice readNotice(int num) {
 		Notice dto=null;
 
 		try {
-			dto=dao.selectOne("notice.readNotice", noticeNum);
+			dto=dao.selectOne("notice.readNotice", num);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -157,9 +157,9 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public void deleteNotice(int noticeNum, String pathname) throws Exception {
+	public void deleteNotice(int num, String pathname) throws Exception {
 		try {
-			List<Notice> listFile=listFile(noticeNum);
+			List<Notice> listFile=listFile(num);
 			if(listFile!=null) {
 				for(Notice dto:listFile) {
 					fileManager.doFileDelete(dto.getSaveFilename(), pathname);
@@ -168,10 +168,10 @@ public class NoticeServiceImpl implements NoticeService {
 			
 			Map<String, Object> map=new HashMap<String, Object>();
 			map.put("field", "num");
-			map.put("num", noticeNum);
+			map.put("num", num);
 			deleteFile(map);
 			
-			dao.deleteData("notice.deleteNotice", noticeNum);
+			dao.deleteData("notice.deleteNotice", num);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -191,11 +191,11 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<Notice> listFile(int noticeNum) {
+	public List<Notice> listFile(int num) {
 		List<Notice> listFile=null;
 		
 		try {
-			listFile=dao.selectList("notice.listFile", noticeNum);
+			listFile=dao.selectList("notice.listFile", num);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -204,11 +204,11 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public Notice readFile(int nfileNum) {
+	public Notice readFile(int fileNum) {
 		Notice dto=null;
 		
 		try {
-			dto=dao.selectOne("notice.readFile", nfileNum);
+			dto=dao.selectOne("notice.readFile", fileNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -7,17 +7,20 @@
 	</select>
 	
 	<insert id="insertNotice" parameterType="com.aboutrip.app.cs.Notice">
-		INSERT INTO notice(NOTICEnum, notice, title, content, AdminNum, reg_date) 
-			VALUES(#{noticeNum}, #{notice}, #{title}, #{content}, #{adminNum}, SYSDATE)
+		INSERT INTO notice(num, notice, title, content, adminNum, reg_date) 
+			VALUES(#{num}, #{notice}, #{title}, #{content}, #{adminNum}, SYSDATE)
 	</insert>
 	
 	<sql id="where-list">
-		<if test="condition=='all'">
-			( INSTR(title, #{keyword} &gt; 0
-				OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0)
+		<if test="condition=='all' ">
+			( INSTR(title, #{keyword}) &gt; 0
+				OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
 		</if>
-		<if test="condition=='subject'">
-			INSTR(subject, #{keyword}) &gt; 0
+		<if test="condition=='title'">
+			INSTR(title, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='content'">
+			INSTR(content, #{keyword}) &gt; 0
 		</if>
 		<if test="condition=='reg_date'">
 			( TO_CHAR(reg_date, 'YYYY-MM-DD') = #{keyword}
@@ -25,24 +28,10 @@
 		</if>
 	</sql>
 	
-	<select id="listNoticeTop" resultType="com.aboutrip.app.cs.Notice">
-		SELECT n.NOTICEnum, notice, n.AdminNum, title, nickName,
-			TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date,
-			NVL(fileCount, 0) fileCount
-		FROM notice n 
-		JOIN member1 m ON n.AdminNum = m.userNum
-		LEFT OUTER JOIN (
-			SELECT NOTICEnum, COUNT(*) fileCount FROM noticeFile
-			GROUP BY NOTICEnum
-		) f ON n.NOTICEnum=f.NOTICEnum
-		WHERE notice = 1
-		ORDER BY NOTICEnum DESC
-	</select>
-	
 	<select id="dataCount" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM notice n
-		JOIN member1 m ON n.AdminNum = m.userNum
+		JOIN member1 m ON n.adminNum = m.userNum
 		<where>
 			<if test="keyword != null and keyword!='' ">
 				<include refid="where-list"/>
@@ -50,82 +39,103 @@
 		</where>
 	</select>
 	
+	<select id="listNoticeTop" resultType="com.aboutrip.app.cs.Notice">
+		SELECT n.num, notice, n.adminNum, title, nickName,
+			TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date,
+			NVL(fileCount, 0) fileCount
+		FROM notice n 
+		JOIN member1 m ON n.adminNum = m.userNum
+		LEFT OUTER JOIN (
+			SELECT num, COUNT(*) fileCount FROM noticeFile
+			GROUP BY num
+		) f ON n.num=f.num
+		WHERE notice = 1
+		ORDER BY num DESC
+	</select>
+	
+	
 	<select id="listNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
-		SELECT n.NOTICEnum, notice, n.AdminNum, title, reg_date, nickName,
-		NVL(fileCount, 0) fileCount
+		SELECT n.num, notice, n.adminNum, title, reg_date, nickName, NVL(fileCount, 0) fileCount
 		FROM notice n
-		JOIN member1 m ON n.AdminNum = m.userNum
+		JOIN member1 m ON n.adminNum = m.userNum
 		LEFT OUTER JOIN(
-			SELECT NOTICEnum, COUNT(*) fileCount FROM noticeFile
-			GROUP BY NOTICEnum
-			) f ON n.NOTICEnum = f.NOTICEnum
+			SELECT num, COUNT(*) fileCount FROM noticeFile
+			GROUP BY num
+			) f ON n.num = f.num
 	<where>
 		<if test="keyword != null and keyword != ''">
 			<include refid="where-list"/>
 		</if>
 	</where>
-	ORDER BY NOTICEnum DESC
+	ORDER BY num DESC
 	OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 	
 	<select id="readNotice" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
-		SELECT NOTICEnum, n.AdminNum, title, content, reg_date, notice, nickName
+		SELECT num, n.adminNum, title, content, reg_date, notice, nickName
 		FROM notice n
-		JOIN member1 m ON n.AdminNum = m.userNum
-		WHERE NOTICEnum = #{noticeNum}
+		JOIN member1 m ON n.adminNum = m.userNum
+		WHERE num = #{num}
 	</select>
 	
 	<select id="preReadNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
-		SELECT NOTICEnum, title
+		SELECT num, title
 		FROM notice n
-		JOIN member1 m ON n.AdminNum = m.UserNum
+		JOIN member1 m ON n.adminNum = m.userNum
 		<where>
 			<if test="keyword != null and keyword != '' ">
 				<include refid="where-list"/>
 			</if>
-			AND (NOTICEnum &gt; #{noticeNum})
+			AND (num &gt; #{num})
 		</where>
-		ORDER BY NOTICEnum ASC
+		ORDER BY num ASC
 		FETCH FIRST 1 ROWS ONLY
 	</select>
 	
 	<select id="nextReadNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
-		SELECT NOTICEnum, title
+		SELECT num, title
 		FROM notice n
-		JOIN member1 m ON n.AdminNum = m.UserNum
+		JOIN member1 m ON n.adminNum = m.userNum
 		<where>
 			<if test="keyword != null and keyword != '' ">
 				<include refid="where-list"/>
 			</if>
-			AND (NOTICEnum &lt; #{noticeNum})
+			AND (num &lt; #{num})
 		</where>
-		ORDER BY NOTICEnum DESC
+		ORDER BY num DESC
 		FETCH FIRST 1 ROWS ONLY
 	</select>
 	
 	<update id="updateNotice" parameterType="com.aboutrip.app.cs.Notice">
 		UPDATE notice SET title = #{title}, content=#{content}, notice=#{notice}
-		WHERE NOTICEnum=#{noticeNum}
+		WHERE num=#{num}
 	</update>
 	
 	<delete id="deleteNotice" parameterType="Integer">
-		DELETE FROM notice WHRER NOTICEnum=#{noticeNum}
+		DELETE FROM notice WHERE num=#{num}
 	</delete>
 	
 	<insert id="insertFile" parameterType="com.aboutrip.app.cs.Notice">
-		INSERT INTO noticeFile(NfileNum, NOTICEnum, saveFilename, originalFilename) 
-			VALUES(noticeFile_seq.NEXTVAL, #{noticeNum}, #{saveFilename}, 
-				#{originalFilename})
+		INSERT INTO noticeFile(fileNum, num, saveFilename, originalFilename) 
+			VALUES(noticeFile_seq.NEXTVAL, #{num}, #{saveFilename}, #{originalFilename})
 	</insert>
 	
-	<select id="readFile" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
-		SELECT NfileNum, NOTICEnum, saveFilename, originalFilename
+	<select id="listFile" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
+		SELECT fileNum, num, saveFilename, originalFilename 
 		FROM noticeFile
-		WHERE NfileNum=#{nfileNum}
+		WHERE num=#{num}    
+	</select>
+	
+	<select id="readFile" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
+		SELECT fileNum, num, saveFilename, originalFilename
+		FROM noticeFile
+		WHERE fileNum=#{fileNum}
 	</select>
 	
 	<delete id="deleteFile" parameterType="map">
-		DELETE FROM noticeFile WHERE ${field}=#{noticeNum}
+		DELETE FROM noticeFile WHERE ${field}=#{num}
 	</delete>
+	
+	
 	
 </mapper>

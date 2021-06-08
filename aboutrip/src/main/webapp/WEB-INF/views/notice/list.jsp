@@ -56,14 +56,9 @@
 </script>
 
 <div class="body-container">
-	<div class="body-main" style="width: 90%; padding-left: 100px">
+	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top: 150px; padding-bottom: 50px;">
 		<div class="body-title">
-			<div style="text-align: left; color: black">
-				<br>
-				<br>
-				<br>
-				<hr>
-				<br>
+			<div style="text-align: left; color: black;">
 			</div>
 
 			<div class="body-main">
@@ -71,7 +66,7 @@
 					<tr>
 						<td align="left" width="50%"><h3>NOTICE</h3></td>
 							
-						<td align="right">page</td>
+						<td align="right">${dataCount}개(${page}/${total_page} 페이지)</td>
 					</tr>
 				</table>
 
@@ -84,36 +79,35 @@
 						<th width="50">첨부</th>
 					</tr>
 
-					<c:forEach var="dto" items="${list}">
+					<c:forEach var="dto" items="${noticeList}">
 						<tr>
-							<td><span><img src="${pageContext.request.contextPath}/resources/img/img/notice.gif"></span></td>
-							<td><a href="${articleUrl}&num=${dto.noticeNum}">${dto.title}</a>
+							<td><span style="display: inline-block;padding:1px 3px; background: blue; color: #fff">공지</span></td>
+							<td><a href="${articleUrl}&num=${dto.num}">${dto.title}</a>
 							</td>
-							<td>관리자</td>
+							<td>${sessionScope.member.nickName}</td>
 							<td>${dto.reg_date}</td>
-							<td><c:if test="${dto.fileCount != 0}">
-									<a
-										href="${pageContext.request.contextPath}/notice/zipdownload?noticeNum=${dto.noticeNum}"><i
-										class="far fa-file"></i></a>
-								</c:if></td>
+							<td>
+								<c:if test="${dto.fileCount != 0}">
+									<a href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.num}">📃</a>
+								</c:if>
+							</td>
 						</tr>
 					</c:forEach>
 
 					<c:forEach var="dto" items="${list}">
 						<tr>
 							<td>${dto.listNum}</td>
-							<td><a href="${articleUrl}&num=${dto.noticeNum}">${dto.title}</a>
-								<c:if test="${dto.gap < 1}">
-									<img
-										src='${pageContext.request.contextPath}/resources/images/new.gif'>
-								</c:if></td>
-							<td>관리자</td>
+							<td><a href="${articleUrl}&num=${dto.num}">${dto.title}</a>
+							<c:if test="${dto.gap <1}">
+								<span style="display: inline-block;padding:1px 3px; color: #87CEFA">NEW</span>
+							</c:if>
+							</td>
+							<td>${sessionScope.member.nickName}</td>
 							<td>${dto.reg_date}</td>
 							<td><c:if test="${dto.fileCount != 0}">
-									<a
-										href="${pageContext.request.contextPath}/notice/zipdownload?noticeNum=${dto.noticeNum}"><i
-										class="far fa-file"></i></a>
-								</c:if></td>
+									<a href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.num}">📃</a>
+								</c:if>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -132,21 +126,19 @@
 						</td>
 						<td align="center">
 							<form name="searchForm"
-								action="${pageContext.request.contextPath}/notice/list"
-								method="post">
+								action="${pageContext.request.contextPath}/notice/list" method="post">
 								<select name="condition" class="selectField">
 									<option value="all"
 										${condition=="all"?"selected='selected'":""}>모두</option>
-									<option value="subject"
+									<option value="title"
 										${condition=="subject"?"selected='selected'":""}>제목</option>
 									<option value="content"
 										${condition=="content"?"selected='selected'":""}>내용</option>
-									<option value="userName"
-										${condition=="userName"?"selected='selected'":""}>작성자</option>
-									<option value="created"
+									<option value="reg_date"
 										${condition=="created"?"selected='selected'":""}>등록일</option>
-								</select> <input type="text" name="keyword" value="${keyword}"
-									class="boxTF">
+								</select> 
+								
+								<input type="text" name="keyword" value="${keyword}" class="boxTF">
 								<button type="button" class="btnSearch" onclick="searchList()">검색</button>
 							</form>
 						</td>

@@ -72,10 +72,10 @@ $(function(){
 });
 
   <c:if test="${mode=='update'}">
-  function deleteFile(nfileNum) {
+  function deleteFile(fileNum) {
 		var url="${pageContext.request.contextPath}/notice/deleteFile";
-		$.post(url, {nfileNum:nfileNum}, function(data){
-			$("#f"+nfileNum).remove();
+		$.post(url, {fileNum:fileNum}, function(data){
+			$("#f"+fileNum).remove();
 		}, "json");
   }
 </c:if>
@@ -105,18 +105,14 @@ $(function(){
     }
 </script>
 
-<div class="body-container" style="width: 700px;">
-	<div class="body-title">
-		<div style="text-align: left; color: black">
-				<h2>NOTICE</h2>
-				<p>AboutTrip 공지사항</p>
-				<hr>
-				<br>
-		</div>
-    
-	<div class="body-main">
+<div class="body-container">
+	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top: 150px; padding-bottom: 50px;">
 		<form name="noticeForm" method="post" enctype="multipart/form-data">
 		<table class="table table-content">
+			<thead>
+				<h2>NOTICE</h2>
+			</thead>
+			
 			<tbody id="tb">
 				<tr> 
 					<td>제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
@@ -135,7 +131,7 @@ $(function(){
 				<tr> 
 					<td>작성자</td>
 					<td> 
-						${nickName}
+						${sessionScope.member.nickName}
 					</td>
 				</tr>
 			
@@ -157,10 +153,10 @@ $(function(){
 			<c:if test="${mode=='update'}">
 				<tfoot>
 					<c:forEach var="vo" items="${listFile}">
-						<tr id="f${vo.nfileNum}"> 
+						<tr id="f${vo.fileNum}"> 
 							<td>첨부된파일</td>
 							<td> 
-								<a href="javascript:deleteFile('${vo.nfileNum}');"><i class="far fa-trash-alt"></i></a> 
+								<a href="javascript:deleteFile('${vo.fileNum}');"><i class="far fa-trash-alt"></i></a> 
 								${vo.originalFilename}
 							</td>
 						  </tr>
@@ -172,12 +168,12 @@ $(function(){
 		<table class="table table-footer">
 			<tr height="45"> 
 				<td align="center" >
-					<button type="button" class="btn" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
-					<button type="reset" class="btn">다시입력</button>
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list';">${mode=='update'?'수정취소':'등록취소'}</button>
+					<button type="button" class="btnUpdate" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
+					<button type="reset" class="btnReset">다시입력</button>
+					<button type="button" class="btnlist" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 						<input type="hidden" name="adminNum" value="${sessionScope.member.userNum}">
 					<c:if test="${mode=='update'}">
-						<input type="hidden" name="num" value="${dto.noticeNum}">
+						<input type="hidden" name="num" value="${dto.num}">
 						<input type="hidden" name="page" value="${page}">
 					</c:if>
 				</td>

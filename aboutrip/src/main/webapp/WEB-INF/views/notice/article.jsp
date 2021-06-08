@@ -37,7 +37,7 @@
 <script type="text/javascript">
 <c:if test="${sessionScope.member.userId=='admin'}">
 	function deleteSend() {
-		var query = "num=${dto.noticeNum}&${query}";
+		var query = "num=${dto.num}&${query}";
 		var url = "${pageContext.request.contextPath}/notice/delete?" + query;
 	
 		if(confirm("위 자료를 삭제 하시 겠습니까 ? ")) {
@@ -48,26 +48,23 @@
 </script>
 
 <div class="body-container">
-	<div class="body-title">
-		<div style="text-align: left; color: black">
+	<div class="body-title" style="width: 90%; padding-left: 100px; padding-top: 150px;">
+		<div>
 				<h2>NOTICE</h2>
-				<p>AboutTrip 공지사항</p>
-				<hr>
-				<br>
 		</div>
 	</div>
     
-	<div class="body-main">
+	<div class="body-main" style="width: 90%; padding-left: 100px; padding-bottom: 50px;">
 		<table class="table table-content">
 			<tr>
 				<td colspan="2" align="center">
-				  ${dto.noticeNum}	| ${dto.title}
+				  ${dto.num} &nbsp;&nbsp; | &nbsp;&nbsp; ${dto.title}
 				</td>
 			</tr>
 			
 			<tr>
 				<td width="50%" align="left">
-					${nickName}
+					${sessionScope.member.nickName}
 				</td>
 				<td width="50%" align="right">
 					${dto.reg_date} 
@@ -83,8 +80,9 @@
 			<c:forEach var="vo" items="${listFile}">
 				<tr>
 					<td colspan="2">
-						<a href="${pageContext.request.contextPath}/notice/download?nfileNum=${vo.nfileNum}">${vo.originalFilename}</a>
-						(<fmt:formatNumber pattern="0.00"/> KByte)
+						<a href="${pageContext.request.contextPath}/notice/download?fileNum=${vo.fileNum}">
+						📑 ${vo.originalFilename}</a>
+						(<fmt:formatNumber value="${vo.fileSize/1024}" pattern="0.00"/> kByte)
 					</td>
 				</tr>
 			</c:forEach>
@@ -93,7 +91,7 @@
 				<td colspan="2">
 					이전글 :
 					<c:if test="${not empty preReadDto}">
-						<a href="${pageContext.request.contextPath}/notice/article?${query}&noticeNum=${preReadDto.noticeNum}">${preReadDto.title}</a>
+						<a href="${pageContext.request.contextPath}/notice/article?${query}&num=${preReadDto.num}">${preReadDto.title}</a>
 					</c:if>
 				</td>
 			</tr>
@@ -102,7 +100,7 @@
 				<td colspan="2">
 					다음글 :
 					<c:if test="${not empty nextReadDto}">
-						<a href="${pageContext.request.contextPath}/notice/article?${query}&noticeNum=${nextReadDto.noticeNum}">${nextReadDto.title}</a>
+						<a href="${pageContext.request.contextPath}/notice/article?${query}&num=${nextReadDto.num}">${nextReadDto.title}</a>
 					</c:if>
 				</td>
 			</tr>
@@ -113,7 +111,7 @@
 				<td width="50%" align="left">
 					<c:choose>
 						<c:when test="${sessionScope.member.userId=='admin'}">
-			    			<button type="button" class="btnupdate" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/update?noticeNum=${dto.noticeNum}&page=${page}';">수정</button>
+			    			<button type="button" class="btnupdate" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/update?num=${dto.num}&page=${page}';">수정</button>
 			    		</c:when>
 			    		<c:otherwise>
 			    			<button type="button" class="btnupdate" disabled="disabled">수정</button>
