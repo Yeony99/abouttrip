@@ -1,3 +1,7 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <style type="text/css">
 .body_title span {
 	font-size: 30px;
