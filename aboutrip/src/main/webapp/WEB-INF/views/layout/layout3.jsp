@@ -23,6 +23,17 @@
 	<script	src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 	
+	<style type="text/css">
+	* {
+		font-family: 'Recipekorea';
+	}
+		@font-face {
+		    font-family: 'Recipekorea';
+		    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/Recipekorea.woff') format('woff');
+		    font-weight: normal;
+		    font-style: normal;
+		}
+	</style>
 </head>
 
 <body>
