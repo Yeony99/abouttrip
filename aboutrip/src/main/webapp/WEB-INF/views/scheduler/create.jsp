@@ -25,6 +25,7 @@
 	background: #2a52be;
 	color: white;
 }
+
 a, a:hover {
 	color: black;
 	text-decoration: none;
@@ -37,12 +38,11 @@ a, a:hover {
 	src="${pageContext.request.contextPath}/resources/js/fullcalendar5/lib/locales-all.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/dateUtil.js"></script>
-
+ <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script type="text/javascript">
 function login() {
 	location.href="${pageContext.request.contextPath}/member/login";
 }
-
 function ajaxFun(url, method, query, dataType, fn) {
 	$.ajax({
 		type:method,
@@ -65,12 +65,10 @@ function ajaxFun(url, method, query, dataType, fn) {
 		}
 	});
 }
-
 var calendar=null;
 var group="all";
 document.addEventListener('DOMContentLoaded', function() {
 	var calendarEl = document.getElementById('calendar');
-
 	calendar = new FullCalendar.Calendar(calendarEl, {
 		headerToolbar: {
 			left: 'prev,next today',
@@ -100,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
         	};
         
         	ajaxFun(url, "get", query, "json", fn);
-
 		}],
 		selectable: true,
 		selectMirror: true,
@@ -127,13 +124,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			document.getElementById('scheduleLoading').style.display = bool ? 'block' : 'none';
 		}
 	});
-
 	calendar.render();
 });
-
 $(function(){
 	$("#tab-"+group).addClass("active");
-
 	$("ul.tabs li").click(function() {
 		group = $(this).attr("data-group");
 		
@@ -146,7 +140,6 @@ $(function(){
 		calendar.refetchEvents();
 	});
 });
-
 // 일정 등록 대화상자
 function insertSchedule(start, end, allDay) {
 	// 폼 초기화
@@ -161,7 +154,6 @@ function insertSchedule(start, end, allDay) {
 		  }
 	});
 }
-
 // 입력 및 수정 폼 초기화
 function initForm(start, end, allDay, mode) {
 	// 폼 reset
@@ -177,13 +169,11 @@ function initForm(start, end, allDay, mode) {
 		$(".btnScheduleSendOk").text("수정완료");
 		$(".btnScheduleSendCancel").text("수정취소");
 	}
-
 	$("#form-repeat_cycle").hide();
 	$("#form-checkout").closest("tr").show();
 	$("#form-allDay").removeAttr("disabled");
 	
 	var startDate, endDate, startTime, endTime;
-
 		startDate = start.substr(0, 10);
 		endDate = end.substr(0, 10);
 		startTime = start.substr(11, 5);
@@ -196,9 +186,7 @@ function initForm(start, end, allDay, mode) {
 	$("#form-checkin").datepicker({showMonthAfterYear:true});
 	$("#form-checkout").datepicker({showMonthAfterYear:true});
 }
-
 $(function(){
-
 	$("#form-checkin").change(function(){
 		$("#form-checkout").val($("#form-checkin").val());
 	});
@@ -212,13 +200,11 @@ $(function(){
 			$("#form-checkout").closest("tr").show();
 		} else {
 			$("#form-repeat_cycle").show();
-
 			$("#form-checkout").val("");
 			$("#form-checkout").closest("tr").hide();
 		}
 	});
 });
-
 // 일정 등록완료 및 수정 완료
 $(function(){
 	$(".btnScheduleSendOk").click(function(){
@@ -236,10 +222,8 @@ $(function(){
 		}
 		
 		var mode = $("form[name=scheduleForm] input[name=mode]").val();
-
 		var query=$("form[name=scheduleForm]").serialize();
 		var url="${pageContext.request.contextPath}/schedule/"+mode;
-
 		var fn = function(data) {
 			var state=data.state;
 			
@@ -255,26 +239,22 @@ $(function(){
 		ajaxFun(url, "post", query, "json", fn);
 	});
 });
-
 // 등록 대화상자 닫기
 $(function(){
 	$(".btnScheduleSendCancel").click(function(){
 		$('#schedule-dialog').dialog("close");
 	});
 });
-
 // 등록내용 유효성 검사
 function check() {
 	if(! $("#form-subject").val()) {
 		$("#form-subject").focus();
 		return false;
 	}
-
 	if(! $("#form-checkin").val()) {
 		$("#form-checkin").focus();
 		return false;
 	}
-
 	if($("#form-checkout").val()) {
 		var s1=$("#form-checkin").val().replace("-", "");
 		var s2=$("#form-checkout").val().replace("-", "");
@@ -297,7 +277,6 @@ function check() {
 	
 	return true;
 }
-
 // 시간 형식 유효성 검사
 function isValidTime(data) {
 	if(! /(\d){2}[:](\d){2}/g.test(data)) {
@@ -308,16 +287,13 @@ function isValidTime(data) {
 	if(t[0] < 0 || t[0] > 23 || t[1] < 0 || t[1] > 59) {
 		return false;
 	}
-
 	return true;
 }
-
 //  일정 상세 보기
 function viewSchedule(calEvent) {
 	$("form[name=scheduleForm]").each(function(){
 		this.reset();
 	});
-
 	var num=calEvent.id;
 	var title=calEvent.title;
 	var color=calEvent.backgroundColor;
@@ -335,7 +311,6 @@ function viewSchedule(calEvent) {
 	var created=calEvent.extendedProps.created;
 	var repeat=calEvent.extendedProps.repeat;
 	var repeat_cycle=calEvent.extendedProps.repeat_cycle;
-
 	$(".btnScheduleUpdate").attr("data-num", num);
 	$(".btnScheduleDelete").attr("data-num", num);
 	
@@ -348,10 +323,8 @@ function viewSchedule(calEvent) {
 	if(repeat!=0) {
 		$("#form-repeat_cycle").val(repeat_cycle);
 		$("#form-repeat").val(repeat);
-
 		$("#form-repeat_cycle").show();
 	
-
 		$("#form-checkout").val("");
 		$("#form-checkout").closest("tr").hide();		
 	}
@@ -379,7 +352,6 @@ function viewSchedule(calEvent) {
 	if( etime ) s+=" "+etime;
 	
 	$(".table-article .period").html(s);
-
 	if(repeat!=0 && repeat_cycle!=0) s="반복일정, 반복주기 : "+repeat_cycle+"년"
 	else s="반복안함";
 	$(".table-article .repeat").html(s);
@@ -388,7 +360,6 @@ function viewSchedule(calEvent) {
 	
 	if(! memo) memo="";
 	$(".table-article .memo").html(memo);
-
 	$('#viewSchedule-dialog').dialog({
 		  modal: true,
 		  height: 420,
@@ -400,14 +371,12 @@ function viewSchedule(calEvent) {
 		  }
 	});	
 }
-
 // 일정 상세 대화상자 종료
 $(function(){
 	$(".btnScheduleClose").click(function(){
 		$('#viewSchedule-dialog').dialog("close");
 	});
 });
-
 // 수정 폼
 $(function(){
 	$(".btnScheduleUpdate").click(function(){
@@ -423,7 +392,6 @@ $(function(){
 		});
 	});
 });
-
 // 일정 삭제
 $(function(){
 	$(".btnScheduleDelete").click(function(){
@@ -444,7 +412,6 @@ $(function(){
 		 $("#viewSchedule-dialog").dialog("close");		
 	});
 });
-
 function updateDrag(calEvent) {
 	var num=calEvent.id;
 	var title=calEvent.title;
@@ -472,12 +439,10 @@ function updateDrag(calEvent) {
 			+"&sday="+startDate+"&eday="+endDate+"&stime="+startTime+"&etime="+endTime
 			+"&memo="+memo+"&repeat="+repeat+"&repeat_cycle="+repeat_cycle;
 	var url="${pageContext.request.contextPath}/schedule/update";
-
 	var fn = function(data) {
 	};
 	ajaxFun(url, "post", query, "json", fn);
 }
-
 </script>
 
 <div class="body-main" style="margin: 8rem 8rem 40rem 8rem">
@@ -485,6 +450,7 @@ function updateDrag(calEvent) {
 		<h3 style="margin-bottom: 3rem;">📅스케줄</h3>
 	</div>
 
+	<button id="shot">screen shot</button>
 	<div class="container body-container">
 
 		<div class="body-main pt-15">
@@ -631,3 +597,27 @@ function updateDrag(calEvent) {
 		</table>
 	</div>
 </div>
+
+<script>
+  $(function(){
+    $("#shot").on("click", function(){
+			// 캡쳐 라이브러리를 통해서 canvas 오브젝트를 받고 이미지 파일로 리턴한다.
+      html2canvas(document.querySelector("#calendar")).then(canvas => {
+				saveAs(canvas.toDataURL('image/png'),"capture-test.png");
+			});
+    });
+    function saveAs(uri, filename) { 
+			// 캡쳐된 파일을 이미지 파일로 내보낸다.
+      var link = document.createElement('a'); 
+      if (typeof link.download === 'string') { 
+        link.href = uri; 
+        link.download = filename; 
+        document.body.appendChild(link); 
+        link.click(); 
+        document.body.removeChild(link); 
+      } else { 
+        window.open(uri); 
+      } 
+    }
+  });
+</script>
