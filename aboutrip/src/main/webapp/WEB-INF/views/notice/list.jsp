@@ -73,7 +73,7 @@ a {
 }
 
 .boxTF{
-	height: 23px;
+	height: 25.33px;
 }
 
 </style>
