@@ -50,7 +50,6 @@
     	<tiles:insertAttribute name="footer"/>
     </footer>
     
-   	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/popper.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script	src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/vanilla-zoom.js"></script>
