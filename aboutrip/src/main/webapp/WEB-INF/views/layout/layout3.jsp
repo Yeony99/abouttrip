@@ -25,14 +25,15 @@
 	
 	<style type="text/css">
 	* {
-		font-family: 'Recipekorea';
+		font-family: 'S-CoreDream-5Medium';
 	}
-		@font-face {
-		    font-family: 'Recipekorea';
-		    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/Recipekorea.woff') format('woff');
-		    font-weight: normal;
-		    font-style: normal;
-		}
+	
+	@font-face {
+	     font-family: 'S-CoreDream-5Medium';
+	     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-5Medium.woff') format('woff');
+	     font-weight: normal;
+	     font-style: normal;
+	}
 	</style>
 </head>
 
