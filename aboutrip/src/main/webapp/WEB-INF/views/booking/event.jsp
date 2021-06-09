@@ -79,7 +79,7 @@
 <div class="body-container">
 	<div class="body-main">
 		<section class="clean-block clean-hero"
-			style="margin-top:80px; min-height:400px; background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju_tour1.jpg&quot;);color: rgba(100, 100, 255, 0.1);">
+			style="min-height:400px; background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju_tour1.jpg&quot;);color: rgba(100, 100, 255, 0.1);">
 			<div class="text">
 				<h2 style="font-size: 55px; color: skyblue; font-weight: bold">ABOUTRIP
 					초특가상품</h2>
@@ -92,18 +92,18 @@
 	<div class="body-main" style="background: rgb(194, 231, 245); box-shadow: 0px 0px 15px rgb(0 0 0 / 40%);">
 		<table style="margin: auto; ">
 			<tr>
-				<td style="padding: 30px; font-size: large; font-weight: 600;"><a
+				<td style="padding: 30px; font-size: large; font-weight: 600;"><a style="text-decoration: none;"
 					href="#package">패키지 여행</a></td>
-				<td style="padding: 30px; font-size: large; font-weight: 600;"><a
+				<td style="padding: 30px; font-size: large; font-weight: 600;"><a style="text-decoration: none;"
 					href="#ticket">티켓 / 투어</a></td>
-				<td style="padding: 30px; font-size: large; font-weight: 600;"><a
-					href="#mobile">모바일 상품</a></td>
+				<td style="padding: 30px; font-size: large; font-weight: 600;"><a style="text-decoration: none;"
+					href="#modile">모바일 상품</a></td>
 			</tr>
 		</table>
 	</div>
 	<div class="body-main">
 		<div id="main-container" style="background-color: rgb(240, 240, 240);">
-			<div class="img-container" style="margin-top: 100px">
+			<div class="img-container" style="margin-top: 5px">
 				<div class="imgs"
 					style="display: flex; flex-direction: row; align-content: stretch; justify-content: space-evenly; flex-wrap: wrap;">
 					<table id="package" style="margin-bottom: 50px; margin-top: 50px;">
@@ -138,7 +138,10 @@
 												style="vertical-align: top; font-weight: bold; font-size: large;">${dto.product_name}</span>
 										</div>
 										<div style="margin: 0px 10px;">${dto.price}원
-											<a href="#" style="float: right;">자세히보기</a>
+										<c:url var="url" value="/booking/article">
+											<c:param name="code" value="${dto.code}"/>
+										</c:url>
+											<a href="${url}" style="float: right;">자세히보기</a>
 										</div>
 									</div>
 								</td>

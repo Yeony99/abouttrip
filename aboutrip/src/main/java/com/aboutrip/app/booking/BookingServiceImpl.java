@@ -37,4 +37,15 @@ public class BookingServiceImpl implements BookingService{
 		return result;
 	}
 
+	@Override
+	public Booking readBooking(int code) {
+		Booking dto = null;
+		try {
+			dto = dao.selectOne("booking.booking_read", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller("booking.bookingController")
 @RequestMapping("/booking/*")
@@ -60,4 +61,17 @@ public class BookingController {
 		
 		return ".booking.list";
 	}
+	
+	@RequestMapping(value="article", method=RequestMethod.GET)
+	public String article(
+			@RequestParam int code,
+			Model model
+			) throws Exception{
+		Booking dto = service.readBooking(code);
+		model.addAttribute("dto", dto);
+
+		
+		return ".booking.article";
+	}
+	
 }
