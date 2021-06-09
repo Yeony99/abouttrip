@@ -5,7 +5,7 @@
 	<insert id=""></insert>
 	
 	<select id="event_list" parameterType="map" resultType="com.aboutrip.app.booking.Booking">
-				SELECT p.code, product_name, start_date, end_date, upload_date, ishidden, price, img_name
+		SELECT p.code, product_name, start_date, end_date, upload_date, ishidden, price, img_name
 		from product p
 		JOIN productdetail d ON p.code=d.code
         JOIN product_img i ON p.code=i.code
@@ -18,4 +18,26 @@
 		WHERE category_num=#{category_num}
 	</select>
 	
+	<select id="booking_read" parameterType="Integer" resultType="com.aboutrip.app.booking.Booking">
+		SELECT p.code, product_name, product_detail,
+		start_date, end_date, upload_date, ishidden, price, img_name
+		from product p
+		JOIN productdetail d ON p.code=d.code
+        JOIN product_img i ON p.code=i.code
+		WHERE p.code=#{code}
+	</select>
+	<select id="qna_list" parameterType="map" resultType="com.about.app.booking.QnA">
+		SELECT num, type, title, content, c_date, answer, a_date
+		FROM product_qna
+		WHERE code=${code};
+	</select>
+	<select id="review_list" parameterType="map" resultType="com.about.app.booking.">
+		SELECT nickName, reviewContent, rate, order_date, code
+		FROM product_review pr
+		JOIN member1 m ON pr.user_Num = m.userNum
+		JOIN orders o ON pr.order_num = o.order_num
+		JOIN orderDetail od ON pr.order_num = od.order_Num
+		JOIN productDetail pd ON od.detail_num = pd.detail_num
+		WHERE code=#{code}
+	</select>	
 </mapper>
