@@ -47,15 +47,74 @@ public class PlaceServiceImpl implements PlaceService {
 	@Override
 	public void insertPlace(Place dto, String pathname) throws Exception {
 		try {
-			String saveFilename = fileManager.doFileUpload(dto.getSelectFile(), pathname);
-			dto.setPlaceImgName(saveFilename);
+			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
+			if(saveFilename != null) {
+				dto.setPlaceImgName(saveFilename);
+				dto.setSavePlace(dto.getUpload().getOriginalFilename());
+			}
+			int placeNumseq = dao.selectOne("place.placeNumseq");
+			dto.setPlaceNum(placeNumseq);
+			int placeImgNumseq = dao.selectOne("place.ctgNumseq");
+			dto.setPlaceImgNum(placeImgNumseq);
+			dto.setPlaceFileName(dto.getPlaceFileName().substring(dto.getPlaceFileName().lastIndexOf("\\")));
+			dto.setPlaceFileName(dto.getPlaceFileName().substring(1,dto.getPlaceFileName().length()));
 			dao.insertData("place.insertPlace", dto);
-			
+			dao.insertData("place.insertPlaceImg", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
 		
+	}
+
+	@Override
+	public void updateHitCount(int num) throws Exception {
+		try {
+			dao.selectOne("place.updateHitCount");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public Place readPlace(int placeNum) {
+		Place dto = null;
+		
+		try {
+			dto = dao.selectOne("place.readPlace",placeNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public Place preReadPlace(Map<String, Object> map) {
+		Place dto = null;
+		
+		try {
+			dto = dao.selectOne("place.preReadPlace",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public Place nextReadPlace(Map<String, Object> map) {
+		Place dto = null;
+		
+		try {
+			dto = dao.selectOne("place.nextReadPlace",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
 	}
 	
 	

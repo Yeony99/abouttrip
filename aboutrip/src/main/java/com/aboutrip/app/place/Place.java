@@ -10,12 +10,41 @@ public class Place {
 	private String placeCtg;
 	private int placeImgNum;
 	private String placeImgName;
-	private MultipartFile selectFile;
+	private MultipartFile upload;
+	private String savePlace;
 	private String created_date;
 	private int hitCount;
+	private int ctgNum;
+	private String placeFileName;
 	
 	
 	
+	
+	
+	public String getPlaceFileName() {
+		return placeFileName;
+	}
+	public void setPlaceFileName(String placeFileName) {
+		this.placeFileName = placeFileName;
+	}
+	public int getCtgNum() {
+		return ctgNum;
+	}
+	public void setCtgNum(int ctgNum) {
+		this.ctgNum = ctgNum;
+	}
+	public String getSavePlace() {
+		return savePlace;
+	}
+	public void setSavePlace(String savePlace) {
+		this.savePlace = savePlace;
+	}
+	public MultipartFile getUpload() {
+		return upload;
+	}
+	public void setUpload(MultipartFile upload) {
+		this.upload = upload;
+	}
 	public int getHitCount() {
 		return hitCount;
 	}
@@ -27,12 +56,6 @@ public class Place {
 	}
 	public void setCreated_date(String created_date) {
 		this.created_date = created_date;
-	}
-	public MultipartFile getSelectFile() {
-		return selectFile;
-	}
-	public void setSelectFile(MultipartFile selectFile) {
-		this.selectFile = selectFile;
 	}
 	public int getPlaceNum() {
 		return placeNum;

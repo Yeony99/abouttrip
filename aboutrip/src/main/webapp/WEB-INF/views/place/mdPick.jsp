@@ -160,11 +160,11 @@
 					<c:forEach var="dto" items="${list}">
 						<tr align="center" height="55"
 							style="border-bottom: 1px solid #ddd;">
-							<td width="60">${dto.listNum}</td>
+							<td width="60">${dto.placeNum}</td>
 							<td align="left" style="padding-left: 10px; text-align: center;">
-								<a href="">${dto.subject}</a>
+								<a href="">${dto.placeName}</a>
 							</td>
-							<td width="200">${dto.created}</td>
+							<td width="200">${dto.created_date}</td>
 							<td width="107">${dto.hitCount}</td>
 					</c:forEach>
 				</table>

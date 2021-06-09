@@ -64,7 +64,24 @@ function sendQna(){
 	f.action = "${pageContext.request.contextPath}/place/${mode}";
 	f.submit();
 }
-
+function bringName() {
+	var f = document.listForm;
+	
+	var str = f.upload.value;
+	if(str!="") {
+		f.placeFileName.value=str;
+	} else{
+		f.placeFileName.value="fail";
+	}
+}
+function bringPlace() {
+	var f = document.listForm;
+	
+	var str = f.ctg.value;
+	if(str!="") {
+		f.ctgNum.value=str;
+	}
+}
 </script>
 	<div style="margin-top: 8rem">
 		<div>
@@ -74,6 +91,16 @@ function sendQna(){
 
 			<div>
 				<form name="listForm" method="post" enctype="multipart/form-data">
+					<select name="ctg" onchange="bringPlace();">
+						<option value="">선 택</option>
+						<option value="1" ${dto.ctgNum=="1" ? "selected='selected'" : ""}>서울</option>
+						<option value="2" ${dto.ctgNum=="2" ? "selected='selected'" : ""}>부산</option>
+						<option value="3" ${dto.ctgNum=="3" ? "selected='selected'" : ""}>제주 제주시</option>
+						<option value="4" ${dto.ctgNum=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
+						<option value="5" ${dto.ctgNum=="5" ? "selected='selected'" : ""}>제주 성산</option>
+						<option value="6" ${dto.ctgNum=="6" ? "selected='selected'" : ""}>제주 기타</option>
+					</select>
+					<input type="hidden" value="${dto.ctgNum }" name="ctgNum">
 					<table
 						style="width: 100%; margin: 30px auto; border-spacing: 0px; border-collapse: collapse; border-top: 2px solid #111;">
 						<tr align="left" height=100px;
@@ -89,8 +116,15 @@ function sendQna(){
 							<td valign="top"><textarea name="placeContent" class="boxTA" placeholder="내용을 입력하세요.">${dto.palceContent }</textarea>
 							</td>
 						</tr>
+						<tr>
+							<td>첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+							<td > 
+								<input type="file" name="upload" class="boxTF" onchange="bringName();">
+								<input type="hidden" name="placeFileName">
+							</td>
+						</tr>
 					</table>
-
+					<input type="hidden" name="pick" value="${pick }">
 					<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
 						<tr height="60">
 							<td align="center" style="padding-bottom: 30px;">
@@ -100,8 +134,7 @@ function sendQna(){
 								<button type="reset" class="btn">재입력</button> 
 								<c:if
 									test="${mode=='update'}">
-									<input type="hidden" name="qBoardNum" value="${dto.qBoardNum}">
-									<input type="hidden" name="page" value="${page}">
+									<input type="hidden" name="placeNum" value="${dto.placeNum}">
 								</c:if></td>
 						</tr>
 					</table>

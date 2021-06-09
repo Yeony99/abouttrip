@@ -457,16 +457,17 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "delete")
-	public String deleteMember(HttpSession session,Model model)throws Exception{
+	public String deleteMember(HttpSession session)throws Exception{
 		
 		try {
 			SessionInfo info=(SessionInfo)session.getAttribute("member");
 			service.deleteMember(info.getUserId());
-			model.addAttribute("mode","delete");
+			session.removeAttribute("member");
+			session.invalidate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return".member.login";
+		return"redirect:/member/login";
 	}
 }

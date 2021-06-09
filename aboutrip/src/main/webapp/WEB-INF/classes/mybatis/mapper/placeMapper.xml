@@ -3,12 +3,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="place">
 	<insert id="insertPlace" parameterType="com.aboutrip.app.place.Place">
-		INSERT INTO place(placeNum, placeName, placeContent, mdPick,hitCount, created_date) 
-		VALUES(#{placeNum}, #{placeName}, #{placeContent, jdbcType=VARCHAR}, #{mdPick},0,SYSDATE)
+		INSERT INTO place(placeNum, placeName, placeContent, mdPick,hitCount, created_date,ctgNum) 
+		VALUES(#{placeNum}, #{placeName}, #{placeContent}, #{mdPick},0,SYSDATE,#{ctgNum})
 	</insert>
 	<insert id="insertPlaceImg" parameterType="com.aboutrip.app.place.Place">
-		INSERT INTO placeImg(placeImgNum, placeImgName, placeNum) value (#{placeNum}, #{placeImgName}, #{placeNum}) 
+		INSERT INTO placeImg(placeImgNum, placeImgName, placeNum,placeFileName) VALUES (#{placeNum}, #{placeImgName, jdbcType=VARCHAR}, #{placeNum},#{placeFileName}) 
 	</insert>
+	
+	<update id="updateHitCount" parameterType="Integer">
+		UPDATE place SET hitCount = hitCount+1 WHERE placeNum = #{placeNum}
+	</update>
 	
 	<select id="placeNumseq" resultType="Integer">
        SELECT place_seq.NEXTVAL FROM dual 
@@ -57,4 +61,36 @@
     	OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
     </select>
     
+    <select id="readPlace" parameterType="Integer" resultType="com.aboutrip.app.place.Place">
+		SELECT p.placeNum, placeName, placeContent, mdPick, ctgNum, hitCount, created_date, placeImgNum, placeImgName
+    	FROM place p
+    	LEFT OUTER JOIN placeImg pi ON p.placeNum = pi.placeNum
+		WHERE placeNum = #{placeNum}               
+	</select>
+	
+    <select id="preReadPlace" parameterType="map" resultType="com.aboutrip.app.place.Place">
+	    SELECT p.placeNum, placeName, placeContent, mdPick, ctgNum, hitCount, created_date, placeImgNum, placeImgName
+    	FROM place p
+    	LEFT OUTER JOIN placeImg pi ON p.placeNum = pi.placeNum
+	    <where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+	    </where>
+	    ORDER BY PlaceNum ASC
+	    FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<select id="nextReadPlace" parameterType="map" resultType="com.aboutrip.app.place.Place">
+	    SELECT p.placeNum, placeName, placeContent, mdPick, ctgNum, hitCount, created_date, placeImgNum, placeImgName
+    	FROM place p
+    	LEFT OUTER JOIN placeImg pi ON p.placeNum = pi.placeNum
+	    <where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+	    </where>
+	    ORDER BY PlaceNum DESC
+	    FETCH FIRST 1 ROWS ONLY
+	</select>
 </mapper>
