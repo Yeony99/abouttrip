@@ -52,10 +52,6 @@ $(function(){
 	});
 });
 
-// 페이징 처리
-$(function(){
-	listPage(1);
-});
 
 function imageViewer(img) {
 	var viewer = $("#imgDiaryLayout");
