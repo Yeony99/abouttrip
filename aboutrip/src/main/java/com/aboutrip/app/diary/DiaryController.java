@@ -196,7 +196,7 @@ public class DiaryController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/diary/list";
+		return "redirect:/diary/main";
 	}
 	
 	@RequestMapping(value="article")
@@ -218,7 +218,7 @@ public class DiaryController {
 		
 		Diary dto = service.readDiary(diaryNum);
 		if(dto == null)
-			return "redirect:/diary/list?"+query;
+			return "redirect:/diary/main?"+query;
 
 		dto.setDiaryContent(dto.getDiaryContent().replaceAll("\n","<br>"));
 		
