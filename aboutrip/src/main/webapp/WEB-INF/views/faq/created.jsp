@@ -338,7 +338,7 @@ $(function(){
 });
 </script>
 
-<div class="container body-container">
+<div class="body-container">
 	<div class="body-title">
 		<h2>❓ 자주하는 질문 (FAQ)</h2>
 	</div>
@@ -368,7 +368,7 @@ $(function(){
 			<tr> 
 				<td>작성자</td>
 				<td> 
-					${sessionScope.member.userName}
+					${sessionScope.member.nickName}
 				</td>
 			</tr>
 		

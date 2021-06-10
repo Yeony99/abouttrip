@@ -4,13 +4,12 @@
  
 <mapper namespace="diary">
 	<select id="seq" resultType="Integer">
-		SELECT album_seq.NEXTVAL FROM dual
+		SELECT diary_seq.NEXTVAL FROM dual
 	</select>
 	
 	<insert id="insertDiary" parameterType="com.aboutrip.app.diary.Diary">
 		INSERT INTO diary(diaryNum, diaryType, diaryTitle, diaryContent, diaryCreated, userNum)
-			VALUES (#{diaryNum}, #{diaryType}, #{diaryTitle},  
-					#{diaryContent}, SYSDATE, ${userNum})
+			VALUES(#{diaryNum}, #{diaryType}, #{diaryTitle}, #{diaryContent}, SYSDATE, #{userNum})
 	</insert>
 	
 	<sql id="where-list">
@@ -27,7 +26,7 @@
 	</sql>
 		
 	<select id="dataCount" parameterType="map" resultType="Integer">
-		SELECT NVL(COUNT(diaryNum),0) FROM diary
+		SELECT NVL(COUNT(*),0) FROM diary
 		<where>
 			<if test="keyword!=null and keyword!='' ">
 				<include refid="where-list"/>
@@ -36,7 +35,7 @@
 	</select>
 	
 	<select id="listDiary" parameterType="map" resultType="com.aboutrip.app.diary.Diary">
-		SELECT d.diaryNum, d.userNum, nickName, diaryTitle, saveImgName
+		SELECT d.diaryNum, d.userNum, nickName, diaryTitle, diaryType, saveImgName
 		FROM diary d
 		JOIN member1 m ON d.userNum = m.userNum
 		LEFT OUTER JOIN (
@@ -47,8 +46,9 @@
 			) WHERE rank = 1
 		) i ON d.diaryNum = i.diaryNum
 		<where>
+			diaryType=1 
 			<if test="keyword != null and keyword != ''">
-				<include refid="where-list"/>
+				AND <include refid="where-list"/>
 			</if>
 		</where>
 		ORDER BY diaryNum DESC
@@ -57,13 +57,14 @@
 	
 	<select id="readDiary" parameterType="Integer" resultType="com.aboutrip.app.diary.Diary">
 
-		SELECT d.diaryNum, d,userId, nickName, diaryTitle, diaryContent, diaryCreated, 
-			NVL(diaryLikeCount, 0) diaryLikeCount
+		SELECT d.diaryNum, d.userNum, nickName, diaryTitle, diaryType, diaryContent, diaryCreated, 
+    		diaryImgNum, saveImgName, NVL(diaryLikeCount, 0) diaryLikeCount
 		FROM diary d
-		JOIN member1 m ON d.userId = m.userId
-		LEFT OUTER JOIN (
-			SELECT diaryNum, COUNT(*) diaryLikeCount FROM diaryLike GROUP BY diaryNum
-		) dl ON d.diaryNum = dl.diaryNum
+    		LEFT OUTER JOIN member1 m ON d.userNum=m.userNum
+    		LEFT OUTER JOIN diaryImg di ON d.diaryNum=di.diaryNum
+    		LEFT OUTER JOIN (
+        		SELECT diaryNum, COUNT(*) diaryLikeCount FROM diaryLike GROUP BY diaryNum
+    		) dl ON d.diaryNum = dl.diaryNum
 		WHERE d.diaryNum=#{diaryNum}
 
 	</select>

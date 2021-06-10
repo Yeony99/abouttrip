@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.common.FileManager;
@@ -31,7 +32,7 @@ public class DiaryController {
 	private AboutUtil aboutUtil;
 	@Autowired
 	private FileManager fm;
-	
+	/*
 	@RequestMapping(value="list")
 	public String list(
 			@RequestParam(value="page", defaultValue = "1") int current_page,
@@ -106,6 +107,67 @@ public class DiaryController {
 		
 		return ".diary.list";
 	}
+	*/
+	
+	
+	@RequestMapping("main")
+	public ModelAndView main() throws Exception {
+		ModelAndView mav = new ModelAndView(".diary.list");
+		return mav;
+	}
+	
+	@RequestMapping(value="list")
+	@ResponseBody
+	public Map<String, Object> list(
+		    @RequestParam(value="page", defaultValue="1") int current_page,
+		    @RequestParam(defaultValue = "all") String condition,
+			@RequestParam(defaultValue = "") String keyword,
+			HttpServletRequest req
+		    ) throws Exception {
+		String cp = req.getContextPath();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		int rows=5;
+		int dataCount=service.dataCount(map);
+		int total_page=aboutUtil.pageCount(rows, dataCount);
+		if(current_page>total_page)
+			current_page=total_page;
+		
+        int offset = (current_page-1) * rows;
+		if(offset < 0) offset = 0;
+        map.put("offset", offset);
+        map.put("rows", rows);
+		
+		List<Diary> list=service.listDiary(map);
+		
+		String query = "";
+        String articleUrl = cp+"/diary/article?page="+current_page;
+        if(keyword.length()!=0) {
+        	query = "condition=" +condition + 
+        	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
+        }
+        
+        if(query.length()!=0) {
+        	articleUrl = cp+"/diary/article?page="+current_page+"&"+query;
+        }
+		
+		// 페이징 처리할 경우
+		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
+		
+		Map<String, Object> model = new HashMap<>();
+		model.put("list", list);
+		model.put("articleUrl", articleUrl);
+		model.put("dataCount", dataCount);
+		model.put("total_page", total_page);
+		model.put("page", current_page);
+		model.put("paging", paging); // 페이징
+		
+		model.put("condition", condition);
+		model.put("keyword", keyword);
+		
+		
+		return model;
+	}
 	
 	@RequestMapping(value="create", method=RequestMethod.GET)
 	public String createForm(Model model) throws Exception {
@@ -128,7 +190,7 @@ public class DiaryController {
 		String pathname = root + "uploads" + File.separator + "diary";
 		
 		try {
-			dto.setUserId(info.getUserId());
+			dto.setUserNum(info.getUserNum());
 			service.insertDiary(dto, pathname);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -137,7 +199,7 @@ public class DiaryController {
 		return "redirect:/diary/list";
 	}
 	
-	@RequestMapping(value="article", method=RequestMethod.GET)
+	@RequestMapping(value="article")
 	public String article(
 			@RequestParam int diaryNum, 
 			@RequestParam String page,
@@ -147,7 +209,6 @@ public class DiaryController {
 			Model model
 			) throws Exception {
 		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		keyword = URLDecoder.decode(keyword, "utf-8");
 		
 		String query = "page="+page;
@@ -158,10 +219,7 @@ public class DiaryController {
 		Diary dto = service.readDiary(diaryNum);
 		if(dto == null)
 			return "redirect:/diary/list?"+query;
-		
-		if(! dto.getUserId().equals(info.getUserId()))
-			return "redirect:/";
-		
+
 		dto.setDiaryContent(dto.getDiaryContent().replaceAll("\n","<br>"));
 		
 		List<Diary> listImg = service.listImg(diaryNum);
@@ -188,7 +246,7 @@ public class DiaryController {
 			return "redirect:/diary/list?page="+page;
 		}
 
-		if(! info.getUserId().equals(dto.getUserId())) {
+		if(info.getUserNum() != dto.getUserNum()) {
 			return "redirect:/diary/list?page="+page;
 		}
 		
@@ -247,7 +305,7 @@ public class DiaryController {
 			return "redirect:/diary/list?page="+page;
 		}
 		
-		if(! dto.getUserId().equals(info.getUserId())) {
+		if(dto.getUserNum() != info.getUserNum()) {
 			return "redirect:/";
 		}
 		
@@ -299,7 +357,7 @@ public class DiaryController {
 			
 			Map<String, Object> paramMap=new HashMap<>();
 			paramMap.put("diaryNum", diaryNum);
-			paramMap.put("userId", info.getUserId());
+			paramMap.put("userNum", info.getUserNum());
 			
 			try {
 				service.insertDiaryLike(paramMap);

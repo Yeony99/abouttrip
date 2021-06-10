@@ -26,7 +26,7 @@ public class FaqServiceImpl implements FaqService {
 
 	@Override
 	public List<Faq> listFaq(Map<String, Object> map) {
-List<Faq> list = null;
+		List<Faq> list = null;
 		
 		try {
 			list=dao.selectList("faq.listFaq", map);

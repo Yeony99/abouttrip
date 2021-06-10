@@ -27,7 +27,7 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">다이어리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/diary/list">여행 다이어리</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/diary/main">여행 다이어리</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"
@@ -54,7 +54,7 @@
 						style="color: var(- -bs-dark); text-align: left;">고객센터</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/notice/list">공지사항</a><a
-								class="dropdown-item" href="${pageContext.request.contextPath}/faq/list">FAQ</a>
+								class="dropdown-item" href="${pageContext.request.contextPath}/faq/main">FAQ</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/qna/list">문의하기</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/event/list">이벤트</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/sug/list">시스템 개선/제안</a>

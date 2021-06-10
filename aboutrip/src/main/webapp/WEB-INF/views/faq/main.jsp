@@ -193,12 +193,12 @@ function deleteFaq(num, page) {
 }
 </script>
 
-<div class="container body-container">
-	<div class="body-title">
-		<h2>❓자주하는 질문 </h2>
+<div class="body-container">
+	<div class="body-title" style="padding: 100px 50px 0px 50px">
+		<h3>❓자주하는 질문 </h3>
 	</div>
     
-	<div class="body-main">
+	<div class="body-main" style="padding: 100px 50px 0px 50px">
 
 		<div>
 			<ul class="tabs">
