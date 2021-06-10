@@ -113,7 +113,7 @@
 			<div id="detail">상품정보</div>
 			${dto.product_detail}
 			<div id="qna">상품문의</div>
-				
+			
 			<div id="review">리뷰</div>
 		
 		</div>
