@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aboutrip.app.common.AboutUtil;
+import com.aboutrip.app.member.Member;
+import com.aboutrip.app.member.MemberService;
 import com.aboutrip.app.member.SessionInfo;
 
 @Controller("place.placeController")
@@ -26,6 +28,9 @@ public class PlaceController {
 	
 	@Autowired
 	private PlaceService service;
+	
+	@Autowired
+	private MemberService mservice;
 	
 	@Autowired
 	private AboutUtil aboutUtil;
@@ -38,19 +43,18 @@ public class PlaceController {
 			Model model) throws Exception{
 		
 		String cp = req.getContextPath();
-   	    
+   	    String pick = "list";
 		int rows = 10; 
 		int total_page = 0;
 		int dataCount = 0;
-   	    
+		int mdPick = 0;
 		if(req.getMethod().equalsIgnoreCase("GET")) { 
 			keyword = URLDecoder.decode(keyword, "utf-8");
 		}
-		
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("condition", condition);
         map.put("keyword", keyword);
-        map.put("mdPick", 0);
+        map.put("mdPick", mdPick);
 
         dataCount = service.dataCount(map);
         if(dataCount != 0)
@@ -65,19 +69,19 @@ public class PlaceController {
         map.put("rows", rows);
         map.put("mdPick", 0);
 
-        // 글 리스트
         List<Place> list = service.listPlace(map);
 
-        // 리스트의 번호
         int listNum, n = 0;
         for(Place dto : list) {
             listNum = dataCount - (offset + n);
-            dto.setPlaceNum(listNum);
+            dto.setListNum(listNum);
             n++;
+            
         }
         
         String query = "";
-        String listUrl = cp+"/place/list";
+        String listUrl = cp+"/place/list?mdPick="+mdPick;
+        String articleUrl = cp+"/place/listArticle?mdPick="+mdPick+"&page=" + current_page;
         if(keyword.length()!=0) {
         	query = "condition=" +condition + 
         	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
@@ -85,18 +89,20 @@ public class PlaceController {
         
         if(query.length()!=0) {
         	listUrl = cp+"/place/list?" + query;
+        	articleUrl = cp+"/place/listArticle?page=" + current_page + "&"+ query;
         }
         
         String paging = aboutUtil.paging(current_page, total_page, listUrl);
-
         model.addAttribute("list", list);
         model.addAttribute("page", current_page);
+        model.addAttribute("articleUrl", articleUrl);
         model.addAttribute("dataCount", dataCount);
         model.addAttribute("total_page", total_page);
         model.addAttribute("paging", paging);
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
-		
+		model.addAttribute("mdPick",mdPick);
+		model.addAttribute("pick",pick);
 		return ".place.list";
 	}
 	
@@ -108,11 +114,11 @@ public class PlaceController {
 			Model model) throws Exception{
 		
 		String cp = req.getContextPath();
-   	    
+   	    String pick = "mdPick";
 		int rows = 10; 
 		int total_page = 0;
 		int dataCount = 0;
-   	    
+		int mdPick = 1;
 		if(req.getMethod().equalsIgnoreCase("GET")) { 
 			keyword = URLDecoder.decode(keyword, "utf-8");
 		}
@@ -133,21 +139,20 @@ public class PlaceController {
 		if(offset < 0) offset = 0;
         map.put("offset", offset);
         map.put("rows", rows);
-        map.put("mdPick", 1);
+        map.put("mdPick", mdPick);
 
-        // 글 리스트
         List<Place> list = service.listPlace(map);
 
-        // 리스트의 번호
         int listNum, n = 0;
         for(Place dto : list) {
             listNum = dataCount - (offset + n);
-            dto.setPlaceNum(listNum);
+            dto.setListNum(listNum);
             n++;
         }
         
         String query = "";
-        String listUrl = cp+"/place/list";
+        String listUrl = cp+"/place/list?mdPick="+mdPick;
+        String articleUrl = cp+"/place/listArticle?mdPick="+mdPick+"&page=" + current_page;
         if(keyword.length()!=0) {
         	query = "condition=" +condition + 
         	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
@@ -155,18 +160,21 @@ public class PlaceController {
         
         if(query.length()!=0) {
         	listUrl = cp+"/place/list?" + query;
+        	articleUrl =  cp+"/place/listArticle?mdPick="+mdPick+"&page=" + current_page + "&"+ query;
         }
         
         String paging = aboutUtil.paging(current_page, total_page, listUrl);
 
         model.addAttribute("list", list);
         model.addAttribute("page", current_page);
+        model.addAttribute("articleUrl", articleUrl);
         model.addAttribute("dataCount", dataCount);
         model.addAttribute("total_page", total_page);
         model.addAttribute("paging", paging);
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
-		
+		model.addAttribute("mdPick", mdPick);
+		model.addAttribute("pick",pick);
 		return ".place.mdPick";
 	}
 	
@@ -178,21 +186,17 @@ public class PlaceController {
 	}
 	
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String createSubmit(Place dto, HttpSession session,@RequestParam String pick) throws Exception{
+	public String createSubmit(Place dto, HttpSession session,@RequestParam String pick,Model model) throws Exception{
 		
 		try {
 			String root= session.getServletContext().getRealPath("/");
 			String pathname = root+"uploads"+File.separator+"place";
-			if(pick.equals("create")) {
-				dto.setMdPick(0);
-			} else {
-				dto.setMdPick(1);
-			}
 			service.insertPlace(dto,pathname);
+			model.addAttribute("pick",pick);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(pick.equals("create")) {
+		if(pick.equals("list")) {
 			return "redirect:/place/list";
 		}
 		else {
@@ -213,6 +217,7 @@ public class PlaceController {
 			@RequestParam String page,
 			@RequestParam(defaultValue="all") String condition,
 			@RequestParam(defaultValue="") String keyword,
+			@RequestParam String pick,
 			HttpSession session,
 			Model model) throws Exception {
 		
@@ -227,8 +232,7 @@ public class PlaceController {
 
 		Place dto = service.readPlace(placeNum);
 		if(dto==null)
-			return "redirect:/place/list?"+query;
-		
+			return "redirect:/place/"+pick+"?"+query;
         dto.setPlaceContent(aboutUtil.htmlSymbols(dto.getPlaceContent()));
         
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -238,57 +242,41 @@ public class PlaceController {
 
 		Place preReadDto = service.preReadPlace(map);
 		Place nextReadDto = service.nextReadPlace(map);
-		        
 		model.addAttribute("dto", dto);
 		model.addAttribute("preReadDto", preReadDto);
 		model.addAttribute("nextReadDto", nextReadDto);
-
+		model.addAttribute("mdPick",dto.getMdPick());
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
+		model.addAttribute("pick",pick);
 
         return ".place.article";
 	}
-	
-	@RequestMapping(value="mdPickArticle")
-	public String mdPickArticle(
+	@RequestMapping(value="update", method=RequestMethod.GET)
+	public String updateForm(
 			@RequestParam int placeNum,
 			@RequestParam String page,
-			@RequestParam(defaultValue="all") String condition,
-			@RequestParam(defaultValue="") String keyword,
+			@RequestParam String pick,
 			HttpSession session,
 			Model model) throws Exception {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
-		keyword = URLDecoder.decode(keyword, "utf-8");
-		
-		String query="page="+page;
-		if(keyword.length()!=0) {
-			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		Member mdto = mservice.readMember(info.getUserId());
+		Place dto = service.readPlace(placeNum);
+		if(dto==null&&mdto==null) {
+			return "redirect:/place/list?page="+page;
 		}
 
-		service.updateHitCount(placeNum);
-
-		Place dto = service.readPlace(placeNum);
-		if(dto==null)
-			return "redirect:/place/mdPick?"+query;
+		if(! info.getUserId().equals(mdto.getUserId())) {
+			return "redirect:/place/list?page="+page;
+		}
 		
-        dto.setPlaceContent(aboutUtil.htmlSymbols(dto.getPlaceContent()));
-        
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("condition", condition);
-		map.put("keyword", keyword);
-		map.put("placeNum", placeNum);
-
-		Place preReadDto = service.preReadPlace(map);
-		Place nextReadDto = service.nextReadPlace(map);
-		        
 		model.addAttribute("dto", dto);
-		model.addAttribute("preReadDto", preReadDto);
-		model.addAttribute("nextReadDto", nextReadDto);
-
+		model.addAttribute("mode", "update");
 		model.addAttribute("page", page);
-		model.addAttribute("query", query);
-
-        return ".place.article";
+		model.addAttribute("pick",pick);
+		
+		return ".place.create";
 	}
 	
 }

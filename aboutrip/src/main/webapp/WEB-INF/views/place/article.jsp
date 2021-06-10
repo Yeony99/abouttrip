@@ -35,26 +35,6 @@ button[disabled] {
 	background: #eee;
 }
 </style>
-<script type="text/javascript">
-	function sendOk() {
-		var f = document.listForm;
-		var str = f.subject.value;
-		if (!str) {
-			alert("제목이 입력되지 않았습니다.");
-			f.subject.focus();
-			return;
-		}
-		str = f.content.value;
-		if (!str) {
-			alert("내용이 입력되지 않았습니다.");
-			f.content.focus();
-			return;
-		}
-		f.action = "${pageContext.request.contextPath}/place/";
-		f.submit();
-	}
-	
-</script>
 
 </head>
 <body>
@@ -62,9 +42,9 @@ button[disabled] {
 	<div class="container">
 		<div class="body_con" style="width: 1200px;">
 			<div class="body_title">
-				<span>관광공사의 추천</span>
+				<span>${pick=="mdPick" ? "MD의 추천":"한국 관광공사의 추천"}</span>
 			</div>
-
+	
 			<div>
 				<form name="listForm" method="post">
 					<table
@@ -74,18 +54,22 @@ button[disabled] {
 							<td style="text-align: center;">제목</td>
 							<td style="padding-left: 10px;"><input type="text"
 								name="subject" maxlength="50" class="boxTF"
-								value="${dto.subject}"></td>
+								value="${dto.placeName}" readonly="readonly"></td>
 						</tr>
 						<tr align="left" height=100px;
 							style="border-bottom: 1px solid #ddd;">
 							<td style="text-align: center;">작성자</td>
 							<td style="padding-left: 10px;">
-								${sessionScope.member.userName}</td>
+								${sessionScope.member.nickName}</td>
 						</tr>
+						
+						
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
 							<td style="text-align: center; width: 250px;">내용</td>
-							<td valign="top"><textarea name="content" class="boxTA">${dto.content}</textarea>
+							<td valign="top">
+								<img src="${pageContext.request.contextPath}/uploads/place/${dto.placeImgName}" style="max-width:100%; height:auto; resize:both;">
+								<textarea name="content" class="boxTA">${dto.placeContent}</textarea>
 							</td>
 						</tr>
 					</table>
@@ -93,17 +77,16 @@ button[disabled] {
 					<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
 						<tr height="60">
 							<td align="center" style="padding-bottom: 30px;">
-									<input type="hidden" name="num" value="${dto.num}">
+									<input type="hidden" name="placeNum" value="${dto.placeNum}">
 									<input type="hidden" name="page" value="${page}">
 									<input type="hidden" name="condition" value="${condition}">
 									<input type="hidden" name="keyword" value="${keyword}">
-
-								
-								<button type="button" class="btn" onclick="sendOk();">${mode=='update'?'수정':'등록'}</button>
+									<input type="hidden" name="mdPick" value="${dto.mdPick}">
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/place/list';">${mode=='update'?'수정취소':'등록취소'}</button>
-								<button type="reset" class="btn">재입력</button>
-									<input type="hidden" name="num" value="${dto.num}">
+									onclick="javascript:location.href='${pageContext.request.contextPath}/place/update?placeNum=${dto.placeNum}&page=${page }&pick=${pick }';">글수정</button>
+								<button type="button" class="btn"
+									onclick="javascript:location.href='${pageContext.request.contextPath}/place/delete';">글삭제</button>
+									<input type="hidden" name="placeNum" value="${dto.placeNum}">
 									<input type="hidden" name="page" value="${page}">
 							</td>
 						</tr>

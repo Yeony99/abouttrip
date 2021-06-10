@@ -70,7 +70,7 @@ public class PlaceServiceImpl implements PlaceService {
 	@Override
 	public void updateHitCount(int num) throws Exception {
 		try {
-			dao.selectOne("place.updateHitCount");
+			dao.selectOne("place.updateHitCount",num);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

@@ -7,7 +7,7 @@
 		VALUES(#{placeNum}, #{placeName}, #{placeContent}, #{mdPick},0,SYSDATE,#{ctgNum})
 	</insert>
 	<insert id="insertPlaceImg" parameterType="com.aboutrip.app.place.Place">
-		INSERT INTO placeImg(placeImgNum, placeImgName, placeNum,placeFileName) VALUES (#{placeNum}, #{placeImgName, jdbcType=VARCHAR}, #{placeNum},#{placeFileName}) 
+		INSERT INTO placeImg(placeImgNum, placeImgName, placeNum,placeFileName,savePlace) VALUES (#{placeNum}, #{placeImgName, jdbcType=VARCHAR}, #{placeNum},#{placeFileName}, #{savePlace, jdbcType=VARCHAR}) 
 	</insert>
 	
 	<update id="updateHitCount" parameterType="Integer">
@@ -25,11 +25,11 @@
     <sql id="where-list">
 		<choose>
 			<when test="condition == 'all' ">
-			   AND ( INSTR(subject, #{keyword}) &gt; 0
-		          OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
+			   AND ( INSTR(placeName, #{keyword}) &gt; 0
+		          OR DBMS_LOB.INSTR(placeContent, #{keyword}) &gt; 0 )
 			</when>
 			<when test="condition == 'content'">
-			   AND DBMS_LOB.INSTR(content, #{keyword}) &gt; 0
+			   AND DBMS_LOB.INSTR(placeContent, #{keyword}) &gt; 0
 			</when>
 			<otherwise>
 			   AND INSTR(${condition}, #{keyword}) &gt; 0
@@ -65,7 +65,7 @@
 		SELECT p.placeNum, placeName, placeContent, mdPick, ctgNum, hitCount, created_date, placeImgNum, placeImgName
     	FROM place p
     	LEFT OUTER JOIN placeImg pi ON p.placeNum = pi.placeNum
-		WHERE placeNum = #{placeNum}               
+		WHERE p.placeNum = #{placeNum}               
 	</select>
 	
     <select id="preReadPlace" parameterType="map" resultType="com.aboutrip.app.place.Place">

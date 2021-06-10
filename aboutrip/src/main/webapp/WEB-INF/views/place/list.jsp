@@ -64,7 +64,7 @@
 </style>
 <script type="text/javascript">
 	function searchList() {
-		var f = document.searchForm;
+		var f = document.listSearchForm;
 		f.submit();
 	}
 </script>
@@ -73,6 +73,8 @@
 	<div class="body-main" style="margin-top: 8rem;">
 		<div style="display: flex; justify-content: center">
 			<h3>한국 관광공사의 추천 🛫</h3>
+			<input type="hidden" name="mdPick" value="${mdPick }">
+			<input type="hidden" name="pick" value="${pick }">
 		</div>
 		<div id="main-container">
 			<div class="img-container">
@@ -111,11 +113,11 @@
 			<tr>
 				<td align="center" style="width: 100%; border-top: 2px solid #111;">
 					<form name="listSearchForm"
-						action="${pageContext.request.contextPath}/"
+						action="${pageContext.request.contextPath}/place/${pick}"
 						method="post">
 						<select name="condition" class="selectField">
-							<option value="subject">제목</option>
-							<option value="content">내용</option>
+							<option value="placeName">제목</option>
+							<option value="placeContent">내용</option>
 							<option value="all">제목+내용</option>
 						</select>
 						<div class="boxTFdiv">
@@ -152,9 +154,9 @@
 					<c:forEach var="dto" items="${list}">
 						<tr align="center" height="55"
 							style="border-bottom: 1px solid #ddd;">
-							<td width="60">${dto.placeNum}</td>
+							<td width="60">${dto.listNum}</td>
 							<td align="left" style="padding-left: 10px; text-align: center;">
-								<a href="">${dto.placeName}</a>
+								<a href="${articleUrl}&placeNum=${dto.placeNum}&pick=${pick}">${dto.placeName}</a>
 							</td>
 							<td width="200">${dto.created_date}</td>
 							<td width="107">${dto.hitCount}</td>

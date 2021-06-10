@@ -113,13 +113,13 @@ function bringPlace() {
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
 							<td style="text-align: center; width: 250px;">내용</td>
-							<td valign="top"><textarea name="placeContent" class="boxTA" placeholder="내용을 입력하세요.">${dto.palceContent }</textarea>
+							<td valign="top"><textarea name="placeContent" class="boxTA" placeholder="내용을 입력하세요.">${dto.placeContent }</textarea>
 							</td>
 						</tr>
 						<tr>
 							<td>첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
 							<td > 
-								<input type="file" name="upload" class="boxTF" onchange="bringName();">
+								<input type="file" name="upload" class="boxTF" onchange="bringName();"  >
 								<input type="hidden" name="placeFileName">
 							</td>
 						</tr>
@@ -134,7 +134,7 @@ function bringPlace() {
 								<button type="reset" class="btn">재입력</button> 
 								<c:if
 									test="${mode=='update'}">
-									<input type="hidden" name="placeNum" value="${dto.placeNum}">
+									<input type="hidden" name="placeNum">
 								</c:if></td>
 						</tr>
 					</table>

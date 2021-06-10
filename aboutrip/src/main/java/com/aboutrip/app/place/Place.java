@@ -16,11 +16,18 @@ public class Place {
 	private int hitCount;
 	private int ctgNum;
 	private String placeFileName;
+	private int listNum;
 	
 	
 	
 	
 	
+	public int getListNum() {
+		return listNum;
+	}
+	public void setListNum(int listNum) {
+		this.listNum = listNum;
+	}
 	public String getPlaceFileName() {
 		return placeFileName;
 	}
