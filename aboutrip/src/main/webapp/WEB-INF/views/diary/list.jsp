@@ -12,17 +12,27 @@
 .body-title {
 
 }
+form {
+	margin: 2px 15px;
+}
 
 .body-main {
 	margin: 10px auto;
 	max-width: 500px;
-  	width: 90%;
 }
 
-.btn {
+.diaryBtn {
+	color: #f8f9fa;
+	background: none;
+	border: none;
+}
+.diaryBtn:hover {
 	color: #f8f9fa;
 	font-weight: bold;
+	border: 1px dotted #f8f9fa;
+	border-radius: 3px;
 }
+
 .createBtn {
 	margin: 8px;
 	color: #46CCFF;
@@ -37,7 +47,9 @@
 	font-weight: bold;
 	text-align: center;
 	font-size: 13px;
-	background: #f8f9fa
+	background: #f8f9fa;
+	position: fixed;
+	left: 970px; top: 200px;
 }
 
 .createBtn:hover {
@@ -45,6 +57,17 @@
 	border: 1px solid #f8f9fa;
 	background-color: transparent;
 }
+.shape {
+	width: 500px;
+  	background-color: #f8f9fa;
+  	border-radius: 4px;
+  	color: #b4b4b4;
+  	box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
+  	margin: 20px auto;
+  	padding: 15px;
+  	
+}
+
 </style>
 
 <script type="text/javascript">
@@ -91,7 +114,11 @@ function printGuest(data) {
 	var dataCount = data.dataCount;
 	var page = data.page;
 	var totalPage = data.total_page;
-	var paging = data.paging;
+	
+	$("#listDiaryBody").attr("data-page", page); // 현재 화면상에 보이는 페이지 저장
+	$("#listDiaryBody").attr("data-totalPage", totalPage); // 전체 페이지 저장
+	
+	$("#listDiaryFooter").hide();
 	
 	var out="";
 	if(dataCount==0) {
@@ -102,30 +129,65 @@ function printGuest(data) {
 		return;
 	}
 	
+	if(page==1) {
+		$("listDiaryBody").empty();
+	}
+	
 	for(var idx=0; idx<data.list.length; idx++) {
 		var diaryNum=data.list[idx].diaryNum;
 		var nickName=data.list[idx].nickName;
-		//var userNum=data.list[idx].userNum;
 		var diaryTitle=data.list[idx].diaryTitle
 		var diaryCreated=data.list[idx].diaryCreated;
 		var saveImgName=data.list[idx].saveImgName;
-		var url="${pageContext.request.contextPath}/uploads/diary/"+saveImgName;
 		var articleUrl=data.list[idx].articleUrl;
 		
+		out+="<div class='shape'>";
 		out+="<tr>";
-		out+="<td width='50px' rowspan='3'>";
+		out+="<td rowspan='4'>";
 		out+="    <a href="+articleUrl+"&diaryNum="+diaryNum+">";
-		out+="    	<img src="+url+">";
+		out+="    	<img src="+"'${pageContext.request.contextPath}/uploads/diary/"+saveImgName+"'style='background-size: cover; width: 220px;'>";
 		out+="    </a>";
-		out+="</td></tr>";
-		out+="<tr><td>"+diaryTitle+"</td></tr>";
-		out+="<tr><td>"+diaryCreated+"</td></tr>";
+		out+="</td>";
+		out+="<td style='line-height: 5px; margin: 10px;'>"+nickName+"</td>";
+		out+="</tr>";
+		out+="<tr>";
+		out+="<td rowspan='2' style='line-height: 5px; '>"+diaryTitle+"</td>";
+		out+="</tr>";
+		out+="<tr>";
+		out+="<td style='line-height: 5px; '>"+diaryCreated+"</td>";
+		out+="</tr></div>";
 	}
-	out+="<tr class='paging'>";
-	out+="    <td colspan='2'>"+paging+"</td>";
-	out+="</tr>"
-	$("#listDiaryBody").html(out);
+	
+	$("#listDiaryBody").append(out); // html은 기존 내용이 지워지고, append는 기존 내용이 지워지지 않는다.
+	
+	if(page < totalPage) {
+		$("#listDiaryFooter").show();
+	}
 }
+
+$(function(){
+	$(".diary-list .more").click(function(){
+		var page = $("#listDiaryBody").attr("data-page");
+		var totalPage = $("#listDiaryBody").attr("data-totalPage");
+		if(page<totalPage) {
+			page++;
+			listPage(page);
+		}
+	});
+});
+
+$(function(){
+	$('.slider').bxSlider({
+		auto: true,				// 자동 애니메이션 시작
+		speed: 500,				// 애니메이션 속도
+		pause: 5000,			// 애니메이션 유지시간(단위:ms) 
+		mode: 'horizontal',		// 기본값. 슬라이드 모드 : 'fade', 'horizontal', 'vertical'
+		autoControls: true,		// 시작 및 중지 버튼
+		pager: true,			// 동그라미(불릿) 버튼 노출 여부
+		captions: true,			// 이미지 위에 텍스트 표시
+		touchEnabled: false		// <a href="주소"> 에서 설정한 주소로 이동 가능하도록
+	});
+});
 
 function searchList() {
 	var f=document.searchForm;
@@ -159,7 +221,7 @@ function searchList() {
 		<table style="border-bottom: 2px solid white;">
 			<tr>
 				<td>
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main';">새로고침</button>
+					<button type="button" style="margin: 0px 0px 0px 15px;" class="diaryBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main';">새로고침</button>
 				</td>
 				<td>
 					<form name="searchForm" action="${pageContext.request.contextPath}/diary/list" method="post">
@@ -168,8 +230,8 @@ function searchList() {
 							<option value="diaryTitle" ${condition=="diaryTitle"?"selected='selected'":""}>제목</option>
 							<option value="diaryContent" ${condition=="diaryContent"?"selected='selected'":""}>내용</option>
 						</select>
-						<input type="text" name="keyword" value="${keyword}">
-						<button type="button" onclick="searchList()">검색</button>
+						<input type="text" style="width: 250px;" name="keyword" value="${keyword}">
+						<button type="button" style="margin: 0px 0px 0px 15px;" class="diaryBtn" onclick="searchList()">검색</button>
 					</form>
 				</td>
 				<td>
@@ -179,17 +241,16 @@ function searchList() {
 		</table>
          
 		<div id="listDiary" class="diary-list">
-			<table>
-				<thead>
-					<tr>
-						<td width='50%'>
-							<span class="list-title">다이어리</span>
-							<span>[목록]</span>
-						</td>
-						<td width='50%'>&nbsp;</td>
-					</tr>
-				</thead>
+			<table style="width: 700px; margin: 3px auto; border-spacing: 0px;" border="1">
 				<tbody id="listDiaryBody" data-page="0" data-totalPage="0"></tbody>
+				<tfoot id="listDiaryFooter">
+					<tr>
+						<td width="50%">&nbsp;</td>
+						<td width="50%" align="right">
+							<span class="more">더보기</span>
+						</td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>
