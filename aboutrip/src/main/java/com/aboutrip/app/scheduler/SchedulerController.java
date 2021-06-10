@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/scheduler/*")
 public class SchedulerController {
 
-	@RequestMapping(value = "scheduler", method=RequestMethod.GET)
+	@RequestMapping(value = "mycalendar", method=RequestMethod.GET)
 	public String scheduler() throws Exception {
 		
 		return ".scheduler.myCalendar";
