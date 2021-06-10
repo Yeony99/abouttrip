@@ -46,8 +46,9 @@
 	height: 45px;
 }
 
-a {
+.body-main a {
 	text-decoration: none;
+	color: black;
 }
 
 .btnCreate {
@@ -86,8 +87,8 @@ a {
 </script>
 
 <div class="body-container">
-	<div class="body-main" style="width: 90%; padding-left: 100px; padding-top:50px; padding-bottom: 50px;">
-		<div class="body-title" style="width: 90%;">
+	<div class="body-main" style="padding-top:50px; padding-bottom: 50px;">
+		<div class="body-title">
 			<h2>NOTICE</h2>
 		</div>
 

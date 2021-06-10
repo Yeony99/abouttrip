@@ -75,11 +75,11 @@ a {
 </script>
 
 <div class="body-container">
-	<div class="body-title" style="width: 90%; padding-left: 100px; padding-top: 50px;">
+	<div class="body-title" style="padding-top: 50px;">
 			<h2>NOTICE</h2>
 	</div>
     
-	<div class="body-main" style="width: 90%; padding-left: 100px; padding-bottom: 50px;">
+	<div class="body-main" style="padding-bottom: 50px;">
 		<table class="table table-content">
 			<tr>
 				<td colspan="2" align="center" style="color: blue; font-weight: 600;">

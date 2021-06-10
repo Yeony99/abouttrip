@@ -140,10 +140,10 @@ function sendOk() {
         return;
     }
     
-	var str = f.subject.value;
+	var str = f.title.value;
     if(!str) {
         alert("제목을 입력하세요. ");
-        f.subject.focus();
+        f.title.focus();
         return;
     }
 
@@ -191,8 +191,8 @@ $(function(){
 		
 		$("#category-dialog").dialog({
 			  modal: true,
-			  height: 600,
-			  width: 600,
+			  height: 500,
+			  width: 500,
 			  title: '카테고리 수정',
 			  open : function(){
 				var url="${pageContext.request.contextPath}/faq/listAllCategory?tmp="+(new Date()).getTime();
@@ -339,16 +339,16 @@ $(function(){
 </script>
 
 <div class="body-container">
-	<div class="body-title">
-		<h2>❓ 자주하는 질문 (FAQ)</h2>
+	<div class="body-title" style="padding-top: 50px;">
+		<h3>❓ 자주하는 질문 (FAQ)</h3>
 	</div>
     
-	<div class="body-main">
+	<div class="body-main" style="padding-bottom: 50px;">
 		<form name="faqForm" method="post">
 		<table class="table table-border table-content">
 			<tr> 
 				<td>카테고리</td>
-				<td > 
+				<td> 
 					<select name="categoryNum" class="selectField">
 						<c:forEach var="vo" items="${listCategory}">
 							<option value="${vo.categoryNum}" ${dto.categoryNum==vo.categoryNum?"selected='selected'":""}>${vo.category}</option>
@@ -382,7 +382,7 @@ $(function(){
 		
 		<table class="table">
 			<tr> 
-				<td align="center">
+				<td align="center" style="border: none;">
 					<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
 					<button type="reset" class="btn">다시입력</button>
 					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/faq/main?pageNo=${pageNo}';">${mode=='update'?'수정취소':'등록취소'}</button>

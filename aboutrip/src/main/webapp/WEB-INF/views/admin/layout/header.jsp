@@ -56,7 +56,7 @@
 						style="color: var(- -bs-dark); text-align: left;">고객센터 관리</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/notice/list">공지사항 작성</a>
-							<a class="dropdown-item" href="#">FAQ 작성</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/faq/main">FAQ 작성</a>
 						    <a class="dropdown-item" href="#">문의 답변</a>
 							<a class="dropdown-item" href="#">이벤트 작성</a>
 							<a class="dropdown-item" href="#">시스템 개선/제안 답변</a>

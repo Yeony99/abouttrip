@@ -139,10 +139,10 @@ $(function(){
 </script>
 
 <div class="body-container">
-	<div class="body-title" style="width: 90%; padding-left: 100px; padding-top: 50px;">
+	<div class="body-title" style="padding-top: 50px;">
 			<h2>NOTICE</h2>
 	</div>
-	<div class="body-main" style="width: 90%; padding-left: 100px; padding-bottom: 50px;">
+	<div class="body-main" style="padding-bottom: 50px;">
 		<form name="noticeForm" method="post" enctype="multipart/form-data">
 		<table class="table table-content">
 			<tbody id="tb">

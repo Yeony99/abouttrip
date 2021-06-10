@@ -15,7 +15,7 @@
 					OR INSTR(LOWER(category), LOWER(#{keyword})) &gt; 0 )
 			</when>
 			<when test="condition == 'reg_date'">
-				( INSTR(reg_date, 'YYYYMMDD') = #{keyword}
+				( TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword}
 					OR TO_CHAR(reg_date, 'YYYY-MM-DD') = #{keyword} )
 			</when>
 			<otherwise>
@@ -78,8 +78,8 @@
 	</delete>
 	
 	<insert id="insertCategory" parameterType="com.aboutrip.app.faq.Faq">
-		INSERT INTO faqCateroy(categoryNum, category, enabled, orderNo)
-			VALUES (faqCateroy_seq.NEXTVAL, #{categoryNum}, #{category}, #{enabled}, #{orderNo})
+		INSERT INTO faqCategory(categoryNum, category, enabled, orderNo)
+			VALUES (faqCategory_seq.NEXTVAL, #{category}, #{enabled}, #{orderNo})
 	</insert>
 	
 	<select id="listCategory" parameterType="map" resultType="com.aboutrip.app.faq.Faq">

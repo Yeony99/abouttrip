@@ -70,6 +70,59 @@
 	background-color: #F8FFFF;
 }
 
+.title{
+	font-size: 20px;
+}
+
+.body-main ul{
+	margin: 0px;
+	padding-left: 50px;
+}
+
+.body-main li{
+	display: inline-block;
+	background-color: #EAEAEA;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.body-main li:hover {
+	background-color:#87CEFA;
+}
+.btnCreate {
+	border: none;
+	background-color: #055ada;
+	color: #fff;
+	border-radius: 7px;
+}
+
+.btnReset {
+	border: none;
+	background-color: #87CEFA;
+	color: black;
+	border-radius: 7px;
+	
+}
+
+.btnList{
+	border: none;
+	background-color: #EAEAEA;
+	color: black;
+	border-radius: 7px;
+}
+
+.btnSearch{
+	border: 1px solid gray;
+	background-color: white;
+	color: black;
+	border-radius: 7px;
+}
+
+.boxTF{
+	height: 27px;
+}
+
+
 </style>
 
 <script type="text/javascript">
@@ -194,11 +247,11 @@ function deleteFaq(num, page) {
 </script>
 
 <div class="body-container">
-	<div class="body-title" style="padding: 100px 50px 0px 50px">
+	<div class="body-title" style="padding-top: 50px; padding-left: 50px;">
 		<h3>❓자주하는 질문 </h3>
 	</div>
     
-	<div class="body-main" style="padding: 100px 50px 0px 50px">
+	<div class="body-main" style="padding-bottom: 50px;">
 
 		<div>
 			<ul class="tabs">
