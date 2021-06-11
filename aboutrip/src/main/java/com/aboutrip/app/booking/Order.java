@@ -1,6 +1,13 @@
 package com.aboutrip.app.booking;
 
 public class Order {
+	// 유저정보
+	private String nickName;
+	
+	// 리뷰 정보
+	private String reviewContent;
+	private int rate;
+	
 	// 장바구니
 	private int user_num;
 	private int cart_num;
@@ -17,7 +24,7 @@ public class Order {
 	private int order_num;
 	private int order_price;
 	private int order_state;
-	private String drder_date;
+	private String order_date;
 	private int isUsed;
 	
 	// 결제
@@ -40,7 +47,24 @@ public class Order {
 	private String whyCancel;
 	private int cPrice;
 	private String cDate;
-	
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public String getReviewContent() {
+		return reviewContent;
+	}
+	public void setReviewContent(String reviewContent) {
+		this.reviewContent = reviewContent;
+	}
+	public int getRate() {
+		return rate;
+	}
+	public void setRate(int rate) {
+		this.rate = rate;
+	}
 	public int getUser_num() {
 		return user_num;
 	}
@@ -107,11 +131,11 @@ public class Order {
 	public void setOrder_state(int order_state) {
 		this.order_state = order_state;
 	}
-	public String getDrder_date() {
-		return drder_date;
+	public String getOrder_date() {
+		return order_date;
 	}
-	public void setDrder_date(String drder_date) {
-		this.drder_date = drder_date;
+	public void setOrder_date(String order_date) {
+		this.order_date = order_date;
 	}
 	public int getIsUsed() {
 		return isUsed;
@@ -208,9 +232,5 @@ public class Order {
 	}
 	public void setcDate(String cDate) {
 		this.cDate = cDate;
-	}
-	
-	
-	
-	
+	}	
 }

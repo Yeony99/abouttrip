@@ -15,10 +15,10 @@ public class BookingServiceImpl implements BookingService{
 	AboutDAO dao;
 	
 	@Override
-	public List<Booking> listEvent(Map<String, Object> map) throws Exception {
+	public List<Booking> listEvent(int category_num) throws Exception {
 		List<Booking> event = null;
 		try {
-			event = dao.selectList("booking.event_list",map);
+			event = dao.selectList("booking.event_list", category_num);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -27,10 +27,10 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public int countEvent(Map<String, Object> map) {
+	public int countEvent(int category_num) {
 		int result = 0;
 		try {
-			result = dao.selectOne("booking.event_count", map);
+			result = dao.selectOne("booking.event_count", category_num);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
@@ -46,6 +46,40 @@ public class BookingServiceImpl implements BookingService{
 			e.printStackTrace();
 		}
 		return dto;
+	}
+
+	@Override
+	public List<Order> listReview(int code) throws Exception {
+		List<Order> Review = null;
+		try {
+			Review = dao.selectList("booking.review_list", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}	
+		return Review;
+	}
+
+	@Override
+	public List<QnA> listQna(int code) throws Exception {
+		List<QnA> Qna = null;
+		try {
+			Qna = dao.selectList("booking.qna_list", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}	
+		return Qna;
+	}
+
+	@Override
+	public int countProduct(Map<String, Object> map) {
+		int result = 0;
+		try {
+			result = dao.selectOne("booking.product_count", map);
+		} catch (Exception e) {
+		}
+		return result;
 	}
 
 }
