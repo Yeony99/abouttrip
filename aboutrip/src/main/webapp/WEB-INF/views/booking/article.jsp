@@ -166,6 +166,26 @@ function printList(data) {
 	$(".list-body").append(out);
 	$(".list-paging").html(paging);
 }
+
+$(function() {
+	$('.tabmenu').click(function() {
+		var activeTab = $(this).attr('data-tab');
+		$('td').css('background-color', 'inherit');
+		$(this).css('background-color', 'green');
+		$.ajax({
+			type : 'GET',                 //get 방식
+			url : activeTab + ".html",    //tab에 있는 data-tab 속성으로 html 통신
+			dataType : "html",            //html 형식으로 값 불러들이기
+			error : function() {          //통신 실패시에 확인 (값 연결 아직)
+				alert('통신실패!');
+			},
+			success : function(data) {    //통신 성공시 #tabcontent <div> 안에 콘텐츠 삽입
+				$('#tabcontent').html(data);
+			}
+		});
+	});
+	$('#default').click();          
+});
 </script>
 
 <div class="body-container">
@@ -200,16 +220,17 @@ function printList(data) {
 			</tr>
 		</table>
 		<table style="width: 100%; background-color: skyblue;">
-			<tr>
-				<td style="padding: 30px; font-size: large;"><a
+			<tr class="tab">
+				<td data-tab="tab1" class="tabmenu" id="defaultMenu" style="padding: 30px; font-size: large;"><a
 					style="text-decoration: none; color: black;" href="#detail">상품정보</a></td>
-				<td style="padding: 30px; font-size: large;"><a
+				<td data-tab="tab2" class="tabmenu" style="padding: 30px; font-size: large;"><a
 					style="text-decoration: none; color: black;" href="#qna">상품문의</a></td>
-				<td style="padding: 30px; font-size: large;"><a
+				<td data-tab="tab3" class="tabmenu" style="padding: 30px; font-size: large;"><a
 					style="text-decoration: none; color: black;" href="#review">리뷰</a></td>
 				<td style="width: 60%">&nbsp;</td>
 			</tr>
 		</table>
+		<div id="tabcontent"></div>
 		<div style="background-color: aliceblue;">
 			<div id="detail">상품정보</div>
 			${dto.product_detail}
