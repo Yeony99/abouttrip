@@ -35,7 +35,7 @@
 	</select>
 	
 	<select id="listDiary" parameterType="map" resultType="com.aboutrip.app.diary.Diary">
-		SELECT d.diaryNum, d.userNum, nickName, diaryTitle, diaryType, saveImgName
+		SELECT d.diaryNum, d.userNum, nickName, diaryTitle, diaryType, saveImgName, diaryCreated
 		FROM diary d
 		JOIN member1 m ON d.userNum = m.userNum
 		LEFT OUTER JOIN (
@@ -58,10 +58,9 @@
 	<select id="readDiary" parameterType="Integer" resultType="com.aboutrip.app.diary.Diary">
 
 		SELECT d.diaryNum, d.userNum, nickName, diaryTitle, diaryType, diaryContent, diaryCreated, 
-    		diaryImgNum, saveImgName, NVL(diaryLikeCount, 0) diaryLikeCount
+    		NVL(diaryLikeCount, 0) diaryLikeCount
 		FROM diary d
     		LEFT OUTER JOIN member1 m ON d.userNum=m.userNum
-    		LEFT OUTER JOIN diaryImg di ON d.diaryNum=di.diaryNum
     		LEFT OUTER JOIN (
         		SELECT diaryNum, COUNT(*) diaryLikeCount FROM diaryLike GROUP BY diaryNum
     		) dl ON d.diaryNum = dl.diaryNum

@@ -33,12 +33,6 @@ public class Member {
 	private int followingUserNum;
 	private int followerUserNum;
 	
-	
-	
-	
-	
-	
-	
 	public int getFollowingUserNum() {
 		return followingUserNum;
 	}
@@ -225,7 +219,5 @@ public class Member {
 	public void setLogNum(int logNum) {
 		this.logNum = logNum;
 	}
-	
-
 	
 }

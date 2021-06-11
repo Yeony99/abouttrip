@@ -9,9 +9,7 @@
 	font-family: 나눔고딕;
 	padding: 20px;
 }
-.body-title {
 
-}
 form {
 	margin: 2px 15px;
 }
@@ -28,7 +26,6 @@ form {
 }
 .diaryBtn:hover {
 	color: #f8f9fa;
-	font-weight: bold;
 	border: 1px dotted #f8f9fa;
 	border-radius: 3px;
 }
@@ -36,7 +33,6 @@ form {
 .createBtn {
 	margin: 8px;
 	color: #46CCFF;
-	margin: 5px;
 	box-sizing: border-box; 
 	cursor: pointer;
 	width: 55px;
@@ -49,7 +45,7 @@ form {
 	font-size: 13px;
 	background: #f8f9fa;
 	position: fixed;
-	left: 970px; top: 200px;
+	left: 970px; top: 222px;
 }
 
 .createBtn:hover {
@@ -133,25 +129,26 @@ function printGuest(data) {
 		$("listDiaryBody").empty();
 	}
 	
+	var articleUrl=data.articleUrl;
+	
 	for(var idx=0; idx<data.list.length; idx++) {
 		var diaryNum=data.list[idx].diaryNum;
 		var nickName=data.list[idx].nickName;
 		var diaryTitle=data.list[idx].diaryTitle
 		var diaryCreated=data.list[idx].diaryCreated;
 		var saveImgName=data.list[idx].saveImgName;
-		var articleUrl=data.list[idx].articleUrl;
 		
 		out+="<div class='shape'>";
 		out+="<tr>";
-		out+="<td rowspan='4'>";
+		out+="<td rowspan='3'>";
 		out+="    <a href="+articleUrl+"&diaryNum="+diaryNum+">";
-		out+="    	<img src="+"'${pageContext.request.contextPath}/uploads/diary/"+saveImgName+"'style='background-size: cover; width: 220px;'>";
+		out+="    	<img src="+"'${pageContext.request.contextPath}/uploads/diary/"+saveImgName+"'style='background-size: contain; width: 220px;'>";
 		out+="    </a>";
 		out+="</td>";
 		out+="<td style='line-height: 5px; margin: 10px;'>"+nickName+"</td>";
 		out+="</tr>";
 		out+="<tr>";
-		out+="<td rowspan='2' style='line-height: 5px; '>"+diaryTitle+"</td>";
+		out+="<td style='line-height: 5px; '>"+diaryTitle+"</td>";
 		out+="</tr>";
 		out+="<tr>";
 		out+="<td style='line-height: 5px; '>"+diaryCreated+"</td>";
@@ -198,9 +195,9 @@ function searchList() {
 <div class="body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
 	
 	<div>
-		<c:if test="${list.size() > 0}">
+		<c:if test="${listImg.size() > 0}">
 			<ul class="slider" style="margin: 0;">
-				<c:forEach var="dto" items="${list}">
+				<c:forEach var="dto" items="${listImg}">
 					<c:choose>
 						<c:when test="${not empty dto.saveImgName}">
 							<li><a href="${articleUrl}&diaryNum=${dto.diaryNum}"><img src="${pageContext.request.contextPath}/uploads/diary/${dto.saveImgName}" title="${dto.diaryTitle}"></a></li>
@@ -213,15 +210,13 @@ function searchList() {
 			</ul>
 		</c:if>
 	</div>
-		
-	<div class="body-title">
-		<h3 style="font: bold;">다이어리</h3>
-	</div>
+
 	<div class="body-main">
+		<h3 style="font: bold; margin: 10px 0px 30px;">다이어리</h3>
 		<table style="border-bottom: 2px solid white;">
 			<tr>
 				<td>
-					<button type="button" style="margin: 0px 0px 0px 15px;" class="diaryBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main';">새로고침</button>
+					<button type="button" style="margin: 0px 0px 0px 13px;" class="diaryBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main';">새로고침</button>
 				</td>
 				<td>
 					<form name="searchForm" action="${pageContext.request.contextPath}/diary/list" method="post">
@@ -231,7 +226,7 @@ function searchList() {
 							<option value="diaryContent" ${condition=="diaryContent"?"selected='selected'":""}>내용</option>
 						</select>
 						<input type="text" style="width: 250px;" name="keyword" value="${keyword}">
-						<button type="button" style="margin: 0px 0px 0px 15px;" class="diaryBtn" onclick="searchList()">검색</button>
+						<button type="button" style="margin: 0px 0px 0px 14px;" class="diaryBtn" onclick="searchList()">검색</button>
 					</form>
 				</td>
 				<td>
@@ -241,7 +236,7 @@ function searchList() {
 		</table>
          
 		<div id="listDiary" class="diary-list">
-			<table style="width: 700px; margin: 3px auto; border-spacing: 0px;" border="1">
+			<table>
 				<tbody id="listDiaryBody" data-page="0" data-totalPage="0"></tbody>
 				<tfoot id="listDiaryFooter">
 					<tr>

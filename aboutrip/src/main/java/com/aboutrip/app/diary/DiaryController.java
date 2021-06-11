@@ -165,7 +165,6 @@ public class DiaryController {
 		model.put("condition", condition);
 		model.put("keyword", keyword);
 		
-		
 		return model;
 	}
 	
@@ -228,7 +227,7 @@ public class DiaryController {
 		model.addAttribute("listImg", listImg);
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
-		model.addAttribute("menuIndex", 5);
+		//model.addAttribute("menuIndex", 5);
 		
 		return ".diary.article";
 	}
@@ -302,7 +301,7 @@ public class DiaryController {
 		Diary dto = service.readDiary(diaryNum);
 		
 		if(dto == null) {
-			return "redirect:/diary/list?page="+page;
+			return "redirect:/diary/main?page="+page;
 		}
 		
 		if(dto.getUserNum() != info.getUserNum()) {
@@ -314,7 +313,7 @@ public class DiaryController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/diary/list?"+query;		
+		return "redirect:/diary/main?"+query;		
 	}
 	
 	@RequestMapping(value="deleteImg", method=RequestMethod.POST)
