@@ -115,7 +115,7 @@
 							<span style="display: inline-block; padding:1px 3px; background: blue; color: #fff">공지</span></td>
 							<td><a href="${articleUrl}&num=${dto.num}"><strong>${dto.title}</strong></a>
 							</td>
-							<td>${sessionScope.member.nickName}</td>
+							<td>관리자</td>
 							<td>${dto.reg_date}</td>
 							<td>
 								<c:if test="${dto.fileCount != 0}">

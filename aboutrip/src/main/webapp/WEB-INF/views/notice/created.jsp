@@ -163,7 +163,7 @@ $(function(){
 				<tr> 
 					<td>작성자</td>
 					<td> 
-						${sessionScope.member.nickName}
+						관리자
 					</td>
 				</tr>
 			

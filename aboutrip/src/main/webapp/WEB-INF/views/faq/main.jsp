@@ -216,7 +216,7 @@ function searchList() {
 	f.condition.value=$("#condition").val();
 	f.keyword.value=$.trim($("#keyword").val());
 
-	listPage(1);
+	f.submit();
 }
 
 // 새로고침

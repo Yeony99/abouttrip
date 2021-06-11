@@ -89,7 +89,7 @@ a {
 			
 			<tr style="font-weight: 600;">
 				<td width="50%" align="left">
-					${sessionScope.member.nickName}
+					관리자
 				</td>
 				<td width="50%" align="right">
 					${dto.reg_date} 

@@ -40,11 +40,12 @@
 			<button type="button" class="btnList" onclick="reloadFaq();">새로고침</button>
 		</td>
 		<td align="center">
-			<form name="searchForm" method="post">
+			<form name="searchForm" action="${pageContext.request.contextPath}/faq/list" method="post">
 				<select id="condition" name="condition" class="selectField">
 					<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
 					<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
 					<option value="content" ${condition=="content"?"selected='selected'":""}>내용</option>
+					<option value="reg_date" ${condition=="reg_date"?"selected='selected'":""}>작성일</option>
 				</select>
 				<input type="text" id="keyword" name="keyword" class="boxTF" value="${keyword}">
 				<button type="button" class="btnSearch" onclick="searchList();">검색</button>

@@ -1,6 +1,7 @@
 package com.aboutrip.app.faq;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,10 @@ public class FaqController {
 			@RequestParam(defaultValue="") String keyword,
 			@RequestParam(defaultValue="0") int categoryNum,
 			HttpServletRequest req,
-			Model model) throws Exception {
+			Model model
+			) throws Exception {
+		
+		String cp=req.getContextPath();
 		
 		int rows = 10;
 		int total_page = 0;
@@ -91,9 +95,24 @@ public class FaqController {
         	dto.setContent(aboutUtil.htmlSymbols(dto.getContent()));
         }
         
-        String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
-		
+        String query = "";
+        String listUrl = cp+"/faq/list?categoryNum="+categoryNum;
+        String articleUrl = cp+"/sbbs/article?categoryNum="+categoryNum+"&page=" + current_page;
+        if(keyword.length()!=0) {
+        	query = "condition=" +condition + 
+        	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
+        }
+        
+        if(query.length()!=0) {
+        	listUrl += "&" + query;
+        	articleUrl += "&" + query;
+        }
+        
+        String paging = aboutUtil.pagingMethod(current_page, total_page, listUrl);
+		        
+        
 		model.addAttribute("list", list);
+		model.addAttribute("articleUrl", articleUrl);
 		model.addAttribute("pageNo", current_page);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
