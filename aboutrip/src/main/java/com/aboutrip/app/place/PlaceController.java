@@ -39,6 +39,7 @@ public class PlaceController {
 	public String placelist(@RequestParam(value="page", defaultValue="1") int current_page,
 			@RequestParam(defaultValue="all") String condition,
 			@RequestParam(defaultValue="") String keyword,
+			@RequestParam(defaultValue = "0") int ctg,
 			HttpServletRequest req,
 			Model model) throws Exception{
 		
@@ -55,7 +56,8 @@ public class PlaceController {
         map.put("condition", condition);
         map.put("keyword", keyword);
         map.put("mdPick", mdPick);
-
+        map.put("ctg", ctg);
+        
         dataCount = service.dataCount(map);
         if(dataCount != 0)
             total_page = aboutUtil.pageCount(rows, dataCount);
@@ -68,6 +70,7 @@ public class PlaceController {
         map.put("offset", offset);
         map.put("rows", rows);
         map.put("mdPick", 0);
+        map.put("ctgNum", ctg);
 
         List<Place> list = service.listPlace(map);
 
@@ -78,7 +81,7 @@ public class PlaceController {
             n++;
             
         }
-        
+        List<Place> currentList = service.currentList(map);
         String query = "";
         String listUrl = cp+"/place/list?mdPick="+mdPick;
         String articleUrl = cp+"/place/listArticle?mdPick="+mdPick+"&page=" + current_page;
@@ -91,8 +94,8 @@ public class PlaceController {
         	listUrl = cp+"/place/list?" + query;
         	articleUrl = cp+"/place/listArticle?page=" + current_page + "&"+ query;
         }
-        
         String paging = aboutUtil.paging(current_page, total_page, listUrl);
+        model.addAttribute("clist", currentList);
         model.addAttribute("list", list);
         model.addAttribute("page", current_page);
         model.addAttribute("articleUrl", articleUrl);
@@ -103,6 +106,7 @@ public class PlaceController {
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("mdPick",mdPick);
 		model.addAttribute("pick",pick);
+		model.addAttribute("ctg",ctg);
 		return ".place.list";
 	}
 	
@@ -110,6 +114,7 @@ public class PlaceController {
 	public String mdPick(@RequestParam(value="page", defaultValue="1") int current_page,
 			@RequestParam(defaultValue="all") String condition,
 			@RequestParam(defaultValue="") String keyword,
+			@RequestParam(defaultValue = "0") int ctg,
 			HttpServletRequest req,
 			Model model) throws Exception{
 		
@@ -127,7 +132,7 @@ public class PlaceController {
         map.put("condition", condition);
         map.put("keyword", keyword);
         map.put("mdPick", 1);
-
+        map.put("ctg", ctg);
         dataCount = service.dataCount(map);
         if(dataCount != 0)
             total_page = aboutUtil.pageCount(rows, dataCount);
@@ -140,7 +145,7 @@ public class PlaceController {
         map.put("offset", offset);
         map.put("rows", rows);
         map.put("mdPick", mdPick);
-
+        map.put("ctgNum", ctg);
         List<Place> list = service.listPlace(map);
 
         int listNum, n = 0;
@@ -149,7 +154,7 @@ public class PlaceController {
             dto.setListNum(listNum);
             n++;
         }
-        
+        List<Place> currentList = service.currentList(map);
         String query = "";
         String listUrl = cp+"/place/list?mdPick="+mdPick;
         String articleUrl = cp+"/place/listArticle?mdPick="+mdPick+"&page=" + current_page;
@@ -164,7 +169,7 @@ public class PlaceController {
         }
         
         String paging = aboutUtil.paging(current_page, total_page, listUrl);
-
+        model.addAttribute("clist", currentList);
         model.addAttribute("list", list);
         model.addAttribute("page", current_page);
         model.addAttribute("articleUrl", articleUrl);
@@ -173,9 +178,10 @@ public class PlaceController {
         model.addAttribute("paging", paging);
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
-		model.addAttribute("mdPick", mdPick);
+		model.addAttribute("mdPick",mdPick);
 		model.addAttribute("pick",pick);
-		return ".place.mdPick";
+		model.addAttribute("ctg",ctg);
+		return ".place.list";
 	}
 	
 	@RequestMapping(value = "create", method = RequestMethod.GET)
@@ -220,7 +226,12 @@ public class PlaceController {
 			@RequestParam String pick,
 			HttpSession session,
 			Model model) throws Exception {
-		
+		int mdPick;
+		if(pick.equals("list")) {
+			mdPick=0;
+		} else {
+			mdPick=1;
+		}
 		keyword = URLDecoder.decode(keyword, "utf-8");
 		
 		String query="page="+page;
@@ -239,6 +250,7 @@ public class PlaceController {
 		map.put("condition", condition);
 		map.put("keyword", keyword);
 		map.put("placeNum", placeNum);
+		map.put("mdPick", mdPick);
 
 		Place preReadDto = service.preReadPlace(map);
 		Place nextReadDto = service.nextReadPlace(map);
@@ -278,5 +290,44 @@ public class PlaceController {
 		
 		return ".place.create";
 	}
-	
+	@RequestMapping(value="update", method=RequestMethod.POST)
+	public String updateSubmit(
+			Place dto, 
+			@RequestParam String page,
+			@RequestParam String pick,
+			HttpSession session) throws Exception {
+		
+		String root=session.getServletContext().getRealPath("/");
+		String pathname=root+"uploads"+File.separator+"place";		
+
+		try {
+			service.updatePlace(dto, pathname);		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/place/"+pick+"?page="+page;
+	}
+	@RequestMapping("delete")
+	public String deletePlace(@RequestParam int placeNum, 
+			@RequestParam String page,
+			@RequestParam String pick,
+			@RequestParam(defaultValue="all") String condition,
+			@RequestParam(defaultValue="") String keyword,
+			HttpSession session) throws Exception{
+		
+		keyword = URLDecoder.decode(keyword,"utf-8");
+		String query="page="+page;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		}
+		
+		String root=session.getServletContext().getRealPath("/");
+		String pathname=root+"uploads"+File.separator+"place";
+		
+		service.deletePlace(placeNum, pathname);
+		
+		
+		return"redirect:/place/"+pick+"?"+query;
+	}
 }

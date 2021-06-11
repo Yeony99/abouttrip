@@ -43,6 +43,20 @@ public class PlaceServiceImpl implements PlaceService {
 		
 		return list;
 	}
+	
+	@Override
+	public List<Place> currentList(Map<String, Object> map) {
+		List<Place> list = null;
+		
+		try {
+			//MemberMapper - listMember, map
+			list = dao.selectList("place.currentList", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
 
 	@Override
 	public void insertPlace(Place dto, String pathname) throws Exception {
@@ -77,6 +91,31 @@ public class PlaceServiceImpl implements PlaceService {
 		}
 		
 	}
+	
+
+	@Override
+	public void updatePlace(Place dto, String pathname) throws Exception {
+		try {
+			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
+			if(saveFilename !=null) {
+				if(dto.getPlaceImgName()!=null&&dto.getPlaceImgName().length()!=0) {
+					fileManager.doFileDelete(dto.getPlaceImgName(),pathname);
+				}
+				dto.setPlaceImgName(saveFilename);
+				dto.setSavePlace(dto.getUpload().getOriginalFilename());
+			}
+
+			dto.setPlaceFileName(dto.getPlaceFileName().substring(dto.getPlaceFileName().lastIndexOf("\\")));
+			dto.setPlaceFileName(dto.getPlaceFileName().substring(1,dto.getPlaceFileName().length()));
+			dao.updateData("place.updatePlace", dto);
+			dao.updateData("place.updatePlaceImg", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+	
 
 	@Override
 	public Place readPlace(int placeNum) {
@@ -116,6 +155,25 @@ public class PlaceServiceImpl implements PlaceService {
 		
 		return dto;
 	}
+
+	@Override
+	public void deletePlace(int placeNum, String pathname) throws Exception {
+		try {
+			Place dto = readPlace(placeNum);
+			
+			if(dto==null) {
+				return;
+			}
+			fileManager.doFileDelete(dto.getPlaceImgName(),pathname);
+			
+			dao.deleteData("place.deletePlace", placeNum);
+			dao.deleteData("place.deletePlaceImg", placeNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
 	
 	
 

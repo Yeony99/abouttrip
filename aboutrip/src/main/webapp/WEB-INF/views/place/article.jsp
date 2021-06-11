@@ -35,7 +35,12 @@ button[disabled] {
 	background: #eee;
 }
 </style>
-
+<script type="text/javascript">
+	function boardList() {
+		var f=document.boardListForm;
+		f.submit();
+	}
+</script>
 </head>
 <body>
 
@@ -72,6 +77,23 @@ button[disabled] {
 								<textarea name="content" class="boxTA">${dto.placeContent}</textarea>
 							</td>
 						</tr>
+						
+						<tr>
+							<td colspan="2">
+								다음글 :
+								<c:if test="${not empty nextReadDto}">
+									<a href="${pageContext.request.contextPath}/place/listArticle?${query}&placeNum=${nextReadDto.placeNum}&mdPick=${mdPick}&pick=${pick}">${nextReadDto.placeName}</a>
+								</c:if>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								이전글 :
+								<c:if test="${not empty preReadDto}">
+									<a href="${pageContext.request.contextPath}/place/listArticle?${query}&placeNum=${preReadDto.placeNum}&mdPick=${mdPick}&pick=${pick}">${preReadDto.placeName}</a>
+								</c:if>
+							</td>
+						</tr>
 					</table>
 
 					<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
@@ -82,12 +104,12 @@ button[disabled] {
 									<input type="hidden" name="condition" value="${condition}">
 									<input type="hidden" name="keyword" value="${keyword}">
 									<input type="hidden" name="mdPick" value="${dto.mdPick}">
+							<c:if test="${sessionScope.member.userId=='admin'}">
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/place/update?placeNum=${dto.placeNum}&page=${page }&pick=${pick }';">글수정</button>
+									onclick="javascript:location.href='${pageContext.request.contextPath}/place/update?placeNum=${dto.placeNum}&page=${page }&pick=${pick }';">글 수정</button>
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/place/delete';">글삭제</button>
-									<input type="hidden" name="placeNum" value="${dto.placeNum}">
-									<input type="hidden" name="page" value="${page}">
+									onclick="javascript:location.href='${pageContext.request.contextPath}/place/delete?placeNum=${dto.placeNum}&page=${page }&pick=${pick }';">글삭제</button>
+							</c:if>
 							</td>
 						</tr>
 					</table>

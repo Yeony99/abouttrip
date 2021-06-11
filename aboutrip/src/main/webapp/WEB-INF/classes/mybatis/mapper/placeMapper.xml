@@ -14,6 +14,14 @@
 		UPDATE place SET hitCount = hitCount+1 WHERE placeNum = #{placeNum}
 	</update>
 	
+	<update id="updatePlace" parameterType="com.aboutrip.app.place.Place">
+		UPDATE place SET placeName = #{placeName}, ctgNum = #{ctgNum}, placeContent= #{placeContent} WHERE placeNum= #{placeNum}
+	</update>
+	
+	<update id="updatePlaceImg" parameterType="com.aboutrip.app.place.Place">
+		UPDATE placeImg SET placeImgName=#{placeImgName, jdbcType=VARCHAR}, placeFileName=#{placeFileName}, savePlace=#{savePlace, jdbcType=VARCHAR} WHERE placeNum = #{placeNum}
+	</update>
+	
 	<select id="placeNumseq" resultType="Integer">
        SELECT place_seq.NEXTVAL FROM dual 
     </select>
@@ -44,6 +52,9 @@
 			<if test="keyword!=null and keyword!='' ">
 				<include refid="where-list"/>
 			</if>
+			<if test="ctg!=0">
+				AND ctgNum=#{ctg}
+			</if>
 		</where>
 	</select>
     
@@ -55,6 +66,9 @@
     		mdPick = #{mdPick}
 			<if test="keyword!=null and keyword!='' ">
 				<include refid="where-list"/>
+			</if>
+			<if test="ctgNum!=0">
+				AND ctgNum=#{ctgNum}
 			</if>
 		</where>
     	ORDER BY p.placeNum DESC
@@ -68,16 +82,31 @@
 		WHERE p.placeNum = #{placeNum}               
 	</select>
 	
+	<select id="currentList" parameterType="map" resultType="com.aboutrip.app.place.Place">
+    	SELECT p.placeNum, placeName, placeContent, mdPick, ctgNum, hitCount, created_date, placeImgNum, placeImgName
+    	FROM place p
+    	LEFT OUTER JOIN placeImg pi ON p.placeNum = pi.placeNum
+    	<where>
+	    	mdPick = #{mdPick}
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+	    </where>
+	    ORDER BY PlaceNum DESC
+	    FETCH FIRST 3 ROWS ONLY
+    </select>
+	
     <select id="preReadPlace" parameterType="map" resultType="com.aboutrip.app.place.Place">
 	    SELECT p.placeNum, placeName, placeContent, mdPick, ctgNum, hitCount, created_date, placeImgNum, placeImgName
     	FROM place p
     	LEFT OUTER JOIN placeImg pi ON p.placeNum = pi.placeNum
 	    <where>
+	    	p.placeNum &lt; #{placeNum} AND mdPick = #{mdPick}
 			<if test="keyword != null and keyword != '' ">
 				<include refid="where-list"/>
 			</if>
 	    </where>
-	    ORDER BY PlaceNum ASC
+	    ORDER BY PlaceNum DESC
 	    FETCH FIRST 1 ROWS ONLY
 	</select>
 	
@@ -86,11 +115,19 @@
     	FROM place p
     	LEFT OUTER JOIN placeImg pi ON p.placeNum = pi.placeNum
 	    <where>
+	    	p.placeNum &gt; #{placeNum} AND mdPick = #{mdPick}
 			<if test="keyword != null and keyword != '' ">
 				<include refid="where-list"/>
 			</if>
 	    </where>
-	    ORDER BY PlaceNum DESC
+	    ORDER BY PlaceNum ASC
 	    FETCH FIRST 1 ROWS ONLY
 	</select>
+	
+	<delete id="deletePlace" parameterType="Integer">
+		DELETE FROM place WHERE placeNum = #{placeNum}
+	</delete>
+	<delete id="deletePlaceImg" parameterType="Integer">
+		DELETE FROM placeImg WHERE placeNum = #{placeNum}
+	</delete>
 </mapper>

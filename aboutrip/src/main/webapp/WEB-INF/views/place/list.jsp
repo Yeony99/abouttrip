@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style type="text/css">
 .allDataCount {
 	width: 100%;
@@ -67,6 +68,11 @@
 		var f = document.listSearchForm;
 		f.submit();
 	}
+	function bringPlace(){
+		var f=document.listSearchForm;
+		f.submit();
+	}
+	
 </script>
 
 <div class="body-container">
@@ -80,14 +86,33 @@
 			<div class="img-container">
 				<div class="imgs"
 					style="display: flex; flex-direction: row; align-content: stretch; justify-content: space-evenly; flex-wrap: wrap;">
-					<div class="bximg"
+					<c:set var="size" value="${fn:length(clist) }"/>
+					<c:forEach var="cto" items="${clist}">
+						<c:if test="${not empty cto.placeImgName }">
+							<div class="bximg"
+								style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
+								<a href="${articleUrl}&placeNum=${cto.placeNum}&pick=${pick}"><img class="box-img"
+									src="${pageContext.request.contextPath}/uploads/place/${cto.placeImgName}"
+									style="width: 100%; height: 100%; object-fit: cover;"></a>
+							</div>
+						</c:if>
+					</c:forEach>
+						<c:forEach begin="1" end="${3-size }">
+							<div class="bximg"
+								style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
+								<a href="#"><img class="box-img"
+									src="${pageContext.request.contextPath}/resources/img/img/seongsan.jpg"
+									alt="성산 일출봉" title="img1"
+									style="width: 100%; height: 100%; object-fit: cover;"></a>
+							</div>
+						</c:forEach>
+					<%-- <div class="bximg"
 						style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
 						<a href="#"><img class="box-img"
 							src="${pageContext.request.contextPath}/resources/img/img/busan.jpg"
 							alt="감천 문화마을" title="img1"
 							style="width: 100%; height: 100%; object-fit: cover;"></a>
 					</div>
-
 					<div class="bximg"
 						style="width: 300px; height: 300px; background-color: red; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
 						<a href="#"><img class="box-img"
@@ -102,7 +127,7 @@
 							src="${pageContext.request.contextPath}/resources/img/img/bukchon.jpg"
 							alt="북촌 한옥마을" title="img1"
 							style="width: 100%; height: 100%; object-fit: cover;"></a>
-					</div>
+					</div> --%>
 				</div>
 			</div>
 		</div>
@@ -128,6 +153,15 @@
 									src="${pageContext.request.contextPath}/resource/images/notice_search.png"
 									style="padding-top: 5px;">
 							</button>
+						<select name="ctg" onchange="bringPlace();">
+							<option value="">선 택</option>
+							<option value="1" ${ctg=="1" ? "selected='selected'" : ""}>서울</option>
+							<option value="2" ${ctg=="2" ? "selected='selected'" : ""}>부산</option>
+							<option value="3" ${ctg=="3" ? "selected='selected'" : ""}>제주 제주시</option>
+							<option value="4" ${ctg=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
+							<option value="5" ${ctg=="5" ? "selected='selected'" : ""}>제주 성산</option>
+							<option value="6" ${ctg=="6" ? "selected='selected'" : ""}>제주 기타</option>
+						</select>
 						</div>
 					</form>
 				</td>
@@ -147,7 +181,8 @@
 					<tr align="center" height="55">
 						<th width="60">번호</th>
 						<th>제목</th>
-						<th width="200">등록일</th>
+						<th width="100">지역</th>
+						<th width="160">등록일</th>
 						<th width="107">조회수</th>
 					</tr>
 
@@ -158,7 +193,27 @@
 							<td align="left" style="padding-left: 10px; text-align: center;">
 								<a href="${articleUrl}&placeNum=${dto.placeNum}&pick=${pick}">${dto.placeName}</a>
 							</td>
-							<td width="200">${dto.created_date}</td>
+							<c:choose>
+								<c:when test="${dto.ctgNum==1}">
+										<td width="100">서울</td>
+								</c:when>
+								<c:when test="${dto.ctgNum==2}">
+										<td width="100">부산</td>
+								</c:when>
+								<c:when test="${dto.ctgNum==3}">
+										<td width="100">제주 제주시</td>
+								</c:when>
+								<c:when test="${dto.ctgNum==4}">
+										<td width="100">제주 서귀포</td>
+								</c:when>
+								<c:when test="${dto.ctgNum==5}">
+										<td width="100">제주 성산</td>
+								</c:when>
+								<c:when test="${dto.ctgNum==6}">
+										<td width="100">제주 기타</td>
+								</c:when>
+							</c:choose>
+							<td width="160">${dto.created_date}</td>
 							<td width="107">${dto.hitCount}</td>
 					</c:forEach>
 				</table>

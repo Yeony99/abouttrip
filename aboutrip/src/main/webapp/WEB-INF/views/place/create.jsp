@@ -129,13 +129,15 @@ function bringPlace() {
 						<tr height="60">
 							<td align="center" style="padding-bottom: 30px;">
 								<button type="button" class="btn" onclick="sendQna();">${mode=='update'?'수정':'등록'}</button>
+									<c:if test="${mode=='update'}">
+										<input type="hidden" name="placeNum" value="${dto.placeNum}">
+										<input type="hidden" name="saveFilename" value="${dto.savePlace}">
+										<input type="hidden" name="originalFilename" value="${dto.placeImgName}">
+										<input type="hidden" name="page" value="${page}">
+									</c:if>
 								<button type="button" class="btn"
 									onclick="javascript:location.href='${pageContext.request.contextPath}/place/${pick}';">${mode=='update'?'수정취소':'등록취소'}</button>
 								<button type="reset" class="btn">재입력</button> 
-								<c:if
-									test="${mode=='update'}">
-									<input type="hidden" name="placeNum">
-								</c:if></td>
 						</tr>
 					</table>
 				</form>
