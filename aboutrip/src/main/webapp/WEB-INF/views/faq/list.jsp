@@ -40,7 +40,7 @@
 			<button type="button" class="btnList" onclick="reloadFaq();">새로고침</button>
 		</td>
 		<td align="center">
-			<form name="searchForm" action="${pageContext.request.contextPath}/faq/list" method="post">
+			<form name="searchForm" action="${pageContext.request.contextPath}/faq/main" method="post">
 				<select id="condition" name="condition" class="selectField">
 					<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
 					<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
