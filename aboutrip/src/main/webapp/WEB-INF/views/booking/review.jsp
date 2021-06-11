@@ -63,125 +63,61 @@
 	background-color: #87CEFA;
 	color: black;
 	border-radius: 7px;
-	
 }
 
-.btnSearch{
+.btnSearch {
 	border: none;
 	background-color: #EAEAEA;
 	color: black;
 	border-radius: 7px;
 }
 
-.boxTF{
+.boxTF {
 	height: 25.33px;
 }
-
 </style>
 
-<script type="text/javascript">
-	function searchList() {
-		var f=document.searchForm;
-		f.submit();
-	}
+<script>
+
+
 </script>
 
 <div class="body-container">
-	<div class="body-main" style="padding-top:50px; padding-bottom: 50px;">
-		<div class="body-title">
-			<h2>NOTICE</h2>
-		</div>
+	<div class="body-main" style="padding-top: 50px; padding-bottom: 50px;">
+		<div class="body-main">
+			<table class="table table-header">
+				<tr>
+					<td align="left" width="50%"></td>
+					<td align="right" width="50%">${dataCount}개(${page}/${total_page}
+						페이지)</td>
+				</tr>
+			</table>
 
-			<div class="body-main">
-				<table class="table table-header">
+			<table class="table table-list">
+				<tr>
+					<th>번호</th>
+					<th>작성자</th>
+					<th>내용</th>
+					<th>작성일</th>
+					<th>평점</th>
+				</tr>
+
+				<c:forEach var="dto" items="${list}">
 					<tr>
-						<td align="left" width="50%"></td>
-						<td align="right" width="50%">${dataCount}개(${page}/${total_page} 페이지)</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 					</tr>
-				</table>
+				</c:forEach>
+			</table>
 
-				<table class="table table-list">
-					<tr>
-						<th width="60">번호</th>
-						<th>제목</th>
-						<th width="100">작성자</th>
-						<th width="200">작성일</th>
-						<th width="50">첨부</th>
-					</tr>
-
-					<c:forEach var="dto" items="${noticeList}">
-						<tr>
-							<td>
-							<span style="display: inline-block; padding:1px 3px; background: blue; color: #fff">공지</span></td>
-							<td><a href="${articleUrl}&num=${dto.num}"><strong>${dto.title}</strong></a>
-							</td>
-							<td>${sessionScope.member.nickName}</td>
-							<td>${dto.reg_date}</td>
-							<td>
-								<c:if test="${dto.fileCount != 0}">
-									<a href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.num}">📃</a>
-								</c:if>
-							</td>
-						</tr>
-					</c:forEach>
-
-					<c:forEach var="dto" items="${list}">
-						<tr>
-							<td>${dto.listNum}</td>
-							<td><a href="${articleUrl}&num=${dto.num}">${dto.title}</a>
-							<c:if test="${dto.gap <1}">
-								<span style="display: inline-block;padding:1px 3px; color: #87CEFA">NEW</span>
-							</c:if>
-							</td>
-							<td>${sessionScope.member.nickName}</td>
-							<td>${dto.reg_date}</td>
-							<td><c:if test="${dto.fileCount != 0}">
-									<a href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.num}">📃</a>
-								</c:if>
-							</td>
-						</tr>
-					</c:forEach>
-				</table>
-
-				<table class="table table-paging">
-					<tr>
-						<td>${dataCount==0 ? "등록된 게시물이 없습니다.":paging}</td>
-					</tr>
-				</table>
-
-				<table class="table table-footer">
-					<tr>
-						<td align="left" width="100">
-							<button type="button" class="btnReset"
-								onclick="javascript:location.href='${pageContext.request.contextPath}/notice/list';">새로고침</button>
-						</td>
-						<td align="center">
-							<form name="searchForm"
-								action="${pageContext.request.contextPath}/notice/list" method="post">
-								<select name="condition" class="selectField">
-									<option value="all"
-										${condition=="all"?"selected='selected'":""}>모두</option>
-									<option value="title"
-										${condition=="subject"?"selected='selected'":""}>제목</option>
-									<option value="content"
-										${condition=="content"?"selected='selected'":""}>내용</option>
-									<option value="reg_date"
-										${condition=="created"?"selected='selected'":""}>등록일</option>
-								</select> 
-								
-								<input type="text" name="keyword" value="${keyword}" class="boxTF">
-								<button type="button" class="btnSearch" onclick="searchList()">검색</button>
-							</form>
-						</td>
-						<td align="right" width="100"><c:if
-								test="${sessionScope.member.userId=='admin'}">
-								<input type="hidden" name="adminNum" value="${sessionScope.member.userNum}">
-								<button type="button" class="btnCreate"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/notice/created';">글올리기</button>
-							</c:if></td>
-					</tr>
-				</table>
-			</div>
+			<table class="table table-paging">
+				<tr>
+					<td>${dataCount==0 ? "등록된 게시물이 없습니다.":paging}</td>
+				</tr>
+			</table>
 
 		</div>
 	</div>

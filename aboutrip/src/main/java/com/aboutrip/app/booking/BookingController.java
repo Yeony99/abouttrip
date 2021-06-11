@@ -115,7 +115,7 @@ public class BookingController {
 	@ResponseBody
 	public Map<String, Object> revlist(
 			@RequestParam int code,
-			@RequestParam(value = "pageNo", defaultValue = "1") int current_page
+			@RequestParam(value = "revpageNo", defaultValue = "1") int current_page
 			) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", code);
