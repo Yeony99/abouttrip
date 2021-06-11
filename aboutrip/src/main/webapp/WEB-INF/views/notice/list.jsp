@@ -133,7 +133,7 @@
 								<span style="display: inline-block;padding:1px 3px; color: #87CEFA">NEW</span>
 							</c:if>
 							</td>
-							<td>${sessionScope.member.nickName}</td>
+							<td>관리자</td>
 							<td>${dto.reg_date}</td>
 							<td><c:if test="${dto.fileCount != 0}">
 									<a href="${pageContext.request.contextPath}/notice/zipdownload?num=${dto.num}">📃</a>
