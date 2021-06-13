@@ -49,10 +49,10 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public List<Order> listReview(int code) throws Exception {
+	public List<Order> listReview(Map<String, Object> map) throws Exception {
 		List<Order> Review = null;
 		try {
-			Review = dao.selectList("booking.review_list", code);
+			Review = dao.selectList("booking.review_list", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -61,10 +61,10 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public List<QnA> listQna(int code) throws Exception {
+	public List<QnA> listQna(Map<String, Object> map) throws Exception {
 		List<QnA> Qna = null;
 		try {
-			Qna = dao.selectList("booking.qna_list", code);
+			Qna = dao.selectList("booking.qna_list", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -73,12 +73,27 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public int countProduct(Map<String, Object> map) {
+	public int countProduct(Map<String, Object> map) throws Exception {
 		int result = 0;
 		try {
 			result = dao.selectOne("booking.product_count", map);
 		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
+		return result;
+	}
+
+	@Override
+	public int countReview(int code) throws Exception {
+		int result = 0;
+		try {
+			result = dao.selectOne("booking.review_count",code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
 		return result;
 	}
 

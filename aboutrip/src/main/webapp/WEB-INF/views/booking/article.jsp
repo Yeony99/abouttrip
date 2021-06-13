@@ -78,9 +78,8 @@
 </style>
 
 <script>
-	
-</script>
 
+</script>
 <div class="body-container">
 	<div class="body-main">
 		<table style="width: 100%">
@@ -141,4 +140,7 @@
 
 		</div>
 	</div>
+	<form name="code" method="post">
+		<input type="hidden" name="code" value="${dto.code}">
+	</form>
 </div>

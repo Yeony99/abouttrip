@@ -110,141 +110,142 @@
 	height: 27px;
 }
 </style>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.form.js"></script>
 <script type="text/javascript">
-	$(function() {
-		$("body").on("click", ".accordion h3.question", function() {
-			var $answer = $(this).next(".accordion div.answer");
-			var isVisible = $answer.is(':visible');
-			if (isVisible) {
-				$(this).next(".accordion div.answer").hide();
-				$(this).removeClass("active");
-			} else {
-				$(".accordion div.answer").hide();
-				$(".accordion h3.question").removeClass("active");
+function login() {
+	location.href="${pageContext.request.contextPath}/member/login";
+}
 
-				$(this).next(".accordion div.answer").show();
-				$(this).addClass("active");
+function ajaxFun(url, method, query, dataType, fn) {
+	$.ajax({
+		type:method,
+		url:url,
+		data:query,
+		dataType:dataType,
+		success:function(data) {
+			fn(data);
+		},
+		beforeSend:function(jqXHR) {
+			jqXHR.setRequestHeader("AJAX", true);
+		},
+		error:function(jqXHR) {
+			if(jqXHR.status===403) {
+				login();
+				return false;
 			}
-		});
-	});
-
-	$(function() {
-		var categoryNum = "${categoryNum}";
-		var pageNo = "${pageNo}";
-		if (pageNo == "") {
-			pageNo = 1;
+	    	
+			console.log(jqXHR.responseText);
 		}
-		$("#tab-" + categoryNum).addClass("active");
-		listPage(pageNo);
-
-		$("ul.tabs li").click(function() {
-			categoryNum = $(this).attr("data-categoryNum");
-
-			$("ul.tabs li").each(function() {
-				$(this).removeClass("active");
-			});
-
-			$("#tab-" + categoryNum).addClass("active");
-
-			listPage(1);
-		});
 	});
+}
 
-	function login() {
-		location.href = "${pageContext.request.contextPath}/member/login";
-	}
-
-	function ajaxFun(url, method, query, dataType, fn) {
-		$.ajax({
-			type : method,
-			url : url,
-			data : query,
-			dataType : dataType,
-			success : function(data) {
-				fn(data);
-			},
-			beforeSend : function(jqXHR) {
-				jqXHR.setRequestHeader("AJAX", true);
-			},
-			error : function(jqXHR) {
-				if (jqXHR.status === 403) {
-					login();
-					return false;
-				}
-
-				console.log(jqXHR.responseText);
+function ajaxFileFun(url, method, query, dataType, fn) {
+	$.ajax({
+		type:method,
+		url:url,
+		processData: false,  // file 전송시 필수. 서버로전송할 데이터를 쿼리문자열로 변환여부
+		contentType: false,  // file 전송시 필수. 서버에전송할 데이터의 Content-Type. 기본:application/x-www-urlencoded
+		data:query,
+		dataType:dataType,
+		success:function(data) {
+			fn(data);
+		},
+		beforeSend:function(jqXHR) {
+			jqXHR.setRequestHeader("AJAX", true);
+		},
+		error:function(jqXHR) {
+			if(jqXHR.status===403) {
+				login();
+				return false;
 			}
-		});
+	    	
+			console.log(jqXHR.responseText);
+		}
+	});
+}
+
+$(function(){
+	listPage(1);
+});
+
+// 글리스트 및 페이징 처리
+function listPage(page) {
+	var url = "${pageContext.request.contextPath}/booking/qna";
+	var query = "qnaNo="+page;
+	var params = $("form[name=code]").serialize();
+	query += "&" + params;
+	
+	var fn = function(data) {
+		printList(data);
+	};
+	
+	ajaxFun(url, "get", query, "json", fn);
+}
+
+function printList(data) {
+	var dataCount = data.dataCount;
+	var totalPage = data.total_page;
+	var page = data.qnaNo;
+	var paging = data.paging;
+	
+	if(dataCount == 0) {
+		$(".question").height(0);
+		$(".question").empty();
+		$("list-paging").html("등록된 게시물이 없습니다.");
+		return;
 	}
-
-	// 글리스트 및 페이징 처리
-	function listPage(page) {
-		var $tab = $(".tabs .active");
-		var categoryNum = $tab.attr("data-categoryNum");
-
-		var url = "${pageContext.request.contextPath}/booking/qnalist";
-		var query = "pageNo=" + page + "&categoryNum=" + categoryNum;
-		var search = $('form[name=faqSearchForm]').serialize();
-		query = query + "&" + search;
-
-		var selector = "#tab-content";
-
-		var fn = function(data) {
-			$(selector).html(data);
-		};
-		ajaxFun(url, "get", query, "html", fn);
+	$(".question").attr("data-qnaNo", page);
+	
+	var n = Math.ceil(dataCount / 4);
+	var h = n * 170;
+	$(".question").height(h);
+	
+	if(n==1) {
+		document.querySelector(".question").style.gridTemplateRows = "repeat(1, auto)";
+	} else {
+		document.querySelector(".question").style.gridTemplateRows = "repeat(2, auto)";	
 	}
-
-	// 검색
-	function searchList() {
-		var f = document.faqSearchForm;
-		f.condition.value = $("#condition").val();
-		f.keyword.value = $.trim($("#keyword").val());
-
-		listPage(1);
+	
+	var out="";
+	for(var idx = 0; idx < data.list.length; idx++) {
+		var title = data.list[idx].title;
+		var nickName = data.list[idx].nickName;
+		var content= data.list[idx].content;
+		var answer = data.list[idx].answer;
+		
+		var item="<h3><span class='q'>Q.</span> <span class='title'>"+title+"</span></h3> <span>작성자 : "+nickName+"</span>";
+		item += "<div class='category'>"+content+"</div></div><div class='answer'><div class='content'>";
+		item += "<div>A.</div><div>"+answer+"</div></div>";
+	
+		out+=item;
 	}
-
+	
+	$(".question").html(out);
+	if(data.dataCount==0){
+		$(".list-paging").html("등록된 게시물이 없습니다.");
+	} else {
+		$(".list-paging").html(paging);
+	}
+}
 </script>
 
 <div class="body-container">
-	<div class="body-title" style="padding-top: 50px; padding-left: 50px;">
-		<h3>❓QNA</h3>
-	</div>
-
 	<div class="body-main" style="padding-bottom: 50px;">
 
 		<div id="tab-content" style="padding: 15px 10px 5px; clear: both;">
-			<c:if test="${list.size() > 0}">
-				<div class="accordion">
-					<c:forEach var="dto" items="${list}">
-						<h3 class="question">
-							<span class="q">Q.</span> <span class="title">${dto.title}</span>
-						</h3>
-						<div class="answer">
-							<div class="category">분류 : ${dto.category}</div>
-							<div class="content">
-								<div>A.</div>
-								<div>${dto.content}</div>
-							</div>
-							<c:if test="${sessionScope.member.userId=='admin'}">
-								<div class="update">
-									<a
-										onclick="javascript:location.href='${pageContext.request.contextPath}/faq/update?num=${dto.num}&pageNo=${pageNo}';">수정</a>&nbsp;|&nbsp;
-									<a onclick="deleteFaq('${dto.num}', '${pageNo}');">삭제</a>
-								</div>
-							</c:if>
-						</div>
-					</c:forEach>
+			<div class="accordion">
+				<div class="question">
+						
 				</div>
-			</c:if>
+			</div>
+
+
 			<table class="table">
 				<tr>
-					<td align="center">${dataCount==0?"등록된 게시물이 없습니다.":paging}</td>
+					<td class="list-paging" align="center"></td>
 				</tr>
 			</table>
 		</div>
 	</div>
 </div>
-
 

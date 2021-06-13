@@ -88,7 +88,7 @@
 			<table class="table table-header">
 				<tr>
 					<td align="left" width="50%"></td>
-					<td align="right" width="50%">${dataCount}개(${page}/${total_page}
+					<td align="right" width="50%">${dataCount}개(${revNo}/${totalPage}
 						페이지)</td>
 				</tr>
 			</table>
@@ -104,11 +104,11 @@
 
 				<c:forEach var="dto" items="${list}">
 					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td>1</td>
+						<td>${dto.nickName}</td>
+						<td>${dto.reviewContent}</td>
+						<td>${dto.order_date}</td>
+						<td>${dto.rate}</td>
 					</tr>
 				</c:forEach>
 			</table>

@@ -27,11 +27,12 @@
 		WHERE p.code=#{code}
 	</select>
 	
-	<select id="qna_list" parameterType="Integer" resultType="com.aboutrip.app.booking.QnA">
+	<select id="qna_list" parameterType="map" resultType="com.aboutrip.app.booking.QnA">
 		SELECT num, type, title, content, c_date, answer, a_date, nickName
 		FROM product_qna p
 		JOIN member1 m ON p.user_num = m.usernum
 		WHERE code=#{code}
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 	
 	<select id="product_count" parameterType="map" resultType="Integer">
@@ -39,8 +40,15 @@
 		FROM ${from}
 		WHERE code=#{code}
 	</select>
-	
-	<select id="review_list" parameterType="Integer" resultType="com.aboutrip.app.booking.Order">
+	<select id="review_count" parameterType="Integer" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM product_review pr
+		JOIN member1 m ON pr.user_Num = m.userNum
+		JOIN orderDetail od ON pr.order_num = od.order_Num
+		JOIN productDetail pd ON od.detail_num = pd.detail_num
+		WHERE code=#{code}
+	</select>
+	<select id="review_list" parameterType="map" resultType="com.aboutrip.app.booking.Order">
 		SELECT nickName, reviewContent, rate, order_date
 		FROM product_review pr
 		JOIN member1 m ON pr.user_Num = m.userNum
@@ -48,5 +56,6 @@
 		JOIN orderDetail od ON pr.order_num = od.order_Num
 		JOIN productDetail pd ON od.detail_num = pd.detail_num
 		WHERE code=#{code}
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>	
  </mapper>

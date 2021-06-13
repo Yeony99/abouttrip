@@ -65,9 +65,41 @@ public class BookingController {
 	}
 	
 	@RequestMapping(value="article", method=RequestMethod.GET)
-	public String article(@RequestParam int code, Model model) throws Exception{
+	public String article(@RequestParam int code,
+			@RequestParam(value = "revNo", defaultValue = "1") int current_page,
+			Model model) throws Exception{
 		Booking dto = service.readBooking(code);
 		model.addAttribute("dto", dto);
+		
+		
+		
+		// rev 리스트
+		int rev_count = service.countReview(code);
+		
+		int rows=10;
+		int total_page;
+
+		total_page = aboutUtil.pageCount(rows, rev_count);
+		
+		if(total_page < current_page)
+			current_page = total_page;
+		
+		int offset = (current_page - 1) * rows;
+		if(offset<0) offset=0;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", code);
+		map.put("offset", offset);
+		map.put("rows", rows);
+
+		List<Order> rev_list = service.listReview(map);
+		String paging = aboutUtil.pagingMethod(current_page, total_page, "revNo");
+		
+		model.addAttribute("list", rev_list);
+		model.addAttribute("dataCount", rev_count);
+		model.addAttribute("revNo", current_page);
+		model.addAttribute("totalPage", total_page);
+		model.addAttribute("paging", paging);
 		
 		return ".booking.article";
 	}	
@@ -76,7 +108,7 @@ public class BookingController {
 	@ResponseBody
 	public Map<String, Object> qnalist(
 			@RequestParam int code,
-			@RequestParam(value = "pageNo", defaultValue = "1") int current_page
+			@RequestParam(value = "qnaNo", defaultValue = "1") int current_page
 			) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", code);
@@ -99,52 +131,13 @@ public class BookingController {
 		map.put("offset", offset);
 		map.put("rows", rows);
 
-		List<QnA> qna_list = service.listQna(code);
-		String paging = aboutUtil.pagingMethod(current_page, total_page, "qnaPage");
+		List<QnA> qna_list = service.listQna(map);
+		String paging = aboutUtil.pagingMethod(current_page, total_page, "qnaNo");
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("list", qna_list);
 		model.put("dataCount", qna_count);
-		model.put("pageNo", current_page);
-		model.put("totalPage", total_page);
-		model.put("paging", paging);
-		
-		return model;
-	}
-	@RequestMapping("rev")
-	@ResponseBody
-	public Map<String, Object> revlist(
-			@RequestParam int code,
-			@RequestParam(value = "revpageNo", defaultValue = "1") int current_page
-			) throws Exception{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("code", code);
-		map.put("from", "product_rev");
-		
-		// rev 리스트
-		int rev_count = service.countProduct(map);
-		
-		int rows=10;
-		int total_page;
-
-		total_page = aboutUtil.pageCount(rows, rev_count);
-		
-		if(total_page < current_page)
-			current_page = total_page;
-		
-		int offset = (current_page - 1) * rows;
-		if(offset<0) offset=0;
-		
-		map.put("offset", offset);
-		map.put("rows", rows);
-
-		List<QnA> qna_list = service.listQna(code);
-		String paging = aboutUtil.pagingMethod(current_page, total_page, "revPage");
-		
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("list", qna_list);
-		model.put("dataCount", rev_count);
-		model.put("pageNo", current_page);
+		model.put("qnaNo", current_page);
 		model.put("totalPage", total_page);
 		model.put("paging", paging);
 		
