@@ -344,32 +344,62 @@ public class DiaryController {
 	}
 	
 	// 게시글 좋아요 추가 :  : AJAX-JSON
-		@RequestMapping(value="insertDiaryLike", method=RequestMethod.POST)
+	@RequestMapping(value="insertDiaryLike", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> insertDiaryLike(
+			@RequestParam int diaryNum,
+			HttpSession session
+			) {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("diaryNum", diaryNum);
+		paramMap.put("userNum", info.getUserNum());
+		
+		// 좋아요 추가
+		String state="true";
+		try {
+			service.insertDiaryLike(paramMap);
+		} catch (Exception e) {
+			state="false";
+		}
+		
+		// 좋아요 개수 가져오기
+		int diaryLikeCount = service.diaryLikeCount(diaryNum);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		model.put("diaryLikeCount", diaryLikeCount);
+		return model;
+	}
+	
+	// 좋아요 취소
+		@RequestMapping(value = "deleteDiaryLike", method = RequestMethod.POST)
 		@ResponseBody
-		public Map<String, Object> insertDiaryLike(
+		public Map<String, Object> deleteDiaryLike(
 				@RequestParam int diaryNum,
 				HttpSession session
-				) {
-			String state="true";
-			int diaryLikeCount=0;
+				) throws Exception {
 			SessionInfo info=(SessionInfo)session.getAttribute("member");
 			
-			Map<String, Object> paramMap=new HashMap<>();
+			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("diaryNum", diaryNum);
 			paramMap.put("userNum", info.getUserNum());
 			
+			// 좋아요 취소
+			String state="true";
 			try {
-				service.insertDiaryLike(paramMap);
+				service.diaryLikeDelete(paramMap);
 			} catch (Exception e) {
 				state="false";
 			}
-				
-			diaryLikeCount = service.diaryLikeCount(diaryNum);
 			
-			Map<String, Object> model=new HashMap<>();
+			// 좋아요 개수 가져오기
+			int diaryLikeCount = service.diaryLikeCount(diaryNum);
+			
+			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("state", state);
 			model.put("diaryLikeCount", diaryLikeCount);
-			
 			return model;
 		}
 	

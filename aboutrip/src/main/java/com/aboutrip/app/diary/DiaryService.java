@@ -20,6 +20,6 @@ public interface DiaryService {
 	public void insertDiaryLike(Map<String, Object> map) throws Exception;
 	public int diaryLikeCount(int diaryNum);
 	public boolean isDiaryLikeUser(Map<String, Object> map);
-	public int DiaryLikeDelete(Map<String, Object> map) throws Exception;
+	public int diaryLikeDelete(Map<String, Object> map) throws Exception;
 	
 }

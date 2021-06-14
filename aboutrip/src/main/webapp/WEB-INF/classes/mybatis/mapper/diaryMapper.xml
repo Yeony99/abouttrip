@@ -103,22 +103,22 @@
 	
 	<!-- 게시글 좋아요 추가 -->
 	<insert id="insertDiaryLike" parameterType="map">
-		INSERT INTO diaryLike(diaryNum, userId) VALUES (#{diaryNum}, #{userId})
+		INSERT INTO diaryLike(diaryNum, userNum) VALUES (#{diaryNum}, #{userNum})
 	</insert>
 	
 	<!-- 게시글 좋아요 개수 -->
 	<select id="diaryLikeCount" parameterType="Integer" resultType="Integer">
-		SELECT COUNT(*) FROM diaryLike WHERE diaryNum = #{diaryNum}
+		SELECT COUNT(*) FROM diaryLike WHERE diaryNum=#{diaryNum}
 	</select>
 	
 	<!-- 유저가 좋아요를 눌렀는지 유무 -->
 	<select id="diaryLikeUserCount" parameterType="map" resultType="Integer">
-		SELECT COUNT(*) FROM diaryLike WHERE diaryNum=#{diaryNum} AND userId=#{userId}
+		SELECT COUNT(*) FROM diaryLike WHERE diaryNum=#{diaryNum} AND userNum=#{userNum}
 	</select>
 	
 	<!-- 좋아요 취소 -->
 	<delete id="diaryLikeDelete" parameterType="map">
-		DELETE FROM diaryLike WHERE diaryNum=#{diaryNum} AND userId=#{userId}
+		DELETE FROM diaryLike WHERE diaryNum=#{diaryNum} AND userNum=#{userNum}
 	</delete>
 	
 </mapper>

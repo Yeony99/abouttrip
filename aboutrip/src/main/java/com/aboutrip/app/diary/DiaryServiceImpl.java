@@ -213,7 +213,7 @@ public class DiaryServiceImpl implements DiaryService {
 	}
 
 	@Override
-	public int DiaryLikeDelete(Map<String, Object> map) throws Exception {
+	public int diaryLikeDelete(Map<String, Object> map) throws Exception {
 		int result = 0;
 		try {
 			result = dao.deleteData("diary.diaryLikeDelete", map);

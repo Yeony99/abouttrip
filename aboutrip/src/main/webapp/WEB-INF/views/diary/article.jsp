@@ -81,30 +81,44 @@ function ajaxFun(url, method, query, dataType, fn) {
 	});
 }
 
-// 게시글 공감 여부
+//게시글 공감
 $(function(){
 	$(".btnSendDiaryLike").click(function(){
-		if(! confirm("게시물에 공감 하십니까 ? ")) {
-			return false;
+		var $btn = $(this);
+		var bLike = $btn.find("i").css("color")=="rgb(255, 0, 0)";
+		var msg = "게시글에 공감하시겠습니까 ?";
+		if(bLike) {
+			msg = "게시글 공감을 취소하시겠습니까 ?";
 		}
 		
-		var url="${pageContext.request.contextPath}/diary/insertdiaryLike";
-		var num="${dto.diaryNum}";
-		var query="diaryNum="+diaryNum;
+		if( ! confirm(msg)) {
+			return false;	
+		}
 		
-		var fn = function(data){
-			var state=data.state;
-			if(state==="true") {
-				var count = data.diaryLikeCount;
-				$("#diaryLikeCount").text(count);
-			} else if(state==="false") {
-				alert("게시글 공감은 한번만 가능합니다. !!!");
+		var url="${pageContext.request.contextPath}/diary/insertDiaryLike";
+		if(bLike) {
+			url="${pageContext.request.contextPath}/diary/deleteDiaryLike";
+		}
+		var query="diaryNum=${dto.diaryNum}";
+		var fn = function(data) {
+			var state = data.state;
+			var diaryLikeCount = data.diaryLikeCount;
+			if(state=="true") {
+				if(bLike) {
+					$btn.find("i").css("color","black");
+				} else {
+					$btn.find("i").css("color","red");
+				}
 			}
+			
+			$("#diaryLikeCount").text(diaryLikeCount);
+			
 		};
-		
 		ajaxFun(url, "post", query, "json", fn);
+
 	});
 });
+
 /*
 function imageViewer(img) {
 	var viewer = $("#imgDiaryLayout");
@@ -179,13 +193,7 @@ $(function(){
 			</tr>
 			<tr>
 				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btn btnSendDiaryLike" title="좋아요"><i class="fas fa-thumbs-up" style="color:${isDiaryLikeUser?'red;':'black;'}"></i>&nbsp;&nbsp;<span id="diaryLikeCount">${dto.diaryLikeCount}</span></button>
-				</td>
-			</tr>
-			
-			<tr>
-				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btn btnSendDiaryLike" title="좋아요"><i class="icofont-like"></i>&nbsp;&nbsp;<span id="boardLikeCount">${dto.diaryLikeCount}</span></button>
+					<button type="button" class="btn btnSendDiaryLike" title="좋아요"><i class="icofont-like" style="color:${isDiaryLikeUser?'red;':'black;'}"></i>&nbsp;&nbsp;<span id="diaryLikeCount">${dto.diaryLikeCount}</span></button>
 				</td>
 			</tr>
 
