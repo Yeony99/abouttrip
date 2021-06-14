@@ -21,7 +21,7 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">회원관리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">회원리스트</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/memManage/list">회원리스트</a>
 						</div></li>
 				
 					<li class="nav-item dropdown"><a
