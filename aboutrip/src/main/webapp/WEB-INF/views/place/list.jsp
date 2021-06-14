@@ -21,7 +21,6 @@
 	font-size: 15px;
 	float: left;
 	margin-right: 5px;
-	margin-left: 250px;
 	margin-top: 53px;
 }
 .boxTFdiv {
@@ -53,6 +52,7 @@
 	border: 1px solid #ddd;
 	cursor: pointer;
 	margin-bottom: 3rem;
+	
 }
 .btnDelete {
 	width: 50px;
@@ -136,7 +136,7 @@
 		<table
 			style="width: 100%; height: 120px; margin: 30px auto; border-spacing: 0px;">
 			<tr>
-				<td align="center" style="width: 100%; border-top: 2px solid #111;">
+				<td align="center" style="width: 100%; border-top: 2px solid #111; display: flex; justify-content: center;">
 					<form name="listSearchForm"
 						action="${pageContext.request.contextPath}/place/${pick}"
 						method="post">
@@ -144,6 +144,15 @@
 							<option value="placeName">제목</option>
 							<option value="placeContent">내용</option>
 							<option value="all">제목+내용</option>
+						</select>
+						<select name="ctg" class="selectField" onchange="bringPlace();">
+							<option value="">선 택</option>
+							<option value="1" ${ctg=="1" ? "selected='selected'" : ""}>서울</option>
+							<option value="2" ${ctg=="2" ? "selected='selected'" : ""}>부산</option>
+							<option value="3" ${ctg=="3" ? "selected='selected'" : ""}>제주 제주시</option>
+							<option value="4" ${ctg=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
+							<option value="5" ${ctg=="5" ? "selected='selected'" : ""}>제주 성산</option>
+							<option value="6" ${ctg=="6" ? "selected='selected'" : ""}>제주 기타</option>
 						</select>
 						<div class="boxTFdiv">
 							<input type="text" name="keyword" class="boxTF"
@@ -153,15 +162,6 @@
 									src="${pageContext.request.contextPath}/resource/images/notice_search.png"
 									style="padding-top: 5px;">
 							</button>
-						<select name="ctg" onchange="bringPlace();">
-							<option value="">선 택</option>
-							<option value="1" ${ctg=="1" ? "selected='selected'" : ""}>서울</option>
-							<option value="2" ${ctg=="2" ? "selected='selected'" : ""}>부산</option>
-							<option value="3" ${ctg=="3" ? "selected='selected'" : ""}>제주 제주시</option>
-							<option value="4" ${ctg=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
-							<option value="5" ${ctg=="5" ? "selected='selected'" : ""}>제주 성산</option>
-							<option value="6" ${ctg=="6" ? "selected='selected'" : ""}>제주 기타</option>
-						</select>
 						</div>
 					</form>
 				</td>
@@ -226,7 +226,7 @@
 				</tr>
 			</table>
 
-			<span> <c:if test="${sessionScope.member.userId=='admin'}">
+			<span style="display: flex; justify-content: flex-end;"> <c:if test="${sessionScope.member.userId=='admin'}">
 					<button type="button" class="btnCreate"
 						onclick="javascript:location.href='${pageContext.request.contextPath}/place/create';">등록</button>
 				</c:if>

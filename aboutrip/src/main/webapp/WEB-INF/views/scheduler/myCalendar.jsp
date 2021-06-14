@@ -39,8 +39,8 @@ a, a:hover {
 
 .cal-notice {
 	display:none;
-	position: absolute;
-    width: 94%;
+    position: relative;
+    width: 100%;
     height: 80%;
     background: pink;
     z-index: 9999999;

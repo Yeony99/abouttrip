@@ -56,8 +56,7 @@
 	color: white;
 	border: 1px solid #ddd;
 	cursor: pointer;
-	margin-left: 1040px;
-	margin-bottom: 30px;
+	
 }
 
 .btnDelete {
@@ -138,7 +137,7 @@
 							style="border-bottom: 1px solid #ddd;">
 							<td width="60">${dto.listNum}</td>
 							<td align="left" style="padding-left: 10px; text-align: center;">
-								<a href="">${dto.subject}</a>
+								<span>${dto.ctgName}</span><a href="">${dto.subject}</a>
 							</td>
 							<td width="100">${dto.userName}</td>
 							<td width="200">${dto.created}</td>
@@ -154,7 +153,7 @@
 				</tr>
 			</table>
 
-			<span> <c:if test="${sessionScope.member.userId!=null}">
+			<span style="display: flex; justify-content: flex-end;"> <c:if test="${sessionScope.member.userId!=null}">
 					<button type="button" class="btnCreate"
 						onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/create';">등록</button>
 				</c:if>
