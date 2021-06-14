@@ -23,7 +23,7 @@
 			</c:if>
 		</div>
 	</c:forEach>
-	</div>
+	</div> 
 </c:if>
  
 <table class="table">
@@ -36,11 +36,13 @@
 
 <table class="table">
 	<tr>
+		<%-- 
 		<td align="left" width="100">
 			<button type="button" class="btnList" onclick="reloadFaq();">새로고침</button>
 		</td>
 		<td align="center">
 			<form name="searchForm" action="${pageContext.request.contextPath}/faq/list" method="post">
+				
 				<select id="condition" name="condition" class="selectField">
 					<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
 					<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
@@ -51,6 +53,7 @@
 				<button type="button" class="btnSearch" onclick="searchList();">검색</button>
 			</form>
 		</td>
+		--%>
 		<td align="right" width="100">
 			<c:if test="${sessionScope.member.userId=='admin'}">
 				<button type="button" class="btnCreate" onclick="javascript:location.href='${pageContext.request.contextPath}/faq/created';">글올리기</button>
