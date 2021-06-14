@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aboutrip.app.common.AboutUtil;
 
+@Controller("admin.memManage.memberMController")
+@RequestMapping("/admin/memManage/*")
 public class MemberMController {
 	@Autowired
 	private MemberMService service;
@@ -24,11 +27,12 @@ public class MemberMController {
 	@Autowired
 	private AboutUtil aboutUtil;
 	
+	@RequestMapping("list")
 	public String memManage(
 			@RequestParam(value="page", defaultValue="1") int current_page,
 			@RequestParam(defaultValue="userId") String condition,
 			@RequestParam(defaultValue="") String keyword,
-			@RequestParam(defaultValue="") String enabled,
+			@RequestParam(defaultValue="") String enable,
 			HttpServletRequest req,
 			Model model
 			) throws Exception {
@@ -45,7 +49,7 @@ public class MemberMController {
 
 		// 전체 페이지 수
 		Map<String, Object> map = new HashMap<String, Object>();
-        map.put("enabled", enabled);
+        map.put("enable", enable);
         map.put("condition", condition);
         map.put("keyword", keyword);
 
@@ -82,11 +86,11 @@ public class MemberMController {
         	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
         }
         
-        if(enabled.length()!=0) {
+        if(enable.length()!=0) {
         	if(query.length()!=0)
-        		query = query +"&enabled="+enabled;
+        		query = query +"&enable="+enable;
         	else
-        		query = "enabled="+enabled;
+        		query = "enable="+enable;
         }
         
         if(query.length()!=0) {
@@ -100,7 +104,7 @@ public class MemberMController {
         model.addAttribute("dataCount", dataCount);
         model.addAttribute("total_page", total_page);
         model.addAttribute("paging", paging);
-        model.addAttribute("enabled", enabled);
+        model.addAttribute("enable", enable);
         model.addAttribute("condition", condition);
         model.addAttribute("keyword", keyword);
         
@@ -129,21 +133,11 @@ public class MemberMController {
 		try {
 			// 회원 활성/비활성 변경
 			Map<String, Object> map = new HashMap<>();
-			map.put("userId", dto.getUserId());
-			if(dto.getFailCnt() >= 5) {
-				map.put("enable", 1);
-			} else {
-				map.put("enable", 0);
-			}
+			map.put("userNum", dto.getUserNum());
+			map.put("enable",dto.getEnable());
+
 			service.updateEnable(map);
-			
-			// 회원 상태 변경 사항 저장
-			service.insertEnable(dto);
-			
-			if(dto.getEnable()==0) {
-				// 회원 패스워드 실패횟수 초기화
-				service.failCntReset(dto.getUserId());
-			}
+
 		} catch (Exception e) {
 			state="false";
 		}

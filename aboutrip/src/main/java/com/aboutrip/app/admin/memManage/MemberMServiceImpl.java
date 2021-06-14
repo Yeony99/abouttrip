@@ -59,16 +59,6 @@ public class MemberMServiceImpl implements MemberMService {
 	}
 
 	@Override
-	public void failCntReset(String userId) throws Exception {
-		try {
-			dao.updateData("memManage.FailCntReset", userId);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-	}
-
-	@Override
 	public void updateEnable(Map<String, Object> map) throws Exception {
 		try {
 			dao.updateData("memManage.updateEnable", map);
@@ -76,16 +66,6 @@ public class MemberMServiceImpl implements MemberMService {
 			e.printStackTrace();
 		}
 		
-	}
-
-	@Override
-	public void insertEnable(Member dto) throws Exception {
-		try {
-			dao.updateData("memManage.insertEnable", dto);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
 	}
 
 	@Override

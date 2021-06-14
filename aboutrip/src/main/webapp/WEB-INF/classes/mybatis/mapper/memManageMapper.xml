@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memManage">
+	<!-- 회원 리스트 출력 -->
+	<sql id="where-list">
+		<choose>
+			<when test="condition=='userId'">
+				INSTR(m1.userId, #{keyword}) &gt; = 1
+			</when>
+			<otherwise>
+				INSTR(${condition}, #{keyword}) &gt;= 1
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT COUNT(*)
+		FROM member1 m1
+		LEFT OUTER JOIN member2 m2 ON m1.userNum = m2.userNum
+		<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+			<if test="enable!=''">
+				AND enable = #{enable}
+			</if>
+			AND m1.userNum != 1111
+		</where> 
+    </select>
+    
+    <select id="listMember" parameterType="map" resultType="com.aboutrip.app.admin.memManage.Member">
+		SELECT m1.userNum, m1.userId, nickName, 
+			enable, tel, TO_CHAR(birth, 'YYYY-MM-DD') birth
+		FROM member1 m1
+		LEFT OUTER JOIN member2 m2 ON m1.userNum = m2.userNum
+		<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+			<if test="enable!=''">
+				AND enable = #{enable}
+			</if>
+			AND m1.userNum != 1111
+		</where> 
+		ORDER BY userNum DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	
+	<select id="readMember" parameterType="String" resultType="com.aboutrip.app.admin.memManage.Member">
+		SELECT m1.userNum, userId, nickName, userPwd, enable, 
+			TO_CHAR(birth, 'YYYY-MM-DD') birth, tel, 
+			zip, address1, address2
+		FROM member1 m1
+		LEFT OUTER JOIN member2 m2 ON m1.userNum = m2.userNum
+		WHERE userId = #{userId}
+	</select>
+
+    <update id="updateEnable" parameterType="map">
+		UPDATE member1 SET enable=#{enable} WHERE userNum=#{userNum}
+    </update>
+
+	<!-- 챠트 쿼리 -->
+	<select id="listAgeSection" resultType="com.aboutrip.app.admin.memManage.Analysis">
+		WITH  memberAge AS (
+		    SELECT userNum, TRUNC(MONTHS_BETWEEN(SYSDATE, birth)/12) age
+		    FROM member2
+		)
+<![CDATA[
+		SELECT '10대' section, COUNT(*) count FROM memberAge WHERE age>=10 AND age<20
+		UNION ALL
+		SELECT '20대' section, COUNT(*) count FROM memberAge WHERE age>=20 AND age<30
+		UNION ALL
+		SELECT '30대' section, COUNT(*) count FROM memberAge WHERE age>=30 AND age<40
+		UNION ALL
+		SELECT '40대' section, COUNT(*) count FROM memberAge WHERE age>=40 AND age<50
+		UNION ALL
+		SELECT '50대' section, COUNT(*) count FROM memberAge WHERE age>=50 AND age<60
+		UNION ALL
+		SELECT '60대' section, COUNT(*) count FROM memberAge WHERE age>=60 AND age<70
+		UNION ALL
+		SELECT '기타' section, COUNT(*) count FROM memberAge WHERE age<10 OR age>70
+]]>
+	</select>
+</mapper>
