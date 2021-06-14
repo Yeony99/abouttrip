@@ -106,25 +106,19 @@ document.addEventListener('DOMContentLoaded', function() {
 		editable: true,
 		navLinks: true,
 		dayMaxEvents: true,
-		events: [{
-			title : "하드코딩한 이벤트",
-			start: '2021-06-06',
-			end: '2021-06-08',
-			color:'green'
-		},			
-			function(info, successCallback, failureCallback) {
-			var url="${pageContext.request.contextPath}/schedule/month";
+		events:function(info, successCallback, failureCallback) {
+			var url="/app/scheduler/month";
 			var startDay=info.startStr.substr(0, 10);
 			var endDay=info.endStr.substr(0, 10);
-            var query="start="+startDay+"&end="+endDay+"&group="+group;
+            var query="start="+startDay+"&end="+endDay;
             
         	var fn = function(data){
         		// var events = eval(data.list);
         		successCallback(data.list);
         	};
-        
         	ajaxFun(url, "get", query, "json", fn);
-		}],
+
+		},
 		selectable: true,
 		selectMirror: true,
 		select: function(info) {
@@ -199,15 +193,13 @@ function initForm(start, end, allDay, mode) {
 	$("#form-checkout").closest("tr").show();
 	$("#form-allDay").removeAttr("disabled");
 	
-	var startDate, endDate, startTime, endTime;
+	var startDate, endDate;
 		startDate = start.substr(0, 10);
 		endDate = end.substr(0, 10);
-		startTime = start.substr(11, 5);
-		endTime = end.substr(11, 5);
+		endDate=daysLater(endDate,0);
 	
-	
-	$("form[name=scheduleForm] input[name=sday]").val(startDate);
-	$("form[name=scheduleForm] input[name=eday]").val(endDate);
+	$("form[name=scheduleForm] input[name=check_in").val(startDate);
+	$("form[name=scheduleForm] input[name=check_out").val(endDate);
 	
 	$("#form-checkin").datepicker({showMonthAfterYear:true});
 	$("#form-checkout").datepicker({showMonthAfterYear:true});
@@ -234,22 +226,14 @@ $(function(){
 // 일정 등록완료 및 수정 완료
 $(function(){
 	$(".btnScheduleSendOk").click(function(){
-		if($("#form-repeat_cycle").val()=="") {
-			$("#form-repeat_cycle").val("0");
-		}
 		
 		if(! check()) {
 			return false;
 		}
 		
-		// 종일일정의 경우 종료일자는 종료일자+1로 저장해서 불러와야 함
-		if($("#form-checkout").val() && $("#form-allDay").is(":checked")) {
-			$("#form-checkout").val(daysLater($("#form-checkout").val(), 2));
-		}
-		
 		var mode = $("form[name=scheduleForm] input[name=mode]").val();
 		var query=$("form[name=scheduleForm]").serialize();
-		var url="${pageContext.request.contextPath}/schedule/"+mode;
+		var url="${pageContext.request.contextPath}/scheduler/"+mode;
 		var fn = function(data) {
 			var state=data.state;
 			
@@ -285,34 +269,11 @@ function check() {
 		var s1=$("#form-checkin").val().replace("-", "");
 		var s2=$("#form-checkout").val().replace("-", "");
 		if(s1>s2) {
-			$("#form-checkin").focus();
+			$("#form-checkout").focus();
 			return false;
 		}
 	}
-		
 	
-	if($("#form-repeat").val()!="0" && ! /^(\d){1,2}$/g.test($("#form-repeat_cycle").val())) {
-		$("#form-repeat_cycle").focus();
-		return false;
-	}
-	
-	if($("#form-repeat").val()!="0" && $("#form-repeat_cycle").val()<1) {
-		$("#form-repeat_cycle").focus();
-		return false;
-	}
-	
-	return true;
-}
-// 시간 형식 유효성 검사
-function isValidTime(data) {
-	if(! /(\d){2}[:](\d){2}/g.test(data)) {
-		return false;
-	}
-	
-	var t=data.split(":");
-	if(t[0] < 0 || t[0] > 23 || t[1] < 0 || t[1] > 59) {
-		return false;
-	}
 	return true;
 }
 //  일정 상세 보기
@@ -323,20 +284,13 @@ function viewSchedule(calEvent) {
 	var num=calEvent.id;
 	var title=calEvent.title;
 	var color=calEvent.backgroundColor;
-	// var start=calEvent.start;
-	// var end=calEvent.end;
 	var start=calEvent.startStr;
 	var end=calEvent.endStr;
-	var allDay=calEvent.allDay;	
-	var sday=calEvent.extendedProps.sday;
-	var eday=calEvent.extendedProps.eday;
-	var stime=calEvent.extendedProps.stime;
-	var etime=calEvent.extendedProps.etime;
+	var checkin=calEvent.extendedProps.checkin;
+	var checkout=calEvent.extendedProps.checkout;
 	
 	var memo=calEvent.extendedProps.memo;
 	var created=calEvent.extendedProps.created;
-	var repeat=calEvent.extendedProps.repeat;
-	var repeat_cycle=calEvent.extendedProps.repeat_cycle;
 	$(".btnScheduleUpdate").attr("data-num", num);
 	$(".btnScheduleDelete").attr("data-num", num);
 	
@@ -346,14 +300,6 @@ function viewSchedule(calEvent) {
 	$("#form-color").val(color);
 	$("#form-num").val(num);
 	$("#form-memo").val(memo);
-	if(repeat!=0) {
-		$("#form-repeat_cycle").val(repeat_cycle);
-		$("#form-repeat").val(repeat);
-		$("#form-repeat_cycle").show();
-	
-		$("#form-checkout").val("");
-		$("#form-checkout").closest("tr").hide();		
-	}
 	
 	// 일정보기
 	var s;
@@ -364,23 +310,13 @@ function viewSchedule(calEvent) {
 	else if(color=="tomato") s = "회사일정";
 	else s = "기타일정";
 	
-	if(allDay) s +=", 종일일정";
-	else s +=", 시간일정";
-	
 	$(".table-article .color").html(s);
 	
-	s = sday;
-	if( stime ) s+=" "+stime;
+	s = checkin;
 	
-	if( eday && allDay ) s += " ~ " + daysLater(eday, 0);
-	else if( eday ) s += " ~ " + eday;
-	
-	if( etime ) s+=" "+etime;
+	if( checkout ) s += " ~ " + checkout;
 	
 	$(".table-article .period").html(s);
-	if(repeat!=0 && repeat_cycle!=0) s="반복일정, 반복주기 : "+repeat_cycle+"년"
-	else s="반복안함";
-	$(".table-article .repeat").html(s);
 	
 	$(".table-article .created").html(created);
 	
@@ -424,7 +360,7 @@ $(function(){
 		var num = $(this).attr("data-num");
 		
 		if(confirm("일정을 삭제 하시겠습니까 ?")) {
-			var url="${pageContext.request.contextPath}/schedule/delete";
+			var url="${pageContext.request.contextPath}/scheduler/delete";
 			var query="num="+num;
 			
 			var fn = function(data){
@@ -446,25 +382,13 @@ function updateDrag(calEvent) {
 	var end=calEvent.endStr;
 	var allDay=calEvent.allDay;
 	var memo=calEvent.extendedProps.memo;
-	var repeat=calEvent.extendedProps.repeat;
-	var repeat_cycle=calEvent.extendedProps.repeat_cycle;
 	
-	var startDate="", endDate="", startTime="", endTime="", all_day="";
-	if(allDay) {
-		startDate = start;
-		endDate = end;
-		all_day = "1";
-	} else {
-		startDate = start.substr(0, 10);
-		endDate = end.substr(0, 10);
-		startTime = start.substr(11, 5);
-		endTime = end.substr(11, 5);
-	}
+	var startDate="", endDate="", all_day="";
+	startDate = start.substr(0, 10);
+	endDate = end.substr(0, 10);
 	
-	var query="num="+num+"&subject="+title+"&color="+color+"&all_day="+all_day
-			+"&sday="+startDate+"&eday="+endDate+"&stime="+startTime+"&etime="+endTime
-			+"&memo="+memo+"&repeat="+repeat+"&repeat_cycle="+repeat_cycle;
-	var url="${pageContext.request.contextPath}/schedule/update";
+	var query="num="+num+"&subject="+title+"&color="+color+"&checkin="+startDate+"&checkout="+endDate+"&memo="+memo;
+	var url="${pageContext.request.contextPath}/scheduler/update";
 	var fn = function(data) {
 	};
 	ajaxFun(url, "post", query, "json", fn);

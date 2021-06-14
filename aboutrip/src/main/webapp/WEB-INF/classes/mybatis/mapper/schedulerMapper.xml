@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="scheduler">
+	<insert id="insertScheduler" parameterType="com.aboutrip.app.scheduler.Scheduler">
+		INSERT INTO	scheduler(num, user_num, subject, created, color, check_in, check_out, memo) VALUES(scheduler_seq.NEXTVAL,#{user_num}, #{subject}, SYSDATE, #{color},#{check_in, jdbcType=VARCHAR},#{check_out, jdbcType=VARCHAR}, #{memo, jdbcType=VARCHAR})
+	</insert>
+	<select id="listMonth" parameterType="map" resultType="com.aboutrip.app.scheduler.Scheduler">
+		select num id, user_num, subject, created, color, check_in, check_out, memo FROM scheduler
+		WHERE	user_num = #{user_num}
+		ORDER BY check_in ASC, id DESC
+	</select>
+</mapper>
