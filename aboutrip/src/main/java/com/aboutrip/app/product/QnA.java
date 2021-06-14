@@ -1,4 +1,4 @@
-package com.aboutrip.app.booking;
+package com.aboutrip.app.product;
 
 public class QnA {
 	private int num;

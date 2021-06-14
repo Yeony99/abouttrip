@@ -1,8 +1,12 @@
-package com.aboutrip.app.booking;
+package com.aboutrip.app.product;
 
-public class Booking {
+import org.springframework.web.multipart.MultipartFile;
+
+public class Product {
 	// 상품기본
 	private int code;
+	private int num;
+
 	private String product_name;
 	private String product_detail;
 	private int isHidden;
@@ -13,9 +17,12 @@ public class Booking {
 	
 	// 카테고리
 	private String category_name;
+	private String category_num;
 	
+
 	// 대표 이미지
 	private String img_name;
+	private MultipartFile upload;
 	
 	// 상품 상세
 	private int option_num;
@@ -28,6 +35,12 @@ public class Booking {
 	}
 	public void setCode(int code) {
 		this.code = code;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
 	}
 	public String getProduct_name() {
 		return product_name;
@@ -113,6 +126,16 @@ public class Booking {
 	public void setParent_num(int parent_num) {
 		this.parent_num = parent_num;
 	}
-	
-	
+	public MultipartFile getUpload() {
+		return upload;
+	}
+	public void setUpload(MultipartFile upload) {
+		this.upload = upload;
+	}
+	public String getCategory_num() {
+		return category_num;
+	}
+	public void setCategory_num(String category_num) {
+		this.category_num = category_num;
+	}
 }

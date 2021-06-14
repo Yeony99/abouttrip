@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="product">
+	<!-- 입력 -->
+	<insert id="insert_product"
+		parameterType="com.aboutrip.app.product.Product">
+		<selectKey keyProperty="code" resultType="int"
+			order="BEFORE">
+			SELECT product_seq.NEXTVAL FROM dual
+		</selectKey>
+		INSERT INTO product(code, product_name, product_detail, isHidden,
+		start_date, end_date, upload_date, update_date, category_num)
+		VALUES(#{code}, #{product_name}, #{product_detail}, #{isHidden},
+		#{start_date}, #{end_date}, SYSDATE, SYSDATE, #{category_num})
+	</insert>
+
+	<insert id="insert_product_detail"
+		parameterType="com.aboutrip.app.product.Product">
+		INSERT INTO productDetail(num, option_name,
+		option_value, price, parent_num, code)
+		VALUES(product_detail_seq.NEXTVAL, #{option_name}, #{option_value},
+		#{price}, #{parent_num}, #{code})
+	</insert>
+
+	<insert id="insert_product_image"
+		parameterType="com.aboutrip.app.product.Product">
+		INSERT INTO product_img(img_num, img_name, code)
+		VALUES(product_img_seq.NEXTVAL, #{img_name}, #{code})
+	</insert>
+
+	<insert id="insert_product_review"
+		parameterType="com.aboutrip.app.product.Order">
+		INSERT INTO product_review(review_num, rate,
+		reviewContent, user_num, order_num)
+		VALUES(product_review_seq.NEXTVAL,
+		#{rate}, #{reviewContent}, #{user_num}, #{order_num})
+	</insert>
+
+	<insert id="insert_product_q"
+		parameterType="com.aboutrip.app.product.QnA">
+		INSERT INTO product_review(num, type, title, content,
+		c_date, answer, a_date, code, userNum)
+		VALUES(PRODUCTQNA_SEQ.NEXTVAL,
+		#{type}, #{title}, #{content}, #{c_date}, #{answer}, #{a_date},
+		#{code}, #{userNum} )
+	</insert>
+
+	<update id="insert_product_a"
+		parameterType="com.aboutrip.app.product.QnA">
+		UPDATE product_review SET(answer, a_date)
+		VALUES(#{answer}, #{a_date})
+		WHERE num = #{num}
+	</update>
+
+	<select id="product_list" parameterType="map"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT p.code, product_name, start_date, end_date,
+		upload_date, ishidden, price, img_name
+		from product p
+		JOIN productdetail
+		d ON p.code=d.code
+		JOIN product_img i ON p.code=i.code
+		WHERE category_num=#{category_num}
+		ORDER BY START_DATE ASC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS
+		ONLY
+	</select>
+
+	<select id="product_list_categories" parameterType="map"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT p.code, product_name, TO_CHAR(start_date,'YYYY-MM-DD') start_date, TO_CHAR(end_date, 'YYYY-MM-DD') end_date, upload_date,
+		ishidden, price, img_name
+		from product p
+		LEFT JOIN productdetail d ON
+		p.code=d.code
+		JOIN product_img i ON p.code=i.code
+		WHERE category_num IN
+		<foreach collection="list" item="code" index="index"
+			separator="," open="(" close=")">
+			#{code}
+		</foreach>
+		ORDER BY START_DATE ASC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS
+		ONLY
+	</select>
+
+	<select id="list_count" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM product
+		WHERE category_num IN
+		<foreach collection="list" item="code" index="index"
+			separator="," open="(" close=")">
+			#{code}
+		</foreach>
+	</select>
+
+	<select id="booking_read" parameterType="Integer"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT p.code, product_name, product_detail,
+		start_date,
+		end_date, upload_date, ishidden, price, img_name
+		from product p
+		JOIN
+		productdetail d ON p.code=d.code
+		JOIN product_img i ON p.code=i.code
+		WHERE p.code=#{code}
+	</select>
+
+	<select id="qna_list" parameterType="map"
+		resultType="com.aboutrip.app.product.QnA">
+		SELECT num, type, title, content, c_date, answer, a_date,
+		nickName
+		FROM product_qna p
+		JOIN member1 m ON p.user_num = m.usernum
+		WHERE code=#{code}
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+
+	<select id="product_count" parameterType="map"
+		resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM ${from}
+		WHERE code=#{code}
+	</select>
+	<select id="review_count" parameterType="Integer"
+		resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM product_review pr
+		JOIN member1 m
+		ON pr.user_Num = m.userNum
+		JOIN orderDetail od ON pr.order_num =
+		od.order_Num
+		JOIN productDetail pd ON od.detail_num = pd.detail_num
+		WHERE code=#{code}
+	</select>
+	<select id="review_list" parameterType="map"
+		resultType="com.aboutrip.app.product.Order">
+		SELECT nickName, reviewContent, rate, order_date
+		FROM
+		product_review pr
+		JOIN member1 m ON pr.user_Num = m.userNum
+		JOIN orders
+		o ON pr.order_num = o.order_num
+		JOIN orderDetail od ON pr.order_num =
+		od.order_Num
+		JOIN productDetail pd ON od.detail_num = pd.detail_num
+		WHERE code=#{code}
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+</mapper>
