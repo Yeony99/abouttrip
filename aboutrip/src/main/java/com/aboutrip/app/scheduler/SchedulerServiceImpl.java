@@ -13,10 +13,10 @@ public class SchedulerServiceImpl implements SchedulerService{
 	
 	@Autowired
 	private AboutDAO dao;
-
 	@Override
 	public void insertSchedule(Scheduler dto) throws Exception {
 		try {
+			//dto.setNum(dao.selectOne("scheduler.scheduler_seq"));
 			dao.insertData("scheduler.insertScheduler", dto);
 		} catch (Exception e) {
 			e.printStackTrace();

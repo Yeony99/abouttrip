@@ -220,7 +220,6 @@ $(function(){
 		var url="${pageContext.request.contextPath}/scheduler/"+mode;
 		var fn = function(data) {
 			var state=data.state;
-			
 			if(state=="true") {
 				group="all";
 				
@@ -493,7 +492,7 @@ function updateDrag(calEvent) {
 							<button type="button" class="btn btn-dark btnScheduleSendOk">일정등록</button>
 							<button type="button" class="btn btnScheduleSendCancel">등록취소</button>
 						</div> 
-						<input type="hidden" id="form-num" name="num" value="${num }">
+						<%-- <input type="hidden" id="form-num" name="num" value="${num }"> --%>
 						<input type="hidden" id="form-mode" name="mode" value="insert">
 					</td>
 				</tr>

@@ -21,4 +21,8 @@
 	<delete id="deleteScheduler" parameterType="map">
 		DELETE FROM scheduler WHERE num=#{num} AND user_num=#{user_num}
 	</delete>
+	
+	<select id="scheduler_seq" resultType="Integer">
+       SELECT scheduler_seq.NEXTVAL FROM dual 
+    </select>
 </mapper>
