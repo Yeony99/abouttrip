@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		select: function(info) {
 			// 날짜의 셀을 선택하거나 드래그하면 입력 대화상자를 출력
 			// insertSchedule(info.start, info.end, info.allDay); // start : Date 형
-			insertSchedule(info.startStr, info.endStr, info.allDay); //startStr : 2021-06-06T07:00:00+09:00
+			insertSchedule(info.startStr, info.endStr); //startStr : 2021-06-06T07:00:00+09:00
 			
 	        calendar.unselect();
 		},
@@ -161,9 +161,9 @@ $(function(){
 	});
 });
 // 일정 등록 대화상자
-function insertSchedule(start, end, allDay) {
+function insertSchedule(start, end) {
 	// 폼 초기화
-	initForm(start, end, allDay, "insert");
+	initForm(start, end, "insert");
 	
 	$('#schedule-dialog').dialog({
 		  modal: true,
@@ -175,7 +175,7 @@ function insertSchedule(start, end, allDay) {
 	});
 }
 // 입력 및 수정 폼 초기화
-function initForm(start, end, allDay, mode) {
+function initForm(start, end, mode) {
 	// 폼 reset
 	$("form[name=scheduleForm]").each(function(){
 		this.reset();
@@ -191,7 +191,6 @@ function initForm(start, end, allDay, mode) {
 	}
 	$("#form-repeat_cycle").hide();
 	$("#form-checkout").closest("tr").show();
-	$("#form-allDay").removeAttr("disabled");
 	
 	var startDate, endDate;
 		startDate = start.substr(0, 10);
@@ -207,20 +206,6 @@ function initForm(start, end, allDay, mode) {
 $(function(){
 	$("#form-checkin").change(function(){
 		$("#form-checkout").val($("#form-checkin").val());
-	});
-	
-	$("#form-repeat").change(function(){
-		if($(this).val()=="0") {
-			$("#form-repeat_cycle").val("0").hide();
-			
-			
-			$("#form-checkout").val($("#form-checkin").val());
-			$("#form-checkout").closest("tr").show();
-		} else {
-			$("#form-repeat_cycle").show();
-			$("#form-checkout").val("");
-			$("#form-checkout").closest("tr").hide();
-		}
 	});
 });
 // 일정 등록완료 및 수정 완료
@@ -278,6 +263,7 @@ function check() {
 }
 //  일정 상세 보기
 function viewSchedule(calEvent) {
+	console.log(calEvent);
 	$("form[name=scheduleForm]").each(function(){
 		this.reset();
 	});
@@ -295,7 +281,7 @@ function viewSchedule(calEvent) {
 	$(".btnScheduleDelete").attr("data-num", num);
 	
 	// 수정폼 초기화
-	initForm(start, end, allDay, "update");
+	initForm(start, end, "update");
 	$("#form-subject").val(title);
 	$("#form-color").val(color);
 	$("#form-num").val(num);
@@ -380,10 +366,9 @@ function updateDrag(calEvent) {
 	var color=calEvent.backgroundColor;
 	var start=calEvent.startStr;
 	var end=calEvent.endStr;
-	var allDay=calEvent.allDay;
 	var memo=calEvent.extendedProps.memo;
 	
-	var startDate="", endDate="", all_day="";
+	var startDate="", endDate="";
 	startDate = start.substr(0, 10);
 	endDate = end.substr(0, 10);
 	
