@@ -139,20 +139,24 @@ function printGuest(data) {
 		var saveImgName=data.list[idx].saveImgName;
 		
 		out+="<div class='shape'>";
+		out+="<table>"
 		out+="<tr>";
 		out+="<td rowspan='3'>";
 		out+="    <a href="+articleUrl+"&diaryNum="+diaryNum+">";
 		out+="    	<img src="+"'${pageContext.request.contextPath}/uploads/diary/"+saveImgName+"'style='background-size: contain; width: 220px;'>";
 		out+="    </a>";
 		out+="</td>";
-		out+="<td style='line-height: 5px; margin: 10px;'>"+nickName+"</td>";
+		
+		out+="<td style='line-height: 25px; margin: 10px;'>"+nickName+"</td>";
 		out+="</tr>";
+		
 		out+="<tr>";
-		out+="<td style='line-height: 5px; '>"+diaryTitle+"</td>";
+		out+="<td style='line-height: 25px; '>"+diaryTitle+"</td>";
 		out+="</tr>";
+		
 		out+="<tr>";
-		out+="<td style='line-height: 5px; '>"+diaryCreated+"</td>";
-		out+="</tr></div>";
+		out+="<td style='line-height: 25px; '>"+diaryCreated+"</td>";
+		out+="</tr></table></div>";
 	}
 	
 	$("#listDiaryBody").append(out); // html은 기존 내용이 지워지고, append는 기존 내용이 지워지지 않는다.
