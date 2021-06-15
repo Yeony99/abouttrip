@@ -10,17 +10,18 @@
 			SELECT product_seq.NEXTVAL FROM dual
 		</selectKey>
 		INSERT INTO product(code, product_name, product_detail, isHidden,
-		start_date, end_date, upload_date, update_date, category_num)
+		sales_start, sales_end, upload_date, update_date, category_num)
 		VALUES(#{code}, #{product_name}, #{product_detail}, #{isHidden},
-		#{start_date}, #{end_date}, SYSDATE, SYSDATE, #{category_num})
+		#{sales_start}, #{sales_end}, SYSDATE, SYSDATE, #{category_num})
 	</insert>
 
 	<insert id="insert_product_detail"
 		parameterType="com.aboutrip.app.product.Product">
-		INSERT INTO productDetail(num, option_name,
-		option_value, price, parent_num, code)
-		VALUES(product_detail_seq.NEXTVAL, #{option_name}, #{option_value},
-		#{price}, #{parent_num}, #{code})
+		INSERT INTO productDetail(detail_num, option_name,
+		option_value, price, code, start_date, end_date)
+		VALUES(product_detail_seq.NEXTVAL,
+		#{option_name}, #{option_value},
+		#{price}, #{code}, #{start_date}, #{end_date})
 	</insert>
 
 	<insert id="insert_product_image"
@@ -53,34 +54,19 @@
 		WHERE num = #{num}
 	</update>
 
-	<select id="product_list" parameterType="map"
-		resultType="com.aboutrip.app.product.Product">
-		SELECT p.code, product_name, start_date, end_date,
-		upload_date, ishidden, price, img_name
-		from product p
-		JOIN productdetail
-		d ON p.code=d.code
-		JOIN product_img i ON p.code=i.code
-		WHERE category_num=#{category_num}
-		ORDER BY START_DATE ASC
-		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS
-		ONLY
-	</select>
-
 	<select id="product_list_categories" parameterType="map"
 		resultType="com.aboutrip.app.product.Product">
-		SELECT p.code, product_name, TO_CHAR(start_date,'YYYY-MM-DD') start_date, TO_CHAR(end_date, 'YYYY-MM-DD') end_date, upload_date,
-		ishidden, price, img_name
-		from product p
-		LEFT JOIN productdetail d ON
-		p.code=d.code
+		SELECT p.code, product_name, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end, 'YYYY-MM-DD') sales_end, upload_date,ishidden, price, img_name
+		FROM product p
+		LEFT JOIN (SELECT code, MIN(price) price FROM productdetail GROUP BY code)d ON p.code=d.code
 		JOIN product_img i ON p.code=i.code
 		WHERE category_num IN
 		<foreach collection="list" item="code" index="index"
 			separator="," open="(" close=")">
 			#{code}
 		</foreach>
-		ORDER BY START_DATE ASC
+		AND sales_end > SYSDATE
+		ORDER BY sales_start ASC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS
 		ONLY
 	</select>
@@ -95,34 +81,25 @@
 		</foreach>
 	</select>
 
-	<select id="booking_read" parameterType="Integer"
+	<select id="product_read" parameterType="Integer"
 		resultType="com.aboutrip.app.product.Product">
 		SELECT p.code, product_name, product_detail,
-		start_date,
-		end_date, upload_date, ishidden, price, img_name
-		from product p
-		JOIN
-		productdetail d ON p.code=d.code
-		JOIN product_img i ON p.code=i.code
-		WHERE p.code=#{code}
+		TO_CHAR(start_date,'YYYY-MM-DD') start_date, TO_CHAR(end_date,
+		'YYYY-MM-DD') end_date, upload_date,
+		ishidden, category_num, img_name
+		FROM product p
+		JOIN product_img i ON p.code = i.code
+		WHERE
+		p.code=#{code}
 	</select>
 
-	<select id="qna_list" parameterType="map"
-		resultType="com.aboutrip.app.product.QnA">
-		SELECT num, type, title, content, c_date, answer, a_date,
-		nickName
-		FROM product_qna p
-		JOIN member1 m ON p.user_num = m.usernum
-		WHERE code=#{code}
-		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
-	</select>
-
-	<select id="product_count" parameterType="map"
+	<select id="option_count" parameterType="Integer"
 		resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
-		FROM ${from}
+		FROM productdetail
 		WHERE code=#{code}
 	</select>
+
 	<select id="review_count" parameterType="Integer"
 		resultType="Integer">
 		SELECT NVL(COUNT(*), 0)

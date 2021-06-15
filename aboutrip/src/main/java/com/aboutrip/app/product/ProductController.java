@@ -61,6 +61,43 @@ public class ProductController {
 		return "redirect:/product/list";
 	}
 	
+	@RequestMapping(value="detail", method = RequestMethod.GET)
+	public String createdetail(	
+			@RequestParam(value="code") int code,
+			HttpSession session,
+			Model model) throws Exception{
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		if(!info.getUserId().equals("admin")) {
+			return "redirect:/list";
+		}
+		Product dto = null;
+		int optionCount;
+		try {
+			dto = service.readProduct(code);
+			optionCount = service.countOption(code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		model.addAttribute("option_value", optionCount+1);
+		model.addAttribute("dto", dto);
+		model.addAttribute("mode", "detail");
+		return ".product.createdetail";
+	}
+	
+	@RequestMapping(value="detail", method = RequestMethod.POST)
+	public String createdetailSubmit(
+			Product dto
+			) throws Exception{
+		try {
+			service.insertProductDetail(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/product/list";
+	}
+	
 	@RequestMapping(value="list")
 	public String list(
 			@RequestParam(value = "page", defaultValue = "1") int current_page,
@@ -133,5 +170,11 @@ public class ProductController {
 		model.addAttribute("keyword", keyword);
 		
 		return ".product.list";
+	}
+	
+	@RequestMapping(value="article", method=RequestMethod.GET)
+	public String article() throws Exception{
+		
+		return ".product.article";
 	}
 }

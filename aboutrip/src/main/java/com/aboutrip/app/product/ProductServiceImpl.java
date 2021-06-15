@@ -10,20 +10,20 @@ import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.common.dao.AboutDAO;
 
 @Service("product.productService")
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 	@Autowired
 	AboutDAO dao;
 
 	@Autowired
 	private FileManager fileManager;
-	
+
 	@Override
 	public void insertProduct(Product dto, String pathname) throws Exception {
 
 		try {
-			
+
 			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
-			if(saveFilename != null) {
+			if (saveFilename != null) {
 				dto.setImg_name(saveFilename);
 			}
 			dao.insertData("product.insert_product", dto);
@@ -33,17 +33,18 @@ public class ProductServiceImpl implements ProductService{
 			throw e;
 		}
 	}
+
 	@Override
 	public void insertProductDetail(Product dto) throws Exception {
 
 		try {
-			dao.insertData("product.insertproduct_detail", dto);
+			dao.insertData("product.insert_product_detail", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
 	}
-	
+
 	@Override
 	public void insertReview(Order dto) throws Exception {
 		try {
@@ -53,6 +54,7 @@ public class ProductServiceImpl implements ProductService{
 			throw e;
 		}
 	}
+
 	@Override
 	public void insertQuestion(QnA dto) throws Exception {
 		try {
@@ -62,7 +64,7 @@ public class ProductServiceImpl implements ProductService{
 			throw e;
 		}
 	}
-	
+
 	@Override
 	public void insertAnswer(QnA dto) throws Exception {
 		try {
@@ -72,18 +74,7 @@ public class ProductServiceImpl implements ProductService{
 			throw e;
 		}
 	}
-	
-	@Override
-	public List<Product> listProduct(Map<String, Object> map) throws Exception {
-		List<Product> list = null;
-		try {
-			list = dao.selectList("product.product_list", map);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-		return list;
-	}
+
 
 	@Override
 	public List<Product> listProducts(Map<String, Object> map) throws Exception {
@@ -96,6 +87,7 @@ public class ProductServiceImpl implements ProductService{
 		}
 		return list;
 	}
+
 	@Override
 	public List<Order> listOrder(int code) throws Exception {
 		List<Order> list = null;
@@ -113,7 +105,7 @@ public class ProductServiceImpl implements ProductService{
 			throw e;
 		}
 		return list;
-	
+
 	}
 
 	@Override
@@ -129,19 +121,19 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public void updateQnA(int num) throws Exception {
-		
+
 	}
 
 	@Override
 	public void updateProduct(Map<String, Object> map) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteProduct(int code) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -151,12 +143,26 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Product readProduct(Map<String, Object> map) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Product readProduct(int code) throws Exception {
+		Product dto = null;
+		try {
+			dto = dao.selectOne("product.product_read", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return dto;
 	}
 
-
-
-	
+	@Override
+	public int countOption(int code) throws Exception {
+		int result = 0;
+		try {
+			result = dao.selectOne("product.option_count", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
+	}
 }

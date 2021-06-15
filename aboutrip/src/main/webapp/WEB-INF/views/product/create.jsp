@@ -63,12 +63,12 @@
 					<td><input type="radio" name="isHidden" value="0">비공개</td>
 				</tr>
 				<tr>
-					<td valign="top">시작날짜</td>
-					<td valign="top"><input type="date" name="start_date"></td>
+					<td valign="top">판매시작날짜</td>
+					<td valign="top"><input type="date" name="sales_start"></td>
 				</tr>
 				<tr>
-					<td valign="top">종료날짜</td>
-					<td valign="top"><input type="date" name="end_date"></td>
+					<td valign="top">판매종료날짜</td>
+					<td valign="top"><input type="date" name="sales_end"></td>
 				</tr>
 				<tr>
 					<td>첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>

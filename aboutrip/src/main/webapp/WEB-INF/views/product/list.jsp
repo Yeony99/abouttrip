@@ -96,7 +96,7 @@
 					href="${pageContext.request.contextPath}/product/list?keyword=all">전체</a></td>
 				<td style="padding: 30px; font-size: large; font-weight: 600;"><a
 					style="text-decoration: none;"
-					href="${pageContext.request.contextPath}/product/list?keyword=pakage">패키지
+					href="${pageContext.request.contextPath}/product/list?keyword=package">패키지
 						여행</a></td>
 				<td style="padding: 30px; font-size: large; font-weight: 600;"><a
 					style="text-decoration: none;"
@@ -125,14 +125,15 @@
 									style="margin-top: 12px; margin-bottom: 9px;">
 									<img
 										src="${pageContext.request.contextPath}/uploads/photo/${dto.img_name}"
-										width="230" height="230"><br>
+										style="width:230; height:230;"><br>
 								</div>
 							</td>
 							<td>
 								<ul>
 									<li><span>${dto.category_name}</span></li>
 									<li><span>${dto.product_name}</span></li>
-									<li><span>${dto.start_date} ~ ${dto.end_date})</span></li>
+									<li><span>판매 시작 ~ 판매 종료</span></li>
+									<li><span>${dto.sales_start} ~ ${dto.sales_end}</span></li>
 									<c:if test="${dto.price!=null}">
 										<li><span>${dto.price}</span></li>
 									</c:if>
@@ -141,7 +142,7 @@
 									<li>&nbsp;</li>
 									<li>
 										<button type="button" style="float: right;"
-											onclick="location.href='${articleUrl}&num=${dto.code}';">
+											onclick="location.href='${pageContext.request.contextPath}/product/article&code=${dto.code}';">
 											상세보기&nbsp;&nbsp;&nbsp; <i class="fas fa-caret-right"></i>
 										</button>
 									</li>
@@ -151,30 +152,27 @@
 					</c:forEach>
 
 					<c:set var="n" value="${list.size()}" />
-					<c:if test="${n>0 && n%3 !=0}">
-						<c:forEach var="i" begin="${n%3+1}" end="3">
+					<c:if test="${n>0 && n%10 !=0}">
+						<c:forEach var="i" begin="${n%10+1}" end="10">
 							<tr>
 								<td width="210" align="center"
 									style="border-top: 1px solid #ddd">
-									<div style="margin: 10px 0; border: 1px solid #ccc;">
+									<div style="margin: 10px 0   border: 1px solid #ccc;">
 										<img
-											src="${pageContext.request.contextPath}/resource/images/product_soon.png"
-											width="229" height="229">
+											src="${pageContext.request.contextPath}/resources/img/product_soon.png"
+											style="width: 229px; height:229;">
 									</div>
 								</td>
 								<td style="border-top: 1px solid #ddd">
 									<div style="padding-left: 35px;">
-										<span>준비 중입니다</span>
+										<span>상품 준비 중입니다</span>
 									</div>
 								</td>
 						</c:forEach>
 					</c:if>
 					<c:if test="${n!=0}">
 						<c:out value="</tr>" escapeXml="false" />
-					</c:if>
-				</table>
-
-
+					</c:if> 				</table>
 			</div>
 		</div>
 	</div>

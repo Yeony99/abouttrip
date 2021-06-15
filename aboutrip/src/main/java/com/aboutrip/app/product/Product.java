@@ -10,10 +10,10 @@ public class Product {
 	private String product_name;
 	private String product_detail;
 	private int isHidden;
-	private String start_date;
-	private String end_date;
 	private String upload_date;
 	private String update_date;
+	private String sales_start;
+	private String sales_end;
 	
 	// 카테고리
 	private String category_name;
@@ -28,8 +28,22 @@ public class Product {
 	private int option_num;
 	private String option_name;
 	private String option_value;
+	private String start_date;
+	private String end_date;
 	private int price;
-	private int parent_num;
+
+	public String getSales_start() {
+		return sales_start;
+	}
+	public void setSales_start(String sales_start) {
+		this.sales_start = sales_start;
+	}
+	public String getSales_end() {
+		return sales_end;
+	}
+	public void setSales_end(String sales_end) {
+		this.sales_end = sales_end;
+	}
 	public int getCode() {
 		return code;
 	}
@@ -119,12 +133,6 @@ public class Product {
 	}
 	public void setPrice(int price) {
 		this.price = price;
-	}
-	public int getParent_num() {
-		return parent_num;
-	}
-	public void setParent_num(int parent_num) {
-		this.parent_num = parent_num;
 	}
 	public MultipartFile getUpload() {
 		return upload;
