@@ -165,4 +165,16 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return result;
 	}
+
+	@Override
+	public List<Product> listOption(int code) throws Exception {
+		List<Product> list;
+		try {
+			list = dao.selectList("product.option_list", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
 }

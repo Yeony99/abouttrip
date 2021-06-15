@@ -24,4 +24,5 @@ public interface ProductService {
 	public int listCount(Map<String, Object> map) throws Exception;
 	
 	public Product readProduct(int code) throws Exception;
+	public List<Product> listOption(int code) throws Exception;
 }

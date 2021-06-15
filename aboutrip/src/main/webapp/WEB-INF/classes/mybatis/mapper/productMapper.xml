@@ -83,9 +83,8 @@
 
 	<select id="product_read" parameterType="Integer"
 		resultType="com.aboutrip.app.product.Product">
-		SELECT p.code, product_name, product_detail,
-		TO_CHAR(start_date,'YYYY-MM-DD') start_date, TO_CHAR(end_date,
-		'YYYY-MM-DD') end_date, upload_date,
+		SELECT p.code, product_name, product_detail, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,
+		'YYYY-MM-DD') sales_end, upload_date,
 		ishidden, category_num, img_name
 		FROM product p
 		JOIN product_img i ON p.code = i.code
@@ -100,6 +99,12 @@
 		WHERE code=#{code}
 	</select>
 
+	<select id="option_list" parameterType="Integer" resultType="com.aboutrip.app.product.Product">
+		SELECT option_name, option_value, price, start_date, end_date
+		From productdetail
+		WHERE code=#{code}
+	
+	</select>
 	<select id="review_count" parameterType="Integer"
 		resultType="Integer">
 		SELECT NVL(COUNT(*), 0)

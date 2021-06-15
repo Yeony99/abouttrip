@@ -142,7 +142,7 @@
 									<li>&nbsp;</li>
 									<li>
 										<button type="button" style="float: right;"
-											onclick="location.href='${pageContext.request.contextPath}/product/article&code=${dto.code}';">
+											onclick="location.href='${pageContext.request.contextPath}/product/article?code=${dto.code}';">
 											상세보기&nbsp;&nbsp;&nbsp; <i class="fas fa-caret-right"></i>
 										</button>
 									</li>
