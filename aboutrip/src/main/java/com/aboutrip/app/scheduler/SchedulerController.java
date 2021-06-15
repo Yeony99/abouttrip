@@ -69,29 +69,4 @@ public class SchedulerController {
 		model.put("list", list);
 		return model;
 	}
-	
-	@RequestMapping(value = "share", method=RequestMethod.GET)
-	public String share() throws Exception {
-		
-		return ".scheduler.share";
-	}
-	
-	@RequestMapping(value = "mate", method=RequestMethod.GET)
-	public String mate() throws Exception {
-		
-		return ".scheduler.mate";
-	}
-	
-	@RequestMapping(value = "review", method=RequestMethod.GET)
-	public String review() throws Exception {
-		
-		return ".scheduler.review";
-	}
-	
-	@RequestMapping(value="create", method=RequestMethod.GET)
-	public String createdForm() throws Exception {
-		
-		return ".scheduler.create";
-	}
-
 }
