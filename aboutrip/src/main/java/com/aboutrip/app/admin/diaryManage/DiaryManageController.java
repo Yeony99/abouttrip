@@ -38,6 +38,7 @@ public class DiaryManageController {
 			@RequestParam(value="page", defaultValue = "1") int current_page, 
 			@RequestParam(defaultValue = "userId") String condition,
 			@RequestParam(defaultValue = "") String keyword,
+			@RequestParam(defaultValue = "") String diaryType, 
 			HttpServletRequest req,
 			Model model
 			) throws Exception {
@@ -53,6 +54,7 @@ public class DiaryManageController {
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("diaryType", diaryType);
 		map.put("condition", condition);
 		map.put("keyword", keyword);
 		
@@ -97,6 +99,7 @@ public class DiaryManageController {
 		model.addAttribute("page", current_page);
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("paging", paging);
+		model.addAttribute("diaryType", diaryType);
 		
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);

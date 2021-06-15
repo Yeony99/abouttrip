@@ -49,7 +49,7 @@ public class MemberMController {
 
 		// 전체 페이지 수
 		Map<String, Object> map = new HashMap<String, Object>();
-        //map.put("enable", enable);
+        map.put("enable", enable);
         map.put("condition", condition);
         map.put("keyword", keyword);
 
@@ -104,7 +104,7 @@ public class MemberMController {
         model.addAttribute("dataCount", dataCount);
         model.addAttribute("total_page", total_page);
         model.addAttribute("paging", paging);
-        //model.addAttribute("enable", enable);
+        model.addAttribute("enable", enable);
         model.addAttribute("condition", condition);
         model.addAttribute("keyword", keyword);
         

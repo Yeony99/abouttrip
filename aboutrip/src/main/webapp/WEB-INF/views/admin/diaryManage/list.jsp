@@ -102,7 +102,7 @@ function updateOk() {
 		return;
 	}
 	
-	var url = "${pageContext.request.contextPath}/admin/diaryManage/updateEnable";
+	var url = "${pageContext.request.contextPath}/admin/diaryManage/updateDiaryType";
 	var query=$("#enableForm").serialize();
 
 	var fn = function(data){
@@ -133,7 +133,7 @@ function imageViewer(img) {
 	
 	<div class="body-container">
 	    <div class="body-title">
-			<h2><i class="icofont-users"></i> 회원 관리 </h2>
+			<h2><i class="icofont-users"></i> 다이어리 게시판 관리 </h2>
 	    </div>
 	    
 	    <div class="body-main wx-800 ml-30">
@@ -146,8 +146,8 @@ function imageViewer(img) {
 					<td align="right">
 						<select id="selectDiaryType" class="selectField" onchange="searchList();">
 							<option value="" ${diaryType=="" ? "selected='selected'":""}>::계정상태::</option>
-							<option value="0" ${diaryType=="0" ? "selected='selected'":""}>공개</option>
-							<option value="1" ${diaryType=="1" ? "selected='selected'":""}>비공개</option>
+							<option value="1" ${diaryType=="1" ? "selected='selected'":""}>공개</option>
+							<option value="2" ${diaryType=="2" ? "selected='selected'":""}>비공개</option>
 						</select>
 					</td>
 				</tr>
@@ -188,10 +188,10 @@ function imageViewer(img) {
 			<table class="table">
 				<tr>
 					<td align="left" width="100">
-						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/memManage/list';">새로고침</button>
+						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/diaryManage/list';">새로고침</button>
 					</td>
 					<td align="center">
-						<form name="searchForm" action="${pageContext.request.contextPath}/admin/memManage/list" method="post">
+						<form name="searchForm" action="${pageContext.request.contextPath}/admin/diaryManage/list" method="post">
 							<select name="condition" class="selectField">
 								<option value="userId"     ${condition=="userId" ? "selected='selected'":""}>아이디</option>
 								<option value="nickName"   ${condition=="nickName" ? "selected='selected'":""}>이름</option>

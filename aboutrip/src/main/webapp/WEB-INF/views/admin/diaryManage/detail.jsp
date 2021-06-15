@@ -40,6 +40,7 @@
 </table>
 <input type="hidden" name="userNum" value="${dto.userNum}">
 <input type="hidden" name="userId" value="${dto.userId}">
+<input type="hidden" name="diaryNum" value="${dto.diaryNum}">
 </form>
 
 <div id="dialogDiary">
