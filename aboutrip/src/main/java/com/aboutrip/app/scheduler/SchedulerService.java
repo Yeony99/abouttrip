@@ -10,7 +10,7 @@ public interface SchedulerService {
 	
 	public Scheduler readScheduler(int user_num) throws Exception;
 	
-	public void updateScheduler(Scheduler dto) throws Exception;
+	public void updateScheduler(Map<String, Object> map) throws Exception;
 	
 	public void deleteSchedule(Map<String, Object> map) throws Exception;
 }

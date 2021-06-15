@@ -49,7 +49,6 @@ public class SchedulerController {
 	@RequestMapping(value = "month")
 	public Map<String, Object> month(@RequestParam String start, @RequestParam String end, HttpSession session ) throws Exception{
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		
 		Map<String,Object> map = new HashMap<>();
 		map.put("start", start);
 		map.put("end", end);
@@ -59,14 +58,63 @@ public class SchedulerController {
 		for(Scheduler dto:list) {
 	    	dto.setStart(dto.getCheck_in());
 	    	dto.setEnd(dto.getCheck_out());
+	    	dto.setTitle(dto.getSubject());
 	    	if( dto.getStart().substring(0,4).compareTo(start.substring(0,4)) != 0 ) {
 	    		dto.setStart(start.substring(0,4)+dto.getStart().substring(5));
 	    		System.out.println("::::"+dto.getStart());
-	    	}	    	
+	    	}	   
 		}
 		Map<String, Object> model = new HashMap<>();
 		
 		model.put("list", list);
+		return model;
+	}
+	
+	@PostMapping("update")
+	public Map<String, Object> updateSubmit(@RequestParam String subject, @RequestParam String color,
+			@RequestParam String check_in, @RequestParam String check_out, @RequestParam int num,
+			@RequestParam String memo,
+			HttpSession session) {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		Map<String, Object> map = new HashMap<String, Object>();
+		String state="true";
+		try {
+			map.put("subject", subject);
+			map.put("check_in", check_in);
+			map.put("check_out", check_out);
+			map.put("user_num",info.getUserNum());
+			map.put("color", color);
+			map.put("num", num);
+			map.put("memo", memo);
+			service.updateScheduler(map);
+		} catch (Exception e) {
+			state="false";
+		}
+		
+		Map<String, Object> model=new HashMap<>();
+		model.put("state", state);
+		return model;
+	}
+	@PostMapping("delete")
+	public Map<String, Object> delete(
+			@RequestParam int num,
+			HttpSession session
+			) {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+
+		String state = "true";
+		try {
+			Map<String, Object> map=new HashMap<>();
+			map.put("user_num", info.getUserNum());
+			map.put("num", num);
+			service.deleteSchedule(map);
+		}catch (Exception e) {
+			state = "false";
+		}
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		
 		return model;
 	}
 }

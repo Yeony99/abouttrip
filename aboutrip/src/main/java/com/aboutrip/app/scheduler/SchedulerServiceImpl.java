@@ -44,14 +44,22 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 
 	@Override
-	public void updateScheduler(Scheduler dto) throws Exception {
-		// TODO Auto-generated method stub
+	public void updateScheduler(Map<String, Object> map) throws Exception {
+		try {
+			dao.updateData("scheduler.updateScheduler", map);
+		} catch (Exception e) {
+			throw e;
+		}
 		
 	}
 
 	@Override
 	public void deleteSchedule(Map<String, Object> map) throws Exception {
-		// TODO Auto-generated method stub
+		try {
+			dao.updateData("scheduler.deleteScheduler", map);
+		} catch (Exception e) {
+			throw e;
+		}
 		
 	}
 

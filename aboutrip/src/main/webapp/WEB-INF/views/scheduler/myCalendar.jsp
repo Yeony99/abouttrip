@@ -2,6 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/js/fullcalendar5/lib/main.min.css">
@@ -113,7 +114,6 @@ document.addEventListener('DOMContentLoaded', function() {
             var query="start="+startDay+"&end="+endDay;
             
         	var fn = function(data){
-        		// var events = eval(data.list);
         		successCallback(data.list);
         	};
         	ajaxFun(url, "get", query, "json", fn);
@@ -211,7 +211,6 @@ $(function(){
 // 일정 등록완료 및 수정 완료
 $(function(){
 	$(".btnScheduleSendOk").click(function(){
-		
 		if(! check()) {
 			return false;
 		}
@@ -263,33 +262,37 @@ function check() {
 }
 //  일정 상세 보기
 function viewSchedule(calEvent) {
-	console.log(calEvent);
 	$("form[name=scheduleForm]").each(function(){
 		this.reset();
 	});
-	var num=calEvent.id;
-	var title=calEvent.title;
+	var num=calEvent.extendedProps.num;
+	var subject=calEvent.extendedProps.subject;
 	var color=calEvent.backgroundColor;
 	var start=calEvent.startStr;
 	var end=calEvent.endStr;
-	var checkin=calEvent.extendedProps.checkin;
-	var checkout=calEvent.extendedProps.checkout;
+	var checkin=calEvent.extendedProps.check_in;
+	var checkout=calEvent.extendedProps.check_out;
 	
+	checkin= checkin.substr(0,10);
+	checkout=checkout.substr(0,10);
+
 	var memo=calEvent.extendedProps.memo;
 	var created=calEvent.extendedProps.created;
+	
+	created = created.substr(0,10);
 	$(".btnScheduleUpdate").attr("data-num", num);
 	$(".btnScheduleDelete").attr("data-num", num);
 	
 	// 수정폼 초기화
 	initForm(start, end, "update");
-	$("#form-subject").val(title);
+	$("#form-subject").val(subject);
 	$("#form-color").val(color);
 	$("#form-num").val(num);
 	$("#form-memo").val(memo);
 	
 	// 일정보기
 	var s;
-	$(".table-article .subject").html(title);
+	$(".table-article .subject").html(subject);
 	
 	if(color=="green") s = "개인일정";
 	else if(color=="blue") s = "가족일정";
@@ -344,35 +347,34 @@ $(function(){
 $(function(){
 	$(".btnScheduleDelete").click(function(){
 		var num = $(this).attr("data-num");
-		
 		if(confirm("일정을 삭제 하시겠습니까 ?")) {
 			var url="${pageContext.request.contextPath}/scheduler/delete";
 			var query="num="+num;
 			
 			var fn = function(data){
-				var event = calendar.getEventById(num);
-		        event.remove();
 			};
 			
 			ajaxFun(url, "post", query, "json", fn);
 		}
-		
-		 $("#viewSchedule-dialog").dialog("close");		
+			
+		 $("#viewSchedule-dialog").dialog("close");
+		 calendar.refetchEvents();
 	});
 });
 function updateDrag(calEvent) {
-	var num=calEvent.id;
-	var title=calEvent.title;
+	var num=calEvent.extendedProps.num;
+	console.log(num);
+	var subject=calEvent.title;
 	var color=calEvent.backgroundColor;
 	var start=calEvent.startStr;
 	var end=calEvent.endStr;
 	var memo=calEvent.extendedProps.memo;
 	
 	var startDate="", endDate="";
-	startDate = start.substr(0, 10);
-	endDate = end.substr(0, 10);
+	startDate = check_in.substr(0, 10);
+	endDate = check_out.substr(0, 10);
 	
-	var query="num="+num+"&subject="+title+"&color="+color+"&checkin="+startDate+"&checkout="+endDate+"&memo="+memo;
+	var query="num="+num+"&subject="+subject+"&color="+color+"&checkin="+startDate+"&checkout="+endDate+"&memo="+memo;
 	var url="${pageContext.request.contextPath}/scheduler/update";
 	var fn = function(data) {
 	};
@@ -490,7 +492,8 @@ function updateDrag(calEvent) {
 						<div class="insert-button">
 							<button type="button" class="btn btn-dark btnScheduleSendOk">일정등록</button>
 							<button type="button" class="btn btnScheduleSendCancel">등록취소</button>
-						</div> <input type="hidden" id="form-num" name="num" value="0">
+						</div> 
+						<input type="hidden" id="form-num" name="num" value="${num }">
 						<input type="hidden" id="form-mode" name="mode" value="insert">
 					</td>
 				</tr>

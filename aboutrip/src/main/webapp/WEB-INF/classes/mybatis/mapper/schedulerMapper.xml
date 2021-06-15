@@ -6,8 +6,19 @@
 		INSERT INTO	scheduler(num, user_num, subject, created, color, check_in, check_out, memo) VALUES(scheduler_seq.NEXTVAL,#{user_num}, #{subject}, SYSDATE, #{color},#{check_in, jdbcType=VARCHAR},#{check_out, jdbcType=VARCHAR}, #{memo, jdbcType=VARCHAR})
 	</insert>
 	<select id="listMonth" parameterType="map" resultType="com.aboutrip.app.scheduler.Scheduler">
-		select num id, user_num, subject, created, color, check_in, check_out, memo FROM scheduler
+		select num, user_num, subject, TO_CHAR(created,'YYYY-MM-DD') created, color, 
+		TO_CHAR(check_in,'YYYY-MM-DD')check_in, TO_CHAR(check_out,'YYYY-MM-DD')check_out, memo FROM scheduler
 		WHERE	user_num = #{user_num}
-		ORDER BY check_in ASC, id DESC
+		ORDER BY check_in ASC, num DESC
 	</select>
+	<update id="updateScheduler" parameterType="map">
+		UPDATE scheduler SET
+			subject=#{subject}, color=#{color}, check_in=#{check_in, jdbcType=VARCHAR}, 
+			check_out=#{check_out, jdbcType=VARCHAR},
+			memo=#{memo, jdbcType=VARCHAR}
+		WHERE num=#{num} AND user_num=#{user_num}
+	</update>
+	<delete id="deleteScheduler" parameterType="map">
+		DELETE FROM scheduler WHERE num=#{num} AND user_num=#{user_num}
+	</delete>
 </mapper>
