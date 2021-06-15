@@ -91,25 +91,30 @@ function bringPlace() {
 
 			<div>
 				<form name="listForm" method="post" enctype="multipart/form-data">
-				<!-- 스케줄 말머리에 사용할 수 있을 것 같아 남겨놓습니다! -->
-					<select name="ctg" onchange="bringPlace();">
-						<option value="">선 택</option>
-						<option value="1" ${dto.ctgNum=="1" ? "selected='selected'" : ""}>서울</option>
-						<option value="2" ${dto.ctgNum=="2" ? "selected='selected'" : ""}>부산</option>
-						<option value="3" ${dto.ctgNum=="3" ? "selected='selected'" : ""}>제주 제주시</option>
-						<option value="4" ${dto.ctgNum=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
-						<option value="5" ${dto.ctgNum=="5" ? "selected='selected'" : ""}>제주 성산</option>
-						<option value="6" ${dto.ctgNum=="6" ? "selected='selected'" : ""}>제주 기타</option>
-					</select>
-					<input type="hidden" value="${dto.ctgNum }" name="ctgNum">
 					<table
 						style="width: 100%; margin: 30px auto; border-spacing: 0px; border-collapse: collapse; border-top: 2px solid #111;">
+						<tr align="left" height=100px;
+							style="border-bottom: 1px solid #ddd;">
+							<td style="text-align: center;">지역</td>
+							<td style="padding-left: 10px;"><!-- 스케줄 말머리에 사용할 수 있을 것 같아 남겨놓습니다! -->
+								<select name="ctg" onchange="bringPlace();">
+									<option value="">선 택</option>
+									<option value="1" ${dto.ctgNum=="1" ? "selected='selected'" : ""}>서울</option>
+									<option value="2" ${dto.ctgNum=="2" ? "selected='selected'" : ""}>부산</option>
+									<option value="3" ${dto.ctgNum=="3" ? "selected='selected'" : ""}>제주 제주시</option>
+									<option value="4" ${dto.ctgNum=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
+									<option value="5" ${dto.ctgNum=="5" ? "selected='selected'" : ""}>제주 성산</option>
+									<option value="6" ${dto.ctgNum=="6" ? "selected='selected'" : ""}>제주 기타</option>
+								</select>
+								<input type="hidden" value="${dto.ctgNum}" name="ctgNum">
+							</td>
+						</tr>
 						<tr align="left" height=100px;
 							style="border-bottom: 1px solid #ddd;">
 							<td style="text-align: center;">제목</td>
 							<td style="padding-left: 10px;"><input type="text"
 								name="placeName" maxlength="50" class="boxTF"
-								value="" placeholder="제목을 입력하세요."></td>
+								value="${dto.subject}" placeholder="제목을 입력하세요."></td>
 						</tr>
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
@@ -117,21 +122,22 @@ function bringPlace() {
 							<td valign="top"><textarea name="placeContent" class="boxTA" placeholder="내용을 입력하세요."> 내용 </textarea>
 							</td>
 						</tr>
-						<tr>
-							<td>첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
-							<td > 
+						<tr align="left" height=100px;
+							style="border-bottom: 1px solid #ddd;">
+							<td style="text-align: center; width: 250px;">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+							<td style="padding-left: 10px;"> 
 								<input type="file" name="upload" class="boxTF" onchange="bringName();">
 								<input type="hidden" name="placeFileName">
 							</td>
 						</tr>
 					</table>
-					<input type="hidden" name="pick" value="${pick }">
+
 					<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
 						<tr height="60">
 							<td align="center" style="padding-bottom: 30px;">
 								<button type="button" class="btn" onclick="sendSch();">${mode=='update'?'수정':'등록'}</button>
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/';">${mode=='update'?'수정취소':'등록취소'}</button>
+									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/share';">${mode=='update'?'수정취소':'등록취소'}</button>
 								<button type="reset" class="btn">재입력</button> 
 								<c:if
 									test="${mode=='update'}">
