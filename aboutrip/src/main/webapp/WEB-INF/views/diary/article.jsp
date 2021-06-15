@@ -8,6 +8,7 @@
 	margin-top: 80px;
 	height: 1000px;
 }
+
 form {
   max-width: 650px;
   width: 90%;
@@ -42,7 +43,13 @@ form {
 	background-color: #46CCFF;
 }
 
-
+.photoSlider {
+	width: 350px;
+	margin: 10px auto;
+}
+.photoSlider img {
+	width: 970%;
+}
 </style>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendor/slider/css/jquery.bxslider.min.css">
@@ -147,14 +154,28 @@ $(function(){
 </script>
 
 <div class="body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
-	<div class="body-title">
-		<h3>다이어리</h3>
-	</div>
-	
-	<!-- diaryTitle, diaryContent, diaryCreated, originalFilename,  -->
 	
 	<div class="body-main">
 	<form>
+		<div class="body-title">
+			<h3>다이어리</h3>
+		</div>
+		<div class="photoSlider">
+		<c:if test="${listImg.size() > 0}">	
+			<ul class="slider" style="margin: 0;">
+				<c:forEach var="dto" items="${listImg}">
+					<c:choose>
+						<c:when test="${not empty dto.saveImgName}">
+							<li><img src="${pageContext.request.contextPath}/uploads/diary/${dto.saveImgName}"></li>
+						</c:when>
+						<c:otherwise>
+							<li><img src="${pageContext.request.contextPath}/resources/images/noimage.png"></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</ul>
+		</c:if>
+		</div>
 		<table>
 			<tr>
 				<td align="left">${dto.diaryTitle}</td>
@@ -173,20 +194,7 @@ $(function(){
 			</tr>
 			-->		
 			
-			<c:if test="${listImg.size() > 0}">	
-				<tr class="slider" style="margin: 0;">
-					<c:forEach var="dto" items="${listImg}">
-						<c:choose>
-							<c:when test="${not empty dto.saveImgName}">
-								<td><img src="${pageContext.request.contextPath}/uploads/diary/${dto.saveImgName}"></td>
-							</c:when>
-							<c:otherwise>
-								<td><img src="${pageContext.request.contextPath}/resources/images/noimage.png"></td>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</tr>
-			</c:if>
+			
 		
 			<tr>
 				<td>${dto.diaryContent}</td>

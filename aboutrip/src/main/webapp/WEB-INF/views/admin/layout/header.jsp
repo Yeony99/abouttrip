@@ -22,6 +22,7 @@
 						style="color: var(- -bs-dark); text-align: left;">회원관리</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/memManage/list">회원리스트</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/memManage/analysis">회원분석</a>
 						</div></li>
 				
 					<li class="nav-item dropdown"><a
@@ -37,7 +38,7 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">페이지 관리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">다이어리</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/diaryManage/list">다이어리</a>
 							<a class="dropdown-item" href="#">스케줄</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a

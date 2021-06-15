@@ -70,7 +70,7 @@
 	
 	<!-- 조인으로 다시 -->
 	<update id="updateDiary" parameterType="com.aboutrip.app.diary.Diary">
-		UPDATE diary SET diaryTitle=#{diaryTitle}, diaryContent=#{diaryContent}, 
+		UPDATE diary SET diaryTitle=#{diaryTitle}, diaryType=#{diaryType}, diaryContent=#{diaryContent}, 
 			saveImgName=#{saveImgName, jdbcType=VARCHAR} 
 		WHERE diaryNum=#{diaryNum}
 	</update>

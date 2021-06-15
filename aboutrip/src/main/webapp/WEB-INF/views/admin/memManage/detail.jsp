@@ -31,8 +31,8 @@
 	<tr height="37" style="background: #fff;">
 		<td align="right" width="15%" style="padding-right: 9px;"><label style="font-weight: 900;">계정상태</label></td>
 		<td style="padding-left: 5px;">
-			<input type="radio" name="enable" value="0" checked="checked">활성
-			<input type="radio" name="enable" value="1">잠금
+			<input type="radio" name="enable" value="1" checked="checked">활성
+			<input type="radio" name="enable" value="0">잠금
 		</td>
 	</tr>
 </table>

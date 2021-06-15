@@ -4,6 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style>
+.body-container {
+	margin: 45px auto;
+}
 #chart-container {
 	width: 476px;
 	box-sizing: border-box;
@@ -58,10 +61,10 @@ $(function(){
 	
 	<div class="body-container">
 	    <div class="body-title">
-			<h2><i class="icofont-spreadsheet"></i> 회원분석 </h2>
+			<h2> 회원분석 </h2>
 	    </div>
 	    
-	    <div class="body-main wx-800 ml-30">
+	    <div class="body-main">
 			<div id="chart-container"></div>
 	    </div>
 	</div>

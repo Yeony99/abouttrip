@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="diaryManage">
+	<!-- 회원 리스트 출력 -->
+	<sql id="where-list">
+		<choose>
+			<when test="condition=='userId'">
+				INSTR(m.userId, #{keyword}) &gt; = 1
+			</when>
+			<otherwise>
+				INSTR(${condition}, #{keyword}) &gt;= 1
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*),0) FROM diary
+		<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+			<if test="diaryType!=''">
+				AND diaryType = #{diaryType}
+			</if>
+		</where> 
+    </select>
+    
+    <select id="listDiaryManage" parameterType="map" resultType="com.aboutrip.app.admin.diaryManage.DiaryManage">
+		SELECT d.diaryNum, d.userNum, userId, nickName, diaryTitle, 
+			diaryType, diaryCreated, NVL(diaryLikeCount, 0) diaryLikeCount
+		FROM diary d
+		LEFT OUTER JOIN member1 m ON d.userNum = m.userNum
+		LEFT OUTER JOIN (
+			SELECT diaryNum, COUNT(*) diaryLikeCount FROM diaryLike GROUP BY diaryNum
+		) l ON d.diaryNum = l.diaryNum
+		<where>
+			<if test="keyword != null and keyword != ''">
+				<include refid="where-list"/>
+			</if>
+			<if test="diaryType!=''">
+				AND diaryType = #{diaryType}
+			</if>
+		</where> 
+		ORDER BY diaryNum DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	
+	<select id="readDiaryManage" parameterType="String" resultType="com.aboutrip.app.admin.diaryManage.DiaryManage">
+		SELECT d.diaryNum, nickName, diaryTitle, diaryContent, saveImgName
+		FROM diary d
+    	LEFT OUTER JOIN member1 m ON d.userNum=m.userNum
+    	LEFT OUTER JOIN diaryImg di ON d.diaryNum = di.diaryNum
+		WHERE d.diaryNum=#{diaryNum}
+	</select>
+
+    <update id="updateDiaryType" parameterType="map">
+		UPDATE diary SET diaryType=#{diaryType} WHERE diaryNum=#{diaryNum}
+    </update>
+    
+    <delete id="deleteDiary" parameterType="Integer">
+		DELETE FROM diary WHERE diaryNum=#{diaryNum}
+	</delete>
+	
+	<!-- 이미지파일 -->
+	<select id="listImg" parameterType="Integer" resultType="com.aboutrip.app.admin.diaryManage.DiaryManage">
+		SELECT diaryImgNum, diaryNum, saveImgName
+		FROM diaryImg
+		WHERE diaryNum=#{diaryNum}
+	</select>
+	
+	<select id="readImg" parameterType="Integer" resultType="com.aboutrip.app.admin.diaryManage.DiaryManage">
+		SELECT diaryImgNum, diaryNum, saveImgName
+		FROM diaryImg
+	    WHERE diaryImgNum=#{diaryImgNum}      
+	</select>
+	
+	<delete id="deleteImg" parameterType="map">
+		DELETE FROM diaryImg WHERE ${field} = #{diaryNum}
+	</delete>
+</mapper>

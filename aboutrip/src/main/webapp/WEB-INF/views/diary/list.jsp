@@ -45,7 +45,7 @@ form {
 	font-size: 13px;
 	background: #f8f9fa;
 	position: fixed;
-	left: 970px; top: 222px;
+	left: 1050px; top: 222px;
 }
 
 .createBtn:hover {

@@ -60,8 +60,8 @@ function ajaxFun(url, method, query, dataType, fn) {
 
 function searchList() {
 	var f=document.searchForm;
-	f.enable.value=$("#selectEnabled").val();
-	f.action="${pageContext.request.contextPath}/admin/memManage/list";
+	f.enable.value=$("#selectDiaryType").val();
+	f.action="${pageContext.request.contextPath}/admin/diaryManage/list";
 	f.submit();
 }
 	
@@ -84,7 +84,7 @@ function detailedMember(userId) {
 		  }
 	});
 
-	var url = "${pageContext.request.contextPath}/admin/memManage/detail";
+	var url = "${pageContext.request.contextPath}/admin/diaryManage/detail";
 	var query = "userId="+userId;
 	
 	var fn = function(data){
@@ -102,7 +102,7 @@ function updateOk() {
 		return;
 	}
 	
-	var url = "${pageContext.request.contextPath}/admin/memManage/updateEnable";
+	var url = "${pageContext.request.contextPath}/admin/diaryManage/updateEnable";
 	var query=$("#enableForm").serialize();
 
 	var fn = function(data){
@@ -114,6 +114,18 @@ function updateOk() {
 	$('#member-dialog').dialog("close");
 }
 
+function imageViewer(img) {
+	var viewer = $("#imgDiaryLayout");
+	var s="<img src='"+img+"' width=570 height=450>";
+	viewer.html(s);
+	
+	$("#dialogDiary").dialog({
+		title:"이미지",
+		width: 600,
+		height: 530,
+		modal: true
+	});
+}
 </script>
 
 <main>
@@ -132,10 +144,10 @@ function updateOk() {
 						${dataCount}개(${page}/${total_page} 페이지)
 					</td>
 					<td align="right">
-						<select id="selectEnabled" class="selectField" onchange="searchList();">
-							<option value="" ${enabled=="" ? "selected='selected'":""}>::계정상태::</option>
-							<option value="0" ${enabled=="0" ? "selected='selected'":""}>잠금 계정</option>
-							<option value="1" ${enabled=="1" ? "selected='selected'":""}>활성 계정</option>
+						<select id="selectDiaryType" class="selectField" onchange="searchList();">
+							<option value="" ${diaryType=="" ? "selected='selected'":""}>::계정상태::</option>
+							<option value="0" ${diaryType=="0" ? "selected='selected'":""}>공개</option>
+							<option value="1" ${diaryType=="1" ? "selected='selected'":""}>비공개</option>
 						</select>
 					</td>
 				</tr>
@@ -146,19 +158,21 @@ function updateOk() {
 					<th style="width: 60px; color: #787878;">번호</th>
 					<th style="width: 100px; color: #787878;">아이디</th>
 					<th style="width: 100px; color: #787878;">닉네임</th>
-					<th style="width: 100px; color: #787878;">생년월일</th>
-					<th style="width: 120px; color: #787878;">전화번호</th>
+					<th style="width: 100px; color: #787878;">제목</th>
+					<th style="width: 60px; color: #787878;">좋아요</th>
+					<th style="width: 60px; color: #787878;">작성일</th>
 					<th style="width: 60px; color: #787878;">상태</th>
 				</tr>
 				 
 				<c:forEach var="dto" items="${list}">
-				<tr class="hover-tr" onclick="detailedMember('${dto.userId}');"> 
+				<tr class="hover-tr" onclick="detailedDiary('${dto.diaryNum}');"> 
 					<td>${dto.listNum}</td>
 					<td>${dto.userId}</td>
 					<td>${dto.nickName}</td>
-					<td>${dto.birth}</td>
-					<td>${dto.tel}</td>
-					<td>${dto.enable==1?"활성":"잠금"}</td>
+					<td>${dto.diaryTitle}</td>
+					<td>${dto.diaryLikeCount}</td>
+					<td>${dto.diaryCreated}</td>
+					<td>${dto.diaryType==1?"공개":"비공개"}</td>
 				</tr>
 				</c:forEach> 
 			</table>
@@ -181,10 +195,10 @@ function updateOk() {
 							<select name="condition" class="selectField">
 								<option value="userId"     ${condition=="userId" ? "selected='selected'":""}>아이디</option>
 								<option value="nickName"   ${condition=="nickName" ? "selected='selected'":""}>이름</option>
-								<option value="tel"        ${condition=="tel" ? "selected='selected'":""}>전화번호</option>
+								<option value="diaryTitle" ${condition=="diaryTitle" ? "selected='selected'":""}>제목</option>
 							</select>
 							<input type="text" name="keyword" class="boxTF" value="${keyword}">
-							<input type="hidden" name="enable" value="${enable}">
+							<input type="hidden" name="diaryType" value="${diaryType}">
 							<input type="hidden" name="page" value="1">
 							<button type="button" class="btn" onclick="searchList()">검색</button>
 						</form>

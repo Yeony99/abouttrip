@@ -65,7 +65,6 @@ public class MemberMServiceImpl implements MemberMService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override

@@ -25,7 +25,7 @@
 			<if test="enable!=''">
 				AND enable = #{enable}
 			</if>
-			AND m1.userNum != 1111
+			AND m1.userId != 'admin'
 		</where> 
     </select>
     
@@ -41,7 +41,7 @@
 			<if test="enable!=''">
 				AND enable = #{enable}
 			</if>
-			AND m1.userNum != 1111
+			AND m1.userId != 'admin'
 		</where> 
 		ORDER BY userNum DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
@@ -57,7 +57,7 @@
 	</select>
 
     <update id="updateEnable" parameterType="map">
-		UPDATE member1 SET enable=#{enable} WHERE userNum=#{userNum}
+		UPDATE member1 SET enable=#{enable} WHERE userId=#{userId}
     </update>
 
 	<!-- 챠트 쿼리 -->
@@ -82,4 +82,5 @@
 		SELECT '기타' section, COUNT(*) count FROM memberAge WHERE age<10 OR age>70
 ]]>
 	</select>
+	
 </mapper>
