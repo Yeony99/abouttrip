@@ -49,11 +49,11 @@
 				</tr>
 				<tr>
 					<td valign="top">시작날짜</td>
-					<td valign="top"><input type="date" name="sales_start"></td>
+					<td valign="top"><input type="date" name="start_date"></td>
 				</tr>
 				<tr>
 					<td valign="top">종료날짜</td>
-					<td valign="top"><input type="date" name="sales_end"></td>
+					<td valign="top"><input type="date" name="end_date"></td>
 				</tr>
 				<tr>
 					<td valign="top">가격</td>

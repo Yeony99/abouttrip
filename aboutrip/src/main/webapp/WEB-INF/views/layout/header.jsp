@@ -44,9 +44,8 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">여행상품</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/booking/event">초특가 여행상품</a><a
-								class="dropdown-item" href="${pageContext.request.contextPath}/booking/best">BEST 인기상품</a><a
-								class="dropdown-item" href="${pageContext.request.contextPath}/booking/list">패키지/티켓/유심&amp;wifi</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/product/event">초특가 여행상품</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/product/list">패키지/티켓/유심&amp;wifi</a>
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a
 						class="dropdown-toggle nav-link" aria-expanded="false"

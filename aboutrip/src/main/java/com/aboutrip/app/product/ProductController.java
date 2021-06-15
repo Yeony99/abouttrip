@@ -56,7 +56,7 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "detail", method = RequestMethod.GET)
-	public String createdetail(@RequestParam(value = "code") int code, HttpSession session, Model model)
+	public String createdetail(@RequestParam int code, HttpSession session, Model model)
 			throws Exception {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		if (!info.getUserId().equals("admin")) {

@@ -100,7 +100,7 @@
 	</select>
 
 	<select id="option_list" parameterType="Integer" resultType="com.aboutrip.app.product.Product">
-		SELECT option_name, option_value, price, start_date, end_date
+		SELECT detail_num, option_name, option_value, price, start_date, end_date
 		From productdetail
 		WHERE code=#{code}
 	

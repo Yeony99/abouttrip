@@ -25,7 +25,7 @@ public class Product {
 	private MultipartFile upload;
 	
 	// 상품 상세
-	private int option_num;
+	private int detail_num;
 	private String option_name;
 	private String option_value;
 	private String start_date;
@@ -110,12 +110,6 @@ public class Product {
 	public void setImg_name(String img_name) {
 		this.img_name = img_name;
 	}
-	public int getOption_num() {
-		return option_num;
-	}
-	public void setOption_num(int option_num) {
-		this.option_num = option_num;
-	}
 	public String getOption_name() {
 		return option_name;
 	}
@@ -145,5 +139,11 @@ public class Product {
 	}
 	public void setCategory_num(String category_num) {
 		this.category_num = category_num;
+	}
+	public int getDetail_num() {
+		return detail_num;
+	}
+	public void setDetail_num(int detail_num) {
+		this.detail_num = detail_num;
 	}
 }

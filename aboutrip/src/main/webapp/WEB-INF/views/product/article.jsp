@@ -77,9 +77,14 @@
 }
 </style>
 
-<script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.form.js"></script>
+<script type="text/javascript">
+$('.selectbox select').change(function(){
+	var val = $(':selected', this).val();
+	console.log(val);
+});
 </script>
+
 <div class="body-container">
 	<div class="body-main">
 		<table style="width: 100%">
@@ -91,8 +96,16 @@
 					style="width: 100%; height: 100%; object-fit: cover;"></td>
 				<td>
 					<div style="font-size: 35px; text-align: center;">${dto.product_name}</div>
-					<div
-						style="margin-top: 2rem; margin-right: 30px; text-align: right; font-size: 30px; color: skyblue; font-weight: 600;">${dto.price}원</div>
+					<div class="selectbox">
+						<div style="margin-top: 2rem; margin-right: 30px; text-align: right; font-size: 30px; color: skyblue; font-weight: 600;"> 원</div>
+						<select name="options" id="options">
+							<option value="">선택</option>
+							<c:forEach var="item" items="${options}">
+								<option value="${item.detail_num}">${item.option_name}
+									[${item.price}원]</option>
+							</c:forEach>
+						</select>
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -126,18 +139,25 @@
 		</table>
 
 		<div id="tabcontent"></div>
-		<div style="background-color: aliceblue;">
+		<div style="background-color: aliceblue; padding: 40px;">
 
-			<div id="detail">상품정보</div>
+			<div id="detail" style="font-size:2rem;">상세정보</div>
 			${dto.product_detail}
-			<div id="review">리뷰</div>
-<%-- 			<jsp:include page="/WEB-INF/views/booking/review.jsp" />
- --%>
-			<div id="qna">Q&A</div>
-<%-- 			<jsp:include page="/WEB-INF/views/booking/qna.jsp" />
- --%>
-			<div id="refund">반품/교환정보</div>
+			
+			<br>
+			<br>
+			<div id="review" style="font-size:2rem;">리뷰</div>
+			<jsp:include page="/WEB-INF/views/product/review.jsp" />
 
+			<br>
+			<br>
+			<div id="qna" style="font-size:2rem;">Q&A</div>
+ 			<jsp:include page="/WEB-INF/views/product/qna.jsp" />
+ 
+ 			<br>
+ 			<br>
+			<div id="refund" style="font-size:2rem;">반품/교환정보</div>
+			<jsp:include page="/WEB-INF/views/product/repund.jsp"/>
 		</div>
 	</div>
 	<form name="code" method="post">
