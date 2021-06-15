@@ -195,10 +195,10 @@ function initForm(start, end, mode) {
 	var startDate, endDate;
 		startDate = start.substr(0, 10);
 		endDate = end.substr(0, 10);
-		endDate=daysLater(endDate,0);
 	
 	$("form[name=scheduleForm] input[name=check_in").val(startDate);
 	$("form[name=scheduleForm] input[name=check_out").val(endDate);
+	
 	
 	$("#form-checkin").datepicker({showMonthAfterYear:true});
 	$("#form-checkout").datepicker({showMonthAfterYear:true});
@@ -269,15 +269,16 @@ function viewSchedule(calEvent) {
 	var color=calEvent.backgroundColor;
 	var start=calEvent.startStr;
 	var end=calEvent.endStr;
+	end=daysLater(end,0);
 	var checkin=calEvent.extendedProps.check_in;
 	var checkout=calEvent.extendedProps.check_out;
 	
 	checkin= checkin.substr(0,10);
 	checkout=checkout.substr(0,10);
+	checkout=daysLater(checkout,0);
 
 	var memo=calEvent.extendedProps.memo;
 	var created=calEvent.extendedProps.created;
-	
 	created = created.substr(0,10);
 	$(".btnScheduleUpdate").attr("data-num", num);
 	$(".btnScheduleDelete").attr("data-num", num);
@@ -351,13 +352,15 @@ $(function(){
 			var query="num="+num;
 			
 			var fn = function(data){
+				var event = calendar.getEventById(num);
+		     	event.remove();
+		     	calendar.refetchEvents();
 			};
 			
 			ajaxFun(url, "post", query, "json", fn);
 		}
 			
 		 $("#viewSchedule-dialog").dialog("close");
-		 calendar.refetchEvents();
 	});
 });
 function updateDrag(calEvent) {
@@ -492,7 +495,7 @@ function updateDrag(calEvent) {
 							<button type="button" class="btn btn-dark btnScheduleSendOk">일정등록</button>
 							<button type="button" class="btn btnScheduleSendCancel">등록취소</button>
 						</div> 
-						<%-- <input type="hidden" id="form-num" name="num" value="${num }"> --%>
+						 <input type="hidden" id="form-num" name="num" value="0">
 						<input type="hidden" id="form-mode" name="mode" value="insert">
 					</td>
 				</tr>

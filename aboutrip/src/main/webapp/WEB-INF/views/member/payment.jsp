@@ -29,9 +29,6 @@
 		
 		<table class="table table-footer">
 			<tr>
-				<td align="left" width="100">
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/member/payment';" style="color:white; background-color: skyblue;">새로고침</button>
-				</td>
 				<td align="right" width="100">
 					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/member/payCreated';" style="color:white; background-color: skyblue;">카드추가</button>
 				</td>

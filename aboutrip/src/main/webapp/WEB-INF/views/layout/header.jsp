@@ -68,7 +68,17 @@
 						</a></li>
 						<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
 						<c:if test= "${sessionScope.member.userId!='admin'}">
-							<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/mypage">마이페이지</a>
+							<li class="nav-item dropdown" style="text-align: right;"><a
+							class="dropdown-toggle nav-link" aria-expanded="false"
+							data-toggle="dropdown" href="#"
+							style="color: var(- -bs-dark); text-align: left;">마이페이지</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/update">정보수정</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/payment">결제수단등록</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/loginLog">로그인 기록</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/following">팔로잉 목록</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/follower">팔로워 목록</a>
+							</div></li>
 						</c:if>
 					</c:if>
 				</ul>

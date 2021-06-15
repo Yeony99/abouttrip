@@ -95,7 +95,7 @@ function daysLater(sDate, days) {
     y = parseInt(sDate.substr(0, 4));
     m = parseInt(sDate.substr(4, 2));
     // d = parseInt(sDate.substr(6, 2))+parseInt(days);
-    d = parseInt(sDate.substr(6, 2))+parseInt(days)-1;
+    d = parseInt(sDate.substr(6, 2))+parseInt(days-1);
 
     date.setFullYear(y, m-1, d);
 
