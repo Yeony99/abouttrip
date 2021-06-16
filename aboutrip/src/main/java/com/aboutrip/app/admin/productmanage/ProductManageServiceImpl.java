@@ -1,11 +1,13 @@
 package com.aboutrip.app.admin.productmanage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.common.dao.AboutDAO;
 import com.aboutrip.app.product.Product;
 
+@Service("admin.productmanage.productManageService")
 public class ProductManageServiceImpl implements ProductManageService{
 	@Autowired
 	AboutDAO dao;

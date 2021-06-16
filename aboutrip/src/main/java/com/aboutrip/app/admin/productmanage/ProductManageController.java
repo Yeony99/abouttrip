@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.aboutrip.app.member.SessionInfo;
 import com.aboutrip.app.product.Product;
 
-@Controller("admin.productmanage")
-@RequestMapping("/admin/productmanage")
+@Controller("admin.productmanage.productManageController")
+@RequestMapping("/admin/productmanage/*")
 public class ProductManageController {
 
 	@Autowired
