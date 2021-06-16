@@ -9,11 +9,11 @@
 	
 	<sql id="where-list">
 		<if test="condition=='all'">
-			( INSTR(title, #{keyword} &gt; 0)
-				OR INSTR(content, #{keyword} &gt; 0) )
+			( INSTR(title, #{keyword}) &gt; 0
+				OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0) 
 		</if>
-		<if test="condtion=='title'">
-			INSTR(title, #{keyword} &gt; 0)
+		<if test="condition=='title'">
+			INSTR(title, #{keyword}) &gt; 0
 		</if>
 		<if test="condition=='content'">
 			DBMS_LOB.INSTR(content, #{keyword}) &gt; 0
