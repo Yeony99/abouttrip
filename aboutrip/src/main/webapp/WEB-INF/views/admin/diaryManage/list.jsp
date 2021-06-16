@@ -65,8 +65,8 @@ function searchList() {
 	f.submit();
 }
 	
-function detailedMember(userId) {
-	var dlg = $("#member-dialog").dialog({
+function detailedDiary(diaryNum) {
+	var dlg = $("#diary-dialog").dialog({
 		  autoOpen: false,
 		  modal: true,
 		  buttons: {
@@ -85,10 +85,10 @@ function detailedMember(userId) {
 	});
 
 	var url = "${pageContext.request.contextPath}/admin/diaryManage/detail";
-	var query = "userId="+userId;
+	var query = "diaryNum="+diaryNum;
 	
 	var fn = function(data){
-		$('#member-dialog').html(data);
+		$('#diary-dialog').html(data);
 		dlg.dialog("open");
 	};
 	ajaxFun(url, "post", query, "html", fn);
@@ -103,7 +103,7 @@ function updateOk() {
 	}
 	
 	var url = "${pageContext.request.contextPath}/admin/diaryManage/updateDiaryType";
-	var query=$("#enableForm").serialize();
+	var query=$("#diaryTypeForm").serialize();
 
 	var fn = function(data){
 		$("form input[name=page]").val("${page}");
@@ -111,7 +111,7 @@ function updateOk() {
 	};
 	ajaxFun(url, "post", query, "json", fn);
 		
-	$('#member-dialog').dialog("close");
+	$('#diary-dialog').dialog("close");
 }
 
 function imageViewer(img) {
@@ -209,5 +209,5 @@ function imageViewer(img) {
 			
 	    </div>
 	</div>
-	<div id="member-dialog" style="display: none;"></div>
+	<div id="diary-dialog" style="display: none;"></div>
 </main>
