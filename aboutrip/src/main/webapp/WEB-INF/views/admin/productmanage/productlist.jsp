@@ -83,6 +83,20 @@
 		var f = document.searchForm;
 		f.submit();
 	}
+	function deleteOk(product_name, code) {
+		var con = confirm(product_name +" 상품을 삭제하시겠습니까?")
+		if(con == true) {
+			location.href='${pageContext.request.contextPath}/admin/productmanage/deleteproduct?code='+code;
+			}
+	}
+	
+	function optiondeleteOk(option_name, detail_num) {
+		var con = confirm(option_name +" 상품을 삭제하시겠습니까?")
+		if(con == true) {
+			location.href='${pageContext.request.contextPath}/admin/productmanage/deleteoption?detail_num='+detail_num;
+			}
+	}
+	
 </script>
 
 <div class="body-container">
@@ -117,7 +131,7 @@
 						<td>&nbsp;</td>
 						<td>옵션번호</td>
 						<td colspan="3">옵션명</td>
-						<td colspan="2">price</td>
+						<td colspan="2">가격</td>
 
 					</tr>
 
@@ -130,8 +144,9 @@
 							<td>${dto.sales_end}</td>
 							<td>${dto.isHidden==1? "공개":"비공개"}</td>
 							<td>
-							<button type="button" onclick="">상품수정</button>
 							<button type="button" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/inputproductoption?code=${dto.code}';">옵션추가</button>
+							<button type="button" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/updateproduct?code=${dto.code}';">상품수정</button>
+							<button type="button" onclick="deleteOk('${dto.product_name}','${dto.code}');">상품삭제</button>
 							</td>
 						</tr>
 						<c:forEach var="option" items="${options}">
@@ -140,7 +155,11 @@
 									<td>&nbsp;</td>
 									<td>${option.option_value}</td>
 									<td colspan="3">${option.option_name}</td>
-									<td colspan="2">${option.price}원</td>
+									<td>${option.price}원</td>
+									<td>
+									<button type="button" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/updatedetail?detail_num=${option.detail_num}';">옵션수정</button>
+									<button type="button" onclick="optiondeleteOk('${option.option_name}','${option.detail_num}');">옵션삭제</button>
+									</td>
 								</tr>
 							</c:if>	
 						</c:forEach>

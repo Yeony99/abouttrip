@@ -79,9 +79,9 @@
 			<table class="table table-footer">
 				<tr>
 					<td>
-						<button type="button" class="btn" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
+						<button type="button" class="btn" onclick="sendOk();">${mode=='updateproduct'?'수정완료':'등록하기'}</button>
 						<button type="reset" class="btn">다시입력</button>
-						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/product/list';">${mode=='update'?'수정취소':'등록취소'}</button>
+						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/productmanagement';">${mode=='updateproduct'?'수정취소':'등록취소'}</button>
 					</td>
 				</tr>
 			</table>

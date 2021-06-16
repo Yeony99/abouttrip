@@ -14,7 +14,7 @@
 		VALUES(#{code}, #{product_name}, #{product_detail}, #{isHidden},
 		#{sales_start}, #{sales_end}, SYSDATE, SYSDATE, #{category_num})
 	</insert>
-
+	
 	<insert id="insert_product_detail"
 		parameterType="com.aboutrip.app.product.Product">
 		INSERT INTO productDetail(detail_num, option_name,
@@ -54,6 +54,38 @@
 		WHERE num = #{num}
 	</update>
 
+	<!-- 수정 -->
+	<update id="update_product"	parameterType="com.aboutrip.app.product.Product">
+		UPDATE product SET product_name = #{product_name}, product_detail = #{product_detail}, isHidden = {isHidden},
+		sales_start = #{sales_start}, sales_end=#{sales_end}, upload_date=#{upload_date}, update_date=#{update_date}, category_num=#{category_num}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_product_detail"	parameterType="com.aboutrip.app.product.Product">
+		UPDATE productdetail SET option_name=#{option_name}, price=#{price}, start_date=#{start_date}, end_date=#{end_date}
+		WHERE detail_num = #{detail_num}
+	</update>
+
+
+	<!-- 삭제 -->
+	<delete id="delete_product" parameterType="Integer">
+		DELETE FROM product WHERE code=#{code}
+	</delete>
+	
+	<delete id="delete_product_img" parameterType="Integer">
+		DELETE FROM product_img WHERE code=#{code}
+	</delete>
+	
+	<delete id="delete_product_detail" parameterType="Integer">
+		DELETE FROM productdetail WHERE code=#{code}
+	</delete>
+
+	<delete id="delete_product_detail2" parameterType="Integer">
+		DELETE FROM productdetail WHERE detail_num=#{detail_num}
+	</delete>
+	
+	
+	<!-- 리스트 -->
 	<select id="product_list_categories" parameterType="map"
 		resultType="com.aboutrip.app.product.Product">
 		SELECT p.code, product_name, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end, 'YYYY-MM-DD') sales_end, upload_date,ishidden, price, img_name
@@ -88,34 +120,6 @@
 		ORDER BY code DESC
 	</select>
 	
-	<select id="list_count" parameterType="map" resultType="Integer">
-		SELECT NVL(COUNT(*), 0)
-		FROM product
-		WHERE category_num IN
-		<foreach collection="list" item="code" index="index"
-			separator="," open="(" close=")">
-			#{code}
-		</foreach>
-	</select>
-
-	<select id="product_read" parameterType="Integer"
-		resultType="com.aboutrip.app.product.Product">
-		SELECT p.code, product_name, product_detail, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,
-		'YYYY-MM-DD') sales_end, upload_date,
-		ishidden, category_num, img_name
-		FROM product p
-		JOIN product_img i ON p.code = i.code
-		WHERE
-		p.code=#{code}
-	</select>
-
-	<select id="option_count" parameterType="Integer"
-		resultType="Integer">
-		SELECT NVL(COUNT(*), 0)
-		FROM productdetail
-		WHERE code=#{code}
-	</select>
-
 	<select id="option_list" parameterType="Integer" resultType="com.aboutrip.app.product.Product">
 		SELECT detail_num, option_name, option_value, price, start_date, end_date
 		From productdetail
@@ -126,29 +130,44 @@
 		SELECT detail_num, option_name, option_value, price, start_date, end_date, code
 		From productdetail
 	</select>
-	<select id="review_count" parameterType="Integer"
+	
+	<!-- 글 -->
+	
+	<select id="product_read" parameterType="Integer"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT p.code, product_name, product_detail, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,
+		'YYYY-MM-DD') sales_end, upload_date,
+		ishidden, category_num, img_name
+		FROM product p
+		JOIN product_img i ON p.code = i.code
+		WHERE
+		p.code=#{code}
+	</select>
+	
+	<select id="detail_read" parameterType="Integer" resultType="com.aboutrip.app.product.Product">
+		SELECT option_name, option_value, price, start_date, end_date, code
+		From productdetail
+		WHERE detail_num=#{detail_num}
+	</select>
+	
+	<!-- 카운트 -->
+	<select id="list_count" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM product
+		WHERE category_num IN
+		<foreach collection="list" item="code" index="index"
+			separator="," open="(" close=")">
+			#{code}
+		</foreach>
+	</select>
+
+	<select id="option_count" parameterType="Integer"
 		resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
-		FROM product_review pr
-		JOIN member1 m
-		ON pr.user_Num = m.userNum
-		JOIN orderDetail od ON pr.order_num =
-		od.order_Num
-		JOIN productDetail pd ON od.detail_num = pd.detail_num
+		FROM productdetail
 		WHERE code=#{code}
 	</select>
-	<select id="review_list" parameterType="map"
-		resultType="com.aboutrip.app.product.Order">
-		SELECT nickName, reviewContent, rate, order_date
-		FROM
-		product_review pr
-		JOIN member1 m ON pr.user_Num = m.userNum
-		JOIN orders
-		o ON pr.order_num = o.order_num
-		JOIN orderDetail od ON pr.order_num =
-		od.order_Num
-		JOIN productDetail pd ON od.detail_num = pd.detail_num
-		WHERE code=#{code}
-		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
-	</select>
+
+	
+	
 </mapper>

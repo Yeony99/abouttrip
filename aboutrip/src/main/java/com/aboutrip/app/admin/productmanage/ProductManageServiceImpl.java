@@ -21,13 +21,12 @@ public class ProductManageServiceImpl implements ProductManageService{
 	public void insertProduct(Product dto, String pathname) throws Exception {
 
 		try {
-
 			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
 			if (saveFilename != null) {
 				dto.setImg_name(saveFilename);
 			}
 			dao.insertData("product.insert_product", dto);
-			dao.insertData("product.insert_product_image", dto);
+			dao.updateData("product.insert_product_image", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -36,7 +35,6 @@ public class ProductManageServiceImpl implements ProductManageService{
 
 	@Override
 	public void insertProductDetail(Product dto) throws Exception {
-
 		try {
 			dao.insertData("product.insert_product_detail", dto);
 		} catch (Exception e) {
@@ -102,5 +100,69 @@ public class ProductManageServiceImpl implements ProductManageService{
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public void updateProduct(Product dto, String pathname) throws Exception {
+		try {
+			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
+			
+			if (saveFilename != null) {
+				// 이전 파일 지우기
+				if(dto.getImg_name().length()!=0) {
+					fileManager.doFileDelete(dto.getImg_name(), pathname);
+				}
+					
+				dto.setImg_name(saveFilename);
+			}
+			dao.updateData("product.update_product", dto);
+			dao.updateData("product.insert_product_image", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public void updateOption(Product dto) throws Exception {
+		try {
+			dao.updateData("update_product_detail", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public void deleteProduct(int code) throws Exception {
+		try {
+			dao.deleteData("delete_product_detail", code);
+			dao.deleteData("delete_product_img", code);
+			dao.deleteData("delete_product", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public void deleteOption(int detail_num) throws Exception {
+		try {
+			dao.deleteData("delete_product_detail2", detail_num);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public Product readDetail(int detail_num) throws Exception {
+		Product dto = null;
+		try {
+			dto = dao.selectOne("product.detail_read", detail_num);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
 	}
 }
