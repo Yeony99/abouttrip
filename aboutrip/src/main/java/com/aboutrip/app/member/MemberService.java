@@ -31,4 +31,5 @@ public interface MemberService {
 	public void checkIpAddr(Member dto) throws Exception;
 	
 	public void deleteFollow(Map<String, Object> map) throws Exception;
+	public void deletePaymentCode(Map<String, Object> map) throws Exception;
 }

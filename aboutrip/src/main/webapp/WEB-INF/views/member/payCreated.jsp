@@ -22,8 +22,8 @@ function cardValid(){
 		return;
 	}
 
-	if (!/^[0-9]{10,14}$/i.test(str)) {
-		alert("카드번호를 숫자만적어서 10~15자이내로 입력하세요");
+	if (!/^[0-9]{12}$/i.test(str)) {
+		alert("카드번호를 숫자만적어서 12자를 입력하세요");
 		f.paymentCode.focus();
 		return;
 	}

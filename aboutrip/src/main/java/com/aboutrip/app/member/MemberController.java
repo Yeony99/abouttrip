@@ -470,4 +470,18 @@ public class MemberController {
 		
 		return"redirect:/member/login";
 	}
+	
+	@RequestMapping(value = "deletePayment")
+	public String deletePaymentCode(@RequestParam String paymentCode, HttpSession session) throws Exception{
+		try {
+			SessionInfo info=(SessionInfo)session.getAttribute("member");
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("paymentCode", paymentCode);
+			map.put("userNum", info.getUserNum());
+			service.deletePaymentCode(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return"redirect:/member/payment";
+	}
 }

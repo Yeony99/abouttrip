@@ -4,6 +4,25 @@
   background-size: cover;
   position: relative;
 }
+.payment-dark {
+  height: 1000px;
+  background: #475d62 url(${pageContext.request.contextPath}/resources/img/star-sky.jpg);
+  background-size: cover;
+  position: relative;
+}
+.payment-dark form {
+  max-width: 1000px;
+  width: 90%;
+  background-color: #1e2833;
+  padding: 40px;
+  border-radius: 4px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  color: #fff;
+  box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
+}
 
 .login-dark form {
   max-width: 500px;

@@ -140,4 +140,7 @@
 	<delete id="deleteFollwer" parameterType="map">
 		delete from follow WHERE followingUser =#{followingUser} AND followerUser=#{followerUser}
 	</delete>
+	<delete id="deletePaymentCode" parameterType="map">
+		DELETE FROM payment WHERE paymentCode = #{paymentCode} AND userNum = #{userNum}
+	</delete>
 </mapper>

@@ -241,9 +241,14 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void insertPayment(Member dto) throws Exception {
+		String code1 = null,code2 = null,code3 = null;
 		try {
 			int paymentseq = dao.selectOne("member.paymentseq");
 			dto.setCardNum(paymentseq);
+			code1= dto.getPaymentCode().substring(0,4);
+			code2= dto.getPaymentCode().substring(4,8);
+			code3= dto.getPaymentCode().substring(8);
+			dto.setPaymentCode(code1+"-"+code2+"-"+code3);
 			dto = dao.selectOne("member.insertPayment",dto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -342,6 +347,16 @@ public class MemberServiceImpl implements MemberService{
 	public void deleteFollow(Map<String, Object> map) throws Exception {
 		try {
 			dao.selectOne("member.deleteFollower",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void deletePaymentCode(Map<String, Object> map) throws Exception {
+		try {
+			dao.selectOne("member.deletePaymentCode",map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
