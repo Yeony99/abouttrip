@@ -195,7 +195,7 @@ function initForm(start, end, mode) {
 	var startDate, endDate;
 		startDate = start.substr(0, 10);
 		endDate = end.substr(0, 10);
-	
+		endDate = daysLater(endDate,0);
 	$("form[name=scheduleForm] input[name=check_in").val(startDate);
 	$("form[name=scheduleForm] input[name=check_out").val(endDate);
 	
@@ -352,10 +352,6 @@ $(function(){
 			var query="num="+num;
 			
 			var fn = function(data){
-				var event = calendar.getEventById(num);
-				if(event!=null) {
-			     	event.remove();
-				}
 		     	calendar.refetchEvents();
 			};
 			

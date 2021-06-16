@@ -32,10 +32,14 @@ public class SchedulerController {
 	@PostMapping("insert")
 	public Map<String, Object> insertSubmit(Scheduler dto, HttpSession session){
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		
+		int y=0,m=0,d=0;
 		String state="true";
 		try {
 			dto.setUser_num(info.getUserNum());
+			y = Integer.parseInt(dto.getCheck_out().substring(0,4));
+			m = Integer.parseInt(dto.getCheck_out().substring(5,7));
+			d = Integer.parseInt(dto.getCheck_out().substring(8))+1;
+			dto.setCheck_out(y+"-"+m+"-"+d);
 			service.insertSchedule(dto);
 		} catch (Exception e) {
 			e.printStackTrace();

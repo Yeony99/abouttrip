@@ -25,4 +25,10 @@
 	<select id="scheduler_seq" resultType="Integer">
        SELECT scheduler_seq.NEXTVAL FROM dual 
     </select>
+    
+    <insert id="insertMate" parameterType="com.aboutrip.app.scheduler.Mate">
+    	INSERT INTO mate(num, user_num, subject, content, location, created, mate_num, current_num, start_date, end_date)
+    	VALUES(mate_seq.NEXTVAL, #{user_num}, #{subject}, #{content}, #{location}, #{created, jdbcType=VARCHAR}, #{mate_num}, #{current_num},
+    	#{start_date, jdbcType=VARCHAR}, #{end_date, jdbcType=VARCHAR})
+    </insert>
 </mapper>
