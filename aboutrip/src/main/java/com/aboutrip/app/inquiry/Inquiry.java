@@ -4,6 +4,7 @@ public class Inquiry {
 	private int num;
 	private int userNum;
 	private String userName;
+	private String nickName;
 	private String type;
 	private String title;
 	private String content;
@@ -31,6 +32,13 @@ public class Inquiry {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	
 	public String getType() {
 		return type;
 	}

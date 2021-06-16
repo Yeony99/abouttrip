@@ -102,17 +102,17 @@
 
 				<table class="table table-list">
 					<tr>
-						<th width="60">분류</th>
+						<th width="150">분류</th>
 						<th>제목</th>
 						<th width="100">작성자</th>
 						<th width="200">문의일자</th>
-						<th width="50">처리결과</th>
+						<th width="100">처리결과</th>
 					</tr>
 
 					<c:forEach var="dto" items="${list}">
 						<tr>
 							<td>${dto.type}</td>
-							<td class="title"><a href="javascript:articleBoard('${dto.num}', '${pageNo}');">${dto.title}</a>
+							<td class="title"><a href="${articleUrl}&num=${dto.num}">${dto.title}</a>
 							</td>
 							<td>${dto.userName}</td>
 							<td>${dto.reg_date}</td>
@@ -131,15 +131,15 @@
 					<tr>
 						<td align="left" width="100">
 							<button type="button" class="btnReset"
-								onclick="reloadBoard();">새로고침</button>
+								onclick="javascript:location.href='${pageContext.request.contextPath}/inquiry/list';">새로고침</button>
 						</td>
 						<td align="center">
-							<form name="searchForm" action="" method="post">
+							<form name="searchForm" action="${pageContext.request.contextPath}/inquiry/list" method="post">
 								<select id="condition" name="condition" class="selectField">
 									<option value="all" ${condition=="all"?"selected='selected'":""}>모두</option>
-									<option value="title" ${condition=="subject"?"selected='selected'":""}>제목</option>
+									<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
 									<option value="content" ${condition=="content"?"selected='selected'":""}>내용</option>
-									<option value="reg_date" ${condition=="created"?"selected='selected'":""}>등록일</option>
+									<option value="reg_date" ${condition=="reg_date"?"selected='selected'":""}>등록일</option>
 									<c:if test="${sessionScore.member.userId=='admin'}">
 										<option value="userName" ${condition=="userName"?"selected='selected'":""}>작성자</option>										
 									</c:if>
@@ -150,7 +150,7 @@
 							</form>
 						</td>
 						<td align="right" width="100">
-							<button type="button" class="btnCreate" onclick="insertForm();">글올리기</button>
+							<button type="button" class="btnCreate" onclick="javascript:location.href='${pageContext.request.contextPath}/inquiry/created';">글올리기</button>
 						</td>
 					</tr>
 				</table>

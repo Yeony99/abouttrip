@@ -1,6 +1,7 @@
 package com.aboutrip.app.inquiry;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,18 +69,33 @@ public class InquiryController {
 		
 		List<Inquiry> list = service.listInquiry(map);
 		
-		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
+		String cp = req.getContextPath();
+		String query = "";
+		String listUrl = cp+"/inquiry/list";
+		String articleUrl = cp+"/inquiry/article?pageNo="+current_page;
+		if(keyword.length()!=0) {
+			query="condition="+condition+
+					"&keyword="+ URLEncoder.encode(keyword, "utf-8");
+		}
+		
+		if(query.length()!=0) {
+			listUrl = cp+"/inquiry/list?" + query;
+			articleUrl = cp+"/inquiry/article?pageNo="+ current_page + "&"+query;
+		}
+		
+		String paging = aboutUtil.pagingMethod(current_page, total_page, listUrl);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pageNo", current_page);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("paging", paging);
+		model.addAttribute("articleUrl", articleUrl);
 		
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
 		
-		return "inquiry/list";
+		return ".inquiry.list";
 	}
 	
 	@RequestMapping(value = "created", method = RequestMethod.GET)
@@ -90,53 +106,66 @@ public class InquiryController {
 		model.addAttribute("pageNo", "1");
 		model.addAttribute("mode", "created");
 		
-		return "inquiry/created";
+		return ".inquiry.created";
 	}
 	
 	@RequestMapping(value = "created", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> createdSubmit(
+	public String createdSubmit(
 			Inquiry dto,
 			HttpSession session
 			) throws Exception{
 		
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		String state = "true";
 		try {
 			dto.setUserNum(info.getUserNum());
+			dto.setUserName(info.getNickName());
 			service.insertInquiry(dto);
 		} catch (Exception e) {
-			state = "false";
 		}
-		Map<String, Object> model = new HashMap<>();
-		model.put("state", state);
-		return model;
+		return "redirect:/inquiry/list";
 	}
 	
-	@RequestMapping()
+	@RequestMapping(value="article")
 	public String article(
 			@RequestParam int num,
 			@RequestParam String pageNo,
+			@RequestParam(defaultValue = "all") String condition,
+			@RequestParam(defaultValue = "") String keyword,
 			HttpServletResponse resp,
 			HttpSession session,
 			Model model) throws Exception{
+		
+		keyword = URLDecoder.decode(keyword, "utf-8");
+		
+		String query="pageNo="+pageNo;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		}
 		
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		Inquiry dto = service.readInquiry(num);
 		if(dto==null) {
 			resp.sendError(410, "삭제된 게시물입니다.");
-			return null;
+			return "redirect:/inquiry/list?"+query;
 		}
 		
 		if(! info.getUserId().equals("admin") &&  info.getUserNum() != dto.getUserNum()) {
 			resp.sendError(402, "권한이 없습니다.");
-			return null;
+			return "redirect:/inquiry/list?"+query;
 		}
+		
+		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		map.put("num", num);
 		
 		model.addAttribute("dto", dto);
 		model.addAttribute("pageNo", pageNo);
+		model.addAttribute("query", query);
 		
-		return "inquiry/article";
+		return ".inquiry.article";
 	}
 	
 	@RequestMapping(value = "reply", method = RequestMethod.POST)

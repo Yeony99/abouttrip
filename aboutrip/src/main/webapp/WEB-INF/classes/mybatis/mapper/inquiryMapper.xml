@@ -18,7 +18,7 @@
 		<if test="condition=='content'">
 			DBMS_LOB.INSTR(content, #{keyword}) &gt; 0
 		</if>
-		<if test="condition=='userName'">
+		<if test="condition=='nickName'">
 			userName=#{keyword}
 		</if>
 		<if test="condition=='reg_date'">
@@ -32,7 +32,7 @@
 		FROM inquiry i 
 		JOIN member1 m ON i.userNum = m.userNum
 		<where>
-			<if test="userNum!=null and userNum!='' and userNum!='1111' ">
+			<if test="userNum!=null and userNum!='' and userNum!=1111 ">
 				i.userNum = #{userNum}
 			</if>
 			<if test="keyword!=null and keyword!='' ">
@@ -42,12 +42,12 @@
 	</select>
 	
 	<select id="listInquiry" parameterType="map" resultType="com.aboutrip.app.inquiry.Inquiry">
-		SELECT num, i.userNum, userName, category, title, 
+		SELECT num, i.userNum, userName, nickName, type, title, 
 			TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, answer_date
 		FROM inquiry i
 		JOIN member1 m ON i.userNum = m.userNum
 		<where>
-			<if test="userNum!=null and userNum!='' and userNum!='1111' ">
+			<if test="userNum!=null and userNum!='' and userNum!=1111 ">
 				i.userNum=#{userNum}			
 			</if>
 			<if test="keyword!=null and keyword!='' ">
@@ -59,16 +59,21 @@
 	</select>
 	
 	<select id="readInquiry" resultType="com.aboutrip.app.inquiry.Inquiry" parameterType="Integer">
-		SELECT num, i.userNum, m.nickname, type, title, content, reg_date, 
-				a.userNum adminNum, answer, answer_date
+		SELECT num, i.userNum, m.nickName userName, type, title, content, reg_date, 
+				adminNum, m.nickName adminName, answer, answer_date
 		FROM inquiry i
 		JOIN member1 m ON i.userNum=m.userNum
-		LEFT OUTER JOIN member1 a ON i.answerId = a.userId
+		LEFT OUTER JOIN member1 a ON i.adminNum = a.userNum
 		WHERE num = #{num}
 	</select>
 	
 	<update id="answerInquiry" parameterType="com.aboutrip.app.inquiry.Inquiry">
 		UPDATE inquiry SET adminNum=#{adminNum}, answer = #{answer}, answer_date= SYSDATE
+		WHERE num = #{num}
+	</update>
+	
+	<update id="deleteAnswer" parameterType="Integer">
+		UPDATE inquiry SET answerNum = NULL, answer = NULL, answer_date=NULL
 		WHERE num = #{num}
 	</update>
 	

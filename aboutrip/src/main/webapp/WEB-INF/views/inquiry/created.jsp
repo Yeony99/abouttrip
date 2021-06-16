@@ -79,44 +79,8 @@ a {
 </style>
 
 <script type="text/javascript">
-
-$(function(){
-	$("form input[name=upload]").change(function() {
-		if(! $(this).val() )
-			return false;
-		
-		var b = false;
-		
-		$("form input[name=upload]").each(function() {
-			if( ! $(this).val() ){
-				b=true;
-				return false;
-			}
-		});
-		if(b) {
-			return false;
-		}
-		
-		var $tr = $(this).closest("tr").clone(true); //이벤트도 복제 
-		$tr.find("input").val("");
-		$("#tb").append($tr);
-		
-	});
-});
-
-  <c:if test="${mode=='update'}">
-  function deleteFile(fileNum) {
-		var url="${pageContext.request.contextPath}/notice/deleteFile";
-		$.post(url, {fileNum:fileNum}, function(data){
-			$("#f"+fileNum).remove();
-		}, "json");
-  }
-</c:if>
-</script>
-
-<script type="text/javascript">
     function sendOk() {
-        var f = document.noticeForm;
+        var f = document.inquiryForm;
 
     	var str = f.title.value;
         if(!str) {
@@ -132,7 +96,7 @@ $(function(){
             return;
         }
 
-    	f.action="${pageContext.request.contextPath}/notice/${mode}";
+    	f.action="${pageContext.request.contextPath}/inquiry/${mode}";
 
         f.submit();
     }
@@ -156,11 +120,11 @@ $(function(){
 				<tr> 
 					<td>구&nbsp;&nbsp;&nbsp;&nbsp;분</td>
 				<td> 
-					<select name="category" class="selectField">
-						<option value="회원문의" ${dto.category=="여행상품"?"selected='selected'":"" }>회원문의</option>
-						<option value="스케줄문의" ${dto.category=="스케줄문의"?"selected='selected'":"" }>스케줄문의</option>
-						<option value="다이어리문의" ${dto.category=="다이어리가입"?"selected='selected'":"" }>다이어리문의</option>
-						<option value="기타문의" ${dto.category=="기타문의"?"selected='selected'":"" }>기타문의</option>
+					<select name="type" class="selectField">
+						<option value="회원문의" ${dto.type=="여행상품"?"selected='selected'":"" }>회원문의</option>
+						<option value="스케줄문의" ${dto.type=="스케줄문의"?"selected='selected'":"" }>스케줄문의</option>
+						<option value="다이어리문의" ${dto.type=="다이어리가입"?"selected='selected'":"" }>다이어리문의</option>
+						<option value="기타문의" ${dto.type=="기타문의"?"selected='selected'":"" }>기타문의</option>
 					</select>
 				</td>
 				</tr>
@@ -168,7 +132,7 @@ $(function(){
 				<tr> 
 					<td>작성자</td>
 					<td style="padding-left:10px;"> 
-						${sessionScope.member.userName}
+						${sessionScope.member.nickName}
 					</td>
 				</tr>
 			
@@ -184,9 +148,9 @@ $(function(){
 		<table class="table table-footer">
 			<tr height="45"> 
 				<td align="center" >
-					<button type="button" class="btnCreate" onclick="sendOk('${mode}', '${pageNo}');">${mode=='update'?'수정완료':'등록하기'}</button>
+					<button type="button" class="btnCreate" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
 					<button type="reset" class="btnReset">다시입력</button>
-					<button type="button" class="btnList" onclick="sendCancel('${pageNo}');">${mode=='update'?'수정취소':'등록취소'}</button>
+					<button type="button" class="btnList" onclick="javascript:location.href='${pageContext.request.contextPath}/inquiry/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 					<c:if test="${mode=='update'}">
 						<input type="hidden" name="num" value="${dto.num}">
 						<input type="hidden" name="pageNo" value="${pageNo}">

@@ -144,7 +144,8 @@ public class CsController {
 	@RequestMapping(value="created", method=RequestMethod.POST)
 	public String createdSubmit(
 			Notice dto,
-			HttpSession session) throws Exception {
+			HttpSession session
+			) throws Exception {
 		
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 				
