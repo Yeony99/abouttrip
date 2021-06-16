@@ -82,6 +82,12 @@
 		ORDER BY sales_start ASC
 	</select>
 	
+	<select id="product_management_list" resultType="com.aboutrip.app.product.Product">
+		SELECT code, product_name, category_num, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,'YYYY-MM-DD') sales_end, isHidden
+		FROM product
+		ORDER BY code DESC
+	</select>
+	
 	<select id="list_count" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM product
@@ -114,7 +120,11 @@
 		SELECT detail_num, option_name, option_value, price, start_date, end_date
 		From productdetail
 		WHERE code=#{code}
+	</select>
 	
+	<select id="option_management_list" resultType="com.aboutrip.app.product.Product">
+		SELECT detail_num, option_name, option_value, price, start_date, end_date, code
+		From productdetail
 	</select>
 	<select id="review_count" parameterType="Integer"
 		resultType="Integer">

@@ -1,5 +1,7 @@
 package com.aboutrip.app.admin.productmanage;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,5 +67,40 @@ public class ProductManageServiceImpl implements ProductManageService{
 			throw e;
 		}
 		return result;
+	}
+
+	@Override
+	public List<Product> listProduct() throws Exception {
+		List<Product> list = null;
+		try {
+			list=dao.selectList("product.product_management_list");
+			String category_name = "";
+			for(int i=0; i<list.size(); i++) {
+				switch (list.get(i).getCategory_num()) {
+				case 1 : category_name = "패키지"; break;
+				case 2 : category_name = "티켓 / 투어"; break;
+				case 3 : category_name = "모바일"; break;
+				case 4 : category_name = "패키지 이벤트"; break;
+				case 5 : category_name = "티켓 / 투어 이벤트"; break;
+				case 6 : category_name = "모바일 이벤트"; break;					
+				}
+				list.get(i).setCategory_name(category_name);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
+
+	@Override
+	public List<Product> listOptions() throws Exception {
+		List<Product> list = null;
+		try {
+			list=dao.selectList("product.option_management_list");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

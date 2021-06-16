@@ -1,6 +1,8 @@
 package com.aboutrip.app.admin.productmanage;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,7 +24,15 @@ public class ProductManageController {
 	ProductManageService service;
 	
 	@RequestMapping("productmanagement")
-	public String productlist() throws Exception{
+	public String productlist(Model model) throws Exception{
+		
+		List<Product> list = new ArrayList<Product>();
+		List<Product> options = new ArrayList<Product>();
+		
+		list = service.listProduct();
+		options = service.listOptions();
+		model.addAttribute("list", list);
+		model.addAttribute("options", options);
 		
 		return ".admin.productmanage.productlist";
 	}

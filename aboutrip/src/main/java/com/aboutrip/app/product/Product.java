@@ -17,7 +17,7 @@ public class Product {
 	
 	// 카테고리
 	private String category_name;
-	private String category_num;
+	private int category_num;
 	
 
 	// 대표 이미지
@@ -134,10 +134,10 @@ public class Product {
 	public void setUpload(MultipartFile upload) {
 		this.upload = upload;
 	}
-	public String getCategory_num() {
+	public int getCategory_num() {
 		return category_num;
 	}
-	public void setCategory_num(String category_num) {
+	public void setCategory_num(int category_num) {
 		this.category_num = category_num;
 	}
 	public int getDetail_num() {
