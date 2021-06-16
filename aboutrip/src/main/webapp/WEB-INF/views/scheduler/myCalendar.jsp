@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		navLinks: true,
 		dayMaxEvents: true,
 		events:function(info, successCallback, failureCallback) {
-			var url="/app/scheduler/month";
+			var url="${pageContext.request.contextPath}/scheduler/month";
 			var startDay=info.startStr.substr(0, 10);
 			var endDay=info.endStr.substr(0, 10);
             var query="start="+startDay+"&end="+endDay;
@@ -350,40 +350,24 @@ $(function(){
 		if(confirm("일정을 삭제 하시겠습니까 ?")) {
 			var url="${pageContext.request.contextPath}/scheduler/delete";
 			var query="num="+num;
-			/* var fn = function(data){
-				console.log(data);
+			
+			var fn = function(data){
 				var event = calendar.getEventById(num);
-		     	event.remove();
+				if(event!=null) {
+			     	event.remove();
+				}
 		     	calendar.refetchEvents();
-			}; */
-			var event = calendar.getEventById(num);
-	     	event.remove();
+			};
+			
 			ajaxFun(url, "post", query, "json", fn);
 		}
 			
 		 $("#viewSchedule-dialog").dialog("close");
 	});
 });
-
-function deleteSchedule(calEvent){
-	var num = $(this).attr("data-num");
-	if(confirm("일정을 삭제 하시겠습니까 ?")) {
-		var url="${pageContext.request.contextPath}/scheduler/delete";
-		var query="num="+num;
-		var fn = function(calEvent){
-			console.log(calEvent);
-			var event = calendar.getEventById(num);
-	     	event.remove();
-	     	calendar.refetchEvents();
-		};
-		
-		//ajaxFun(url, "post", query, "json", fn);
-	}
-		
-	 $("#viewSchedule-dialog").dialog("close");
-}
 function updateDrag(calEvent) {
 	var num=calEvent.extendedProps.num;
+	console.log(num);
 	var subject=calEvent.title;
 	var color=calEvent.backgroundColor;
 	var start=calEvent.startStr;
