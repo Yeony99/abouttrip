@@ -5,7 +5,8 @@
 <div class="body-container">
 	<div class="body-main" style="margin: 8rem 0;">
 		<div style="display: flex; justify-content: center">
-			<h3>스케줄 리뷰</h3>
+			<h3>여행 후기 ✒</h3>
+			
 		</div>
 	</div>
 </div>

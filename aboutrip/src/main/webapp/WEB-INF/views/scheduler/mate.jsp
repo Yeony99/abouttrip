@@ -4,24 +4,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <style type="text/css">
-.guest-header {
+.mate-header {
     border: #d5d5d5 solid 1px;
     padding: 10px;
     min-height: 70px;
     max-width: 700px;
     margin: 3rem auto;
 }
-.guest-header > div:nth-child(2) {
+.mate-header > div:nth-child(2) {
 	padding-top: 10px;
 }
-.guest-header > div:last-child {
+.mate-header > div:last-child {
 	padding-top: 5px;
 	text-align: right;
 }
-.guest-header .write-title {
+.mate-header .write-title {
 	font-weight: 700;
 }
-.guest-header textarea {
+.mate-header textarea {
 	border:1px solid #999;
 	height:70px;
 	width:100%;
@@ -32,48 +32,48 @@
 	font-family:"Malgun Gothic", "맑은 고딕", NanumGothic, 나눔고딕, 돋움, sans-serif;
 	resize : none;
 }
-.guest-header button {
+.mate-header button {
 	padding: 8px 25px;
 }
 
-.guest-list table {
+.mate-list table {
 	width: 100%;
 	margin: 15px auto 0;
 	border-spacing: 0;
 	border-collapse: collapse;
 }
 
-.guest-list table thead > tr {
+.mate-list table thead > tr {
 	height: 35px;
 }
 
-.guest-list table tbody > tr:nth-child(2n+1) {
+.mate-list table tbody > tr:nth-child(2n+1) {
 	border: 1px solid #ccc;
 	background: #eee;
 }
-.guest-list table tbody > tr:nth-child(2n) {
+.mate-list table tbody > tr:nth-child(2n) {
 	height: 35px;
 }
-.guest-list table tbody > tr:nth-child(2n+1) td {
+.mate-list table tbody > tr:nth-child(2n+1) td {
 	padding: 7px 5px;
 }
-.guest-list table tbody > tr:nth-child(2n) td {
+.mate-list table tbody > tr:nth-child(2n) td {
 	padding: 5px 5px 20px;
 }
 
-.guest-list .list-title {
+.mate-list .list-title {
 	color: #3EA9CD;
 	font-weight: 700;
 }
-.guest-list table tbody tr.paging {
+.mate-list table tbody tr.paging {
 	text-align: center;
 	background: #fff;
 	border: none;
 }
-.guest-list .delete, .guest-list .notify {
+.mate-list .delete, .mate-list .notify {
 	cursor: pointer;
 }
-.guest-list .delete:hover, .guest-list .notify:hover {
+.mate-list .delete:hover, .mate-list .notify:hover {
 	color: #0d58ba;
 }
 </style>
@@ -136,7 +136,7 @@ $(function(){
 	});
 });
 
-function printGuest(data) {
+function printMate(data) {
 	var uid="${sessionScope.member.userId}";
 	var dataCount = data.dataCount;
 	var page = data.pageNo;
@@ -151,12 +151,12 @@ function printGuest(data) {
 		out+="    <td colspan='2'>등록된 게시물이 없습니다.</td>";
 		out+="</tr>"
 		
-		$("#listGuestBody").html(out);
+		$("#listMateBody").html(out);
 		return;
 	}
 	
 	if(page == 1) {
-		$("#listGuestBody").empty();
+		$("#listMateBody").empty();
 	}
 	
 	for(var idx=0; idx<data.list.length; idx++) {
@@ -180,7 +180,7 @@ function printGuest(data) {
 		out+="</tr>";
 	}
 	
-	$("#listGuestBody").append(out);
+	$("#listMateBody").append(out);
 
 	if(! checkScrollBar()) { // checkScrollBar() 함수는 util-jquery.js 에 존재
 		if(page<totalPage) {
@@ -190,7 +190,7 @@ function printGuest(data) {
 	}
 }
 
-function sendGuest() {
+function sendMate() {
 	if(! $("#form-checkin").val()) {
 		$("#form-checkin").focus();
 		return false;
@@ -212,7 +212,7 @@ function sendGuest() {
 		return;
 	}
 	
-	var url="${pageContext.request.contextPath}/guest/insert";
+	var url="${pageContext.request.contextPath}/mate/"; //create or insert로 주소
 	var query=$("form[name=guestForm]").serialize();
 	
 	var fn = function(data){
@@ -227,13 +227,13 @@ function sendGuest() {
 }
 
 $(function(){
-	$("body").on("click", ".guest-list .delete", function(){
+	$("body").on("click", ".mate-list .delete", function(){
 		if(! confirm("게시글을 삭제하시겠습니까 ? ")) {
 			return false;
 		}
 		
 		var num=$(this).attr("data-num");
-		var url="${pageContext.request.contextPath}/guest/delete";
+		var url="${pageContext.request.contextPath}/mate/delete"; //삭제
 		var query="num="+num;
 		
 		var fn = function(data) {
@@ -267,10 +267,13 @@ function bringPlace() {
 <div class="container body-container">
     <div class="body-main wx-800 ml-30 pt-15" style="margin: 8rem 0;">
     	<div style="display: flex; justify-content: center">
-			<h3>여행 메이트를 찾습니다 👋🏻</h3>
+			<h3>트립 메이트를 찾습니다 👋🏻</h3>
 		</div>
-		<form name="guestForm" method="post">
-		<div class="guest-header">
+		<form name="mateForm" method="post">
+		<div class="mate-header">
+			<div>
+				<label style="width: 80%"> 제목 <input type="text" id="subject"></label>
+			</div>
 			<div>
 				<label> 출발 <input type="date" id="form-checkin"> </label> ~ <label> 도착 <input type="date" id="form-checkout"> </label>  
 			</div>
@@ -295,12 +298,12 @@ function bringPlace() {
 				<textarea name="content" id="content" placeholder="당신의 여행 계획을 알려주세요 .&#13;&#10;세부 일정 및 여행 스타일을 알리고 메이트를 찾아보세요." style="margin-top: 1rem;"></textarea>
 			</div>
 			<div>
-				<button type="button" class="btn btnSendGuest" onclick="sendGuest();"> 등록하기 </button>
+				<button type="button" class="btn btnSendMate" onclick="sendMate();"> 등록하기 </button>
 			</div>
 		</div>
 		</form>
          
-		<div id="listGuest" class="guest-list">
+		<div id="listMate" class="mate-list">
 			<table>
 				<thead>
 					<tr>
@@ -311,7 +314,7 @@ function bringPlace() {
 						<td width='50%'>&nbsp;</td>
 					</tr>
 				</thead>
-				<tbody id="listGuestBody" data-pageNo="0" data-totalPage="0"></tbody>
+				<tbody id="listMateBody" data-pageNo="0" data-totalPage="0"></tbody>
 			</table>
 		</div>
 	</div>
