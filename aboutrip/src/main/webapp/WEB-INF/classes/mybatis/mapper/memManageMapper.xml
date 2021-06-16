@@ -57,7 +57,7 @@
 	</select>
 
     <update id="updateEnable" parameterType="map">
-		UPDATE member1 SET enable=#{enable} WHERE userId=#{userId}
+		UPDATE member1 SET enable=#{enable} WHERE userNum=#{userNum}
     </update>
 
 	<!-- 챠트 쿼리 -->

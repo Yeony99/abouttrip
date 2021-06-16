@@ -135,6 +135,7 @@ public class MemberMController {
 			Map<String, Object> map = new HashMap<>();
 			map.put("userNum", dto.getUserNum());
 			map.put("enable",dto.getEnable());
+			
 
 			service.updateEnable(map);
 
