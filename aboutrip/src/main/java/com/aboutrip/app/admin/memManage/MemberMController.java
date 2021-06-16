@@ -113,11 +113,11 @@ public class MemberMController {
 	
 	@RequestMapping(value="detail")
 	public String detailMember(
-			@RequestParam String userId,
+			@RequestParam int userNum,
 			Model model
 			) throws Exception {
 		
-		Member dto=service.readMember(userId);
+		Member dto=service.readMember(userNum);
 
 		model.addAttribute("dto", dto);
 		

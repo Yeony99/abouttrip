@@ -37,11 +37,11 @@ public class MemberMServiceImpl implements MemberMService {
 	}
 	
 	@Override
-	public Member readMember(String userId) {
+	public Member readMember(int userNum) {
 		Member dto = null;
 		
 		try {
-			dto = dao.selectOne("memManage.readMember", userId);
+			dto = dao.selectOne("memManage.readMember", userNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -68,10 +68,10 @@ public class MemberMServiceImpl implements MemberMService {
 	}
 
 	@Override
-	public List<Member> listEnable(String userId) {
+	public List<Member> listEnable(int userNum) {
 		List<Member> list=null;
 		try {
-			list=dao.selectList("memManage.listEnable", userId);
+			list=dao.selectList("memManage.listEnable", userNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,11 +79,11 @@ public class MemberMServiceImpl implements MemberMService {
 	}
 
 	@Override
-	public Member readEnable(String userId) {
+	public Member readEnable(int userNum) {
 		Member dto=null;
 		
 		try {
-			dto=dao.selectOne("memManage.readEnable", userId);
+			dto=dao.selectOne("memManage.readEnable", userNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -65,7 +65,7 @@ function searchList() {
 	f.submit();
 }
 	
-function detailedMember(userId) {
+function detailedMember(userNum) {
 	var dlg = $("#member-dialog").dialog({
 		  autoOpen: false,
 		  modal: true,
@@ -85,7 +85,7 @@ function detailedMember(userId) {
 	});
 
 	var url = "${pageContext.request.contextPath}/admin/memManage/detail";
-	var query = "userId="+userId;
+	var query = "userNum="+userNum;
 	
 	var fn = function(data){
 		$('#member-dialog').html(data);
@@ -152,7 +152,7 @@ function updateOk() {
 				</tr>
 				 
 				<c:forEach var="dto" items="${list}">
-				<tr class="hover-tr" onclick="detailedMember('${dto.userId}');"> 
+				<tr class="hover-tr" onclick="detailedMember('${dto.userNum}');"> 
 					<td>${dto.listNum}</td>
 					<td>${dto.userId}</td>
 					<td>${dto.nickName}</td>

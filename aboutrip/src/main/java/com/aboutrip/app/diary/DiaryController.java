@@ -275,7 +275,7 @@ public class DiaryController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/diary/list?page="+page;
+		return "redirect:/diary/article?diaryNum="+dto.getDiaryNum()+"&page="+page;
 	}
 	
 	@RequestMapping(value="delete", method=RequestMethod.GET)

@@ -53,7 +53,7 @@
 			zip, address1, address2
 		FROM member1 m1
 		LEFT OUTER JOIN member2 m2 ON m1.userNum = m2.userNum
-		WHERE userId = #{userId}
+		WHERE m1.userNum = #{userNum}
 	</select>
 
     <update id="updateEnable" parameterType="map">
