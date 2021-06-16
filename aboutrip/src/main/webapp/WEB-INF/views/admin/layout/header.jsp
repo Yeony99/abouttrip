@@ -3,11 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<!-- 내꺼 -->
 
 <div class="container">
 	<nav
-		class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+		class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar" style="position: static;">
 		<div class="container">
 			<a href="${pageContext.request.contextPath}/admin/main"><img
 				src="${pageContext.request.contextPath}/resources/img/img/logo.svg"></a>
@@ -58,7 +57,7 @@
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/notice/list">공지사항 작성</a>
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/faq/main">FAQ 작성</a>
-						    <a class="dropdown-item" href="#">문의 답변</a>
+						    <a class="dropdown-item" href="${pageContext.request.contextPath}/inquiry/list">문의 답변</a>
 							<a class="dropdown-item" href="#">이벤트 작성</a>
 							<a class="dropdown-item" href="#">시스템 개선/제안 답변</a>
 						</div></li>

@@ -3,6 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <style type="text/css">
+.answer{
+	width: 90%;
+	min-height: 300px;
+}
+
 .table {
 	width: 100%;
 	border-spacing: 0;
@@ -65,7 +70,7 @@ a {
 </style>
 
 <script type="text/javascript">
-<c:if test="${sessionScope.member.userId=='admin' }">
+<c:if test="${sessionScope.member.userId=='admin'}">
 	function deleteSend() {
 		var query = "num=${dto.num}&${query}";
 		var url = "${pageContext.request.contextPath}/inquiry/delete?" + query;
@@ -126,7 +131,7 @@ a {
 						<div style="min-height: 75px;">${dto.answer}</div>
 						<c:if test="${sessionScope.member.userId=='admin'}">
 							<div style="margin-top: 5px; margin-bottom: 5px; text-align: right;">
-								<a href="">답변삭제</a>
+								<a href="deleteSend();">답변삭제</a>
 							</div>
 						</c:if>
 					</td>
