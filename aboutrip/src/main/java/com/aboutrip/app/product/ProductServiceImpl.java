@@ -6,44 +6,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.common.dao.AboutDAO;
 
 @Service("product.productService")
 public class ProductServiceImpl implements ProductService {
 	@Autowired
 	AboutDAO dao;
-
-	@Autowired
-	private FileManager fileManager;
-
-	@Override
-	public void insertProduct(Product dto, String pathname) throws Exception {
-
-		try {
-
-			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
-			if (saveFilename != null) {
-				dto.setImg_name(saveFilename);
-			}
-			dao.insertData("product.insert_product", dto);
-			dao.insertData("product.insert_product_image", dto);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-	}
-
-	@Override
-	public void insertProductDetail(Product dto) throws Exception {
-
-		try {
-			dao.insertData("product.insert_product_detail", dto);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-	}
 
 	@Override
 	public void insertReview(Order dto) throws Exception {
@@ -74,7 +42,6 @@ public class ProductServiceImpl implements ProductService {
 			throw e;
 		}
 	}
-
 
 	@Override
 	public List<Product> listProducts(Map<String, Object> map) throws Exception {
@@ -107,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
 		return list;
 
 	}
-
+	
 	@Override
 	public int listCount(Map<String, Object> map) throws Exception {
 		int result = 0;
@@ -155,22 +122,22 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public int countOption(int code) throws Exception {
-		int result = 0;
-		try {
-			result = dao.selectOne("product.option_count", code);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-		return result;
-	}
-
-	@Override
 	public List<Product> listOption(int code) throws Exception {
 		List<Product> list;
 		try {
 			list = dao.selectList("product.option_list", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
+
+	@Override
+	public List<Product> listEvent(int category_num) throws Exception {
+		List<Product> list = null;
+		try {
+			list = dao.selectList("product.product_list_event", category_num);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

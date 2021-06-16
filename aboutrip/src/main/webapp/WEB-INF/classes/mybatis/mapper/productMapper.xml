@@ -71,6 +71,17 @@
 		ONLY
 	</select>
 
+	<select id="product_list_event" parameterType="Integer"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT p.code, product_name, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end, 'YYYY-MM-DD') sales_end, upload_date,ishidden, price, img_name
+		FROM product p
+		LEFT JOIN (SELECT code, MIN(price) price FROM productdetail GROUP BY code)d ON p.code=d.code
+		JOIN product_img i ON p.code=i.code
+		WHERE category_num = #{category_num}
+		AND sales_end > SYSDATE
+		ORDER BY sales_start ASC
+	</select>
+	
 	<select id="list_count" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM product

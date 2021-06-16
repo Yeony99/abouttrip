@@ -1,6 +1,5 @@
 package com.aboutrip.app.product;
 
-import java.io.File;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aboutrip.app.common.AboutUtil;
-import com.aboutrip.app.member.SessionInfo;
 
 @Controller("product.productController")
 @RequestMapping("/product/*")
@@ -31,62 +28,6 @@ public class ProductController {
 	@Autowired
 	AboutUtil aboutUtil;
 
-	@RequestMapping(value = "created", method = RequestMethod.GET)
-	public String create(HttpSession session, Model model) throws Exception {
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		if (!info.getUserId().equals("admin")) {
-			return "redirect:product/list";
-		}
-		model.addAttribute("mode", "created");
-		return ".product.create";
-	}
-
-	@RequestMapping(value = "created", method = RequestMethod.POST)
-	public String createSubmit(Product dto, HttpSession session) throws Exception {
-		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "product";
-
-		try {
-			service.insertProduct(dto, pathname);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return "redirect:/product/list";
-	}
-
-	@RequestMapping(value = "detail", method = RequestMethod.GET)
-	public String createdetail(@RequestParam int code, HttpSession session, Model model)
-			throws Exception {
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		if (!info.getUserId().equals("admin")) {
-			return "redirect:/list";
-		}
-		Product dto = null;
-		int optionCount;
-		try {
-			dto = service.readProduct(code);
-			optionCount = service.countOption(code);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-		model.addAttribute("option_value", optionCount + 1);
-		model.addAttribute("dto", dto);
-		model.addAttribute("mode", "detail");
-		return ".product.createdetail";
-	}
-
-	@RequestMapping(value = "detail", method = RequestMethod.POST)
-	public String createdetailSubmit(Product dto) throws Exception {
-		try {
-			service.insertProductDetail(dto);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return "redirect:/product/list";
-	}
 
 	@RequestMapping(value = "list")
 	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
@@ -138,7 +79,7 @@ public class ProductController {
 
 		String cp = req.getContextPath();
 		String query = "";
-		String listUrl = cp + "/bbs/list";
+		String listUrl = cp + "/product/list";
 		if (keyword.length() != 0) {
 			query = "?keyword=" + URLEncoder.encode(keyword, "utf-8");
 		}
@@ -173,5 +114,31 @@ public class ProductController {
 		model.addAttribute("dto", dto);
 
 		return ".product.article";
+	}
+	
+	@RequestMapping(value="event", method = RequestMethod.GET)
+	public String eventlist(
+			@RequestParam(value="keyword", defaultValue = "all") String keyword,
+			HttpServletRequest req,
+			Model model
+			) throws Exception {
+		
+
+		List<Product> package_list = service.listEvent(4);
+		List<Product> ticket_list = service.listEvent(5);
+		List<Product> mobile_list = service.listEvent(6);
+
+		if (req.getMethod().equalsIgnoreCase("GET")) { // GET 방식인 경우
+			keyword = URLDecoder.decode(keyword, "utf-8");
+		}
+
+
+		model.addAttribute("package_list", package_list);
+		model.addAttribute("ticket_list", ticket_list);
+		model.addAttribute("package_list", mobile_list);
+
+		model.addAttribute("keyword", keyword);
+		
+		return ".product.event";
 	}
 }

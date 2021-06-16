@@ -97,7 +97,7 @@
 				<td style="padding: 30px; font-size: large; font-weight: 600;"><a style="text-decoration: none;"
 					href="#ticket">티켓 / 투어</a></td>
 				<td style="padding: 30px; font-size: large; font-weight: 600;"><a style="text-decoration: none;"
-					href="#modile">모바일 상품</a></td>
+					href="#mobile">모바일 상품</a></td>
 			</tr>
 		</table>
 	</div>
@@ -141,7 +141,7 @@
 										<c:url var="url" value="/booking/article">
 											<c:param name="code" value="${dto.code}"/>
 										</c:url>
-											<a href="${url}" style="float: right;">자세히보기</a>
+											<a href="${pageContext.request.contextPath}/product/article?code=${dto.code}" style="float: right;">자세히보기</a>
 										</div>
 									</div>
 								</td>
@@ -179,7 +179,7 @@
 									<div style="width: 100%; height: 100%; padding-top: 100px;">
 										<h5
 											style="color: darkblue; font-size: 1.0rem; font-weight: 700;">[aboutripevent]</h5>
-										<h3 style="font-weight: revert;">초특가 패키지 여행</h3>
+										<h3 style="font-weight: revert;">초특가 티켓 / 투어</h3>
 									</div>
 								</div>
 							</td>
@@ -203,7 +203,7 @@
 												style="vertical-align: top; font-weight: bold; font-size: large;">${dto.product_name}</span>
 										</div>
 										<div style="margin: 0px 10px;">${dto.price}원
-											<a href="#" style="float: right;">자세히보기</a>
+											<a href="${pageContext.request.contextPath}/product/article?code=${dto.code}" style="float: right;">자세히보기</a>
 										</div>
 									</div>
 								</td>
@@ -240,7 +240,7 @@
 									<div style="width: 100%; height: 100%; padding-top: 100px;">
 										<h5
 											style="color: darkblue; font-size: 1.0rem; font-weight: 700;">[aboutripevent]</h5>
-										<h3 style="font-weight: revert;">초특가 패키지 여행</h3>
+										<h3 style="font-weight: revert;">초특가 모바일 상품</h3>
 									</div>
 								</div>
 							</td>
@@ -264,7 +264,7 @@
 												style="vertical-align: top; font-weight: bold; font-size: large;">${dto.product_name}</span>
 										</div>
 										<div style="margin: 0px 10px;">${dto.price}원
-											<a href="#" style="float: right;">자세히보기</a>
+											<a href="${pageContext.request.contextPath}/product/article?code=${dto.code}" style="float: right;">자세히보기</a>
 										</div>
 									</div>
 								</td>

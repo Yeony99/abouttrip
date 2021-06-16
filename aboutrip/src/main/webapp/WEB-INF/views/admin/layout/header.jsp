@@ -46,7 +46,7 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">여행상품 관리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">여행상품 관리</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/productmanage/productmanagement">여행상품 관리</a>
 							<a class="dropdown-item" href="#">회원구매 및 취소내역관리</a>
 							<a class="dropdown-item" href="#">매출현황 분석</a>	
 							<a class="dropdown-item" href="#">상품별 QNA 관리</a>	
