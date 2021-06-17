@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <style type="text/css">
 .answer{
-	width: 100%;
+	width: 90%;
 	min-height: 300px;
 }
 
@@ -101,6 +101,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 }
 	
 	
+	
 	function deleteSend() {
 		var query = "num=${dto.num}&${query}";
 		var url = "${pageContext.request.contextPath}/inquiry/delete?" + query;
@@ -114,12 +115,12 @@ function ajaxFun(url, method, query, dataType, fn) {
 		var url="${pageContext.request.contextPath}/inquiry/deleteAnswer";
 		var query="num="+num;
 		
-		if(confirm("답변을 삭제 하시겠습니까 ? ")) {
+		if(! confirm("답변을 삭제 하시겠습니까 ? ")) {
 			return;
 		}
 		
 		var fn = function(data){
-			listPage(page);
+			location.reload();
 		};
 		
 		ajaxFun(url, "post", query, "json", fn);
@@ -152,6 +153,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 			};
 			
 			ajaxFun(url, "post", query, "json", fn);		
+			location.reload();
 		}
 	
 	function replyForm(num, page) {
