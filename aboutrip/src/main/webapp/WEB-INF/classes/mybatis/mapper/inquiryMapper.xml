@@ -73,7 +73,7 @@
 	</update>
 	
 	<update id="deleteAnswer" parameterType="Integer">
-		UPDATE inquiry SET answerNum = NULL, answer = NULL, answer_date=NULL
+		UPDATE inquiry SET answer = NULL, answer_date=NULL 
 		WHERE num = #{num}
 	</update>
 	

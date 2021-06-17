@@ -168,7 +168,7 @@ public class InquiryController {
 		return ".inquiry.article";
 	}
 	
-	@RequestMapping(value = "reply", method = RequestMethod.POST)
+	@RequestMapping(value="reply", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> replySubmit(
 			Inquiry dto,
@@ -178,7 +178,7 @@ public class InquiryController {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		String state = "false";
 		
-		if(info.getUserId().equals("amdin")) {
+		if(info.getUserId().equals("admin")) {
 			try {
 				dto.setAdminNum(info.getUserNum());
 				service.answerInquiry(dto);
@@ -193,14 +193,14 @@ public class InquiryController {
 		return model;
 	}
 	
-	@RequestMapping(value="deleteAnswer", method = RequestMethod.POST)
+	@RequestMapping(value="deleteAnswer", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> deleteAnswer(
 			@RequestParam int num,
-			HttpSession session) throws Exception{
+			HttpSession session) throws Exception {
 		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		String state = "false";
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		String state="false";
 		Inquiry dto = service.readInquiry(num);
 		if(dto!=null) {
 			if(info.getUserId().equals("admin")) {
@@ -208,40 +208,37 @@ public class InquiryController {
 					service.deleteAnswer(num);
 					state="true";
 				} catch (Exception e) {
-					
 				}
 			}
 		}
 		
-		Map<String, Object> model = new HashMap<>();
+		Map<String, Object> model=new HashMap<>();
 		model.put("state", state);
 		return model;
 	}
 	
-	@RequestMapping(value="delete", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> delete(
+	@RequestMapping(value="delete")
+	public String delete(
 			@RequestParam int num,
+			@RequestParam String pageNo,
+			@RequestParam(defaultValue="all") String condition,
+			@RequestParam(defaultValue="") String keyword,
 			HttpSession session
 			) throws Exception{
 		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		String state = "false";
-		Inquiry dto = service.readInquiry(num);
-		if(dto!=null) {
-			if(info.getUserId().equals("admin") || info.getUserNum() == dto.getUserNum()) {
-				try {
-					service.deleteInquiry(num);
-					state="true";
-				} catch (Exception e) {
-					
-				}
-			}
+		keyword = URLDecoder.decode(keyword, "utf-8");
+		String query="pageNo="+pageNo;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
 		}
 		
-		Map<String, Object> model = new HashMap<>();
-		model.put("state", state);
-		return model;
+		try {
+			service.deleteInquiry(num);			
+		} catch (Exception e) {
+			
+		}
+		
+		return "redirect:/inquiry/list?"+query;
 	}
 	
 }
