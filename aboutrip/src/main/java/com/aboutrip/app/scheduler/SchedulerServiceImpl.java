@@ -62,5 +62,51 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 		
 	}
+	
+	@Override
+	public void insertMate(Mate dto) throws Exception {
+		try {
+			dao.insertData("scheduler.insertMate", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
 
+	@Override
+	public int MateCount() {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("scheduler.mateCount");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<Mate> listMate(Map<String, Object> map) throws Exception {
+		List<Mate> list = null;
+		try {
+			list = dao.selectList("scheduler.listMate",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<Mate> readMate(int userNum) throws Exception {
+		List<Mate> list = null;
+		try {
+			list = dao.selectList("scheduler.readMate",userNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
 }

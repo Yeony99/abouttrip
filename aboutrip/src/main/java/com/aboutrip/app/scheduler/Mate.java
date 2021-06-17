@@ -5,12 +5,25 @@ public class Mate {
 	private int user_num; // 유저넘버
 	private String subject; // 제목
 	private String content; //내용
-	private int location; // 지역코드
+	private int ctgNum; // 지역코드
 	private String created; // 생성일
-	private int mate_num; // 같이가는 인원
-	private int currnt_num; // 현재 인원
+	private int people_num; // 같이가는 인원
+	private int current_num; // 현재 인원
 	private String start_date; // 시작일
 	private String end_date; // 종료일
+	private String nickName;
+	public int getCurrent_num() {
+		return current_num;
+	}
+	public void setCurrent_num(int current_num) {
+		this.current_num = current_num;
+	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 	public int getNum() {
 		return num;
 	}
@@ -35,29 +48,23 @@ public class Mate {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getLocation() {
-		return location;
-	}
-	public void setLocation(int location) {
-		this.location = location;
-	}
 	public String getCreated() {
 		return created;
 	}
 	public void setCreated(String created) {
 		this.created = created;
 	}
-	public int getMate_num() {
-		return mate_num;
+	public int getCtgNum() {
+		return ctgNum;
 	}
-	public void setMate_num(int mate_num) {
-		this.mate_num = mate_num;
+	public void setCtgNum(int ctgNum) {
+		this.ctgNum = ctgNum;
 	}
-	public int getCurrnt_num() {
-		return currnt_num;
+	public int getPeople_num() {
+		return people_num;
 	}
-	public void setCurrnt_num(int currnt_num) {
-		this.currnt_num = currnt_num;
+	public void setPeople_num(int people_num) {
+		this.people_num = people_num;
 	}
 	public String getStart_date() {
 		return start_date;

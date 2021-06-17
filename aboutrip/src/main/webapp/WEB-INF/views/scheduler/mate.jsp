@@ -79,10 +79,7 @@
 </style>
 
 <script type="text/javascript">
-function login() {
-	location.href="${pageContext.request.contextPath}/member/login";	
-}
-
+var replystate = 1;
 function ajaxFun(url, method, query, dataType, fn) {
 	$.ajax({
 		type:method,
@@ -113,55 +110,119 @@ $(function(){
 
 // 페이징한다면...
 function listPage(page) {
-	var url = "${pageContext.request.contextPath}/scheduler/listMate";
-	var query = "num=${dto.num}&pageNo="+page;
+	var url = "${pageContext.request.contextPath}/scheduler/matelist";
+	var query = "pageNo="+page;
 	var selector = "#listMate";
 	
 	var fn = function(data){
-		$(selector).html(data);
+		printMate(data);
 	};
-	ajaxFun(url, "get", query, "html", fn);
+	ajaxFun(url, "get", query, "json", fn);
 }
 
 // 리플 등록
 $(function(){
 	$(".btnSendMate").click(function(){
-		var num="${dto.num}";
-		var $tb = $(this).closest("table");
-		var content=$tb.find("textarea").val().trim();
-		if(! content) {
-			$tb.find("textarea").focus();
-			return false;
-		}
-		content = encodeURIComponent(content);
-		
-		var url="${pageContext.request.contextPath}/scheduler/insertMate";
-		var query="num="+num+"&content="+content+"&answer=0";
-		
-		var fn = function(data){
-			$tb.find("textarea").val("");
-			
-			var state=data.state;
-			if(state==="true") {
-				listPage(1);
-			} else if(state==="false") {
-				alert("추가 하지 못했습니다.");
-			}
-		};
-		
-		ajaxFun(url, "post", query, "json", fn);
+		sendMate();
 	});
-});
-
+}); 
+function printMate(data){
+	var uid="${sessionScope.member.userNum}";
+	var dataCount = data.dataCount;
+	var page = data.page;
+	var totalPage = data.total_page;
+	var listNum = data.listNum;
+	$("#listMateBody").attr("data-page", page); // 현재 화면상에 보이는 페이지 저장
+	$("#listMateBody").attr("data-totalPage", totalPage); // 전체 페이지 저장
+	
+	var out="";
+	if(dataCount==0) {
+		out+="<tr class='paging'>";
+		out+="    <td colspan='2'>등록된 게시물이 없습니다.</td>";
+		out+="</tr>"
+		$("#listMateBody").html(out);
+		return;
+	}
+	
+	if(page==1) {
+		$("listMateBody").empty();
+	}
+	
+	for(var idx=0; idx<listNum; idx++) {
+		var Num=data.list[idx].num;
+		var user_num = data.list[idx].user_num;
+		var nickName=data.list[idx].nickName;
+		var subject=data.list[idx].subject
+		var created=data.list[idx].created;
+		var start_date=data.list[idx].start_date;
+		var end_date=data.list[idx].end_date;
+		var people_num =data.list[idx].people_num;
+		var current_num = data.list[idx].current_num;
+		var ctgNum = data.list[idx].ctgNum;
+		var content = data.list[idx].content;
+		var replyNum = 0; //추후 수정
+		var answerCount = 0; // 추후 추가
+		var ctg;
+		if(ctgNum == 1){
+			ctg ="서울";
+		} else if(ctgNum == 2){
+			ctg ="부산";
+		} else if(ctgNum == 3){
+			ctg ="제주 제주시";
+		} else if(ctgNum == 4){
+			ctg ="제주 서귀포";
+		} else if(ctgNum == 5){
+			ctg ="제주 성산";
+		} else if(ctgNum == 6){
+			ctg ="제주 기타";
+		}
+		out+="<div class='shape'>";
+		out+="<table>"
+		out+="<tr>";
+		out+="<td style='line-height: 25px; margin: 10px;'>모집 번호 :"+Num+"</td>";
+		out+="<td style='line-height: 25px; margin: 10px;'>"+nickName+"</td>";
+		out+="<td style='line-height: 25px; margin: 10px;'>일정 :"+start_date+"~"+end_date+"지역 :"+ctg+"</td>";
+		out+="<td style='line-height: 25px; margin: 10px;'>현재 인원: "+current_num+", 모집인원 : "+people_num+"</td>";
+		out+="</tr>";
+		
+		out+="<tr>";
+		out+="<td style='line-height: 25px; '>제목 : "+subject+"</td>";
+		out+="</tr>";
+		
+		out+="<tr>";
+		out+="<td style='line-height: 25px; '>"+content+"</td>";
+		out+="</tr>";
+		
+		out+="<tr>";
+		out+="<td style='line-height: 25px; '>작성일 : "+created+"</td>";
+		out+="<td colspan='2'><button type='button' class='btn btnMateAnswerLayout' data-replyNum='"+replyNum+"'>답글<span id='answerCount'"+answerCount+"'>"+answerCount+"</span></button>";
+		out+="<td colspan='2'><button type='button' class='btn btnMatedelete' data-num='"+Num+"' data-user_num='"+user_num+"'>삭제하기</button>";
+		out+="</td></tr>";
+		out+="<tr id='mateSubject'></tr>"
+		out+="</table></div>";
+	}
+	
+	$("#listMateBody").append(out); // html은 기존 내용이 지워지고, append는 기존 내용이 지워지지 않는다.
+}
 function sendMate() {
+	var f = document.mateForm;
+	var ctgNum = f.ctgNum.value;
+	var people_num = f.people_num.value;
+	var start_date = f.start_date.value;
+	var end_date = f.end_date.value;
+	var content = f.content.value;
+	var subject = f.subject.value;
+	
 	if(! $("#ctg").val()) {
 		$("#ctg").focus();
 		return false;
 	}
-	if(! $("#mate_num").val()) {
-		$("#mate_num").focus();
+	
+	if(! $("#people_num").val()) {
+		$("#people_num").focus();
 		return false;
 	}
+	
 	if(! $("#form-checkin").val()) {
 		$("#form-checkin").focus();
 		return false;
@@ -170,10 +231,28 @@ function sendMate() {
 		$("#form-checkout").focus();
 		return false;
 	}
+	
 	if(! $.trim($("#content").val()) ) {
 		$("#content").focus();
 		return;
 	}
+	
+	var url="${pageContext.request.contextPath}/scheduler/insertMate";
+	var query="ctgNum="+ctgNum+"&people_num="+people_num+"&start_date="+start_date+"&end_date="+end_date+"&content="+
+	content+"&subject="+subject;
+	console.log(query);
+	var fn = function(data){
+		$tb.find("textarea").val("");
+		
+		var state=data.state;
+		if(state==="true") {
+			listPage(1);
+		} else if(state==="false") {
+			alert("추가 하지 못했습니다.");
+		}
+	};
+	
+	ajaxFun(url, "post", query, "json", fn);
 }
 // 댓글 삭제
 $(function(){
@@ -182,11 +261,11 @@ $(function(){
 		    return false;
 		}
 		
-		var mateNum=$(this).attr("data-mateNum");
+		var people_num=$(this).attr("data-people_num");
 		var page=$(this).attr("data-pageNo");
 		
 		var url="${pageContext.request.contextPath}/scheduler/deleteMate";
-		var query="mateNum="+mateNum+"&mode=mate";
+		var query="people_num="+people_num+"&mode=mate";
 		
 		var fn = function(data){
 			// var state=data.state;
@@ -231,7 +310,7 @@ $(function(){
 		// var $answerList = $trMateAnswer.children().children().eq(0);
 		
 		var isVisible = $trMateAnswer.is(':visible');
-		var mateNum = $(this).attr("data-mateNum");
+		var reply_num = $(this).attr("data-reply_num");
 			
 		if(isVisible) {
 			$trMateAnswer.hide();
@@ -239,20 +318,62 @@ $(function(){
 			$trMateAnswer.show();
             
 			// 답글 리스트
-			listMateAnswer(mateNum);
+			//listMateAnswer(mateNum);
 			
 			// 답글 개수
-			countMateAnswer(mateNum);
+			//countMateAnswer(mateNum);
 		}
 	});
 	
 });
-
+//작업하다 안된거
+/* $(function(){
+	$("body").on("click", ".btnMateAnswerLayout", function(){
+		
+		var reply_num = $(this).attr("data-replyNum");
+		var out="";
+		out+="<tr class='mateAnswer' style='display: none' id='reply'>";
+		out+="<div id='listMateAnswer${vo.mateNum}' class='answerList' style='border-top: 1px solid #ccc;'></div>";
+		out+="<div style='clear: both; padding: 10px 10px;'>";
+		out+="<div style='float: left; width: 5%;'>└</div>";
+		out+="<div style='float: left; width:95%'>";
+		out+="<textarea class='boxTA' style='width:100%; height: 70px;'></textarea>";
+		out+="</div> </div>";
+		out+="<div style='padding: 0 13px 10px 10px; text-align: right;'>";
+		out+=" <button type='button' class='btn btnSendMateAnswer' data-mateNum='${vo.mateNum}'>답글 등록</button>";
+		out+="</div></td></tr>";
+		if(replystate) {
+			$("#mateSubject").html(out);
+			replystate=0;
+		} else {
+			$("#mateSubject").html("");
+            
+			// 답글 리스트
+			//listMateAnswer(reply_num);
+			
+			// 답글 개수
+			//countMateAnswer(reply_num);
+			replystate=1;
+		}
+	});
+	
+}); */
+$(function(){
+	$("body").on("click",".btnMatedelete",function(){
+		var uid = "${sessionScope.member.userNum}";
+		var user_num = $(this).attr("data-user_num");
+		
+		if(uid===user_num || uid==="관리자"){
+			alert("삭제");
+		} else {
+			alert("본인이 아닙니다.");
+		}
+	});
+});
 // 답글 등록
 $(function(){
 	$("body").on("click", ".btnSendMateAnswer", function(){
-		var num="${dto.num}";
-		var mateNum=$(this).attr("data-mateNum");
+		var num=$(this).attr("data-num");
 		var $td=$(this).closest("td");
 		
 		var content=$td.find("textarea").val().trim();
@@ -262,8 +383,8 @@ $(function(){
 		}
 		content = encodeURIComponent(content);
 		
-		var url="${pageContext.request.contextPath}/scheduler/insertMate";
-		var query="num="+num+"&content="+content+"&answer="+mateNum;
+		var url="${pageContext.request.contextPath}/scheduler/insertReply";
+		var query="content="+content+"&num="+num;
 		
 		var fn = function(data){
 			$td.find("textarea").val("");
@@ -278,6 +399,14 @@ $(function(){
 	});
 });
 
+function bringPlace() {
+	var f = document.mateForm;
+	
+	var str = f.ctgNum.value;
+	if(str!="") {
+		f.ctgNum.value=str;
+	}
+}
 // 댓글별 답글 삭제
 $(function(){
 	$("body").on("click", ".deleteMateAnswer", function(){
@@ -343,7 +472,7 @@ $(function(){
 -->
 		
 		<div class="mate" style="width: 70vw; margin:2rem auto">
-			<form name="mateForm" method="post">
+			<form name="mateForm" method="post" accept-charset="utf-8">
 			<table class="table table-mate">
 				<tr> 
 					<td align='left'>
@@ -356,7 +485,7 @@ $(function(){
 				<tr>
 					<td>
 						<label> 장소
-						<select name="ctg" onchange="bringPlace();" id="ctg" style="width: 200px;">
+						<select name="ctgNum" onchange="bringPlace();" id="ctg" style="width: 200px;">
 							<option value="">선 택</option>
 							<option value="1" ${dto.ctgNum=="1" ? "selected='selected'" : ""}>서울</option>
 							<option value="2" ${dto.ctgNum=="2" ? "selected='selected'" : ""}>부산</option>
@@ -364,33 +493,34 @@ $(function(){
 							<option value="4" ${dto.ctgNum=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
 							<option value="5" ${dto.ctgNum=="5" ? "selected='selected'" : ""}>제주 성산</option>
 							<option value="6" ${dto.ctgNum=="6" ? "selected='selected'" : ""}>제주 기타</option>
-						</select>
-						<input type="hidden" value="${dto.ctgNum}" name="ctgNum">
+						</select><%-- 
+						<input type="hidden" value="${dto.ctgNum}" name="ctgNum"> --%>
 						</label>
 					</td>
 					<td>
-						<label> 메이트 인원 <input type="number" min="1" max="3" id="mate_num"></label>
-						<input type="hidden" value="여기에 인원" name="mate_num">
+						<label> 메이트 인원 <input type="number" min="1" max="3" id="people_num" name='peple_num' value="1"></label>
 					</td>
 					<td>
 						<label> 출발 <input type="date" id="form-checkin" name="start_date"> </label> ~ <label> 도착 <input type="date" id="form-checkout" name="end_date"> </label> 
 					</td>
+					<td colspan="2">
+						<input type="text" name="subject" placeholder="제목">
+					</td>
 				</tr>
+				
 				<tr>
 					<td colspan="3">
-						<textarea class='boxTA' style='width:100%; height: 300px;' placeholder="즐거운 여행이 될 수 있도록 자세한 계획을 알려주세요!"></textarea>
+						<textarea class='boxTA' style='width:100%; height: 300px;' id="content" name="content" placeholder="즐거운 여행이 될 수 있도록 자세한 계획을 알려주세요!"></textarea>
 					</td>
 				</tr>
 				<tr>
 				   <td align='right' colspan="3">
-				        <button type='button' class='btn btnSendMate' style='padding:7px 20px;' onclick="sendMate()">등록</button>
+				        <button type='button' class='btn' style='padding:7px 20px;' onclick="sendMate();">등록</button>
 				    </td>
 				 </tr>
 			</table>
 			</form>
-			
-			
-			<!-- listMate.jsp에 추가할 내용 -->
+<!-- listMate.jsp에 추가할 내용 -->
 			<!-- mate.jsp 에는 <div id="listMate"> 만 남겨두기 -->
 			<div id="listMate">
 				<table class='table mate-list'>
@@ -398,7 +528,7 @@ $(function(){
 						<tr>
 						    <td colspan='2'>
 						       <div style='clear: both;'>
-						           <div style='float: left;'><span style='color: #3EA9CD; font-weight: bold;'>메이트 찾기 ${mateCount}개</span> <span>[${pageNo}/${total_page} 페이지]</span></div>
+						           <div style='float: left;'><span style='color: #3EA9CD; font-weight: bold;'>메이트 찾기</span></div>
 						           <div style='float: right; text-align: right;'></div>
 						       </div>
 						    </td>
@@ -406,82 +536,21 @@ $(function(){
 					</thead>
 					
 					<tbody id='listMateBody'>
-					    <tr style='background: #eee; border:1px solid #ccc;'>
-					       <td width='50%'>
-								<span><b>이름</b></span>
-					        </td>
-					       <td width='50%' align='right'>
-								<span>작성일</span>
-								<c:choose>
-									<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.userId=='admin'}">
-										<span class="deleteMate" style="cursor: pointer;" data-mateNum='${vo.mateNum}' data-pageNo='${pageNo}'>삭제</span>
-									</c:when>
-								</c:choose>
-					        </td>
-					    </tr>
-					    <tr>
-					        <td colspan='2' valign='top'>
-					        	<span>장소:  ctgname</span>&nbsp;|&nbsp;<span>메이트 인원 : mate_num </span>&nbsp;|&nbsp;<span>여행일 : start_date ~ end_date</span>
-					        	<div style="border-top: 1px solid #ccc; padding:5px;">
-					        	테스트 내용 textarea ("br \n 치환 必")
-					        	</div>
-					        </td>
-					    </tr>
-					    
-					    <tr>
-					        <td colspan="2">
-					            <button type='button' class='btn btnMateAnswerLayout' data-mateNum='${vo.mateNum}'>답글 <span id="answerCount${vo.mateNum}">${vo.answerCount}</span></button>
-					        </td>
-					    </tr>
-					
-					    <tr class='mateAnswer' style='display: none;'>
-					        <td colspan='2'>
-					        <!-- listMateAnswer.jsp 파일 분리후 넣어두기 -->
-					        <!--
-					        <div id='listMateAnswer${vo.mateNum}' class='answerList' style='border-top: 1px solid #ccc;'></div>
-					          -->
-					        
-					        
-					   <!-- listMateAnswer.jsp 내용 -->  
-					   <!-- listMate.jsp에는  c:forEach 처리 -->   
-							 <div class='answer' style='padding: 0 10px;'>
-								<div style='clear:both; padding: 10px 0;'>
-									<div style='float: left; width: 5%;'>└</div>
-									<div style='float: left; width:95%;'>
-										<div style='float: left;'><b>댓작성자이름</b></div>
-										<div style='float: right;'>
-											<span>작성일</span> |
-											<c:choose>
-												<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.userId=='admin'}">
-													<span class='deleteMateAnswer' style='cursor: pointer;' data-mateNum='${vo.mateNum}' data-answer='${vo.answer}'>삭제</span>
-												</c:when>
-											</c:choose>
-										</div>
-									</div>
-								</div>
-								<div style='clear:both; padding: 5px 5px; border-bottom: 1px solid #ccc;'>
-									저 참여하고 싶어요~! 댓 내용 표시
-								</div>
-							</div>	            
-						<!-- 여기까지 listMateAnswer.jsp -->
-						
-						
-						
-				
-					            <div style='clear: both; padding: 10px 10px;'>
-					                <div style='float: left; width: 5%;'>└</div>
-					                <div style='float: left; width:95%'>
-					                    <textarea class='boxTA' style='width:100%; height: 70px;'></textarea>
-					                 </div>
-					            </div>
-					             <div style='padding: 0 13px 10px 10px; text-align: right;'>
-					                <button type='button' class='btn btnSendMateAnswer' data-mateNum='${vo.mateNum}'>답글 등록</button>
-					            </div>
-					        
+						<tr class='mateAnswer' style='display: none;' id="reply">
+	        					<td colspan='2'>
+						            <div id='listMateAnswer${vo.mateNum}' class='answerList' style='border-top: 1px solid #ccc;'></div>
+						            <div style='clear: both; padding: 10px 10px;'>
+						                <div style='float: left; width: 5%;'>└</div>
+						                <div style='float: left; width:95%'>
+						                    <textarea class='boxTA' style='width:100%; height: 70px;'></textarea>
+						                 </div>
+						            </div>
+						             <div style='padding: 0 13px 10px 10px; text-align: right;'>
+						                <button type='button' class='btn btnSendMateAnswer' data-mateNum='${vo.mateNum}'>답글 등록</button>
+						            </div>
 							</td>
 					    </tr>
 					</tbody>
-					
 					<!-- 페이징 처리한다면  -->
 					<tfoot id='listMateFooter'>
 						<tr align="center">
@@ -494,7 +563,7 @@ $(function(){
 				
 				<!-- 여기까지 listMate.jsp -->
 			
-			</div>
+			</div>			
 		</div>
 	</div>
 </div>

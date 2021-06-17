@@ -8,17 +8,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/scheduler/*")
 public class SchBorderController {
 	
+
 	@RequestMapping(value = "share", method=RequestMethod.GET)
 	public String share() throws Exception {
 		
 		return ".scheduler.share";
 	}
 	
-	@RequestMapping(value = "mate", method=RequestMethod.GET)
-	public String mate() throws Exception {
-		
-		return ".scheduler.mate";
-	}
+	/*
+	 * @RequestMapping(value = "mate", method=RequestMethod.GET) public String
+	 * mate() throws Exception {
+	 * 
+	 * return ".scheduler.mate"; }
+	 */
 	
 	@RequestMapping(value = "review", method=RequestMethod.GET)
 	public String review() throws Exception {

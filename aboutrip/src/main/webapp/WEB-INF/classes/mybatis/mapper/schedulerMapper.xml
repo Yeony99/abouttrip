@@ -27,8 +27,24 @@
     </select>
     
     <insert id="insertMate" parameterType="com.aboutrip.app.scheduler.Mate">
-    	INSERT INTO mate(num, user_num, subject, content, location, created, mate_num, current_num, start_date, end_date)
-    	VALUES(mate_seq.NEXTVAL, #{user_num}, #{subject}, #{content}, #{location}, #{created, jdbcType=VARCHAR}, #{mate_num}, #{current_num},
-    	#{start_date, jdbcType=VARCHAR}, #{end_date, jdbcType=VARCHAR})
+    	INSERT INTO mate(num, user_num, subject, content, ctgNum, created, people_num, current_num, start_date, end_date,answer)
+    	VALUES(mate_seq.NEXTVAL, #{user_num}, #{subject}, #{content}, #{ctgNum}, SYSDATE, #{people_num}, 0,
+    	#{start_date, jdbcType=VARCHAR}, #{end_date, jdbcType=VARCHAR},0)
     </insert>
+    
+    <select id="mateCount" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM mate
+    </select>
+    
+    <insert id="insertMateReply" parameterType="com.aboutrip.app.scheduler.Mate">
+    	INSERT INTO mate_reply(reply_num, user_num, mate_num, content, created, reply) VALUES (mate_reply_seq.NEXTVAL, #{user_num}, #{num}, #{content}, SYSDATE)
+    </insert>
+    
+    <select id="listMate" parameterType="map" resultType="com.aboutrip.app.scheduler.Mate">
+    	SELECT num, m.user_num, subject, content, ctgNum, TO_CHAR(created, 'YYYY-MM-DD')created, people_num, current_num, TO_CHAR(start_date,'YYYY-MM-DD')start_date, TO_CHAR(end_date,'YYYY-MM-DD')end_date,
+    	nickName FROM mate m
+    	JOIN member1 m1 ON m.user_num = m1.userNum
+    	ORDER BY num DESC
+    	OFFSET #{offset} ROW FETCH FIRST #{rows} ROWS ONLY
+    </select>
 </mapper>
