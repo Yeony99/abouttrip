@@ -204,7 +204,7 @@ function printMate(data){
 		out+="<tr id='mateSubject'></tr>"
 		out+="</table></div>";
 	}
-	
+	state=1;
 	$("#listMateBody").append(out); // html은 기존 내용이 지워지고, append는 기존 내용이 지워지지 않는다.
 }
 function sendMate() {
@@ -297,7 +297,7 @@ function countMateAnswer(answer) {
 	
 	var fn = function(data){
 		var count=data.count;
-		var vid="#answerCount"reply_+answer;
+		var vid="#answerCount"+reply_answer;
 		$(vid).html(count);
 	};
 	
@@ -438,6 +438,19 @@ $(function(){
 		ajaxFun(url, "post", query, "json", fn);
 	});
 });
+function sendtest(){
+	var f = document.mateForm;
+	
+	f.action ="${pageContext.request.contextPath}/scheduler/insertMate";
+	f.submit();
+}
+
+function testlist(){
+var f = document.testForm;
+	
+	f.action ="${pageContext.request.contextPath}/scheduler/matelist";
+	f.submit();
+}
 </script>
 
 <div class="container body-container">
@@ -525,11 +538,22 @@ $(function(){
 				</tr>
 				<tr>
 				   <td align='right' colspan="3">
-				        <button type='button' class='btn' style='padding:7px 20px;' onclick="sendMate();">등록</button>
+				        <button type='button' class='btn' style='padding:7px 20px;' onclick="sendtest();">등록</button>
+				        
 				    </td>
 				 </tr>
 			</table>
 			</form>
+			<!-- 테스트 -->
+			<form name="testForm" method="post">
+				<button type="button" class="btn" onclick="testlist();">목록보기</button>
+			</form>
+		<c:forEach var="dto" items="${list}">
+						<tr align="center" height="55"
+							style="border-bottom: 1px solid #ddd;">
+							<td width="60">${dto.user_num}</td>
+					</c:forEach>
+			
 <!-- listMate.jsp에 추가할 내용 -->
 			<!-- mate.jsp 에는 <div id="listMate"> 만 남겨두기 -->
 			<div id="listMate">

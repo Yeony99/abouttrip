@@ -2,6 +2,26 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="scheduler">
+	<sql id="where-list">
+		<if test="condition=='all'">
+			( INSTR(subject, #{keyword}) &gt; 0
+				OR INSTR(content, #{keyword}) &gt; 0 )
+		</if>
+		<if test="condition=='subject'">
+			INSTR(subject, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='content'">
+			INSTR(content, #{keyword}) &gt; 0 
+		</if>
+		<if test="condition=='nickName'">
+			nickName=#{keyword}
+		</if>
+		<if test="condition=='created'">
+			( TO_CHAR(p.created, 'YYYY-MM-DD') = #{keyword}
+				OR TO_CHAR(p.created, 'YYYYMMDD') = #{keyword} )
+		</if>
+	</sql>
+	
 	<insert id="insertScheduler" parameterType="com.aboutrip.app.scheduler.Scheduler">
 		INSERT INTO	scheduler(num, user_num, subject, created, color, check_in, check_out, memo) VALUES(scheduler_seq.NEXTVAL,#{user_num}, #{subject}, SYSDATE, #{color},#{check_in, jdbcType=VARCHAR},#{check_out, jdbcType=VARCHAR}, #{memo, jdbcType=VARCHAR})
 	</insert>
@@ -81,4 +101,74 @@
 			OR reply_answer=#{reply_num}
 		</if>
     </delete>
+    
+    <insert id="insertReview" parameterType="com.aboutrip.app.scheduler.Review">
+    	INSERT INTO scheduler_review(num, user_num, subject, content, created, imageFileName) VALUES (scheduler_review_seq.NEXTVAL,
+    	#{user_num}, #{subject}, #{content}, SYSDATE, #{imageFileName})
+    </insert>
+    
+    <select id="readReview" parameterType="Integer" resultType="com.aboutrip.app.scheduler.Review">
+    	SELECT num, r.user_num, nickName, subject, content, imageFilename, created FROM scheduler_review r
+    	JOIN member1 m ON r.user_num = m.userNum
+    	WHERE num = #{num}
+    </select>
+    
+    <select id="reviewCount" parameterType="map" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM scheduler_review
+    	<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+		</where> 
+    </select>
+    
+    <select id="listReview" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
+    	SELECT num, r.user_num, nickName, subject, imageFilename, content 
+		       TO_CHAR(created, 'yyyy-mm-dd') created
+		FROM shceduler_review r
+		JOIN member1 m ON r.user_num = m.userNum
+		<where>
+			<if test="keyword != null and keyword != ''">
+				<include refid="where-list"/>
+			</if>
+		</where>
+		ORDER BY num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+    </select>
+    
+    <select id="preReadPhoto" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
+		SELECT num, subject
+		FROM scheduler_review r
+		JOIN member1 m ON r.user_num=m.userNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (num &gt; #{num})
+		</where>
+		ORDER BY num ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<select id="nextReadPhoto" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
+		SELECT num, subject
+		FROM scheduler_review r
+		JOIN member1 m ON r.user_num=m.userNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (num &gt; #{num})
+		</where>
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<update id="updateReview" parameterType="com.aboutrip.app.scheduler.Review">
+		UPDATE scheduler_review SET subject=#{subject}, imageFilename=#{imageFilename}, content=#{content} WHERE num = #{num}
+	</update>
+	
+	<delete id="deleteReview" parameterType="Integer">
+		DELETE FROM scheduler_review WHERE num=#{num}
+	</delete>
 </mapper>
