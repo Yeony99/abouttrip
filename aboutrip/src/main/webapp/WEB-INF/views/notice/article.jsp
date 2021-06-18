@@ -76,7 +76,7 @@ a {
 
 <div class="body-container">
 	<div class="body-title" style="padding-top: 50px;">
-			<h2>NOTICE</h2>
+			<h2>공지사항</h2>
 	</div>
     
 	<div class="body-main" style="padding-bottom: 50px;">

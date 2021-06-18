@@ -104,7 +104,7 @@ a {
 
 <div class="body-container">
 	<div class="body-title" style="padding-top: 50px;">
-			<h2>INQUIRY</h2>
+			<h2>문의하기</h2>
 	</div>
 	<div class="body-main" style="padding-bottom: 50px;">
 		<form name="inquiryForm" method="post" enctype="multipart/form-data">

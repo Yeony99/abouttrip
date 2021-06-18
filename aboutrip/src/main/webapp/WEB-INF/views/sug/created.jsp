@@ -4,6 +4,26 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
+.table {
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+.table-content {
+	margin-top: 25px;
+}
+.table-content tr {
+	border-bottom: 1px solid #ccc;
+	height: 40px;
+}
+.table-content tbody tr:first-child {
+	border-top: 1px solid #ccc;
+}
+
+.table-content tr > td {
+	padding: 5px 0;
+}
 .table-content tr > td:nth-child(1) {
 	width: 100px;
 	text-align: center;
@@ -15,6 +35,47 @@
 .table-content input[type=text], .table-content input[type=file], .table-content textarea {
 	width: 97%;
 }
+
+.table-footer {
+	margin: 5px auto;
+}
+.table-footer tr {
+	height:45px;
+	text-align: center;
+}
+
+form textarea{
+	min-height: 200px;
+	max-height: 500px;
+
+}
+
+a {
+	text-decoration: none;
+}
+
+.btnCreate {
+	border: none;
+	background-color: #055ada;
+	color: #fff;
+	border-radius: 7px;
+}
+
+.btnReset {
+	border: none;
+	background-color: #87CEFA;
+	color: black;
+	border-radius: 7px;
+	
+}
+
+.btnList{
+	border: none;
+	background-color: #EAEAEA;
+	color: black;
+	border-radius: 7px;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -41,14 +102,14 @@
     }
 </script>
 
-<div class="container body-container">
-	<div class="body-title">
-		<h2> 시스템 개선제안 </h2>
+<div class="body-container">
+	<div class="body-title" style="padding-top: 50px;">
+		<h2>제안하기</h2>
 	</div>
     
-	<div class="body-main wx-700 ml-30 pt-15">
+	<div class="body-main" style="padding-bottom: 50px;">
 		<form name="sugForm" method="post" enctype="multipart/form-data">
-		<table class="table table-border table-content">
+		 <table class="table table-content">
 			<tr> 
 				<td>제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
 				<td> 
@@ -66,7 +127,7 @@
 			<tr> 
 				<td valign="top">내&nbsp;&nbsp;&nbsp;&nbsp;용</td>
 				<td valign="top"> 
-					<textarea name="content" class="boxTA">${dto.content}</textarea>
+					<textarea name="content" class="boxTA" placeholder="고객님의 제안사항이나 바라는 점을 남겨주세요. 제안 게시판은 작성 글에 대한 답변을 제공하지 않으며, 답변이 필요하신 경우 문의하기를 이용해주시기 바랍니다.">${dto.content}</textarea>
 				</td>
 			</tr>
 			  
@@ -91,12 +152,12 @@
 
 		</table>
 			
-		<table class="table">
+		<table class="table table-footer">
 			<tr> 
 				<td align="center">
-					<button type="button" class="btn btn-dark" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
-					<button type="reset" class="btn">다시입력</button>
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/list';">${mode=='update'?'수정취소':'등록취소'}</button>
+					<button type="button" class="btnCreate" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
+					<button type="reset" class="btnReset">다시입력</button>
+					<button type="button" class="btnList" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 						<c:if test="${mode=='update'}">
 							<input type="hidden" name="num" value="${dto.num}">
 							<input type="hidden" name="saveFilename" value="${dto.saveFilename}">

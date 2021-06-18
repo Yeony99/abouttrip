@@ -4,19 +4,43 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
-.table-content tr {
+.table-list {
+	width: 100%;
+}
+.table-list tr {
 	text-align: center;
 }
-.table-content tr:first-child {
+.table-list tr:first-child {
 	background: #eee;
 }
-.table-content tr > th {
+.table-list tr > th {
 	color: #777;
 }
-.table-content tr > td:nth-child(2) {
+.table-list tr > td:nth-child(2) {
 	box-sizing: border-box;
 	padding-left: 10px;
 	text-align: left;
+}
+
+.table-paging tr>td {
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	padding: 5px;
+	box-sizing: border-box;
+}
+
+.table-footer {
+	margin: 10px auto;
+}
+
+.table-footer tr {
+	height: 45px;
+}
+
+.body-main a {
+	text-decoration: none;
+	color: black;
 }
 
 .btnupdate {
@@ -49,29 +73,26 @@ function searchList() {
 }
 </script>
 
-<div class="container body-container">
-	<div class="body-title">
-		<h2>Suggestion</h2>
-	</div>
+<div class="body-container">
+	<div class="body-main" style="padding-top:50px; padding-bottom: 50px;">
+		<div class="body-title">
+			<h2>제안하기</h2>
+		</div>
     
-	<div class="body-main wx-800 ml-30">
-		<table class="table">
+	<div class="body-main">
+		<table class="table table-header">
 			<tr>
-				<td align="left" width="50%">
-					
-				</td>
-				<td align="right">
-					${dataCount}개(${page}/${total_page} 페이지)
-				</td>
+				<td align="left" width="50%"></td>
+				<td align="right">	${dataCount}개(${page}/${total_page} 페이지) </td>
 			</tr>
 		</table>
 		
-		<table class="table table-border table-content">
+		<table class="table table-list">
 			<tr> 
 				<th width="60">번호</th>
 				<th>제목</th>
 				<th width="100">작성자</th>
-				<th width="80">작성일</th>
+				<th width="200">작성일</th>
 				<th width="50">첨부</th>
 			</tr>
 		 
@@ -100,13 +121,13 @@ function searchList() {
 			</c:forEach>
 		</table>
 		 
-		<table class="table">
+		<table class="table table-paging">
 			<tr>
 				<td align="center">${dataCount==0?"등록된 게시물이 없습니다.":paging}</td>
 			</tr>
 		</table>
 		
-		<table class="table">
+		<table class="table table-footer">
 			<tr>
 				<td align="left" width="100">
 					<button type="button" class="btnList" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/list';">새로고침</button>
@@ -117,7 +138,9 @@ function searchList() {
 							<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
 							<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
 							<option value="content" ${condition=="content"?"selected='selected'":""}>내용</option>
-							<option value="nickName" ${condition=="nickName"?"selected='selected'":""}>작성자</option>
+							<c:if test="${sessionScore.member.userId=='admin'}">
+								<option value="nickName" ${condition=="nickName"?"selected='selected'":""}>작성자</option>
+							</c:if>
 							<option value="reg_date" ${condition=="reg_date"?"selected='selected'":""}>등록일</option>
 						</select>
 						<input type="text" name="keyword" value="${keyword}" class="boxTF">
@@ -130,5 +153,5 @@ function searchList() {
 			</tr>
 		</table>
 	</div>
-
+	</div>
 </div>

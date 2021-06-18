@@ -13,7 +13,9 @@
 	border-bottom: 1px solid #ccc;
 	text-align: center;
 }
-
+.table-list tr:first-child {
+	background: #eee;
+}
 .table-list thead tr:first-child {
 	border-top: 2px solid #ccc;
 	background: #eee;
@@ -89,7 +91,7 @@
 <div class="body-container">
 	<div class="body-main" style="padding-top:50px; padding-bottom: 50px;">
 		<div class="body-title">
-			<h2>INQUIRY</h2>
+			<h2>문의하기</h2>
 		</div>
 
 			<div class="body-main">

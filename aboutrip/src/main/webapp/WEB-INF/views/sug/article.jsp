@@ -4,20 +4,62 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <style type="text/css">
+.table {
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+.table-content {
+	margin-top: 25px;
+}
+.table-content tr {
+	border-bottom: 1px solid #ccc;
+	height: 35px;
+}
+.table-content tr:first-child {
+	border-top: 2px solid #ccc;
+}
+.table-content tr:last-child {
+	border-bottom: 1px solid #ccc;
+}
 .table-content tr > td {
 	padding-left: 5px; padding-right: 5px;
 }
+.table-footer {
+	margin: 5px auto;
+}
+.table-footer tr {
+	height:45px;
+}
 
-.reply {
-	padding: 15px 0 10px;
-}
-.reply .table-reply tr td {
-	padding-top: 0;
+.btnupdate {
+	border: none;
+	background-color: #055ada;
+	color: #fff;
+	border-radius: 7px;
 }
 
-.reply .reply-list tbody tr td {
-	padding: 7px 5px;
+.btndelete {
+	border: none;
+	background-color: #87CEFA;
+	color: black;
+	border-radius: 7px;
 }
+
+.btnList{
+	border: none;
+	background-color: #EAEAEA;
+	color: black;
+	border-radius: 7px;
+}
+
+
+a {
+	text-decoration: none;
+}
+
+
 </style>
 
 <script type="text/javascript">
@@ -105,20 +147,20 @@ function listPage(page) {
 
 </script>
 
-<div class="container body-container">
-    <div class="body-title">
-        <h2>Suggestion </h2>
+<div class="body-container">
+    <div class="body-title" style="padding-top: 50px;">
+        <h2>제안하기</h2>
     </div>
     
-    <div class="body-main wx-700 ml-30 pt-15">
-		<table class="table table-border table-content">
+    <div class="body-main" style="padding-bottom: 50px;">
+		<table class="table table-content">
 			<tr>
-				<td colspan="2" align="center">
-					${dto.title}
+				<td colspan="2" align="center" style="color: blue; font-weight: 600;">
+					${dto.num} &nbsp;&nbsp; | &nbsp;&nbsp; ${dto.title}
 				</td>
 			</tr>
 			
-			<tr>
+			<tr style="font-weight: 600;">
 				<td width="50%" align="left">
 					이름 : ${dto.nickName}
 				</td>
@@ -127,15 +169,15 @@ function listPage(page) {
 				</td>
 			</tr>
 			
-			<tr style="border: none;">
-				<td colspan="2" valign="top" height="200">
+			<tr>
+				<td colspan="2" valign="top" height="200" style="padding-left: 10px;">
 					${dto.content}
 				</td>
 			</tr>
 			
 			<tr>
 				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btn btnSendSugLike" title="좋아요">&nbsp;👍&nbsp;<span id="sugLikeCount">${dto.boardLikeCount}</span></button>
+					<button type="button" class="btnSendSugLike" title="좋아요">&nbsp;👍&nbsp;<span id="sugLikeCount">${dto.boardLikeCount}</span></button>
 				</td>
 			</tr>
 			
@@ -167,24 +209,24 @@ function listPage(page) {
 			</tr>
 		</table>
 			
-		<table class="table">
+		<table class="table table-footer">
 			<tr>
-				<td width="50%">
+				<td width="50%" align="left">
 					<c:choose>
 						<c:when test="${sessionScope.member.userNum==dto.userNum}">
-			    			<button type="button" class="btnUpdate" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/update?num=${dto.num}&page=${page}';">수정</button>
+			    			<button type="button" class="btnupdate" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/update?num=${dto.num}&page=${page}';">수정</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="btnUpdate" disabled="disabled">수정</button>
+			    			<button type="button" class="btnupdate" disabled="disabled">수정</button>
 			    		</c:otherwise>
 			    	</c:choose>
 			    	
 			    	<c:choose>
 			    		<c:when test="${sessionScope.member.userNum==dto.userNum || sessionScope.member.userId=='admin'}">
-			    			<button type="button" class="btnDelete" onclick="deleteBoard();">삭제</button>
+			    			<button type="button" class="btndelete" onclick="deleteBoard();">삭제</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="btnDelete" disabled="disabled">삭제</button>
+			    			<button type="button" class="btndelete" disabled="disabled">삭제</button>
 			    		</c:otherwise>
 			    	</c:choose>
 				</td>
