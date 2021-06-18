@@ -1,16 +1,32 @@
 package com.aboutrip.app.scheduler;
 
 public class MateReply {
-	private int num; //기본키
+	private int reply_num; //기본키
 	private int user_num; // 유저번호
 	private int mate_num; // 댓글다려는 메이트넘버
 	private String content; // 댓글 내용
 	private String created; // 작성일
-	public int getNum() {
-		return num;
+	private int reply_answer;// 댓글의 댓글
+	
+	public int getReply_answer() {
+		return reply_answer;
 	}
-	public void setNum(int num) {
-		this.num = num;
+	public void setReply_answer(int reply_answer) {
+		this.reply_answer = reply_answer;
+	}
+	private int answer; // mate join후 가져와야할 컬럼
+	
+	public int getAnswer() {
+		return answer;
+	}
+	public void setAnswer(int answer) {
+		this.answer = answer;
+	}
+	public int getReply_num() {
+		return reply_num;
+	}
+	public void setReply_num(int reply_num) {
+		this.reply_num = reply_num;
 	}
 	public int getUser_num() {
 		return user_num;

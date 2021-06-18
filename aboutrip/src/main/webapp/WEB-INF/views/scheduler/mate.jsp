@@ -215,7 +215,6 @@ function sendMate() {
 	var end_date = f.end_date.value;
 	var content = f.content.value;
 	var subject = f.subject.value;
-	
 	if(! $("#ctg").val()) {
 		$("#ctg").focus();
 		return false;
@@ -242,7 +241,7 @@ function sendMate() {
 	
 	var url="${pageContext.request.contextPath}/scheduler/insertMate";
 	var query="ctgNum="+ctgNum+"&people_num="+people_num+"&start_date="+start_date+"&end_date="+end_date+"&content="+
-	content+"&subject="+subject;
+	content+"&subject="+subject+"&reply_answer=0";
 	var fn = function(data){
 		$tb.find("textarea").val("");
 		
@@ -268,7 +267,7 @@ $(function(){
 		var page=$(this).attr("data-pageNo");
 		
 		var url="${pageContext.request.contextPath}/scheduler/deleteReply";
-		var query="people_num="+people_num+"&mode=mate";
+		var query="reply_num="+reply_num+"&mode=mate&reply_answer="+reply_num;
 		
 		var fn = function(data){
 			// var state=data.state;
@@ -282,8 +281,8 @@ $(function(){
 // 댓글별 답글 리스트
 function listMateAnswer(answer) {
 	var url="${pageContext.request.contextPath}/scheduler/listMateAnswer";
-	var query="answer="+answer;
-	var selector="#listMateAnswer"+answer;
+	var query="reply_answer="+reply_answer;
+	var selector="#listMateAnswer"+reply_answer;
 	
 	var fn = function(data){
 		$(selector).html(data);
@@ -294,11 +293,11 @@ function listMateAnswer(answer) {
 // 댓글별 답글 개수
 function countMateAnswer(answer) {
 	var url="${pageContext.request.contextPath}/scheduler/countMateAnswer";
-	var query="answer="+answer;
+	var query="reply_answer="+reply_answer;
 	
 	var fn = function(data){
 		var count=data.count;
-		var vid="#answerCount"+answer;
+		var vid="#answerCount"reply_+answer;
 		$(vid).html(count);
 	};
 	
@@ -395,7 +394,7 @@ $(function(){
 		content = encodeURIComponent(content);
 		
 		var url="${pageContext.request.contextPath}/scheduler/insertReply";
-		var query="content="+content+"&num="+num;
+		var query="content="+content+"&mate_num="+num+"&reply_answer="+num;
 		
 		var fn = function(data){
 			$td.find("textarea").val("");
