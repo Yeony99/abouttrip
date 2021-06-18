@@ -94,6 +94,10 @@
 	}
 function mycart(){
 	var d = document.productForm;
+	var choice = d.choice.value;
+	if(confirm("장바구니로 이동하시겠습니까?")==true){
+		d.choice.value=1;
+	}
 	d.action="${pageContext.request.contextPath}/product/carting";
 	d.submit();
 }
@@ -123,6 +127,7 @@ function mycart(){
 									[${item.price}원]</option>
 									<input
 								type="hidden" id="detail_num" name="detail_num" value="${item.detail_num}">
+								<input type="hidden" name="choice" value="0">
 								<input type="hidden" name="code" value="${code}">
 							</c:forEach>
 						</select>

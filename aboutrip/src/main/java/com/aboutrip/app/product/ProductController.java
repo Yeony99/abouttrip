@@ -143,6 +143,7 @@ public class ProductController {
 			@RequestParam int code,
 			@RequestParam(value="quantity", defaultValue = "1") int quantity,
 			int detail_num,
+			@RequestParam int choice,
 			RedirectAttributes redirect,
 			HttpSession session,
 			Model model
@@ -155,7 +156,9 @@ public class ProductController {
 		dto.setQuantity(quantity);
 		service.insertcart(dto);
 		redirect.addAttribute("code", code);
-		
+		if(choice==1) {
+			return "redirect:/product/cart";
+		}
 		return "redirect:/product/article";
 	}
 	
