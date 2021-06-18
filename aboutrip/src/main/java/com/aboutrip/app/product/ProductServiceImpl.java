@@ -92,18 +92,6 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void updateProduct(Map<String, Object> map) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteProduct(int code) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public int countProduct(Map<String, Object> map) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
@@ -143,5 +131,38 @@ public class ProductServiceImpl implements ProductService {
 			throw e;
 		}
 		return list;
+	}
+
+	@Override
+	public void insertcart(Order dto) throws Exception{
+		try {
+			dao.insertData("product.cart_insert", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public List<Order> listcart(int userNum) throws Exception {
+		List<Order> list = null;
+		try {
+			list=dao.selectList("product.cartlist", userNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
+
+	@Override
+	public int countcart(int user_num) throws Exception {
+		int result = 0;
+		try {
+			result = dao.selectOne("product.cart_count", user_num);
+		} catch (Exception e) {
+			
+		}
+		return result;
 	}
 }

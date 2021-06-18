@@ -77,12 +77,21 @@
 }
 </style>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.form.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/jquery/js/jquery.form.js"></script>
 <script type="text/javascript">
-$('.selectbox select').change(function(){
-	var val = $(':selected', this).val();
-	console.log(val);
-});
+	function printprice() {
+		var opt = document.getElementById("options");
+		var optVal = opt.options[opt.selectedIndex].value;
+		var optId = opt.options[opt.selectedIndex].id;
+
+		var price = document.getElementById("price");
+		var detail_num = document.getElementById("detail_num");
+
+		price.value = optVal;
+		detail_num.value = optId;
+
+	}
 </script>
 
 <div class="body-container">
@@ -97,15 +106,25 @@ $('.selectbox select').change(function(){
 				<td>
 					<div style="font-size: 35px; text-align: center;">${dto.product_name}</div>
 					<div class="selectbox">
-						<div style="margin-top: 2rem; margin-right: 30px; text-align: right; font-size: 30px; color: skyblue; font-weight: 600;"> 원</div>
-						<select name="options" id="options">
+						<div
+							style="margin-top: 2rem; margin-right: 30px; text-align: right; font-size: 30px; color: skyblue; font-weight: 600;">
+							<input type="text" id="price" readonly="readonly">원 <input
+								type="hidden" id="detail_num" name="detail_num">
+						</div>
+						<select name="options" id="options" onchange="printprice()">
 							<option value="">선택</option>
 							<c:forEach var="item" items="${options}">
-								<option value="${item.detail_num}">${item.option_name}
+								<option id="${item.detail_num}" value="${item.price}">${item.option_name}
 									[${item.price}원]</option>
 							</c:forEach>
 						</select>
 					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button type="button" onclick="">장바구니</button>
+					<button type="button" onclick="">구매하기</button>
 				</td>
 			</tr>
 			<tr>
@@ -141,23 +160,18 @@ $('.selectbox select').change(function(){
 		<div id="tabcontent"></div>
 		<div style="background-color: aliceblue; padding: 40px;">
 
-			<div id="detail" style="font-size:2rem;">상세정보</div>
-			${dto.product_detail}
-			
-			<br>
-			<br>
-			<div id="review" style="font-size:2rem;">리뷰</div>
+			<div id="detail" style="font-size: 2rem;">상세정보</div>
+			${dto.product_detail} <br> <br>
+			<div id="review" style="font-size: 2rem;">리뷰</div>
 			<jsp:include page="/WEB-INF/views/product/review.jsp" />
 
-			<br>
-			<br>
-			<div id="qna" style="font-size:2rem;">Q&A</div>
- 			<jsp:include page="/WEB-INF/views/product/qna.jsp" />
- 
- 			<br>
- 			<br>
-			<div id="refund" style="font-size:2rem;">반품/교환정보</div>
-			<jsp:include page="/WEB-INF/views/product/repund.jsp"/>
+			<br> <br>
+			<div id="qna" style="font-size: 2rem;">Q&A</div>
+			<jsp:include page="/WEB-INF/views/product/qna.jsp" />
+
+			<br> <br>
+			<div id="refund" style="font-size: 2rem;">반품/교환정보</div>
+			<jsp:include page="/WEB-INF/views/product/repund.jsp" />
 		</div>
 	</div>
 	<form name="code" method="post">

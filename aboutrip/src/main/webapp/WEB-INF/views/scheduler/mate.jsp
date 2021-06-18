@@ -80,6 +80,9 @@
 
 <script type="text/javascript">
 var replystate = 1;
+function reload(){
+	location.reload();
+}
 function ajaxFun(url, method, query, dataType, fn) {
 	$.ajax({
 		type:method,
@@ -131,7 +134,6 @@ function printMate(data){
 	var dataCount = data.dataCount;
 	var page = data.page;
 	var totalPage = data.total_page;
-	var listNum = data.listNum;
 	$("#listMateBody").attr("data-page", page); // 현재 화면상에 보이는 페이지 저장
 	$("#listMateBody").attr("data-totalPage", totalPage); // 전체 페이지 저장
 	
@@ -148,8 +150,9 @@ function printMate(data){
 		$("listMateBody").empty();
 	}
 	
-	for(var idx=0; idx<listNum; idx++) {
+	for(var idx=0; idx<data.list.length; idx++) {
 		var Num=data.list[idx].num;
+		var listNum = data.list[idx].listNum;
 		var user_num = data.list[idx].user_num;
 		var nickName=data.list[idx].nickName;
 		var subject=data.list[idx].subject
@@ -179,7 +182,7 @@ function printMate(data){
 		out+="<div class='shape'>";
 		out+="<table>"
 		out+="<tr>";
-		out+="<td style='line-height: 25px; margin: 10px;'>모집 번호 :"+Num+"</td>";
+		out+="<td style='line-height: 25px; margin: 10px;'>모집 번호 :"+listNum+"</td>";
 		out+="<td style='line-height: 25px; margin: 10px;'>"+nickName+"</td>";
 		out+="<td style='line-height: 25px; margin: 10px;'>일정 :"+start_date+"~"+end_date+"지역 :"+ctg+"</td>";
 		out+="<td style='line-height: 25px; margin: 10px;'>현재 인원: "+current_num+", 모집인원 : "+people_num+"</td>";
@@ -240,7 +243,6 @@ function sendMate() {
 	var url="${pageContext.request.contextPath}/scheduler/insertMate";
 	var query="ctgNum="+ctgNum+"&people_num="+people_num+"&start_date="+start_date+"&end_date="+end_date+"&content="+
 	content+"&subject="+subject;
-	console.log(query);
 	var fn = function(data){
 		$tb.find("textarea").val("");
 		
@@ -253,10 +255,11 @@ function sendMate() {
 	};
 	
 	ajaxFun(url, "post", query, "json", fn);
+	reload();
 }
 // 댓글 삭제
 $(function(){
-	$("body").on("click", ".deleteMate", function(){
+	$("body").on("click", ".deleteReply", function(){
 		if(! confirm("게시글을 삭제하시겠습니까 ? ")) {
 		    return false;
 		}
@@ -264,7 +267,7 @@ $(function(){
 		var people_num=$(this).attr("data-people_num");
 		var page=$(this).attr("data-pageNo");
 		
-		var url="${pageContext.request.contextPath}/scheduler/deleteMate";
+		var url="${pageContext.request.contextPath}/scheduler/deleteReply";
 		var query="people_num="+people_num+"&mode=mate";
 		
 		var fn = function(data){
@@ -362,12 +365,20 @@ $(function(){
 	$("body").on("click",".btnMatedelete",function(){
 		var uid = "${sessionScope.member.userNum}";
 		var user_num = $(this).attr("data-user_num");
+		var num = $(this).attr("data-num");
 		
 		if(uid===user_num || uid==="관리자"){
-			alert("삭제");
+			var url="${pageContext.request.contextPath}/scheduler/deleteMate";
+			var query="num="+num;
 		} else {
-			alert("본인이 아닙니다.");
+			alert("본인이 아니면 삭제 할 수 없습니다.");
+			return;
 		}
+		var fn = function(data){
+			listPage(1);
+		};
+		ajaxFun(url, "post", query, "json", fn);
+		reload();
 	});
 });
 // 답글 등록

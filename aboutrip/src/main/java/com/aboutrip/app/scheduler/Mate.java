@@ -12,6 +12,15 @@ public class Mate {
 	private String start_date; // 시작일
 	private String end_date; // 종료일
 	private String nickName;
+	private int listNum;
+	
+	
+	public int getListNum() {
+		return listNum;
+	}
+	public void setListNum(int listNum) {
+		this.listNum = listNum;
+	}
 	public int getCurrent_num() {
 		return current_num;
 	}

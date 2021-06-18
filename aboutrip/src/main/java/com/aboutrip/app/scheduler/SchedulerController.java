@@ -164,12 +164,23 @@ public class SchedulerController {
 		if(offset<0)offset = 0;
 		map.put("offset", offset);
 		map.put("rows", row);
-		int listNum=0;
+		int listNum=0,n=0;
 		List<Mate> list = service.listMate(map);
 		for(Mate dto :list) {
+			listNum = dataCount - (offset + n);
+			dto.setListNum(listNum);
 			dto.setContent(dto.getContent().replace("\n", "<br>"));
-			listNum++;
+			n++;
 		}
+		
+		/*
+		 * int listNum, n = 0; 
+		 * for(Place dto : list) { 
+		 * 		listNum = dataCount - (offset + n); 
+		 * 		dto.setListNum(listNum); 
+		 * 		n++;
+		 * }
+		 */
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
 		
 		Map<String, Object> model = new HashMap<>();
@@ -179,6 +190,30 @@ public class SchedulerController {
 		model.put("page", current_page);
 		model.put("paging", paging);
 		model.put("list", list);
+		return model;
+	}
+	
+	@PostMapping("deleteMate")
+	@ResponseBody
+	public Map<String, Object> deleteMate(
+			@RequestParam int num,
+			HttpSession session
+			) {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+
+		String state = "true";
+		try {
+			Map<String, Object> map=new HashMap<>();
+			map.put("user_num", info.getUserNum());
+			map.put("num", num);
+			service.deleteMate(map);
+		}catch (Exception e) {
+			state = "false";
+		}
+		
+		Map<String, Object> model = new HashMap<>();
+		model.put("state", state);
+		
 		return model;
 	}
 }

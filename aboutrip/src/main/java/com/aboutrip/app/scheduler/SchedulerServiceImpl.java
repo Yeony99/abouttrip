@@ -25,6 +25,17 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 
 	@Override
+	public void insertMate(Mate dto) throws Exception {
+		try {
+			dao.insertData("scheduler.insertMate", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+	
+	@Override
 	public List<Scheduler> listMonth(Map<String, Object> map) throws Exception {
 		List<Scheduler> list = null;
 		try {
@@ -35,56 +46,6 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 		
 		return list;
-	}
-
-	@Override
-	public Scheduler readScheduler(int user_num) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void updateScheduler(Map<String, Object> map) throws Exception {
-		try {
-			dao.updateData("scheduler.updateScheduler", map);
-		} catch (Exception e) {
-			throw e;
-		}
-		
-	}
-
-	@Override
-	public void deleteSchedule(Map<String, Object> map) throws Exception {
-		try {
-			dao.updateData("scheduler.deleteScheduler", map);
-		} catch (Exception e) {
-			throw e;
-		}
-		
-	}
-	
-	@Override
-	public void insertMate(Mate dto) throws Exception {
-		try {
-			dao.insertData("scheduler.insertMate", dto);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-		
-	}
-
-	@Override
-	public int MateCount() {
-		int result = 0;
-		
-		try {
-			result = dao.selectOne("scheduler.mateCount");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return result;
 	}
 
 	@Override
@@ -108,5 +69,48 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 		
 		return list;
+	}
+
+	@Override
+	public void updateScheduler(Map<String, Object> map) throws Exception {
+		try {
+			dao.updateData("scheduler.updateScheduler", map);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void deleteSchedule(Map<String, Object> map) throws Exception {
+		try {
+			dao.updateData("scheduler.deleteScheduler", map);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public void deleteMate(Map<String, Object> map) throws Exception {
+		try {
+			dao.updateData("scheduler.deleteMate", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public int MateCount() {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("scheduler.mateCount");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

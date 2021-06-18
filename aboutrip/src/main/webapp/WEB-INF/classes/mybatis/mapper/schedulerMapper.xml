@@ -47,4 +47,8 @@
     	ORDER BY num DESC
     	OFFSET #{offset} ROW FETCH FIRST #{rows} ROWS ONLY
     </select>
+    
+    <delete id="deleteMate">
+    	DELETE FROM mate WHERE num=#{num} AND user_num = #{user_num}
+    </delete>
 </mapper>

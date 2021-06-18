@@ -19,14 +19,13 @@ public class ProductManageServiceImpl implements ProductManageService{
 
 	@Override
 	public void insertProduct(Product dto, String pathname) throws Exception {
-
 		try {
 			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
 			if (saveFilename != null) {
 				dto.setImg_name(saveFilename);
 			}
 			dao.insertData("product.insert_product", dto);
-			dao.updateData("product.insert_product_image", dto);
+			dao.insertData("product.insert_product_image", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -106,7 +105,6 @@ public class ProductManageServiceImpl implements ProductManageService{
 	public void updateProduct(Product dto, String pathname) throws Exception {
 		try {
 			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
-			
 			if (saveFilename != null) {
 				// 이전 파일 지우기
 				if(dto.getImg_name().length()!=0) {
@@ -162,7 +160,9 @@ public class ProductManageServiceImpl implements ProductManageService{
 			dto = dao.selectOne("product.detail_read", detail_num);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}
 		return dto;
 	}
+
 }

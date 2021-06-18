@@ -77,6 +77,7 @@
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/loginLog">로그인 기록</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/following">팔로잉 목록</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/follower">팔로워 목록</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/myCart">장바구니</a>
 							</div></li>
 						</c:if>
 					</c:if>

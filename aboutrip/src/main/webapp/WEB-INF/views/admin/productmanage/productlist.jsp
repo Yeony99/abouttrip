@@ -98,7 +98,6 @@
 	}
 	
 </script>
-
 <div class="body-container">
 	<div class="body-main">
 		<section class="clean-block clean-hero"
@@ -132,9 +131,7 @@
 						<td>옵션번호</td>
 						<td colspan="3">옵션명</td>
 						<td colspan="2">가격</td>
-
 					</tr>
-
 					<c:forEach var="dto" items="${list}">
 						<tr class="product">
 							<td>${dto.code}</td>
@@ -166,7 +163,6 @@
 						<tr style="border-bottom: 1px solid gray"></tr>
 					</c:forEach>
 				</table>
-
 				<table class="table">
 					<tr>
 						<td align="center">${dataCount==0?"등록된 게시물이 없습니다.":paging}</td>
