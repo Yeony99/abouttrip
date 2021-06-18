@@ -135,7 +135,7 @@ function listPage(page) {
 			
 			<tr>
 				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btn btnSendSugLike" title="좋아요">&nbsp;👍&nbsp;<span id="sugLikeCount">${dto.sugLikeCount}</span></button>
+					<button type="button" class="btn btnSendSugLike" title="좋아요">&nbsp;👍&nbsp;<span id="sugLikeCount">${dto.boardLikeCount}</span></button>
 				</td>
 			</tr>
 			

@@ -106,7 +106,7 @@ public class SugController {
 		model.addAttribute("condition", condition);
 		model.addAttribute("keyword", keyword);
         
-		return ".bbs.list";
+		return ".sug.list";
 		
 	}
 	
@@ -116,7 +116,7 @@ public class SugController {
 			Model model) throws Exception{
 		
 		model.addAttribute("mode", "created");
-		return ".bbs.created";
+		return ".sug.created";
 	}
 	
 	//제안 글 올리기
@@ -128,7 +128,7 @@ public class SugController {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		String root=session.getServletContext().getRealPath("/");
-		String pathname=root+"uploads"+File.separator+"bbs";
+		String pathname=root+"uploads"+File.separator+"sug";
 		
 		try {
 			dto.setUserNum(info.getUserNum());
@@ -264,7 +264,7 @@ public class SugController {
 			) throws Exception {
 		
 		String root=session.getServletContext().getRealPath("/");
-		String pathname=root+"uploads"+File.separator+"bbs";
+		String pathname=root+"uploads"+File.separator+"sug";
 		
 		Sug dto=service.readSug(num);
 		

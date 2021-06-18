@@ -18,6 +18,28 @@
 	padding-left: 10px;
 	text-align: left;
 }
+
+.btnupdate {
+	border: none;
+	background-color: #055ada;
+	color: #fff;
+	border-radius: 7px;
+}
+
+.btnList {
+	border: none;
+	background-color: #87CEFA;
+	color: black;
+	border-radius: 7px;
+	
+}
+
+.btnSearch{
+	border: none;
+	background-color: #EAEAEA;
+	color: black;
+	border-radius: 7px;
+}
 </style>
 
 <script type="text/javascript">
@@ -29,14 +51,14 @@ function searchList() {
 
 <div class="container body-container">
 	<div class="body-title">
-		<h2>시스템 개선제안</h2>
+		<h2>Suggestion</h2>
 	</div>
     
 	<div class="body-main wx-800 ml-30">
 		<table class="table">
 			<tr>
 				<td align="left" width="50%">
-					Suggestion
+					
 				</td>
 				<td align="right">
 					${dataCount}개(${page}/${total_page} 페이지)
@@ -67,7 +89,7 @@ function searchList() {
 					</c:url>
 					<a href="${url}">${dto.title} </a>
 				</td>
-				<td>${dto.userName}</td>
+				<td>${dto.nickName}</td>
 				<td>${dto.reg_date}</td>
 				<td>
 					<c:if test="${not empty dto.saveFilename}">
@@ -87,7 +109,7 @@ function searchList() {
 		<table class="table">
 			<tr>
 				<td align="left" width="100">
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/list';">새로고침</button>
+					<button type="button" class="btnList" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/list';">새로고침</button>
 				</td>
 				<td align="center">
 					<form name="searchForm" action="${pageContext.request.contextPath}/sug/list" method="post">
@@ -95,15 +117,15 @@ function searchList() {
 							<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
 							<option value="title" ${condition=="title"?"selected='selected'":""}>제목</option>
 							<option value="content" ${condition=="content"?"selected='selected'":""}>내용</option>
-							<option value="userName" ${condition=="userName"?"selected='selected'":""}>작성자</option>
+							<option value="nickName" ${condition=="nickName"?"selected='selected'":""}>작성자</option>
 							<option value="reg_date" ${condition=="reg_date"?"selected='selected'":""}>등록일</option>
 						</select>
 						<input type="text" name="keyword" value="${keyword}" class="boxTF">
-						<button type="button" class="btn" onclick="searchList()">검색</button>
+						<button type="button" class="btnSearch" onclick="searchList()">검색</button>
 					</form>
 				</td>
 				<td align="right" width="100">
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/created';">글올리기</button>
+					<button type="button" class="btnupdate" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/created';">글올리기</button>
 				</td>
 			</tr>
 		</table>

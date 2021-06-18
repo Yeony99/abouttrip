@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sug">
+	<insert id="insertSug" parameterType="com.aboutrip.app.sug.Sug">
+		INSERT INTO sug(num, userNum, title, content, saveFilename, originalFilename, reg_date) 
+			VALUES(sug_seq.NEXTVAL, #{userNum}, #{title}, #{content}, 
+				#{saveFilename, jdbcType=VARCHAR}, 
+	           	#{originalFilename, jdbcType=VARCHAR}, SYSDATE)
+	</insert>
+
+	<sql id="where-list">
+		<choose>
+			<when test="condition == 'all' ">
+			   ( INSTR(title, #{keyword}) &gt; 0
+		          OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
+			</when>
+			<when test="condition == 'reg_date' ">
+			   ( TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword}
+		          OR TO_CHAR(reg_date, 'YYYY-MM-DD') = #{keyword} )
+			</when>
+			<when test="condition == 'content'">
+			    DBMS_LOB.INSTR(content, #{keyword}) &gt; 0
+			</when>
+			<otherwise>
+			    INSTR(${condition}, #{keyword}) &gt; 0
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 글개수 -->
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM sug s
+		JOIN member1 m ON s.userNum=m.userNum
+		<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+		</where>   
+	</select>
+
+	<!-- 글리스트 -->
+	<select id="listSug" parameterType="map" resultType="com.aboutrip.app.sug.Sug">
+		SELECT s.num, s.userNum, nickName, title, 
+		       TO_CHAR(s.reg_date, 'YYYY-MM-DD') reg_date, saveFilename
+		FROM sug s
+		JOIN member1 m ON s.userNum=m.userNum
+		<where>
+			<if test="keyword != null and keyword != ''">
+				<include refid="where-list"/>
+			</if>
+		</where>
+		ORDER BY num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+
+	<!-- 글보기 -->
+	<select id="readSug" parameterType="Integer" resultType="com.aboutrip.app.sug.Sug">
+		SELECT s.num, s.userNum, nickName, title, content, s.reg_date,  saveFilename, originalFilename,
+			   NVL(sugLikeCount, 0) sugLikeCount
+		FROM sug s
+		JOIN member1 m ON s.userNum=m.userNum
+		LEFT OUTER JOIN (
+			SELECT num, COUNT(*) sugLikeCount FROM sugLike
+			GROUP BY num
+		) sc ON s.num = sc.num
+		WHERE s.num = #{num}
+	</select>
+	
+	
+	<!-- 이전글 -->
+	<select id="preReadSug" parameterType="map" resultType="com.aboutrip.app.sug.Sug">
+		SELECT num, title
+		FROM sug s
+		JOIN member1 m ON s.userNum=m.userNUm
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (num &gt; #{num})
+		</where>
+		ORDER BY num ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<!-- 다음글 -->
+	<select id="nextReadSug" parameterType="map" resultType="com.aboutrip.app.sug.Sug">
+		SELECT num, title
+		FROM sug s
+		JOIN member1 m ON s.userNum=m.userNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (num &lt; #{num})
+		</where>
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<!--제안 수정 -->
+	<update id="updateSug" parameterType="com.aboutrip.app.sug.Sug">
+		UPDATE sug SET title=#{title}, content=#{content},
+				saveFilename=#{saveFilename, jdbcType=VARCHAR},
+				originalFilename=#{originalFilename, jdbcType=VARCHAR}
+		WHERE num = #{num}
+	</update>
+      
+	<!--제안 삭제 -->
+	<delete id="deleteSug" parameterType="Integer">
+		DELETE FROM sug WHERE num = #{num}
+	</delete>
+      
+	<!-- 게시글 좋아요 추가 -->
+	<insert id="insertSugLike" parameterType="map">
+		INSERT INTO sugLike(num, userNum) VALUES (#{num}, #{userNum})
+	</insert>
+      
+	<!-- 게시글 좋아요 개수 -->
+	<select id="sugLikeCount" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(*) FROM sugLike WHERE num=#{num}
+	</select>
+     
+</mapper>
