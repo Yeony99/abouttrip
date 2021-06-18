@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.member.SessionInfo;
@@ -101,7 +102,7 @@ public class ProductController {
 		return ".product.list";
 	}
 
-	@RequestMapping(value = "article", method = RequestMethod.GET)
+	@RequestMapping("article")
 	public String article(@RequestParam int code, Model model) throws Exception {
 		Product dto = new Product();
 		List<Product> options = new ArrayList<Product>();
@@ -111,6 +112,7 @@ public class ProductController {
 
 		model.addAttribute("options", options);
 		model.addAttribute("dto", dto);
+		model.addAttribute("code", code);
 
 		return ".product.article";
 	}
@@ -138,8 +140,11 @@ public class ProductController {
 
 	@RequestMapping("carting")
 	public String carting(
+			@RequestParam int code,
 			@RequestParam(value="quantity", defaultValue = "1") int quantity,
 			int detail_num,
+			@RequestParam int choice,
+			RedirectAttributes redirect,
 			HttpSession session,
 			Model model
 			) throws Exception {
@@ -150,8 +155,11 @@ public class ProductController {
 		dto.setDetail_num(detail_num);
 		dto.setQuantity(quantity);
 		service.insertcart(dto);
-		
-		return "redirect:/";
+		redirect.addAttribute("code", code);
+		if(choice==1) {
+			return "redirect:/product/cart";
+		}
+		return "redirect:/product/article";
 	}
 	
 	@RequestMapping("cart")

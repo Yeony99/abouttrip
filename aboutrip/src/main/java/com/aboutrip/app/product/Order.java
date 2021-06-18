@@ -3,6 +3,12 @@ package com.aboutrip.app.product;
 public class Order {
 	// 유저정보
 	private String nickName;
+	private String userId;
+	private String user_name;
+	private String address1;
+	private String tel;
+	private String zip;
+	
 	
 	// 리뷰 정보
 	private String reviewContent;
@@ -233,4 +239,34 @@ public class Order {
 	public void setcDate(String cDate) {
 		this.cDate = cDate;
 	}	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+	public String getAddress1() {
+		return address1;
+	}
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	public String getZip() {
+		return zip;
+	}
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
 }

@@ -47,8 +47,38 @@
     	ORDER BY num DESC
     	OFFSET #{offset} ROW FETCH FIRST #{rows} ROWS ONLY
     </select>
-    
-    <delete id="deleteMate">
+    <select id="updateMate" parameterType="Integer">
+    	UPDATE mate SET answer = answer+1 WHERE num = #{num}
+    </select>
+    <delete id="deleteMate" parameterType="Integer">
     	DELETE FROM mate WHERE num=#{num} AND user_num = #{user_num}
+    </delete>
+    
+    <insert id="insertReply" parameterType="com.aboutrip.app.scheduler.MateReply">
+    	INSERT INTO mate_reply(reply_num, user_num, mate_num, content, created,reply_answer) VALUES (mate_reply_seq.NEXTVAL, #{user_num}, #{mate_num}, #{content}, SYSDATE,#{reply_answer})
+    </insert>
+    
+    <select id="listReply" parameterType="map" resultType="com.aboutrip.app.scheduler.MateReply">
+    	SELECT reply_num, user_num, r.mate_num, r.content, answerCount,reply_answer r.created FROM mate_reply r
+    	LEFT JOIN mate m ON r.mate_num = m.num
+    	LEFT OUTER JOIN (
+			SELECT reply_answer, COUNT(*) answerCount
+			FROM mate_reply WHERE reply_answer!=0 GROUP BY reply_answer
+		) a ON reply_Num = a.reply_answer
+    	WHERE r.mate_num = #{mate_num} 
+    	ORDER BY reply_num DESC
+    	OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+    </select>
+    
+    <select id="replyCount" parameterType="map" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM mate_reply
+    	WHERE reply_answer = #{reply_answer}
+    </select>
+    
+    <delete id="deleteReply" parameterType="map">
+    	DELETE FROM mate_reply WHERE reply_num=#{reply_num}
+    	<if test="mode=='reply'">
+			OR reply_answer=#{reply_num}
+		</if>
     </delete>
 </mapper>

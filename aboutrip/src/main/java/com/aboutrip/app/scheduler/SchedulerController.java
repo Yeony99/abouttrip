@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,8 +30,15 @@ public class SchedulerController {
 	private SchedulerService service;
 	
 	@RequestMapping(value = "mycalendar", method=RequestMethod.GET)
-	public ModelAndView scheduler() throws Exception {
+	public ModelAndView scheduler(HttpSession session) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
 		ModelAndView mav = new ModelAndView(".scheduler.myCalendar");
+		if(info.getUserId().equals("")) {
+			ModelAndView nl = new ModelAndView(".member.login");
+			return nl;
+		}
+		
 		return mav;
 	}
 	
@@ -214,6 +222,60 @@ public class SchedulerController {
 		Map<String, Object> model = new HashMap<>();
 		model.put("state", state);
 		
+		return model;
+	}
+	
+	@RequestMapping(value = "insertReply", method=RequestMethod.POST )
+	@ResponseBody
+	public Map<String, Object> insertReply (MateReply dto, HttpSession session) {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		String state = "true";
+		
+		try {
+			dto.setUser_num(info.getUserNum());
+			service.insertReply(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			state="false";
+		}
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		return model;
+	}
+	
+	@RequestMapping(value="deteleReply", method=RequestMethod.POST )
+	@ResponseBody
+	public Map<String, Object> deleteReply(@RequestParam Map<String, Object> paramMap){
+		String state="true";
+		try {
+			service.deleteReply(paramMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("state", state);
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "listReplyAnswer")
+	@ResponseBody
+	public String listReplyAnswer(@RequestParam int answer, Model model) throws Exception{
+		List<MateReply> listReply = service.listReply(answer);
+		for(MateReply dto : listReply) {
+			dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+		}
+		
+		model.addAttribute("listReply",listReply);
+		return ".scheduler.mate";
+	}
+	
+	@RequestMapping(value = "countMateAnswer")
+	@ResponseBody
+	public Map<String, Object> countMateAnswer(@RequestParam int answer) throws Exception{
+		int count = service.replyAnswerCount(answer);
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("count",count);
 		return model;
 	}
 }

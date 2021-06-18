@@ -92,9 +92,19 @@
 		detail_num.value = optId;
 
 	}
+function mycart(){
+	var d = document.productForm;
+	var choice = d.choice.value;
+	if(confirm("장바구니로 이동하시겠습니까?")==true){
+		d.choice.value=1;
+	}
+	d.action="${pageContext.request.contextPath}/product/carting";
+	d.submit();
+}
 </script>
 
 <div class="body-container">
+	<form name="productForm" method="post">
 	<div class="body-main">
 		<table style="width: 100%">
 			<tr>
@@ -108,14 +118,17 @@
 					<div class="selectbox">
 						<div
 							style="margin-top: 2rem; margin-right: 30px; text-align: right; font-size: 30px; color: skyblue; font-weight: 600;">
-							<input type="text" id="price" readonly="readonly">원 <input
-								type="hidden" id="detail_num" name="detail_num">
+							<input type="text" id="price" readonly="readonly">원 
 						</div>
 						<select name="options" id="options" onchange="printprice()">
 							<option value="">선택</option>
 							<c:forEach var="item" items="${options}">
 								<option id="${item.detail_num}" value="${item.price}">${item.option_name}
 									[${item.price}원]</option>
+									<input
+								type="hidden" id="detail_num" name="detail_num" value="${item.detail_num}">
+								<input type="hidden" name="choice" value="0">
+								<input type="hidden" name="code" value="${code}">
 							</c:forEach>
 						</select>
 					</div>
@@ -123,7 +136,7 @@
 			</tr>
 			<tr>
 				<td>
-					<button type="button" onclick="">장바구니</button>
+					<button type="button" onclick="mycart();">장바구니</button>
 					<button type="button" onclick="">구매하기</button>
 				</td>
 			</tr>
@@ -174,6 +187,7 @@
 			<jsp:include page="/WEB-INF/views/product/repund.jsp" />
 		</div>
 	</div>
+	</form>
 	<form name="code" method="post">
 		<input type="hidden" name="code" value="${dto.code}">
 	</form>

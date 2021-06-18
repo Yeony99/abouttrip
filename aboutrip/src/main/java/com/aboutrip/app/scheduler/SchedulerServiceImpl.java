@@ -34,6 +34,17 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 		
 	}
+
+	@Override
+	public void insertReply(MateReply dto) throws Exception {
+		try {
+			dao.insertData("scheduler.insertReply", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
 	
 	@Override
 	public List<Scheduler> listMonth(Map<String, Object> map) throws Exception {
@@ -71,6 +82,20 @@ public class SchedulerServiceImpl implements SchedulerService{
 		return list;
 	}
 
+
+	@Override
+	public List<MateReply> listReply(int answer) throws Exception {
+		List<MateReply> list = null;
+		try {
+			list = dao.selectList("scheduler.listReply",answer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	
 	@Override
 	public void updateScheduler(Map<String, Object> map) throws Exception {
 		try {
@@ -102,6 +127,16 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 
 	@Override
+	public void deleteReply(Map<String, Object> map) throws Exception {
+		try {
+			dao.updateData("scheduler.deleteReply", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
 	public int MateCount() {
 		int result = 0;
 		
@@ -113,4 +148,19 @@ public class SchedulerServiceImpl implements SchedulerService{
 		
 		return result;
 	}
+
+	@Override
+	public int replyAnswerCount(int answer) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("scheduler.replyCount",answer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+
 }
