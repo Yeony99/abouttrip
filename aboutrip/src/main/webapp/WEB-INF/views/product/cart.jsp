@@ -156,7 +156,7 @@ a:active, a:hover {
 						<td>${dto.option_name}</td>
 						<td>${dto.price}</td>
 						<td>${dto.quantity}</td>
-						<td>price * quantity 값을 넣어야함</td>
+						<td>${dto.price * dto.quantity} 값을 넣어야함</td>
 						<td><a
 							href="javascript:deleteCart('${dto.cart_num}', '${dto.option_name}')">삭제</a>
 						</td>

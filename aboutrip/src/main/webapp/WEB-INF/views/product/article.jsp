@@ -122,7 +122,8 @@ function mycart(){
 								<option id="${item.detail_num}" value="${item.price}">${item.option_name}
 									[${item.price}원]</option>
 									<input
-								type="hidden" id="detail_num" name="detail_num" value="${item.detail_num }">
+								type="hidden" id="detail_num" name="detail_num" value="${item.detail_num}">
+								<input type="hidden" name="code" value="${code}">
 							</c:forEach>
 						</select>
 					</div>

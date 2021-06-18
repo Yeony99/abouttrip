@@ -55,7 +55,7 @@
 	</update>
 
 	<insert id="cart_insert" parameterType="com.aboutrip.app.product.Order" >
-		INSERT INTO cart(card_num, user_num, quantity, detail_num)
+		INSERT INTO cart(cart_num, user_num, quantity, detail_num)
 		VALUES(cart_seq.NEXTVAL, #{user_num}, #{quantity}, #{detail_num})
 	</insert>
 	
