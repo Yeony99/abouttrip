@@ -58,8 +58,8 @@
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/notice/list">공지사항 작성</a>
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/faq/main">FAQ 작성</a>
 						    <a class="dropdown-item" href="${pageContext.request.contextPath}/inquiry/list">문의 답변</a>
-							<a class="dropdown-item" href="#">이벤트 작성</a>
-							<a class="dropdown-item" href="#">시스템 개선/제안 답변</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/event/list">이벤트 작성</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/sug/list">제안하기 답변</a>
 						</div></li>
 				</ul>
 			</div>

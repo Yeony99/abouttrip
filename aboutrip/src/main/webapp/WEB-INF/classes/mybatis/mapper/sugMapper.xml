@@ -34,6 +34,9 @@
 		FROM sug s
 		JOIN member1 m ON s.userNum=m.userNum
 		<where>
+			<if test="userNum!=null and userNum!='' and userNum!=1111">
+				s.userNum= #{userNum}
+			</if>
 			<if test="keyword!=null and keyword!='' ">
 				<include refid="where-list"/>
 			</if>
@@ -47,6 +50,9 @@
 		FROM sug s
 		JOIN member1 m ON s.userNum=m.userNum
 		<where>
+			<if test="userNum!=null and userNum!='' and userNum!=1111">
+				s.userNum= #{userNum}
+			</if>
 			<if test="keyword != null and keyword != ''">
 				<include refid="where-list"/>
 			</if>

@@ -91,7 +91,11 @@
 <div class="body-container">
 	<div class="body-main" style="padding-top:50px; padding-bottom: 50px;">
 		<div class="body-title">
-			<h2>문의하기</h2>
+			<h2>📞 1:1 문의하기</h2>
+			<p>
+				<br> 어바웃 트립에 문의사항을 남겨주세요. 
+				<br> 관리자가 확인 후 문의사항에 대해 답변을 드립니다. 
+			</p>
 		</div>
 
 			<div class="body-main">

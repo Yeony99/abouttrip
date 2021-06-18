@@ -106,11 +106,11 @@ function ajaxFun(url, method, query, dataType, fn) {
 // 개선/제안 공감 여부
 $(function(){
 	$(".btnSendSugLike").click(function(){
-		if(! confirm("시스템 개선/제안에 공감하십니까 ? ")) {
+		if(! confirm("제안에 공감하십니까 ? ")) {
 			return false;
 		}
 		
-		var url="${pageContext.request.contextPath}/bbs/insertBoardLike";
+		var url="${pageContext.request.contextPath}/sug/insertSugLike";
 		var num="${dto.num}";
 		var query="num="+num;
 		
@@ -177,7 +177,7 @@ function listPage(page) {
 			
 			<tr>
 				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btnSendSugLike" title="좋아요">&nbsp;👍&nbsp;<span id="sugLikeCount">${dto.boardLikeCount}</span></button>
+					<button type="button" class="btnSendSugLike" title="좋아요">&nbsp;👍&nbsp;<span id="sugLikeCount">${dto.sugLikeCount}</span></button>
 				</td>
 			</tr>
 			

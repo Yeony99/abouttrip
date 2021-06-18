@@ -76,7 +76,12 @@ function searchList() {
 <div class="body-container">
 	<div class="body-main" style="padding-top:50px; padding-bottom: 50px;">
 		<div class="body-title">
-			<h2>제안하기</h2>
+			<h2>🛠 제안하기</h2>
+			<p>
+			<br> 어바웃트립에 제안사항이나 바라는 점을 남겨주세요. 
+			<br> 여러분의 소중한 의견을 반영하여 더욱 좋은 서비스로 보답하겠습니다. 
+			</p>
+			
 		</div>
     
 	<div class="body-main">

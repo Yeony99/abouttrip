@@ -53,10 +53,10 @@
 						style="color: var(- -bs-dark); text-align: left;">고객센터</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/notice/list">공지사항</a>
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/faq/main">FAQ</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/faq/main">자주묻는질문</a>
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/inquiry/list">문의하기</a>
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/event/list">이벤트</a>
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/sug/list">시스템 개선/제안</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/sug/list">제안하기</a>
 						</div></li>
 				</ul>
 			</div>

@@ -44,9 +44,11 @@ public class SugController {
 			@RequestParam(defaultValue="all") String condition,
 			@RequestParam(defaultValue="") String keyword,
 			HttpServletRequest req,
+			HttpSession session,
 			Model model
 			) throws Exception{
 		
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		String cp= req.getContextPath();
 		
 		int rows = 10; 
@@ -60,6 +62,7 @@ public class SugController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("condition", condition);
         map.put("keyword", keyword);
+        map.put("userNum", info.getUserNum());
         
         dataCount = service.dataCount(map);
         if(dataCount != 0) total_page = aboutUtil.pageCount(rows, dataCount);
@@ -146,6 +149,8 @@ public class SugController {
 			@RequestParam String page,
 			@RequestParam(defaultValue="all") String condition,
 			@RequestParam(defaultValue="") String keyword,
+			HttpServletRequest resp,
+			HttpSession session,
 			Model model) throws Exception {
 		
 		keyword = URLDecoder.decode(keyword, "utf-8");
@@ -155,10 +160,18 @@ public class SugController {
 			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
 		}
 		
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		Sug dto = service.readSug(num);
 		
-		if(dto==null)
+		if(dto==null) {
+			return "redirect:/sug/list?"+query;	
+		}
+		
+		if(!info.getUserId().equals("admin") && info.getUserNum() != dto.getUserNum()) {
 			return "redirect:/sug/list?"+query;
+		}
+		
+		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("condition", condition);
@@ -167,6 +180,7 @@ public class SugController {
 
 		Sug preReadDto = service.preReadSug(map);
 		Sug nextReadDto = service.nextReadSug(map);
+		int sugLikeCount = service.sugLikeCount(num);
         
 		model.addAttribute("dto", dto);
 		model.addAttribute("preReadDto", preReadDto);
@@ -174,6 +188,7 @@ public class SugController {
 
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
+		model.addAttribute("sugLikeCount", sugLikeCount);
 		
         return ".sug.article";
 	}

@@ -248,7 +248,7 @@ function deleteFaq(num, page) {
 
 <div class="body-container">
 	<div class="body-title" style="padding-top: 50px; padding-left: 50px;">
-		<h3>❓자주하는 질문 </h3>
+		<h3>❓ 자주하는 질문 </h3>
 	</div>
     
 	<div class="body-main" style="padding-bottom: 50px;">

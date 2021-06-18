@@ -14,7 +14,7 @@ public class Sug {
 	private String originalFilename;
 	private MultipartFile upload;
 	
-	private int boardLikeCount;
+	private int sugLikeCount;
 
 	public int getNum() {
 		return num;
@@ -96,13 +96,14 @@ public class Sug {
 		this.upload = upload;
 	}
 
-	public int getBoardLikeCount() {
-		return boardLikeCount;
+	public int getSugLikeCount() {
+		return sugLikeCount;
 	}
 
-	public void setBoardLikeCount(int boardLikeCount) {
-		this.boardLikeCount = boardLikeCount;
+	public void setSugLikeCount(int sugLikeCount) {
+		this.sugLikeCount = sugLikeCount;
 	}
+	
 	
 	
 	

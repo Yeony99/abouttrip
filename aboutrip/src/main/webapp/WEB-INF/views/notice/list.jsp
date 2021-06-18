@@ -91,7 +91,10 @@
 <div class="body-container">
 	<div class="body-main" style="padding-top:50px; padding-bottom: 50px;">
 		<div class="body-title">
-			<h2>공지사항</h2>
+			<h2>📢 공지사항</h2>
+			<p>
+				<br> 어바웃트립 공지사항입니다. 
+			</p>
 		</div>
 
 			<div class="body-main">
