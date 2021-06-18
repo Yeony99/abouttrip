@@ -54,6 +54,11 @@
 		WHERE num = #{num}
 	</update>
 
+	<insert id="cart_insert" parameterType="com.aboutrip.app.product.Order" >
+		INSERT INTO cart(card_num, user_num, quantity, detail_num)
+		VALUES(cart_seq.NEXTVAL, #{user_num}, #{quantity}, #{detail_num})
+	</insert>
+	
 	<!-- 수정 -->
 	<update id="update_product"	parameterType="com.aboutrip.app.product.Product">
 		UPDATE product SET product_name = #{product_name}, product_detail = #{product_detail}, isHidden = {isHidden},
@@ -66,6 +71,10 @@
 		WHERE detail_num = #{detail_num}
 	</update>
 
+	<insert id="update_product_image"
+		parameterType="com.aboutrip.app.product.Product">
+		UPDATE product_img SET img_name = #{img_name} WHERE img_num = #{img_num}
+	</insert>
 
 	<!-- 삭제 -->
 	<delete id="delete_product" parameterType="Integer">
@@ -84,6 +93,9 @@
 		DELETE FROM productdetail WHERE detail_num=#{detail_num}
 	</delete>
 	
+	<delete id="delete_cart" parameterType="Integer">
+		DELETE FROM cart WHERE user_num=#{user_num}
+	</delete>
 	
 	<!-- 리스트 -->
 	<select id="product_list_categories" parameterType="map"
@@ -131,6 +143,14 @@
 		From productdetail
 	</select>
 	
+	<select id="cartlist" resultType="com.aboutrip.app.product.Order">
+		SELECT cart_num, quantity, price, option_name, product_name
+		FROM cart c
+		JOIN productDetail d ON c.detail_num = d.detail_num
+		JOIN product p ON d.code = p.code
+		WHERE user_num = #{user_num}
+	</select>
+	
 	<!-- 글 -->
 	
 	<select id="product_read" parameterType="Integer"
@@ -166,6 +186,13 @@
 		SELECT NVL(COUNT(*), 0)
 		FROM productdetail
 		WHERE code=#{code}
+	</select>
+	
+	<select id="cart_count" parameterType="Integer"
+	resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM cart
+		WHERE user_num = #{user_num}
 	</select>
 
 	

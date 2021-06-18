@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aboutrip.app.common.AboutUtil;
+import com.aboutrip.app.member.SessionInfo;
 
 @Controller("product.productController")
 @RequestMapping("/product/*")
@@ -27,7 +29,6 @@ public class ProductController {
 
 	@Autowired
 	AboutUtil aboutUtil;
-
 
 	@RequestMapping(value = "list")
 	public String list(@RequestParam(value = "page", defaultValue = "1") int current_page,
@@ -101,9 +102,7 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "article", method = RequestMethod.GET)
-	public String article(
-			@RequestParam int code, 
-			Model model) throws Exception {
+	public String article(@RequestParam int code, Model model) throws Exception {
 		Product dto = new Product();
 		List<Product> options = new ArrayList<Product>();
 
@@ -115,14 +114,10 @@ public class ProductController {
 
 		return ".product.article";
 	}
-	
-	@RequestMapping(value="event", method = RequestMethod.GET)
-	public String eventlist(
-			@RequestParam(value="keyword", defaultValue = "all") String keyword,
-			HttpServletRequest req,
-			Model model
-			) throws Exception {
-		
+
+	@RequestMapping(value = "event", method = RequestMethod.GET)
+	public String eventlist(@RequestParam(value = "keyword", defaultValue = "all") String keyword,
+			HttpServletRequest req, Model model) throws Exception {
 
 		List<Product> package_list = service.listEvent(4);
 		List<Product> ticket_list = service.listEvent(5);
@@ -132,13 +127,56 @@ public class ProductController {
 			keyword = URLDecoder.decode(keyword, "utf-8");
 		}
 
-
 		model.addAttribute("package_list", package_list);
 		model.addAttribute("ticket_list", ticket_list);
 		model.addAttribute("package_list", mobile_list);
 
 		model.addAttribute("keyword", keyword);
-		
+
 		return ".product.event";
 	}
+
+	@RequestMapping("carting")
+	public String carting(
+			@RequestParam(value="quantity", defaultValue = "1") int quantity,
+			int detail_num,
+			HttpSession session,
+			Model model
+			) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		Order dto = new Order();
+		dto.setUser_num(info.getUserNum());
+		dto.setDetail_num(detail_num);
+		dto.setQuantity(quantity);
+		service.insertcart(dto);
+		
+		return "redirect:/";
+	}
+	
+	@RequestMapping("cart")
+	public String cart(
+			HttpSession session,
+			Model model
+			) throws Exception {
+		List<Order> list = new ArrayList<Order>();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		int countCart = 0;
+		
+		list = service.listcart(info.getUserNum());
+		countCart = service.countcart(info.getUserNum());
+		model.addAttribute("list", list);
+		model.addAttribute("dataCount", countCart);
+		return ".product.cart";
+	}
+	
+	@RequestMapping("payment")
+	public String payment(
+			HttpSession session,
+			Model model
+			) throws Exception {
+		
+		return ".product.payment";
+	}
+	
 }
