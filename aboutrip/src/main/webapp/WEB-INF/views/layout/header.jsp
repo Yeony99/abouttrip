@@ -73,7 +73,7 @@
 							style="color: var(- -bs-dark); text-align: left;">마이페이지</a>
 							<div class="dropdown-menu">
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/update">정보수정</a>
-								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/payment">결제수단등록</a>
+								<%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/member/payment">결제수단등록</a> --%>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/loginLog">로그인 기록</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/following">팔로잉 목록</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/follower">팔로워 목록</a>
