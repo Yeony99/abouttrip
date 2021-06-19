@@ -92,6 +92,11 @@
     
     <select id="replyCount" parameterType="map" resultType="Integer">
     	SELECT NVL(COUNT(*),0) FROM mate_reply
+    	WHERE mate_num = #{mate_num}
+    </select>
+    
+    <select id="replyAnswerCount" parameterType="map" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM mate_reply
     	WHERE reply_answer = #{reply_answer}
     </select>
     

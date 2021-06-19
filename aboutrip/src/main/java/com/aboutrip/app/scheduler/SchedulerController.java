@@ -271,21 +271,57 @@ public class SchedulerController {
 	}
 	
 	@RequestMapping(value = "insertReply")
-	public Map<String, Object> insertReply (MateReply dto, HttpSession session) {
+	public String insertReply (MateReply dto, HttpSession session, @RequestParam int mate_num, @RequestParam int reply_answer, @RequestParam String content) {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		String state = "true";
 		
 		try {
+			dto.setMate_num(mate_num);
+			dto.setReply_answer(reply_answer);
+			dto.setContent(content);
 			dto.setUser_num(info.getUserNum());
 			service.insertReply(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
-			state="false";
 		}
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("state", state);
-		return model;
+		return "redirect:/scheduler/mate";
 	}
+	
+	@RequestMapping(value = "listReply")
+	@ResponseBody
+	public String listReply(@RequestParam int mate_num, Model model ,@RequestParam(value = "page", defaultValue = "1") int current_page) throws Exception{
+		int rows=5;
+		int total_page=0;
+		int dataCount = 0;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("mate_num", mate_num);
+		
+		dataCount = service.replyCount(map);
+		total_page = aboutUtil.pageCount(rows, dataCount);
+		if(current_page>total_page) current_page= total_page;
+		
+		int offset = (current_page-1)*rows;
+		if(offset<0)offset=0;
+		map.put("mate_num", mate_num);
+		map.put("offset", offset);
+		map.put("rows", rows);
+		
+		List<MateReply> listReply = service.listReply(map);
+		for(MateReply dto : listReply) {
+			dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+		}
+		
+		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
+		
+		model.addAttribute("listReply",listReply);
+		model.addAttribute("pageNo", current_page);
+		model.addAttribute("replyCount", dataCount);
+		model.addAttribute("total_page",total_page);
+		model.addAttribute("paging",paging);
+		
+		return ".scheduler.test";
+	}
+	
 	
 	@RequestMapping(value="deteleReply", method=RequestMethod.POST )
 	@ResponseBody
@@ -302,17 +338,16 @@ public class SchedulerController {
 		return map;
 	}
 	
-	@RequestMapping(value = "listReplyAnswer")
-	@ResponseBody
-	public String listReplyAnswer(@RequestParam int answer, Model model) throws Exception{
-		List<MateReply> listReply = service.listReply(answer);
-		for(MateReply dto : listReply) {
-			dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
-		}
-		
-		model.addAttribute("listReply",listReply);
-		return ".scheduler.mate";
-	}
+	/* 멀하려했던거지
+	 * @RequestMapping(value = "listReplyAnswer")
+	 * 
+	 * @ResponseBody public String listReplyAnswer(@RequestParam int answer, Model
+	 * model) throws Exception{ List<MateReply> listReply =
+	 * service.listAnswerReply(answer); for(MateReply dto : listReply) {
+	 * dto.setContent(dto.getContent().replaceAll("\n", "<br>")); }
+	 * 
+	 * model.addAttribute("listReply",listReply); return ".scheduler.mate"; }
+	 */
 	
 	@RequestMapping(value = "countMateAnswer")
 	@ResponseBody

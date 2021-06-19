@@ -68,10 +68,10 @@ $(function(){
 });
 
 //댓글별 답글 리스트
-function listMateAnswer(answer) {
-	var url="${pageContext.request.contextPath}/scheduler/listReplyAnswer";
-	var query="answer="+answer;
-	var selector="#listMateAnswer"+answer;
+function listMateAnswer(mate_num) {
+	var url="${pageContext.request.contextPath}/scheduler/listReply";
+	var query="mate_num="+mate_num;
+	var selector="#listMateAnswer"+mate_num;
 	
 	var fn = function(data){
 		$(selector).html(data);
@@ -116,16 +116,6 @@ $(function(){
 	});
 	
 });
-function insertReply(){
-	var f = document.replyForm;
-	var str = f.reply_content.value;
-	if(str!="") {
-		f.reply_content.focus();
-	}
-	f.action ="${pageContext.request.contextPath}/scheduler/insertReply";
-	f.submit();
-}
-
 function bringPeople() {
 	var f = document.mateForm;
 	
@@ -240,6 +230,7 @@ function bringPeople() {
 					    <tr>
 					        <td colspan="2">
 					            <button type='button' class='btn btnMateAnswerLayout' data-mateNum='${dto.num}'>답글 <span id="answerCount${dto.num}">${answerCount}</span></button>
+					            <input type="hidden" name="mate_num" value="${dto.num }">
 					        </td>
 					    </tr>
 					
@@ -269,22 +260,21 @@ function bringPeople() {
 									<div style='clear:both; padding: 5px 5px; border-bottom: 1px solid #ccc;'>
 										${vo.content}
 									</div>
-								</div>	            
+								</div>
+								<div id="listMateAnswer"></div>            
 							</c:forEach> 
 					
 					
 					
-							<form name="replyForm" method="post" accept-charset="utf-8">					
+							<form name="replyForm" method="post" accept-charset="utf-8" action="${pageContext.request.contextPath}/scheduler/insertReply">					
 					            <div style='clear: both; padding: 10px 10px;'>
 					                <div style='float: left; width: 5%;'>└</div>
 					                <div style='float: left; width:95%'>
-					                    <textarea name="reply_content" class='boxTA' style='width:100%; height: 70px;'></textarea>
+					                    <textarea name="content" class='boxTA' style='width:100%; height: 70px;'></textarea>
 					                    <input type="hidden" name="mate_num" value="${dto.num }">
 					                    <input type="hidden" name="reply_answer" value="0">
+					                   	<input type="submit" class='btn' value="답글 등록">
 					                 </div>
-					            </div>
-					             <div style='padding: 0 13px 10px 10px; text-align: right;'>
-					                <button type='button' class='btn' onclick='insertReply();'>답글 등록</button>
 					            </div>
 					        </form>
 							</td>

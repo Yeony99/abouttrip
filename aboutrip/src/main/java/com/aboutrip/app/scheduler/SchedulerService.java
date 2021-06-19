@@ -12,7 +12,7 @@ public interface SchedulerService {
 	public List<Scheduler> listMonth(Map<String, Object> map) throws Exception;
 	public List<Mate> listMate(Map<String, Object> map) throws Exception;
 	public List<Mate> readMate(int userNum) throws Exception;
-	public List<MateReply> listReply(int answer) throws Exception;
+	public List<MateReply> listReply(Map<String, Object> map) throws Exception;
 	public List<Review> listreview(Map<String, Object> map)	throws Exception;
 		
 	public void updateScheduler(Map<String, Object> map) throws Exception;
@@ -24,6 +24,7 @@ public interface SchedulerService {
 	public void deleteReview(int num, String pathname) throws Exception;
 	
 	public int MateCount();
+	public int replyCount(Map<String, Object> map);
 	public int replyAnswerCount(int answer);
 	public int reviewCount(Map<String, Object> map);
 	

@@ -104,10 +104,10 @@ public class SchedulerServiceImpl implements SchedulerService{
 
 
 	@Override
-	public List<MateReply> listReply(int answer) throws Exception {
+	public List<MateReply> listReply(Map<String, Object> map) throws Exception {
 		List<MateReply> list = null;
 		try {
-			list = dao.selectList("scheduler.listReply",answer);
+			list = dao.selectList("scheduler.listReply",map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -199,12 +199,27 @@ public class SchedulerServiceImpl implements SchedulerService{
 		return result;
 	}
 
+
+
+	@Override
+	public int replyCount(Map<String, Object> map) {
+int result = 0;
+		
+		try {
+			result = dao.selectOne("scheduler.mateCount");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	@Override
 	public int replyAnswerCount(int answer) {
 		int result = 0;
 		
 		try {
-			result = dao.selectOne("scheduler.replyCount",answer);
+			result = dao.selectOne("scheduler.replyAnswerCount",answer);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
