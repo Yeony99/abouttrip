@@ -169,21 +169,25 @@ function bringPeople() {
 						</label>
 					</td>
 					<td>
-						<label> 메이트 인원 <input type="number" min="1" max="3" id="people_num" name='peple_num' value="" onchange="bringPeople();"></label>
+						<label> 메이트 인원 <input type="number" min="1" max="3" id="people_num" name='people_num' value="" onchange="bringPeople();"></label>
 					</td>
 					<td>
 						<label> 출발 <input type="date" id="form-checkin" name="start_date"> </label> ~ <label> 도착 <input type="date" id="form-checkout" name="end_date"> </label> 
 					</td>
-					<td colspan="2">
-						<input type="text" name="subject" placeholder="제목">
+					
+				</tr>
+				<tr>
+					<td colspan="3">
+						<label> 제목 <input type="text" name="subject" placeholder="제목">  </label>
 					</td>
 				</tr>
-				
+
 				<tr>
 					<td colspan="3">
 						<textarea class='boxTA' style='width:100%; height: 300px;' id="content" name="content" placeholder="즐거운 여행이 될 수 있도록 자세한 계획을 알려주세요!"></textarea>
 					</td>
 				</tr>
+				
 				<tr>
 				   <td align='right' colspan="3">
 				        <button type='button' class='btn' style='padding:7px 20px;' onclick="sendtest();">등록</button>
