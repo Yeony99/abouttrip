@@ -9,6 +9,29 @@
 <title>Insert title here</title>
 </head>
 <script type="text/javascript">
+
+function ajaxFun(url, method, query, dataType, fn) {
+	$.ajax({
+		type:method,
+		url:url,
+		data:query,
+		dataType:dataType,
+		success:function(data) {
+			fn(data);
+		},
+		beforeSend:function(jqXHR) {
+			jqXHR.setRequestHeader("AJAX", true);
+		},
+		error:function(jqXHR) {
+			if(jqXHR.status===403) {
+				login();
+				return false;
+			}
+	    	
+			console.log(jqXHR.responseText);
+		}
+	});
+}
 function sendtest(){
 	var f = document.mateForm;
 	f.action ="${pageContext.request.contextPath}/scheduler/insertMate";
@@ -31,6 +54,87 @@ function bringPlace() {
 		f.ctgNum.value=str;
 	}
 }
+
+$(function(){
+	$("body").on("click", ".deleteMate", function(){
+		if(! confirm("게시글을 삭제하시겠습니까 ? ")) {
+		    return false;
+		}
+		
+		var mateNum=$(this).attr("data-mateNum");
+		var page=$(this).attr("data-pageNo");
+		
+		var url="${pageContext.request.contextPath}/scheduler/deleteMate";
+		var query="mateNum="+mateNum+"&mode=mate";
+		
+		var fn = function(data){
+			// var state=data.state;
+			listPage(page);
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
+
+//댓글별 답글 리스트
+function listMateAnswer(answer) {
+	var url="${pageContext.request.contextPath}/scheduler/listMateAnswer";
+	var query="answer="+answer;
+	var selector="#listMateAnswer"+answer;
+	
+	var fn = function(data){
+		$(selector).html(data);
+	};
+	ajaxFun(url, "get", query, "html", fn);
+}
+// 댓글별 답글 개수
+function countMateAnswer(answer) {
+	var url="${pageContext.request.contextPath}/scheduler/countMateAnswer";
+	var query="answer="+answer;
+	
+	var fn = function(data){
+		var count=data.count;
+		var vid="#answerCount"+answer;
+		$(vid).html(count);
+	};
+	
+	ajaxFun(url, "post", query, "json", fn);
+}
+
+//답글 버튼(댓글별 답글 등록폼 및 답글리스트)
+$(function(){
+	$("body").on("click", ".btnMateAnswerLayout", function(){
+		var $trMateAnswer = $(this).closest("tr").next();
+		// var $trMateAnswer = $(this).parent().parent().next();
+		// var $answerList = $trMateAnswer.children().children().eq(0);
+		
+		var isVisible = $trMateAnswer.is(':visible');
+		var mateNum = $(this).attr("data-mateNum");
+			
+		if(isVisible) {
+			$trMateAnswer.hide();
+		} else {
+			$trMateAnswer.show();
+            
+			// 답글 리스트
+			listMateAnswer(mateNum);
+			
+			// 답글 개수
+			countMateAnswer(mateNum);
+		}
+	});
+	
+});
+
+
+function bringPeople() {
+	var f = document.mateForm;
+	
+	var str = f.people_num.value;
+	if(str!="") {
+		f.people_num.value=str;
+	}	
+}
 </script>
 <body>
 <div class="container body-container">
@@ -38,41 +142,6 @@ function bringPlace() {
     	<div style="display: flex; justify-content: center">
 			<h3>트립 메이트를 찾습니다 👋🏻</h3>
 		</div>
-		
-<!-- <form name="mateForm" method="post">
-		<div class="mate-header">
-			<div>
-				<label style="width: 80%"> 제목 <input type="text" id="subject"></label>
-			</div>
-			<div>
-				<label> 출발 <input type="date" id="form-checkin"> </label> ~ <label> 도착 <input type="date" id="form-checkout"> </label>  
-			</div>
-			<div style="margin-top: 1rem;">
-				<label> 장소
-					<select name="ctg" onchange="bringPlace();" id="ctg">
-						<option value="">선 택</option>
-						<option value="1" ${dto.ctgNum=="1" ? "selected='selected'" : ""}>서울</option>
-						<option value="2" ${dto.ctgNum=="2" ? "selected='selected'" : ""}>부산</option>
-						<option value="3" ${dto.ctgNum=="3" ? "selected='selected'" : ""}>제주 제주시</option>
-						<option value="4" ${dto.ctgNum=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
-						<option value="5" ${dto.ctgNum=="5" ? "selected='selected'" : ""}>제주 성산</option>
-						<option value="6" ${dto.ctgNum=="6" ? "selected='selected'" : ""}>제주 기타</option>
-					</select>
-					<input type="hidden" value="${dto.ctgNum}" name="ctgNum">
-				</label>
-			</div>
-			<div style="margin-top: 1rem;">
-				<label> 메이트 인원 <input type="number" min="1" max="3" id="mate_num"> &nbsp;&nbsp;&nbsp; <span style="color: red">※ 코로나19 방역지침에 따라 5인 이상 모임은 불가능합니다.</span> </label>  
-			</div>
-			<div>
-				<textarea name="content" id="content" placeholder="당신의 여행 계획을 알려주세요 .&#13;&#10;세부 일정 및 여행 스타일을 알리고 메이트를 찾아보세요." style="margin-top: 1rem;"></textarea>
-			</div>
-			<div>
-				<button type="button" class="btn btnSendMate" onclick="sendMate();"> 등록하기 </button>
-			</div>
-		</div>
-		</form>
--->
 		
 		<div class="mate" style="width: 70vw; margin:2rem auto">
 			<form name="mateForm" method="post" accept-charset="utf-8">
@@ -96,12 +165,11 @@ function bringPlace() {
 							<option value="4" ${dto.ctgNum=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
 							<option value="5" ${dto.ctgNum=="5" ? "selected='selected'" : ""}>제주 성산</option>
 							<option value="6" ${dto.ctgNum=="6" ? "selected='selected'" : ""}>제주 기타</option>
-						</select><%-- 
-						<input type="hidden" value="${dto.ctgNum}" name="ctgNum"> --%>
+						</select>
 						</label>
 					</td>
 					<td>
-						<label> 메이트 인원 <input type="number" min="1" max="3" id="people_num" name='peple_num' value="1"></label>
+						<label> 메이트 인원 <input type="number" min="1" max="3" id="people_num" name='peple_num' value="" onchange="bringPeople();"></label>
 					</td>
 					<td>
 						<label> 출발 <input type="date" id="form-checkin" name="start_date"> </label> ~ <label> 도착 <input type="date" id="form-checkout" name="end_date"> </label> 
@@ -124,16 +192,104 @@ function bringPlace() {
 				 </tr>
 			</table>
 			</form>
-						</div>			
+			
+			
+			
+			
+			<div id="listMate">
+				<table class='table mate-list'>
+					<thead id='listMateHeader'>
+						<tr>
+						    <td colspan='2'>
+						       <div style='clear: both;'>
+						           <div style='float: left;'><span style='color: #3EA9CD; font-weight: bold;'>메이트 찾기 ${mateCount}개</span> <span>[${pageNo}/${total_page} 페이지]</span></div>
+						           <div style='float: right; text-align: right;'></div>
+						       </div>
+						    </td>
+						</tr>
+					</thead>
+					
+					<tbody id='listMateBody'>
+					<c:forEach var="dto" items="${list}">
+					    <tr style='background: #eee; border:1px solid #ccc;'>
+					       <td width='50%'>
+								<span><b>이름 : </b> </span>
+					        </td>
+					       <td width='50%' align='right'>
+								<span>${dto.created}</span>
+								<c:choose>
+									<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.userId=='admin'}">
+										<span class="deleteMate" style="cursor: pointer;" data-mateNum='${dto.num}' data-pageNo='${pageNo}'>삭제</span>
+									</c:when>
+								</c:choose>
+					        </td>
+					    </tr>
+					    <tr>
+					        <td colspan='2' valign='top'>
+					        	<span>제목 : ${dto.subject}</span><br>
+					        	<span>장소:  ${dto.ctgNum}</span>&nbsp;|&nbsp;<span>메이트 인원 : ${dto.people_num} </span>&nbsp;|&nbsp;<span>여행일 : ${dto.start_date} ~ ${dto.end_date}</span>
+					        	<div style="border-top: 1px solid #ccc; padding:5px;">
+					        		${dto.content}
+					        	</div>
+					        </td>
+					    </tr>
+					    
+					    <tr>
+					        <td colspan="2">
+					            <button type='button' class='btn btnMateAnswerLayout' data-mateNum='${vo.mateNum}'>답글 <span id="answerCount${vo.mateNum}">${vo.answerCount}</span></button>
+					        </td>
+					    </tr>
+					
+					    <tr class='mateAnswer' style='display: none;'>
+					        <td colspan='2'>
+					        
+					        
+					        
+					        
+					        
+							<c:forEach var="vo" items="${listMateAnswer}">
+								<div class='answer' style='padding: 0 10px;'>
+									<div style='clear:both; padding: 10px 0;'>
+										<div style='float: left; width: 5%;'>└</div>
+										<div style='float: left; width:95%;'>
+											<div style='float: left;'><b>${vo.userName}</b></div>
+											<div style='float: right;'>
+												<span>${dto.created}</span> |
+												<c:choose>
+													<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.userId=='admin'}">
+														<span class='deleteMateAnswer' style='cursor: pointer;' data-mateNum='${vo.mateNum}' data-answer='${vo.answer}'>삭제</span>
+													</c:when>
+												</c:choose>
+											</div>
+										</div>
+									</div>
+									<div style='clear:both; padding: 5px 5px; border-bottom: 1px solid #ccc;'>
+										${vo.content}
+									</div>
+								</div>	            
+							</c:forEach> 
+					
+					
+					
+					
+					            <div style='clear: both; padding: 10px 10px;'>
+					                <div style='float: left; width: 5%;'>└</div>
+					                <div style='float: left; width:95%'>
+					                    <textarea class='boxTA' style='width:100%; height: 70px;'></textarea>
+					                 </div>
+					            </div>
+					             <div style='padding: 0 13px 10px 10px; text-align: right;'>
+					                <button type='button' class='btn btnSendMateAnswer' data-mateNum='${vo.mateNum}'>답글 등록</button>
+					            </div>
+					        
+							</td>
+					    </tr>
+					    </c:forEach>
+					</tbody>
+				</table>
+				</div>
+			</div>			
 		</div>
 	</div>
-	<form name="testForm" method="post">
-				<button type="button" class="btn" onclick="testlist();">목록보기</button>
-			</form>
-<c:forEach var="dto" items="${list}">
-						<tr align="center" height="55"
-							style="border-bottom: 1px solid #ddd;">
-							<td width="60">${dto.subject}</td></tr>
-					</c:forEach>
 </body>
 </html>
