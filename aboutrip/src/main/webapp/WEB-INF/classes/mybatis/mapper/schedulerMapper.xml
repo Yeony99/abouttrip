@@ -70,7 +70,7 @@
     <select id="updateMate" parameterType="Integer">
     	UPDATE mate SET answer = answer+1 WHERE num = #{num}
     </select>
-    <delete id="deleteMate" parameterType="Integer">
+    <delete id="deleteMate" parameterType="map">
     	DELETE FROM mate WHERE num=#{num} AND user_num = #{user_num}
     </delete>
     
@@ -79,7 +79,7 @@
     </insert>
     
     <select id="listReply" parameterType="map" resultType="com.aboutrip.app.scheduler.MateReply">
-    	SELECT reply_num, user_num, r.mate_num, r.content, answerCount,reply_answer r.created FROM mate_reply r
+    	SELECT reply_num, r.user_num, r.mate_num, r.content, answerCount, r.reply_answer, r.created FROM mate_reply r
     	LEFT JOIN mate m ON r.mate_num = m.num
     	LEFT OUTER JOIN (
 			SELECT reply_answer, COUNT(*) answerCount

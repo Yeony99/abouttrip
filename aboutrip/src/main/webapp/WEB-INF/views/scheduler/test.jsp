@@ -36,14 +36,6 @@ function sendtest(){
 	var f = document.mateForm;
 	f.action ="${pageContext.request.contextPath}/scheduler/insertMate";
 	f.submit();
-	check=true;
-}
-
-function testlist(){
-	var f = document.testForm;
-	
-	f.action ="${pageContext.request.contextPath}/scheduler/matelist";
-	f.submit();
 }
 
 function bringPlace() {
@@ -65,11 +57,10 @@ $(function(){
 		var page=$(this).attr("data-pageNo");
 		
 		var url="${pageContext.request.contextPath}/scheduler/deleteMate";
-		var query="mateNum="+mateNum+"&mode=mate";
+		var query="num="+mateNum+"&mode=mate";
 		
 		var fn = function(data){
-			// var state=data.state;
-			listPage(page);
+			location.reload();
 		};
 		
 		ajaxFun(url, "post", query, "json", fn);
@@ -78,7 +69,7 @@ $(function(){
 
 //댓글별 답글 리스트
 function listMateAnswer(answer) {
-	var url="${pageContext.request.contextPath}/scheduler/listMateAnswer";
+	var url="${pageContext.request.contextPath}/scheduler/listReplyAnswer";
 	var query="answer="+answer;
 	var selector="#listMateAnswer"+answer;
 	
@@ -125,7 +116,15 @@ $(function(){
 	});
 	
 });
-
+function insertReply(){
+	var f = document.replyForm;
+	var str = f.reply_content.value;
+	if(str!="") {
+		f.reply_content.focus();
+	}
+	f.action ="${pageContext.request.contextPath}/scheduler/insertReply";
+	f.submit();
+}
 
 function bringPeople() {
 	var f = document.mateForm;
@@ -169,7 +168,7 @@ function bringPeople() {
 						</label>
 					</td>
 					<td>
-						<label> 메이트 인원 <input type="number" min="1" max="3" id="people_num" name='people_num' value="" onchange="bringPeople();"></label>
+						<label> 메이트 인원 <input type="number" min="1" max="3" id="people_num" name='people_num' value="1" onchange="bringPeople();"></label>
 					</td>
 					<td>
 						<label> 출발 <input type="date" id="form-checkin" name="start_date"> </label> ~ <label> 도착 <input type="date" id="form-checkout" name="end_date"> </label> 
@@ -217,12 +216,12 @@ function bringPeople() {
 					<c:forEach var="dto" items="${list}">
 					    <tr style='background: #eee; border:1px solid #ccc;'>
 					       <td width='50%'>
-								<span><b>이름 : </b> </span>
+								<span><b>이름 : ${dto.nickName }</b> </span>
 					        </td>
 					       <td width='50%' align='right'>
 								<span>${dto.created}</span>
 								<c:choose>
-									<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.userId=='admin'}">
+									<c:when test="${sessionScope.member.userNum==dto.user_num || sessionScope.member.userId=='admin'}">
 										<span class="deleteMate" style="cursor: pointer;" data-mateNum='${dto.num}' data-pageNo='${pageNo}'>삭제</span>
 									</c:when>
 								</c:choose>
@@ -240,7 +239,7 @@ function bringPeople() {
 					    
 					    <tr>
 					        <td colspan="2">
-					            <button type='button' class='btn btnMateAnswerLayout' data-mateNum='${vo.mateNum}'>답글 <span id="answerCount${vo.mateNum}">${vo.answerCount}</span></button>
+					            <button type='button' class='btn btnMateAnswerLayout' data-mateNum='${dto.num}'>답글 <span id="answerCount${dto.num}">${answerCount}</span></button>
 					        </td>
 					    </tr>
 					
@@ -260,7 +259,7 @@ function bringPeople() {
 											<div style='float: right;'>
 												<span>${dto.created}</span> |
 												<c:choose>
-													<c:when test="${sessionScope.member.userId==vo.userId || sessionScope.member.userId=='admin'}">
+													<c:when test="${sessionScope.member.userNum==dto.user_num || sessionScope.member.userId=='admin'}">
 														<span class='deleteMateAnswer' style='cursor: pointer;' data-mateNum='${vo.mateNum}' data-answer='${vo.answer}'>삭제</span>
 													</c:when>
 												</c:choose>
@@ -275,17 +274,19 @@ function bringPeople() {
 					
 					
 					
-					
+							<form name="replyForm" method="post" accept-charset="utf-8">					
 					            <div style='clear: both; padding: 10px 10px;'>
 					                <div style='float: left; width: 5%;'>└</div>
 					                <div style='float: left; width:95%'>
-					                    <textarea class='boxTA' style='width:100%; height: 70px;'></textarea>
+					                    <textarea name="reply_content" class='boxTA' style='width:100%; height: 70px;'></textarea>
+					                    <input type="hidden" name="mate_num" value="${dto.num }">
+					                    <input type="hidden" name="reply_answer" value="0">
 					                 </div>
 					            </div>
 					             <div style='padding: 0 13px 10px 10px; text-align: right;'>
-					                <button type='button' class='btn btnSendMateAnswer' data-mateNum='${vo.mateNum}'>답글 등록</button>
+					                <button type='button' class='btn' onclick='insertReply();'>답글 등록</button>
 					            </div>
-					        
+					        </form>
 							</td>
 					    </tr>
 					    </c:forEach>

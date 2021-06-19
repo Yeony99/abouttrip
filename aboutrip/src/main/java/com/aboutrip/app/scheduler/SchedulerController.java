@@ -201,7 +201,7 @@ public class SchedulerController {
 			state="false";
 		}
 		model.addAttribute("state",state);
-		return ".scheduler.test";
+		return "redirect:/scheduler/mate";
 	}
 	
 	@RequestMapping(value = "matelist",method = RequestMethod.POST)
@@ -248,9 +248,10 @@ public class SchedulerController {
 	}
 	
 	@PostMapping("deleteMate")
-	public String deleteMate(
+	@ResponseBody
+	public Map<String, Object> deleteMate(
 			@RequestParam int num,
-			HttpSession session, Model model
+			HttpSession session
 			) {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 
@@ -263,13 +264,13 @@ public class SchedulerController {
 		}catch (Exception e) {
 			state="false";
 		}
-		model.addAttribute("state",state);
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state",state);
 		
-		return "redirect:/scheduler/mate/";
+		return model;
 	}
 	
-	@RequestMapping(value = "insertReply", method=RequestMethod.POST )
-	@ResponseBody
+	@RequestMapping(value = "insertReply")
 	public Map<String, Object> insertReply (MateReply dto, HttpSession session) {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		String state = "true";
