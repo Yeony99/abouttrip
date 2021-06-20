@@ -111,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Product> listOption(int code) throws Exception {
-		List<Product> list;
+		List<Product> list = null;
 		try {
 			list = dao.selectList("product.option_list", code);
 		} catch (Exception e) {
@@ -147,7 +147,10 @@ public class ProductServiceImpl implements ProductService {
 	public List<Order> listcart(int userNum) throws Exception {
 		List<Order> list = null;
 		try {
-			list=dao.selectList("product.cartlist", userNum);
+			list=dao.selectList("product.cart_list", userNum);
+			for(int i = 0; i<list.size(); i++) {
+				list.get(i).setFinal_price(list.get(i).getPrice()*list.get(i).getQuantity());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -161,8 +164,82 @@ public class ProductServiceImpl implements ProductService {
 		try {
 			result = dao.selectOne("product.cart_count", user_num);
 		} catch (Exception e) {
-			
+			e.printStackTrace();
+			throw e;
 		}
 		return result;
 	}
+
+	@Override
+	public void deletecart(int cart_num) throws Exception {
+		try {
+			dao.deleteData("product.delete_cart", cart_num);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public void deletecart(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("product.delete_cartlist", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public List<Order> listPayment(Map<String, Object> map) throws Exception {
+		List<Order> list = null;
+		try {
+			list = dao.selectList("product.payment_list", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
+
+	@Override
+	public Order readMember(int user_num) throws Exception {
+		Order dto = null;
+		try {
+			dto = dao.selectOne("product.readMember", user_num);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return dto;
+	}
+
+	@Override
+	public List<Order> listCard(int user_num) throws Exception {
+		List<Order> list = null;
+		try {
+			list = dao.selectList("product.payment_method", user_num);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
+
+	@Override
+	public void completePayment(Order dto, List<Order> list) throws Exception {
+	
+		try {
+			dao.insertData("orders_insert", dto);
+			for(int i = 0; i<list.size(); i++) {
+				list.get(i).setOrder_num(dto.getOrder_num());
+				dao.insertData("orderdetail_insert", list.get(i));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	
 }

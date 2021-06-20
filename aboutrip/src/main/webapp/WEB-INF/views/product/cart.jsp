@@ -83,13 +83,22 @@ a:active, a:hover {
 				$("input[name=carts]").prop("checked", false);
 			}
 		});
+		
+		$("#btnpurchaseAll").click(function() {
+			$("input[name=carts]").prop("checked", true);
+			
+			if (confirm("전체상품을 구매하시겠습니까 ? ")) {
+				var f = document.cartForm;
+				f.action = "${pageContext.request.contextPath}/product/payment";
+				f.submit();
+			}
+		});
 
 		$("#btnDeleteList")
 				.click(
 						function() {
-							// var cnt = $("input[name=haks]:checkbox:checked").length;
 							var cnt = $("input[name=carts]:checked").length;
-
+							
 							if (cnt == 0) {
 								alert("삭제할 상품을 먼저 선택 하세요 !!!");
 								return false;
@@ -97,13 +106,31 @@ a:active, a:hover {
 
 							if (confirm("선택한 상품을 삭제하시겠습니까 ? ")) {
 								var f = document.cartForm;
-								f.action = "${pageContext.request.contextPath}/product/deletecarts";
+								f.action = "${pageContext.request.contextPath}/product/deletecartlist";
 								f.submit();
 							}
 
 						});
+		$("#btnpurchaseList")
+		.click(
+				function() {
+					var cnt = $("input[name=carts]:checked").length;
+					
+					if (cnt == 0) {
+						alert("구매할 상품을 먼저 선택 하세요 !!!");
+						return false;
+					}
+
+					if (confirm("선택한 상품을 구매하시겠습니까 ? ")) {
+						var f = document.cartForm;
+						f.action = "${pageContext.request.contextPath}/product/payment";
+						f.submit();
+					}
+
+				});
 	});
 
+	
 	function searchList() {
 		var f = document.searchForm;
 		f.submit();
@@ -111,11 +138,12 @@ a:active, a:hover {
 
 	function deleteCart(num, name) {
 		var url = "${pageContext.request.contextPath}/product/deletecart?cart_num="
-				+ num + "}";
+				+ num;
 		if (confirm("장바구니에서 " + name + " 제품을 삭제 하시겠습니까?")) {
 			location.href = url;
 		}
 	}
+	
 </script>
 
 </head>
@@ -144,6 +172,7 @@ a:active, a:hover {
 					<th width="40"><input type="checkbox" name="chkAll"
 						id="chkAll" value="all"></th>
 					<th>상품명</th>
+					<th>옵션명</th>
 					<th>상품금액</th>
 					<th>수량</th>
 					<th>주문금액</th>
@@ -151,26 +180,27 @@ a:active, a:hover {
 				</tr>
 				<c:forEach var="dto" items="${list}">
 					<tr height="35" bgcolor="#ffffff" align="center">
-						<td><input type="checkbox" name="carts" value="1111">
+						<td><input type="checkbox" name="carts" value="${dto.cart_num}">
 						</td>
+						<td>${dto.product_name}</td>
 						<td>${dto.option_name}</td>
 						<td>${dto.price}</td>
 						<td>${dto.quantity}</td>
-						<td>${dto.price * dto.quantity} 값을 넣어야함</td>
-						<td><a
-							href="javascript:deleteCart('${dto.cart_num}', '${dto.option_name}')">삭제</a>
+						<td>${dto.price * dto.quantity}</td>
+						<td><a	href="javascript:deleteCart('${dto.cart_num}', '${dto.option_name}')">삭제</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</table>
-		</form>
+		
 		<c:if test="${dataCount==0}">
 			<div>장바구니가 비었습니다.</div>
 		</c:if>
 		<div>
-			<button class="btn">선택상품 주문하기</button>
-			<button class="btn">전체상품 주문하기</button>
+			<button type="button" class="btn" id="btnpurchaseList">선택상품 주문하기</button>
+			<button type="button" class="btn" id="btnpurchaseAll">전체상품 주문하기</button>
 		</div>
+		</form>
 	</div>
 
 </body>

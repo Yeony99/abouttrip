@@ -178,13 +178,111 @@ public class ProductController {
 		return ".product.cart";
 	}
 	
+	@RequestMapping("deletecart")
+	public String deletecart(
+			@RequestParam int cart_num,
+			Model model
+			) throws Exception{
+		service.deletecart(cart_num);
+		
+		return "redirect:/product/cart";
+	}
+	
+	@RequestMapping("deletecartlist")
+	public String deletecartlist(
+			@RequestParam List<String> carts,
+			Model model
+			) throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", carts);
+		service.deletecart(map);
+		
+		return "redirect:/product/cart";
+	}
+	
 	@RequestMapping("payment")
 	public String payment(
+			@RequestParam List<String> carts,
 			HttpSession session,
 			Model model
 			) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_num", info.getUserNum());
+		map.put("list", carts);
 		
+		
+		Order dto = new Order();
+		
+		List<Order> list = null;
+		List<Order> cardlist = null;
+
+		dto = service.readMember(info.getUserNum());
+		list = service.listPayment(map);
+		cardlist = service.listCard(info.getUserNum());
+		String payment_name= list.get(0).getProduct_name();
+		if(carts.size()>1)
+			payment_name += " 외 " + carts.size() + " 개 품목";
+		
+		int final_price = 0;
+		
+		for(int i = 0; i<list.size(); i++) {
+			final_price += list.get(i).getPrice();
+		}
+		
+		model.addAttribute("list", list);
+		model.addAttribute("member", dto);
+		model.addAttribute("cardlist", cardlist);
+		model.addAttribute("final_price", final_price);
+		model.addAttribute("payment_name", payment_name);
+		model.addAttribute("carts", carts);
 		return ".product.payment";
 	}
+	
+	@RequestMapping("complete")
+	public String paymentComplete(
+			@RequestParam String payment_name,
+			@RequestParam int final_price,
+			@RequestParam List<String> carts,
+			HttpSession session,
+			RedirectAttributes redirect
+			) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		// orders 입력(주문)
+		Order dto = new Order();
+		dto.setUser_num(info.getUserNum());
+		dto.setOrder_price(final_price);
+		
+		//orderDetail에 필요한 파라미터 불러오기
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user-num", info.getUserNum());
+		map.put("list", carts);
+		
+		List<Order> list = new ArrayList<Order>();
+		
+		list = service.listPayment(map);
+		for(int i = 0; i<list.size(); i++) {
+			list.get(i).setFinal_price(list.get(i).getPrice()*list.get(i).getQuantity());
+		}
+		
+		service.completePayment(dto, list);
+		service.deletecart(map);
+		
+		redirect.addAttribute("payment_name", payment_name);
+		redirect.addAttribute("final_price", final_price);
+		return "redirect:/product/completed";
+	}
+	
+	@RequestMapping("completed")
+	public String paymentcompleted(
+			@RequestParam String payment_name,
+			@RequestParam int final_price,
+			Model model
+			) throws Exception{
+		String message = payment_name + "\n" + final_price + "원이 결제 완료되었습니다.";
+		model.addAttribute("message", message);
+		return ".product.complete";
+	}
+	
 	
 }

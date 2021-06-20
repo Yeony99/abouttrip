@@ -59,6 +59,20 @@
 		VALUES(cart_seq.NEXTVAL, #{user_num}, #{quantity}, #{detail_num})
 	</insert>
 	
+	<insert id="orders_insert" parameterType="com.aboutrip.app.product.Order">
+		<selectKey keyProperty="order_num" resultType="int"
+			order="BEFORE">
+			SELECT order_seq.NEXTVAL FROM dual
+		</selectKey>
+		INSERT INTO orders(order_num, order_price, order_state, order_date, isUsed, user_num)
+		VALUES(#{order_num}, #{order_price}, 1, SYSDATE, 1, #{user_num})
+	</insert>
+	
+	<insert id="orderdetail_insert" parameterType="com.aboutrip.app.product.Order">
+		INSERT INTO orderDetail(order_detail, price, discount, final_price, detail_num, order_num)
+		VALUES(#{order_num}, #{price}, 0, #{final_price}, #{detail_num}, #{order_num})
+	</insert>
+	
 	<!-- 수정 -->
 	<update id="update_product"	parameterType="com.aboutrip.app.product.Product">
 		UPDATE product SET product_name = #{product_name}, product_detail = #{product_detail}, isHidden = {isHidden},
@@ -94,7 +108,16 @@
 	</delete>
 	
 	<delete id="delete_cart" parameterType="Integer">
-		DELETE FROM cart WHERE user_num=#{user_num}
+		DELETE FROM cart WHERE cart_num=#{cart_num}
+	</delete>
+	
+	<delete id="delete_cartlist" parameterType="map">
+		DELETE FROM cart
+		WHERE cart_num IN
+		<foreach collection="list" item="code" index="index"
+			separator="," open="(" close=")">
+			#{code}
+		</foreach>
 	</delete>
 	
 	<!-- 리스트 -->
@@ -143,12 +166,30 @@
 		From productdetail
 	</select>
 	
-	<select id="cartlist" resultType="com.aboutrip.app.product.Order">
+	<select id="cart_list" resultType="com.aboutrip.app.product.Order">
 		SELECT cart_num, quantity, price, option_name, product_name
 		FROM cart c
 		JOIN productDetail d ON c.detail_num = d.detail_num
 		JOIN product p ON d.code = p.code
 		WHERE user_num = #{user_num}
+	</select>
+	
+	<select id="payment_list" parameterType="map" resultType="com.aboutrip.app.product.Order">
+		SELECT cart_num, quantity, price, option_name, product_name
+		FROM cart c
+		JOIN productDetail d ON c.detail_num = d.detail_num
+		JOIN product p ON d.code = p.code
+		WHERE user_num = #{user_num} AND cart_num IN
+		<foreach collection="list" item="code" index="index"
+			separator="," open="(" close=")">
+			#{code}
+		</foreach>
+	</select>
+	
+	<select id="payment_method" parameterType="Integer" resultType="com.aboutrip.app.product.Order">
+		SELECT cardnum, cardname, paymentcode
+		FROM payment
+		WHERE userNum=#{user_num}
 	</select>
 	
 	<!-- 글 -->
@@ -168,6 +209,13 @@
 		SELECT option_name, option_value, price, start_date, end_date, code
 		From productdetail
 		WHERE detail_num=#{detail_num}
+	</select>
+	
+	<select id="readMember" parameterType="Integer" resultType="com.aboutrip.app.product.Order">
+		SELECT userId, userName, address1, tel, zip
+		FROM member1 m1
+		JOIN member2 m2 ON m1.userNum=m2.userNum
+		WHERE m1.userNum=#{userNum}
 	</select>
 	
 	<!-- 카운트 -->
@@ -194,7 +242,5 @@
 		FROM cart
 		WHERE user_num = #{user_num}
 	</select>
-
-	
 	
 </mapper>
