@@ -1,4 +1,4 @@
-package com.aboutrip.app.cs;
+package com.aboutrip.app.notice;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -26,9 +26,9 @@ import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.member.SessionInfo;
 
-@Controller("cs.csController")
+@Controller("notice.noticeController")
 @RequestMapping("/notice/*")
-public class CsController {
+public class NoticeController {
 	@Autowired
 	private NoticeService service;	
 	@Autowired

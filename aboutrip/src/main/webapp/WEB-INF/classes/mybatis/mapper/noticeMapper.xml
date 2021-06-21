@@ -6,7 +6,7 @@
 		SELECT notice_seq.NEXTVAL FROM dual
 	</select>
 	
-	<insert id="insertNotice" parameterType="com.aboutrip.app.cs.Notice">
+	<insert id="insertNotice" parameterType="com.aboutrip.app.notice.Notice">
 		INSERT INTO notice(num, notice, title, content, adminNum, reg_date) 
 			VALUES(#{num}, #{notice}, #{title}, #{content}, #{adminNum}, SYSDATE)
 	</insert>
@@ -39,7 +39,7 @@
 		</where>
 	</select>
 	
-	<select id="listNoticeTop" resultType="com.aboutrip.app.cs.Notice">
+	<select id="listNoticeTop" resultType="com.aboutrip.app.notice.Notice">
 		SELECT n.num, notice, n.adminNum, title, nickName,
 			TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date,
 			NVL(fileCount, 0) fileCount
@@ -54,7 +54,7 @@
 	</select>
 	
 	
-	<select id="listNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
+	<select id="listNotice" parameterType="map" resultType="com.aboutrip.app.notice.Notice">
 		SELECT n.num, notice, n.adminNum, title, reg_date, nickName, NVL(fileCount, 0) fileCount
 		FROM notice n
 		JOIN member1 m ON n.adminNum = m.userNum
@@ -71,14 +71,14 @@
 	OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 	
-	<select id="readNotice" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
+	<select id="readNotice" parameterType="Integer" resultType="com.aboutrip.app.notice.Notice">
 		SELECT num, n.adminNum, title, content, reg_date, notice, nickName
 		FROM notice n
 		JOIN member1 m ON n.adminNum = m.userNum
 		WHERE num = #{num}
 	</select>
 	
-	<select id="preReadNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
+	<select id="preReadNotice" parameterType="map" resultType="com.aboutrip.app.notice.Notice">
 		SELECT num, title
 		FROM notice n
 		JOIN member1 m ON n.adminNum = m.userNum
@@ -92,7 +92,7 @@
 		FETCH FIRST 1 ROWS ONLY
 	</select>
 	
-	<select id="nextReadNotice" parameterType="map" resultType="com.aboutrip.app.cs.Notice">
+	<select id="nextReadNotice" parameterType="map" resultType="com.aboutrip.app.notice.Notice">
 		SELECT num, title
 		FROM notice n
 		JOIN member1 m ON n.adminNum = m.userNum
@@ -106,7 +106,7 @@
 		FETCH FIRST 1 ROWS ONLY
 	</select>
 	
-	<update id="updateNotice" parameterType="com.aboutrip.app.cs.Notice">
+	<update id="updateNotice" parameterType="com.aboutrip.app.notice.Notice">
 		UPDATE notice SET title = #{title}, content=#{content}, notice=#{notice}
 		WHERE num=#{num}
 	</update>
@@ -115,18 +115,18 @@
 		DELETE FROM notice WHERE num=#{num}
 	</delete>
 	
-	<insert id="insertFile" parameterType="com.aboutrip.app.cs.Notice">
+	<insert id="insertFile" parameterType="com.aboutrip.app.notice.Notice">
 		INSERT INTO noticeFile(fileNum, num, saveFilename, originalFilename) 
 			VALUES(noticeFile_seq.NEXTVAL, #{num}, #{saveFilename}, #{originalFilename})
 	</insert>
 	
-	<select id="listFile" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
+	<select id="listFile" parameterType="Integer" resultType="com.aboutrip.app.notice.Notice">
 		SELECT fileNum, num, saveFilename, originalFilename 
 		FROM noticeFile
 		WHERE num=#{num}    
 	</select>
 	
-	<select id="readFile" parameterType="Integer" resultType="com.aboutrip.app.cs.Notice">
+	<select id="readFile" parameterType="Integer" resultType="com.aboutrip.app.notice.Notice">
 		SELECT fileNum, num, saveFilename, originalFilename
 		FROM noticeFile
 		WHERE fileNum=#{fileNum}

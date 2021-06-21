@@ -1,4 +1,4 @@
-package com.aboutrip.app.cs;
+package com.aboutrip.app.notice;
 
 import java.util.List;
 import java.util.Map;

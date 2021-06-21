@@ -64,6 +64,9 @@
 	color: black;
 	border-radius: 7px;
 }
+.boxTF{
+	height: 25.33px;
+}
 </style>
 
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-package com.aboutrip.app.cs;
+package com.aboutrip.app.notice;
 
 import java.util.HashMap;
 import java.util.List;
