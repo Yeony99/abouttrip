@@ -122,7 +122,7 @@
 						<th>판매상품</th>
 						<th>분류</th>
 						<th>판매 시작일</th>
-						<th>판매 마지막일</th>
+						<th>판매 종료일</th>
 						<th>공개여부</th>
 						<th><button type="button" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/inputproduct';">상품추가</button></th>
 					</tr>

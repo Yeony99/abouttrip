@@ -92,6 +92,7 @@
 		detail_num.value = optId;
 
 	}
+	
 function mycart(){
 	var d = document.productForm;
 	var choice = d.choice.value;
@@ -125,12 +126,11 @@ function mycart(){
 							<c:forEach var="item" items="${options}">
 								<option id="${item.detail_num}" value="${item.price}">${item.option_name}
 									[${item.price}원]</option>
-									<input
-								type="hidden" id="detail_num" name="detail_num" value="${item.detail_num}">
-								<input type="hidden" name="choice" value="0">
-								<input type="hidden" name="code" value="${code}">
 							</c:forEach>
 						</select>
+								<input type="hidden" id="detail_num" name="detail_num" value="${item.detail_num}">
+								<input type="hidden" name="choice" value="0">
+								<input type="hidden" name="code" value="${code}">
 					</div>
 				</td>
 			</tr>

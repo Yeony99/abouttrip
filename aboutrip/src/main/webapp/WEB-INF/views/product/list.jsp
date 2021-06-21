@@ -173,6 +173,7 @@
 					<c:if test="${n!=0}">
 						<c:out value="</tr>" escapeXml="false" />
 					</c:if> 				</table>
+			
 			</div>
 		</div>
 	</div>

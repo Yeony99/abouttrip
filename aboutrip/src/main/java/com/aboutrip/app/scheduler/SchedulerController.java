@@ -160,13 +160,18 @@ public class SchedulerController {
 		if(offset<0)offset = 0;
 		map.put("offset", offset);
 		map.put("rows", row);
-		int listNum=0,n=0;
+		int listNum=0,n=0,answer=0;
 		List<Mate> list = service.listMate(map);
 		for(Mate dto :list) {
 			listNum = dataCount - (offset + n);
 			dto.setListNum(listNum);
 			dto.setContent(dto.getContent().replace("\n", "<br>"));
 			n++;
+			map.put("mate_num", dto.getNum());
+			answer = service.replyCount(map);
+			map.put("answer", answer);
+			service.updateCountreply(map);
+			dto.setAnswer(answer);
 		}
 		
 		/*
@@ -178,7 +183,6 @@ public class SchedulerController {
 		 * }
 		 */
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
-		
 		model.addAttribute("listNum", listNum);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
@@ -217,23 +221,19 @@ public class SchedulerController {
 		if(offset<0)offset = 0;
 		map.put("offset", offset);
 		map.put("rows", row);
-		int listNum=0,n=0;
+		int listNum=0,n=0,answer=0;
 		List<Mate> list = service.listMate(map);
 		for(Mate dto :list) {
 			listNum = dataCount - (offset + n);
 			dto.setListNum(listNum);
 			dto.setContent(dto.getContent().replace("\n", "<br>"));
 			n++;
+			map.put("mate_num", dto.getNum());
+			answer = service.replyCount(map);
+			map.put("answer", answer);
+			service.updateCountreply(map);
+			dto.setAnswer(answer);
 		}
-		
-		/*
-		 * int listNum, n = 0; 
-		 * for(Place dto : list) { 
-		 * 		listNum = dataCount - (offset + n); 
-		 * 		dto.setListNum(listNum); 
-		 * 		n++;
-		 * }
-		 */
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
 		
 		model.addAttribute("listNum", listNum);
@@ -289,7 +289,7 @@ public class SchedulerController {
 	@RequestMapping(value = "listReply")
 	@ResponseBody
 	public Map<String, Object> listReply(@RequestParam int mate_num,@RequestParam(value = "page", defaultValue = "1") int current_page) throws Exception{
-		int rows=5;
+		int rows=10;
 		int total_page=0;
 		int dataCount = 0;
 		
@@ -325,32 +325,36 @@ public class SchedulerController {
 		return model;
 	}
 	
-	
-	@RequestMapping(value="deteleReply", method=RequestMethod.POST )
-	@ResponseBody
-	public Map<String, Object> deleteReply(@RequestParam Map<String, Object> paramMap){
-		String state="true";
+	@RequestMapping(value = "updateReply")
+	public String updateReply (@RequestParam int mate_num, @RequestParam int reply_num, @RequestParam String content) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			service.deleteReply(paramMap);
+			map.put("mate_num", mate_num);
+			map.put("reply_num", reply_num);
+			map.put("content", content);
+			service.updateReply(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return "redirect:/scheduler/mate";
+	}
+	
+	@RequestMapping(value="deleteReply", method=RequestMethod.POST )
+	@ResponseBody
+	public Map<String, Object> deleteReply(@RequestParam int reply_num,@RequestParam int mate_num){
+		String state="true";
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("reply_num", reply_num);
+		map.put("mate_num", mate_num);
+		try {
+			service.deleteReply(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		map.put("state", state);
 		
 		return map;
 	}
-	
-	/* 멀하려했던거지
-	 * @RequestMapping(value = "listReplyAnswer")
-	 * 
-	 * @ResponseBody public String listReplyAnswer(@RequestParam int answer, Model
-	 * model) throws Exception{ List<MateReply> listReply =
-	 * service.listAnswerReply(answer); for(MateReply dto : listReply) {
-	 * dto.setContent(dto.getContent().replaceAll("\n", "<br>")); }
-	 * 
-	 * model.addAttribute("listReply",listReply); return ".scheduler.mate"; }
-	 */
 	
 	@RequestMapping(value = "countMateAnswer")
 	@ResponseBody

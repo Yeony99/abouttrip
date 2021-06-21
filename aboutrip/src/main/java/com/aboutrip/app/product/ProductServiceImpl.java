@@ -240,6 +240,18 @@ public class ProductServiceImpl implements ProductService {
 			throw e;
 		}
 	}
+
+	@Override
+	public int countQna(int code) throws Exception {
+		int result = 0;
+		try {
+			result = dao.selectOne("product.count_qna", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
+	}
 	
 	
 }

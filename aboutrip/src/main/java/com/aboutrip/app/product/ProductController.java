@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aboutrip.app.common.AboutUtil;
@@ -131,7 +133,7 @@ public class ProductController {
 
 		model.addAttribute("package_list", package_list);
 		model.addAttribute("ticket_list", ticket_list);
-		model.addAttribute("package_list", mobile_list);
+		model.addAttribute("mobile_list", mobile_list);
 
 		model.addAttribute("keyword", keyword);
 
@@ -284,5 +286,56 @@ public class ProductController {
 		return ".product.complete";
 	}
 	
+	@RequestMapping("qna")
+	@ResponseBody
+	public void qnalist(
+			@RequestParam(value="qnaPage") int current_page,
+			int code,
+			HttpServletRequest req,
+			Model model
+			) throws Exception{
+		List<QnA> dto = new ArrayList<QnA>();
+		dto = service.listQna(code);
+
+		int rows = 10; // 한 화면에 보여주는 게시물 수
+		int total_page = 0;
+		int dataCount = 0;
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		dataCount = service.countQna(code);
+
+		if (dataCount != 0)
+			total_page = aboutUtil.pageCount(rows, dataCount);
+
+		// 다른 사람이 자료를 삭제하여 전체 페이지수가 변화 된 경우
+		if (total_page < current_page)
+			current_page = total_page;
+
+		// 리스트에 출력할 데이터를 가져오기
+		int offset = (current_page - 1) * rows;
+		if (offset < 0)
+			offset = 0;
+		map.put("offset", offset);
+		map.put("rows", rows);
+
+		String cp = req.getContextPath();
+		String listUrl = cp + "/product/list";
+
+		String paging = aboutUtil.paging(current_page, total_page, listUrl);
+		
+		
+		model.addAttribute("qnaCount", dataCount);
+		model.addAttribute("paging", paging);
+		model.addAttribute("dto", dto);
+	}
 	
+	@RequestMapping("qnasubmit")
+	public String qnacreated(
+			QnA dto,
+			Model model
+			) throws Exception{
+		service.insertQuestion(dto);
+		return "";
+	}
 }

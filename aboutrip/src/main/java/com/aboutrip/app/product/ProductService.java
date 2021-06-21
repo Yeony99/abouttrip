@@ -24,6 +24,7 @@ public interface ProductService {
 	public int countProduct(Map<String, Object> map) throws Exception;
 	public int countcart(int user_num) throws Exception;
 	public int listCount(Map<String, Object> map) throws Exception;
+	public int countQna(int code) throws Exception;
 	
 	public Product readProduct(int code) throws Exception;
 	public Order readMember(int user_num) throws Exception;

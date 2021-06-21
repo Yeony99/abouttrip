@@ -17,6 +17,8 @@ public interface SchedulerService {
 		
 	public void updateScheduler(Map<String, Object> map) throws Exception;
 	public void updateReview(Review dto, String pathname) throws Exception;
+	public void updateReply(Map<String, Object> map) throws Exception;
+	public void updateCountreply(Map<String, Object> map) throws Exception;
 	
 	public void deleteSchedule(Map<String, Object> map) throws Exception;
 	public void deleteMate(Map<String,Object> map)throws Exception;

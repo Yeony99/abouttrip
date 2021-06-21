@@ -9,9 +9,10 @@
 		<table class="table table-list" style="color:white;">
 			<tr> 
 				<th width="100">번호</th>
-				<th width="100">상품이름</th>
+				<th width="100">카드이름</th>
 				<th width="200">카드넘버</th>
-				<th width="100">구매일</th>
+				<th width="100">등록일</th>
+				<th width="100">삭제</th>
 			</tr>
 		 
 			<c:forEach var="dto" items="${list}">
@@ -20,9 +21,11 @@
 				<td>${dto.cardName}</td>
 				<td>${dto.paymentCode}</td>
 				<td>${dto.created_date}</td>
+				<td><a class="nav-link" href="${pageContext.request.contextPath}/member/deletePayment?paymentCode=${dto.paymentCode}">카드삭제</a></td>
+			</tr>
 			</c:forEach>
 			<c:if test="${list==null}">
-				<td width="100">구매한 내용이 없습니다.</td>
+				<td width="100">No card</td>
 			</c:if>
 		</table>
 		
