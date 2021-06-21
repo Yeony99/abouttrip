@@ -7,7 +7,14 @@ public class MateReply {
 	private String content; // 댓글 내용
 	private String created; // 작성일
 	private int reply_answer;// 댓글의 댓글
+	private String nickName;
 	
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 	public int getReply_answer() {
 		return reply_answer;
 	}

@@ -137,6 +137,17 @@ public class SchedulerServiceImpl implements SchedulerService{
 		
 	}
 
+
+	@Override
+	public void updateReply(Map<String, Object> map) throws Exception {
+		try {
+			dao.updateData("scheduler.updateReply", map);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
+	
 	@Override
 	public void updateReview(Review dto, String pathname) throws Exception {
 		try {
@@ -203,10 +214,10 @@ public class SchedulerServiceImpl implements SchedulerService{
 
 	@Override
 	public int replyCount(Map<String, Object> map) {
-int result = 0;
+		int result = 0;
 		
 		try {
-			result = dao.selectOne("scheduler.mateCount");
+			result = dao.selectOne("scheduler.replyCount");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -79,15 +79,12 @@
     </insert>
     
     <select id="listReply" parameterType="map" resultType="com.aboutrip.app.scheduler.MateReply">
-    	SELECT reply_num, r.user_num, r.mate_num, r.content, answerCount, r.reply_answer, r.created FROM mate_reply r
+    	SELECT reply_num, r.user_num, r.mate_num, r.content, r.reply_answer, r.created, nickName FROM mate_reply r
     	LEFT JOIN mate m ON r.mate_num = m.num
-    	LEFT OUTER JOIN (
-			SELECT reply_answer, COUNT(*) answerCount
-			FROM mate_reply WHERE reply_answer!=0 GROUP BY reply_answer
-		) a ON reply_Num = a.reply_answer
-    	WHERE r.mate_num = #{mate_num} 
+		LEFT OUTER JOIN member1 m ON m.userNum = r.user_num
+    	WHERE r.mate_num = 25
     	ORDER BY reply_num DESC
-    	OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+    	OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
     </select>
     
     <select id="replyCount" parameterType="map" resultType="Integer">
@@ -100,11 +97,12 @@
     	WHERE reply_answer = #{reply_answer}
     </select>
     
+    <update id="updateReply" parameterType="map">
+    	UPDATE mate_reply SET content=#{content} WHERE mate_num = #{mate_num} AND reply_num = #{reply_num}
+	</update>
+	
     <delete id="deleteReply" parameterType="map">
-    	DELETE FROM mate_reply WHERE reply_num=#{reply_num}
-    	<if test="mode=='reply'">
-			OR reply_answer=#{reply_num}
-		</if>
+    	DELETE FROM mate_reply WHERE reply_num=#{reply_num} AND mate_num = #{mate_num}
     </delete>
     
     <insert id="insertReview" parameterType="com.aboutrip.app.scheduler.Review">
