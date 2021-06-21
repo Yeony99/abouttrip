@@ -21,7 +21,7 @@
 			return;
 		}
 
-		f.action = "${pageContext.request.contextPath}/product/${mode}";
+		f.action = "${pageContext.request.contextPath}/admin/productmanage/${mode}";
 
 		f.submit();
 	}

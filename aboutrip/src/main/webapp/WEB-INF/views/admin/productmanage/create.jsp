@@ -21,7 +21,7 @@
 			return;
 		}
 
-		f.action = "${pageContext.request.contextPath}/product/${mode}";
+		f.action = "${pageContext.request.contextPath}/admin/productmanage/${mode}";
 
 		f.submit();
 	}
@@ -59,26 +59,27 @@
 					</select></td>
 				</tr>
 				<tr>
-					<td><input type="radio" name="isHidden" value="1">공개</td>
+					<td><input type="radio" name="isHidden" value="1" checked="checked">공개</td>
 					<td><input type="radio" name="isHidden" value="0">비공개</td>
 				</tr>
 				<tr>
 					<td valign="top">판매시작날짜</td>
-					<td valign="top"><input type="date" name="sales_start"></td>
+					<td valign="top"><input type="date" name="sales_start" value="${dto.sales_start}"></td>
 				</tr>
 				<tr>
 					<td valign="top">판매종료날짜</td>
-					<td valign="top"><input type="date" name="sales_end"></td>
+					<td valign="top"><input type="date" name="sales_end" value="${dto.sales_end}"></td>
 				</tr>
 				<tr>
 					<td>첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
-					<td><input type="file" name="upload" class="boxTF"></td>
+					<td><input type="file" name="upload" class="boxTF" value="${dto.img_name}"></td>
 				</tr>
 			</table>
 
 			<table class="table table-footer">
 				<tr>
 					<td>
+						<input type="hidden" name="code" value="${dto.code}">
 						<button type="button" class="btn" onclick="sendOk();">${mode=='updateproduct'?'수정완료':'등록하기'}</button>
 						<button type="reset" class="btn">다시입력</button>
 						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/productmanagement';">${mode=='updateproduct'?'수정취소':'등록취소'}</button>

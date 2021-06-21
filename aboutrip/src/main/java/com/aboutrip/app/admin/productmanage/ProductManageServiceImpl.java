@@ -1,6 +1,7 @@
 package com.aboutrip.app.admin.productmanage;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import com.aboutrip.app.common.dao.AboutDAO;
 import com.aboutrip.app.product.Product;
 
 @Service("admin.productmanage.productManageService")
-public class ProductManageServiceImpl implements ProductManageService{
+public class ProductManageServiceImpl implements ProductManageService {
 	@Autowired
 	AboutDAO dao;
 
@@ -41,7 +42,7 @@ public class ProductManageServiceImpl implements ProductManageService{
 			throw e;
 		}
 	}
-	
+
 	@Override
 	public Product readProduct(int code) throws Exception {
 		Product dto = null;
@@ -53,7 +54,7 @@ public class ProductManageServiceImpl implements ProductManageService{
 		}
 		return dto;
 	}
-	
+
 	@Override
 	public int countOption(int code) throws Exception {
 		int result = 0;
@@ -67,19 +68,31 @@ public class ProductManageServiceImpl implements ProductManageService{
 	}
 
 	@Override
-	public List<Product> listProduct() throws Exception {
+	public List<Product> listProduct(Map<String, Object> map) throws Exception {
 		List<Product> list = null;
 		try {
-			list=dao.selectList("product.product_management_list");
+			list = dao.selectList("product.product_management_list", map);
 			String category_name = "";
-			for(int i=0; i<list.size(); i++) {
+			for (int i = 0; i < list.size(); i++) {
 				switch (list.get(i).getCategory_num()) {
-				case 1 : category_name = "패키지"; break;
-				case 2 : category_name = "티켓 / 투어"; break;
-				case 3 : category_name = "모바일"; break;
-				case 4 : category_name = "패키지 이벤트"; break;
-				case 5 : category_name = "티켓 / 투어 이벤트"; break;
-				case 6 : category_name = "모바일 이벤트"; break;					
+				case 1:
+					category_name = "패키지";
+					break;
+				case 2:
+					category_name = "티켓 / 투어";
+					break;
+				case 3:
+					category_name = "모바일";
+					break;
+				case 4:
+					category_name = "패키지 이벤트";
+					break;
+				case 5:
+					category_name = "티켓 / 투어 이벤트";
+					break;
+				case 6:
+					category_name = "모바일 이벤트";
+					break;
 				}
 				list.get(i).setCategory_name(category_name);
 			}
@@ -94,7 +107,7 @@ public class ProductManageServiceImpl implements ProductManageService{
 	public List<Product> listOptions() throws Exception {
 		List<Product> list = null;
 		try {
-			list=dao.selectList("product.option_management_list");
+			list = dao.selectList("product.option_management_list");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,14 +120,14 @@ public class ProductManageServiceImpl implements ProductManageService{
 			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
 			if (saveFilename != null) {
 				// 이전 파일 지우기
-				if(dto.getImg_name().length()!=0) {
+				if (dto.getImg_name().length() != 0) {
 					fileManager.doFileDelete(dto.getImg_name(), pathname);
 				}
-					
+
 				dto.setImg_name(saveFilename);
 			}
 			dao.updateData("product.update_product", dto);
-			dao.updateData("product.insert_product_image", dto);
+			dao.updateData("product.update_product_image", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -163,6 +176,17 @@ public class ProductManageServiceImpl implements ProductManageService{
 			throw e;
 		}
 		return dto;
+	}
+
+	@Override
+	public int listCount(Map<String, Object> map) {
+		int result = 0;
+		try {
+			result = dao.selectOne("list_count_all", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

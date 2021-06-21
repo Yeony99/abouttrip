@@ -134,8 +134,7 @@
 											style="width: 100%; height: 200px; object-fit: cover;">
 										</a>
 										<div style="margin: 20px 10px 0px; height: 55px">
-											<span
-												style="vertical-align: top; font-weight: bold; font-size: large;">${dto.product_name}</span>
+											<span style="vertical-align: top; font-weight: bold; font-size: large;">${dto.product_name}</span>
 										</div>
 										<div style="margin: 0px 10px;">${dto.price}원
 										<c:url var="url" value="/booking/article">

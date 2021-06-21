@@ -75,8 +75,8 @@
 	
 	<!-- 수정 -->
 	<update id="update_product"	parameterType="com.aboutrip.app.product.Product">
-		UPDATE product SET product_name = #{product_name}, product_detail = #{product_detail}, isHidden = {isHidden},
-		sales_start = #{sales_start}, sales_end=#{sales_end}, upload_date=#{upload_date}, update_date=#{update_date}, category_num=#{category_num}
+		UPDATE product SET product_name = #{product_name}, product_detail = #{product_detail}, isHidden = #{isHidden},
+		sales_start = #{sales_start}, sales_end=#{sales_end}, update_date=SYSDATE, category_num=#{category_num}
 		WHERE code = #{code}
 	</update>
 	
@@ -87,7 +87,7 @@
 
 	<insert id="update_product_image"
 		parameterType="com.aboutrip.app.product.Product">
-		UPDATE product_img SET img_name = #{img_name} WHERE img_num = #{img_num}
+		UPDATE product_img SET img_name = #{img_name} WHERE code = #{code}
 	</insert>
 
 	<!-- 삭제 -->
@@ -149,10 +149,11 @@
 		ORDER BY sales_start ASC
 	</select>
 	
-	<select id="product_management_list" resultType="com.aboutrip.app.product.Product">
+	<select id="product_management_list" parameterType="map" resultType="com.aboutrip.app.product.Product">
 		SELECT code, product_name, category_num, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,'YYYY-MM-DD') sales_end, isHidden
 		FROM product
 		ORDER BY code DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 	
 	<select id="option_list" parameterType="Integer" resultType="com.aboutrip.app.product.Product">
@@ -242,5 +243,14 @@
 		FROM cart
 		WHERE user_num = #{user_num}
 	</select>
+	<select id="list_count_all" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM product
+	</select>
 	
+	<select id="count_count_qna" parameterType="Integer" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM product_qna
+		WHERE code=#{code}
+	</select>
 </mapper>
