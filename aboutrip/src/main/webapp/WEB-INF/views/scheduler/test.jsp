@@ -37,7 +37,6 @@ function sendtest(){
 	f.action ="${pageContext.request.contextPath}/scheduler/insertMate";
 	f.submit();
 }
-
 function bringPlace() {
 	var f = document.mateForm;
 	
@@ -46,7 +45,6 @@ function bringPlace() {
 		f.ctgNum.value=str;
 	}
 }
-
 $(function(){
 	$("body").on("click", ".deleteMate", function(){
 		if(! confirm("게시글을 삭제하시겠습니까 ? ")) {
@@ -66,7 +64,6 @@ $(function(){
 		ajaxFun(url, "post", query, "json", fn);
 	});
 });
-
 //댓글별 답글 리스트
 function listMateAnswer(mate_num) {
 	var url="${pageContext.request.contextPath}/scheduler/listReply";
@@ -126,13 +123,21 @@ $(function(){
 		updateReply(mate_num, reply_num,check);
 	});
 });
+
+$(function(){
+	$("body").on("click", ".replyCancel", function(){
+		$("form[name ='replyForm']").show();
+		$("form[name ='updateReplyForm']").hide();
+	})
+})
 function updateReply(mate_num, reply_num,check){
+	$("form[name ='replyForm']").hide();
 	out="<form name='updateReplyForm' method='post' accept-charset='utf-8' action='${pageContext.request.contextPath}/scheduler/updateReply'>";
 	out+="<div style='clear: both; padding: 10px 10px;'> <div style='float: left; width: 5%;'>└</div> <div style='float: left; width:95%'>";
 	out+="<textarea name='content' class='boxTA' style='width:100%; height: 70px;'></textarea>";
 	out+=" <input type='hidden' name='mate_num' value='"+mate_num+"'>";
 	out+=" <input type='hidden' name='reply_num' value='"+reply_num+"'>";
-	out+="<input type='submit' class='btn' value='답글 수정'></div></div></form>";
+	out+="<input type='submit' class='btn' value='답글 수정'><input type='button' class='btn replyCancel' value='답글 취소'></div></div></form>";
 	$("#updateMateAnswer").html(out);
 }
 $(function(){
@@ -169,7 +174,6 @@ function countMateAnswer(answer) {
 	
 	ajaxFun(url, "post", query, "json", fn);
 }
-
 //답글 버튼(댓글별 답글 등록폼 및 답글리스트)
 $(function(){
 	$("body").on("click", ".btnMateAnswerLayout", function(){
@@ -330,9 +334,12 @@ function bringPeople() {
 					                    <input type="hidden" name="mate_num" value="${dto.num }">
 					                    <input type="hidden" name="reply_answer" value="0">
 					                   	<input type="submit" class='btn' value="답글 등록">
+					                   	
 					                 </div>
 					            </div>
 					        </form>
+					        
+					        
 							</td>
 					    </tr>
 					    </c:forEach>
