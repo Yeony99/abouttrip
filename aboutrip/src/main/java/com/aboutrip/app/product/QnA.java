@@ -9,7 +9,21 @@ public class QnA {
 	private String answer;
 	private String a_date;
 	private String nickName;
+	private String code;
+	private int user_num;
 	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public int getUser_num() {
+		return user_num;
+	}
+	public void setUser_num(int user_num) {
+		this.user_num = user_num;
+	}
 	public String getNickName() {
 		return nickName;
 	}

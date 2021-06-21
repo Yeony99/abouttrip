@@ -12,7 +12,7 @@ public interface ProductService {
 	
 	public List<Product> listProducts(Map<String, Object> map) throws Exception;
 	public List<Order> listOrder(int code) throws Exception;
-	public List<QnA> listQna(int code) throws Exception;
+	public List<QnA> listQna(Map<String,Object> map) throws Exception;
 	public List<Product> listEvent(int category_num) throws Exception;
 	public List<Product> listOption(int code) throws Exception;
 	public List<Order> listcart(int userNum) throws Exception;

@@ -30,10 +30,11 @@
 			<th>작성자</th>
 			<th>질문유형</th>
 			<th>질문 제목</th>
-			<th rowspan="2">질문 등록일</th>
+			<th>&nbsj</th>
 		</tr>
 		<tr>
 			<td colspan="3">질문내용</td>
+			<td>질문 등록일</td>
 		</tr>
 		<tr>
 			<td colspan="3">답변 내용</td>
@@ -44,10 +45,11 @@
 				<td>${dto.nickName}</td>
 				<td>${dto.type}</td>
 				<td>${dto.title}</td>
-				<td rowspan="2">${dto.c_date}</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td colspan="3">${dto.content}</td>
+				<td>${dto.c_date}</td>
 			</tr>
 			<tr>
 				<td colspan="3">${dto.answer==null? '답변준비중입니다' : dto.answer}</td>
