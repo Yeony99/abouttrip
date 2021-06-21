@@ -40,16 +40,16 @@
 
 	<insert id="insert_product_q"
 		parameterType="com.aboutrip.app.product.QnA">
-		INSERT INTO product_review(num, type, title, content,
-		c_date, answer, a_date, code, userNum)
+		INSERT INTO product_qna(num, type, title, content,
+		c_date, code, user_num)
 		VALUES(PRODUCTQNA_SEQ.NEXTVAL,
-		#{type}, #{title}, #{content}, #{c_date}, #{answer}, #{a_date},
-		#{code}, #{userNum} )
+		#{type}, #{title}, #{content}, SYSDATE,
+		#{code}, #{user_num} )
 	</insert>
 
 	<update id="insert_product_a"
 		parameterType="com.aboutrip.app.product.QnA">
-		UPDATE product_review SET(answer, a_date)
+		UPDATE product_qna SET(answer, a_date)
 		VALUES(#{answer}, #{a_date})
 		WHERE num = #{num}
 	</update>
@@ -193,6 +193,19 @@
 		WHERE userNum=#{user_num}
 	</select>
 	
+	<select id="qna_list" parameterType="map" resultType="com.aboutrip.app.product.QnA">
+		SELECT num, type, title, content, c_date, answer, a_date, nickName
+		FROM product_qna q
+		JOIN member1 m ON q.user_num = m.usernum
+		<where>
+			code=${code}
+			<if test="condition=='type'">
+				INSTR(type, #{keyword}) &gt; 0
+			</if>
+		</where>
+		ORDER BY num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
 	<!-- 글 -->
 	
 	<select id="product_read" parameterType="Integer"
@@ -248,9 +261,27 @@
 		FROM product
 	</select>
 	
-	<select id="count_count_qna" parameterType="Integer" resultType="Integer">
+	<select id="count_qna" parameterType="Integer" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM product_qna
 		WHERE code=#{code}
 	</select>
+	
+	<!-- 기타 -->
+	<sql id="where-list">
+		<if test="condition=='all' ">
+			( INSTR(title, #{keyword}) &gt; 0
+				OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
+		</if>
+		<if test="condition=='title'">
+			INSTR(title, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='content'">
+			INSTR(content, #{keyword}) &gt; 0
+		</if>
+		<if test="condition=='reg_date'">
+			( TO_CHAR(reg_date, 'YYYY-MM-DD') = #{keyword}
+				OR TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword} )
+		</if>
+	</sql>
 </mapper>

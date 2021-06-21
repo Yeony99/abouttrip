@@ -63,10 +63,17 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<QnA> listQna(int code) throws Exception {
+	public List<QnA> listQna(Map<String,Object> map) throws Exception {
 		List<QnA> list = null;
 		try {
-			list = dao.selectList("booking.qna_list", code);
+			list = dao.selectList("product.qna_list", map);
+			for(int i=0; i<list.size(); i++) {
+				switch(list.get(i).getType()) {
+				case "1" : list.get(i).setType("상품질문"); break;
+				case "2" : list.get(i).setType("교환/환불"); break;
+				case "3" : list.get(i).setType("기타"); break;
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
