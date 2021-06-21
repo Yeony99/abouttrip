@@ -13,8 +13,16 @@ public class Mate {
 	private String end_date; // 종료일
 	private String nickName;
 	private int listNum;
+	private int mate_num;
 	
 	
+	
+	public int getMate_num() {
+		return mate_num;
+	}
+	public void setMate_num(int mate_num) {
+		this.mate_num = mate_num;
+	}
 	public int getListNum() {
 		return listNum;
 	}

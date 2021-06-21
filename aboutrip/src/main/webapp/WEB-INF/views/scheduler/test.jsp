@@ -111,7 +111,8 @@ function listAnswer(data){
 			out +="<span class='updateMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>수정</span>";
 		}
 		out +="</div></div></div>";
-		out +="<div style='clear:both; padding: 5px 5px; border-bottom: 1px solid #ccc;'>"+content+"</div></div>";
+		out +="<div style='clear:both; padding: 5px 5px; border-bottom: 1px solid #ccc;'>"+content+"<div id='updateMateAnswer"+reply_num+"'>";
+		out+="</div></div></div>"
 	}
 	$("#listMateAnswer").html(out);
 }
@@ -132,13 +133,15 @@ $(function(){
 })
 function updateReply(mate_num, reply_num,check){
 	$("form[name ='replyForm']").hide();
-	out="<form name='updateReplyForm' method='post' accept-charset='utf-8' action='${pageContext.request.contextPath}/scheduler/updateReply'>";
+	out="<br><form name='updateReplyForm' method='post' accept-charset='utf-8' action='${pageContext.request.contextPath}/scheduler/updateReply'>";
 	out+="<div style='clear: both; padding: 10px 10px;'> <div style='float: left; width: 5%;'>└</div> <div style='float: left; width:95%'>";
 	out+="<textarea name='content' class='boxTA' style='width:100%; height: 70px;'></textarea>";
 	out+=" <input type='hidden' name='mate_num' value='"+mate_num+"'>";
 	out+=" <input type='hidden' name='reply_num' value='"+reply_num+"'>";
-	out+="<input type='submit' class='btn' value='답글 수정'><input type='button' class='btn replyCancel' value='답글 취소'></div></div></form>";
-	$("#updateMateAnswer").html(out);
+	out+="<input type='submit' class='btn' value='답글 수정'><input type='button' class='btn replyCancel' value='답글 취소'></div></div></form><br>";
+	var sector = $("#updateMateAnswer"+reply_num);
+	//$("#updateMateAnswer").html(out);
+	sector.html(out);
 }
 $(function(){
 	$("body").on("click", ".deleteMateAnswer", function(){

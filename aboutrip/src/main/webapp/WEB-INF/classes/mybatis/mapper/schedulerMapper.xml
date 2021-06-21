@@ -82,7 +82,7 @@
     	SELECT reply_num, r.user_num, r.mate_num, r.content, r.reply_answer, r.created, nickName FROM mate_reply r
     	LEFT JOIN mate m ON r.mate_num = m.num
 		LEFT OUTER JOIN member1 m ON m.userNum = r.user_num
-    	WHERE r.mate_num = 25
+    	WHERE r.mate_num = #{mate_num}
     	ORDER BY reply_num DESC
     	OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
     </select>
