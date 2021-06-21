@@ -4,7 +4,7 @@ public class Order {
 	// 유저정보
 	private String nickName;
 	private String userId;
-	private String user_name;
+	private String userName;
 	private String address1;
 	private String tel;
 	private String zip;
@@ -20,6 +20,7 @@ public class Order {
 	private int quentity;
 	
 	// 선택상품
+	private String product_name;
 	private int option_num;
 	private String option_name;
 	private String option_value;
@@ -34,10 +35,10 @@ public class Order {
 	private int isUsed;
 	
 	// 결제
-	private int payment;
+	private int paymentcode;
 	private String pat_date;
-	private String card_name;
-	private int card_num;
+	private String cardName;
+	private int cardnum;
 	private int card_ok_num;
 	
 	// 주문 상세
@@ -53,6 +54,14 @@ public class Order {
 	private String whyCancel;
 	private int cPrice;
 	private String cDate;
+	
+	
+	public String getProduct_name() {
+		return product_name;
+	}
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
 	public String getNickName() {
 		return nickName;
 	}
@@ -149,11 +158,11 @@ public class Order {
 	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
 	}
-	public int getPayment() {
-		return payment;
+	public int getPaymentcode() {
+		return paymentcode;
 	}
-	public void setPayment(int payment) {
-		this.payment = payment;
+	public void setPaymentcode(int paymentcode) {
+		this.paymentcode = paymentcode;
 	}
 	public String getPat_date() {
 		return pat_date;
@@ -161,17 +170,17 @@ public class Order {
 	public void setPat_date(String pat_date) {
 		this.pat_date = pat_date;
 	}
-	public String getCard_name() {
-		return card_name;
+	public String getCardName() {
+		return cardName;
 	}
-	public void setCard_name(String card_name) {
-		this.card_name = card_name;
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
 	}
-	public int getCard_num() {
-		return card_num;
+	public int getCardnum() {
+		return cardnum;
 	}
-	public void setCard_num(int card_num) {
-		this.card_num = card_num;
+	public void setCardnum(int cardnum) {
+		this.cardnum = cardnum;
 	}
 	public int getCard_ok_num() {
 		return card_ok_num;
@@ -245,11 +254,12 @@ public class Order {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getUser_name() {
-		return user_name;
+	
+	public String getUserName() {
+		return userName;
 	}
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public String getAddress1() {
 		return address1;

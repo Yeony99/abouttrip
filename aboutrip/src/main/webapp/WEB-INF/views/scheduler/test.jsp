@@ -73,6 +73,7 @@ function listMateAnswer(mate_num) {
 	var query="mate_num="+mate_num;
 	var selector="#listMateAnswer"+mate_num;
 	
+	
 	var fn = function(data){
 		$(selector).html(data);
 	};
@@ -241,17 +242,17 @@ function bringPeople() {
 					        
 					        
 					        
-							<c:forEach var="vo" items="${listMateAnswer}">
+							<c:forEach var="vo" items="${listReply}">
 								<div class='answer' style='padding: 0 10px;'>
 									<div style='clear:both; padding: 10px 0;'>
 										<div style='float: left; width: 5%;'>└</div>
 										<div style='float: left; width:95%;'>
-											<div style='float: left;'><b>${vo.userName}</b></div>
+											<div style='float: left;'><b>${vo.nickName}</b></div>
 											<div style='float: right;'>
-												<span>${dto.created}</span> |
+												<span>${vo.created}</span> |
 												<c:choose>
-													<c:when test="${sessionScope.member.userNum==dto.user_num || sessionScope.member.userId=='admin'}">
-														<span class='deleteMateAnswer' style='cursor: pointer;' data-mateNum='${vo.mateNum}' data-answer='${vo.answer}'>삭제</span>
+													<c:when test="${sessionScope.member.userNum==vo.user_num || sessionScope.member.userId=='admin'}">
+														<span class='deleteMateAnswer' style='cursor: pointer;' data-mateNum='${vo.mate_num}' data-answer='${vo.answer}'>삭제</span>
 													</c:when>
 												</c:choose>
 											</div>
@@ -261,7 +262,7 @@ function bringPeople() {
 										${vo.content}
 									</div>
 								</div>
-								<div id="listMateAnswer"></div>            
+								<div id="listMateAnswer${vo.mate_num}"></div>            
 							</c:forEach> 
 					
 					
