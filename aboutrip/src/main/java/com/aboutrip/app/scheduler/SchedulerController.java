@@ -288,7 +288,7 @@ public class SchedulerController {
 	
 	@RequestMapping(value = "listReply")
 	@ResponseBody
-	public String listReply(@RequestParam int mate_num, Model model ,@RequestParam(value = "page", defaultValue = "1") int current_page) throws Exception{
+	public Map<String, Object> listReply(@RequestParam int mate_num,@RequestParam(value = "page", defaultValue = "1") int current_page) throws Exception{
 		int rows=5;
 		int total_page=0;
 		int dataCount = 0;
@@ -311,15 +311,18 @@ public class SchedulerController {
 			dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 		}
 		
+		
+		
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
 		
-		model.addAttribute("listReply",listReply);
-		model.addAttribute("pageNo", current_page);
-		model.addAttribute("replyCount", dataCount);
-		model.addAttribute("total_page",total_page);
-		model.addAttribute("paging",paging);
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("listReply",listReply);
+		model.put("pageNo", current_page);
+		model.put("replyCount", dataCount);
+		model.put("total_page",total_page);
+		model.put("paging",paging);
 		
-		return ".scheduler.test";
+		return model;
 	}
 	
 	
