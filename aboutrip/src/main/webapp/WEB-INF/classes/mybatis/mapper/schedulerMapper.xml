@@ -70,6 +70,11 @@
     <select id="updateMate" parameterType="Integer">
     	UPDATE mate SET answer = answer+1 WHERE num = #{num}
     </select>
+    
+    <update id="updateAnswerCount" parameterType="map">
+		UPDATE mate SET answer =#{answer} WHERE num=#{mate_num} 
+	</update>
+    
     <delete id="deleteMate" parameterType="map">
     	DELETE FROM mate WHERE num=#{num} AND user_num = #{user_num}
     </delete>
@@ -87,7 +92,7 @@
     	OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
     </select>
     
-    <select id="replyCount" parameterType="map" resultType="Integer">
+    <select id="replyCount" parameterType="Integer" resultType="Integer">
     	SELECT NVL(COUNT(*),0) FROM mate_reply
     	WHERE mate_num = #{mate_num}
     </select>

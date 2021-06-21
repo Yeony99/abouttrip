@@ -14,9 +14,16 @@ public class Mate {
 	private String nickName;
 	private int listNum;
 	private int mate_num;
+	private int answer;
 	
 	
 	
+	public int getAnswer() {
+		return answer;
+	}
+	public void setAnswer(int answer) {
+		this.answer = answer;
+	}
 	public int getMate_num() {
 		return mate_num;
 	}

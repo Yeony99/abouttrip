@@ -314,7 +314,7 @@ function bringPeople() {
 					    
 					    <tr>
 					        <td colspan="2">
-					            <button type='button' class='btn btnMateAnswerLayout' data-mateNum='${dto.num}'>답글 <span id="answerCount${dto.num}">${answerCount}</span></button>
+					            <button type='button' class='btn btnMateAnswerLayout' data-mateNum='${dto.num}'>답글 <span id="answerCount${dto.num}">${dto.answer}</span></button>
 					            <input type="hidden" name="mate_num" value="${dto.num }">
 					        </td>
 					    </tr>

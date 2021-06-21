@@ -160,13 +160,18 @@ public class SchedulerController {
 		if(offset<0)offset = 0;
 		map.put("offset", offset);
 		map.put("rows", row);
-		int listNum=0,n=0;
+		int listNum=0,n=0,answer=0;
 		List<Mate> list = service.listMate(map);
 		for(Mate dto :list) {
 			listNum = dataCount - (offset + n);
 			dto.setListNum(listNum);
 			dto.setContent(dto.getContent().replace("\n", "<br>"));
 			n++;
+			map.put("mate_num", dto.getNum());
+			answer = service.replyCount(map);
+			map.put("answer", answer);
+			service.updateCountreply(map);
+			dto.setAnswer(answer);
 		}
 		
 		/*
@@ -178,7 +183,6 @@ public class SchedulerController {
 		 * }
 		 */
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
-		
 		model.addAttribute("listNum", listNum);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
@@ -217,23 +221,19 @@ public class SchedulerController {
 		if(offset<0)offset = 0;
 		map.put("offset", offset);
 		map.put("rows", row);
-		int listNum=0,n=0;
+		int listNum=0,n=0,answer=0;
 		List<Mate> list = service.listMate(map);
 		for(Mate dto :list) {
 			listNum = dataCount - (offset + n);
 			dto.setListNum(listNum);
 			dto.setContent(dto.getContent().replace("\n", "<br>"));
 			n++;
+			map.put("mate_num", dto.getNum());
+			answer = service.replyCount(map);
+			map.put("answer", answer);
+			service.updateCountreply(map);
+			dto.setAnswer(answer);
 		}
-		
-		/*
-		 * int listNum, n = 0; 
-		 * for(Place dto : list) { 
-		 * 		listNum = dataCount - (offset + n); 
-		 * 		dto.setListNum(listNum); 
-		 * 		n++;
-		 * }
-		 */
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
 		
 		model.addAttribute("listNum", listNum);

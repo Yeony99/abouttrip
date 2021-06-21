@@ -211,13 +211,24 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 
 
+	@Override
+	public void updateCountreply(Map<String, Object> map) throws Exception {
+			
+		try {
+			dao.selectOne("scheduler.updateAnswerCount",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 
 	@Override
 	public int replyCount(Map<String, Object> map) {
 		int result = 0;
 		
 		try {
-			result = dao.selectOne("scheduler.replyCount");
+			result = dao.selectOne("scheduler.replyCount",map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
