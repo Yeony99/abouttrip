@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 </head>
 <script type="text/javascript">
-
+var check=true;
 function ajaxFun(url, method, query, dataType, fn) {
 	$.ajax({
 		type:method,
@@ -71,14 +71,91 @@ $(function(){
 function listMateAnswer(mate_num) {
 	var url="${pageContext.request.contextPath}/scheduler/listReply";
 	var query="mate_num="+mate_num;
-	var selector="#listMateAnswer"+mate_num;
+	var selector="#listMateAnswer";
 	
-	
-	var fn = function(data){
-		$(selector).html(data);
+	var fn = function(listReply){
+		//$(selector).html(data);
+		listAnswer(listReply);
 	};
-	ajaxFun(url, "get", query, "html", fn);
+	ajaxFun(url, "get", query, "json", fn);
 }
+function listAnswer(data){
+	var dataCount = data.listReply.length;
+	var out="";
+	if(dataCount==0) {
+		out+="<tr class='paging'>";
+		out+="    <td colspan='2'>등록된 댓글이 없습니다.</td>";
+		out+="</tr>"
+		$("#listMateAnswer").html(out);
+		return;
+	}
+	
+	for(var idx=1; idx<dataCount; idx++){
+		var uNickName="${sessionScope.member.nickName}";
+		var uid="${sessionScope.member.userId}";
+		var reply_num = data.listReply[idx].reply_num;
+		var user_num = data.listReply[idx].user_num;
+		var mate_num = data.listReply[idx].mate_num;
+		var content = data.listReply[idx].content;
+		var created = data.listReply[idx].created;
+		var nickName = data.listReply[idx].nickName;
+		var answer = data.listReply[idx].answer;
+		
+		
+		out +="<div class='answer' style='padding: 0 10 px;'>";
+		out +="<div style='clear:both; padding:10px 0;'>";
+		out +="<div style='float: left; width: 5%;'>└</div>";
+		out +="<div style='float: left; width:95%;'>";
+		out +="<div style='float: left;'><b>"+nickName+"</b></div>";
+		out +="<div style='float: right;'>";
+		out +="<span>"+created+"</span> |";
+		if(uNickName===nickName||uid ==="admin"){
+			out +="<span class='deleteMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>삭제</span>|";
+			out +="<span class='updateMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>수정</span>";
+		}
+		out +="</div></div></div>";
+		out +="<div style='clear:both; padding: 5px 5px; border-bottom: 1px solid #ccc;'>"+content+"</div></div>";
+	}
+	$("#listMateAnswer").html(out);
+}
+$(function(){
+	$("body").on("click", ".updateMateAnswer", function(){
+		
+		var mate_num=$(this).attr("data-mateNum");
+		var	reply_num=$(this).attr("data-replyNum");
+		updateReply(mate_num, reply_num,check);
+	});
+});
+function updateReply(mate_num, reply_num,check){
+	out="<form name='updateReplyForm' method='post' accept-charset='utf-8' action='${pageContext.request.contextPath}/scheduler/updateReply'>";
+	out+="<div style='clear: both; padding: 10px 10px;'> <div style='float: left; width: 5%;'>└</div> <div style='float: left; width:95%'>";
+	out+="<textarea name='content' class='boxTA' style='width:100%; height: 70px;'></textarea>";
+	out+=" <input type='hidden' name='mate_num' value='"+mate_num+"'>";
+	out+=" <input type='hidden' name='reply_num' value='"+reply_num+"'>";
+	out+="<input type='submit' class='btn' value='답글 수정'></div></div></form>";
+	$("#updateMateAnswer").html(out);
+}
+$(function(){
+	$("body").on("click", ".deleteMateAnswer", function(){
+		if(! confirm("댓글을 삭제하시겠습니까 ? ")) {
+		    return false;
+		}
+		
+		var mate_num=$(this).attr("data-mateNum");
+		var	reply_num=$(this).attr("data-replyNum");
+		var page=$(this).attr("data-pageNo");
+		
+		var url="${pageContext.request.contextPath}/scheduler/deleteReply";
+		var query="mate_num="+mate_num+"&reply_num="+reply_num;
+		
+		var fn = function(data){
+			// var state=data.state;
+			listMateAnswer(mate_num);
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
 // 댓글별 답글 개수
 function countMateAnswer(answer) {
 	var url="${pageContext.request.contextPath}/scheduler/countMateAnswer";
@@ -239,33 +316,11 @@ function bringPeople() {
 					        <td colspan='2'>
 					        
 					        
-					        
-					        
-					        
-							<c:forEach var="vo" items="${listReply}">
-								<div class='answer' style='padding: 0 10px;'>
-									<div style='clear:both; padding: 10px 0;'>
-										<div style='float: left; width: 5%;'>└</div>
-										<div style='float: left; width:95%;'>
-											<div style='float: left;'><b>${vo.nickName}</b></div>
-											<div style='float: right;'>
-												<span>${vo.created}</span> |
-												<c:choose>
-													<c:when test="${sessionScope.member.userNum==vo.user_num || sessionScope.member.userId=='admin'}">
-														<span class='deleteMateAnswer' style='cursor: pointer;' data-mateNum='${vo.mate_num}' data-answer='${vo.answer}'>삭제</span>
-													</c:when>
-												</c:choose>
-											</div>
-										</div>
-									</div>
-									<div style='clear:both; padding: 5px 5px; border-bottom: 1px solid #ccc;'>
-										${vo.content}
-									</div>
-								</div>
-								<div id="listMateAnswer${vo.mate_num}"></div>            
-							</c:forEach> 
 					
-					
+						<div id="listMateAnswer">			
+						</div>
+						<div id="updateMateAnswer">			
+						</div>    
 					
 							<form name="replyForm" method="post" accept-charset="utf-8" action="${pageContext.request.contextPath}/scheduler/insertReply">					
 					            <div style='clear: both; padding: 10px 10px;'>
