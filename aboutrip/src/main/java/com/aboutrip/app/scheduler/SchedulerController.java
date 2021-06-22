@@ -141,12 +141,6 @@ public class SchedulerController {
 		
 		return model;
 	}
-	
-	/*
-	 * @RequestMapping(value = "mate", method=RequestMethod.GET) public String
-	 * mate(Model model) throws Exception { model.addAttribute("check","true");
-	 * return ".scheduler.test"; }
-	 */
 	@RequestMapping(value = "mate", method = RequestMethod.GET)
 	public String mate(
 		    @RequestParam(value="page", defaultValue="1") int current_page,HttpSession session,Model model) throws Exception{
@@ -173,15 +167,6 @@ public class SchedulerController {
 			service.updateCountreply(map);
 			dto.setAnswer(answer);
 		}
-		
-		/*
-		 * int listNum, n = 0; 
-		 * for(Place dto : list) { 
-		 * 		listNum = dataCount - (offset + n); 
-		 * 		dto.setListNum(listNum); 
-		 * 		n++;
-		 * }
-		 */
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
 		model.addAttribute("listNum", listNum);
 		model.addAttribute("dataCount", dataCount);
@@ -250,7 +235,7 @@ public class SchedulerController {
 	@PostMapping("deleteMate")
 	@ResponseBody
 	public Map<String, Object> deleteMate(
-			@RequestParam int num,
+			@RequestParam int num, @RequestParam String nickName,
 			HttpSession session
 			) {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
@@ -258,9 +243,15 @@ public class SchedulerController {
 		String state = "true";
 		try {
 			Map<String, Object> map=new HashMap<>();
-			map.put("user_num", info.getUserNum());
-			map.put("num", num);
-			service.deleteMate(map);
+			if(nickName.equals("관리자")) {
+				map.put("num", num);
+				map.put("mate_num", num);
+				service.deleteMateAdmin(map);
+			} else {
+				map.put("user_num", info.getUserNum());
+				map.put("num", num);
+				service.deleteMate(map);
+			}
 		}catch (Exception e) {
 			state="false";
 		}

@@ -186,6 +186,17 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 		
 	}
+	
+	@Override
+	public void deleteMateAdmin(Map<String, Object> map) throws Exception {
+		try {
+			dao.updateData("scheduler.deleteReplyAdmin", map);
+			dao.updateData("scheduler.deleteMateAdmin", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	@Override
 	public void deleteReply(Map<String, Object> map) throws Exception {

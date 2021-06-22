@@ -22,6 +22,7 @@ public interface SchedulerService {
 	
 	public void deleteSchedule(Map<String, Object> map) throws Exception;
 	public void deleteMate(Map<String,Object> map)throws Exception;
+	public void deleteMateAdmin(Map<String,Object> map)throws Exception;
 	public void deleteReply(Map<String, Object> map) throws Exception;
 	public void deleteReview(int num, String pathname) throws Exception;
 	

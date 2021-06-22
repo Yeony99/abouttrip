@@ -7,9 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-
-</style>
 </head>
 <script type="text/javascript">
 var check=true;
@@ -35,24 +32,6 @@ function ajaxFun(url, method, query, dataType, fn) {
 		}
 	});
 }
-
-//페이징 처리
-$(function(){
-	listPage(1);
-});
-// 페이징한다면...
-function listPage(page) {
-	var url = "${pageContext.request.contextPath}/scheduler/listMate";
-	
-	//EL 오류?
-	var query = "num=${dto.num}&pageNo="+page;
-	var selector = "#listMate";
-	
-	var fn = function(data){
-		$(selector).html(data);
-	};
-	ajaxFun(url, "get", query, "html", fn);
-}
 function sendtest(){
 	var f = document.mateForm;
 	f.action ="${pageContext.request.contextPath}/scheduler/insertMate";
@@ -71,12 +50,12 @@ $(function(){
 		if(! confirm("게시글을 삭제하시겠습니까 ? ")) {
 		    return false;
 		}
-		
+		var nickName="${sessionScope.member.nickName}"
 		var mateNum=$(this).attr("data-mateNum");
 		var page=$(this).attr("data-pageNo");
 		
 		var url="${pageContext.request.contextPath}/scheduler/deleteMate";
-		var query="num="+mateNum+"&mode=mate";
+		var query="num="+mateNum+"&nickName="+nickName;
 		
 		var fn = function(data){
 			location.reload();
@@ -89,7 +68,6 @@ $(function(){
 function listMateAnswer(mate_num) {
 	var url="${pageContext.request.contextPath}/scheduler/listReply";
 	var query="mate_num="+mate_num;
-	var selector="#listMateAnswer";
 	
 	var fn = function(listReply){
 		//$(selector).html(data);
@@ -107,8 +85,8 @@ function listAnswer(data){
 		$("#listMateAnswer").html(out);
 		return;
 	}
-	
-	for(var idx=1; idx<dataCount; idx++){
+	var num = data.listReply[1].mate_num;
+	for(var idx=0; idx<dataCount; idx++){
 		var uNickName="${sessionScope.member.nickName}";
 		var uid="${sessionScope.member.userId}";
 		var reply_num = data.listReply[idx].reply_num;
@@ -134,8 +112,9 @@ function listAnswer(data){
 		out +="</div></div></div>";
 		out +="<div class='answers' style='clear:both; padding: 5px 25px; border-bottom: 1px solid #ccc;'>"+content+"<div id='updateMateAnswer"+reply_num+"'>";
 		out+="</div></div></div>"
+		
 	}
-	$("#listMateAnswer").html(out);
+	$("#listMateAnswer"+num).html(out);
 }
 $(function(){
 	$("body").on("click", ".updateMateAnswer", function(){
@@ -279,7 +258,7 @@ function bringPeople() {
 				</tr>
 				<tr>
 					<td colspan="3">
-						<label> 제목   </label>&nbsp;<input type="text" name="subject" placeholder="제목" style="width:80%;">
+						<label> 제목 <input type="text" name="subject" placeholder="제목">  </label>
 					</td>
 				</tr>
 
@@ -350,9 +329,10 @@ function bringPeople() {
 					
 					    <tr class='mateAnswer' style='display: none;'>
 					        <td colspan='2'>
-
+					        
+					        
 					
-						<div id="listMateAnswer">			
+						<div id="listMateAnswer${dto.num }">			
 						</div>
 						<div id="updateMateAnswer">			
 						</div>    
