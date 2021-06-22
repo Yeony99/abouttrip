@@ -194,16 +194,50 @@ public class SugController {
 	}
 	
 	//제안 글 수정
+	@RequestMapping(value="update", method = RequestMethod.GET)
+	public String updateForm(
+			Sug dto,
+			@RequestParam int num,
+			@RequestParam String page,
+			HttpSession session,
+			Model model
+			) throws Exception {
+		
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		if(! info.getUserId().equals("admin") || info.getUserNum()!= dto.getUserNum()) {
+			return "redirect:/sug/list?page="+page;
+		}
+		
+		dto = service.readSug(num);
+		if(dto==null) {
+			return "redirect:/sug/list?page="+page;
+		}
+		
+		model.addAttribute("mode", "update");
+		model.addAttribute("page", page);
+		model.addAttribute("dto", dto);
+		
+		return ".sug.created";
+	}
+	
+	//제안 글 수정
 	@RequestMapping(value="update", method=RequestMethod.POST)
 	public String updateSubmit(
 			Sug dto,
 			@RequestParam String page,
 			HttpSession session) throws Exception {
+		SessionInfo info =(SessionInfo)session.getAttribute("member");
 		
-		String root=session.getServletContext().getRealPath("/");
-		String pathname=root+"uploads"+File.separator+"sug";		
+		if(! info.getUserId().equals("admin") || info.getUserNum()!=dto.getUserNum()) {
+			return "redirect:/sug/list?page="+page;
+		}
+		
 
 		try {
+			String root=session.getServletContext().getRealPath("/");
+			String pathname=root+"uploads"+File.separator+"sug";
+			dto.setUserNum(info.getUserNum());
 			service.updateSug(dto, pathname);
 		} catch (Exception e) {
 		}
