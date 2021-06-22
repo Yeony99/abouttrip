@@ -82,6 +82,15 @@ function bringPlace() {
 		f.ctgNum.value=str;
 	}
 }
+
+function bringPlan() {
+	var f = document.listForm;
+	
+	var str = f.plan.value;
+	if(str!="") {
+		f.planNum.value=str; //임의로 변수 planNum 설정했습니다! plan 구분할 수 있는 변수로 바꿔주세요. 
+	}
+}
 </script>
 	<div style="margin-top: 8rem">
 		<div>
@@ -115,6 +124,16 @@ function bringPlace() {
 							<td style="padding-left: 10px;"><input type="text"
 								name="placeName" maxlength="50" class="boxTF"
 								value="${dto.subject}" placeholder="제목을 입력하세요."></td>
+						</tr>
+						<tr align="left" height=100px;
+							style="border-bottom: 1px solid #ddd;">
+							<td style="text-align: center;">일정</td>
+							<td style="padding-left: 10px;">
+								<select name="plan" onchange="bringPlan">
+									<option value="">선 택</option>
+								</select>
+								<input type="hidden" value="" name="planNum"> <!-- 받아올 일정 num 등... -->
+							</td>
 						</tr>
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">

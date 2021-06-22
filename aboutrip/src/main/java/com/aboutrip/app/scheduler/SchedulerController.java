@@ -141,6 +141,20 @@ public class SchedulerController {
 		
 		return model;
 	}
+	
+	@RequestMapping(value = "share", method=RequestMethod.GET)
+	public String share() throws Exception {
+		
+		return ".scheduler.share";
+	}
+	
+	@RequestMapping(value="create", method=RequestMethod.GET)
+	public String createdForm() throws Exception {
+		
+		return ".scheduler.create";
+	}
+	
+	
 	@RequestMapping(value = "mate", method = RequestMethod.GET)
 	public String mate(
 		    @RequestParam(value="page", defaultValue="1") int current_page,HttpSession session,Model model) throws Exception{
