@@ -8,30 +8,35 @@
                <div class="body-main">
 		<table class="table table-list" style="color:white;">
 			<tr> 
-				<th width="100">번호</th>
+				<th width="100">주문번호</th> 
+				<th width="100">상품번호</th>
 				<th width="100">상품이름</th>
-				<th width="200">카드넘버</th>
-				<th width="100">구매일</th>
+				<th width="100">옵션이름</th>
+				<th width="100">결제금액</th>
+				<th width="100">사용유무</th>
+				<th width="100">주문날짜</th>
+				<th width="100">리뷰작성</th>
 			</tr>
 		 
 			<c:forEach var="dto" items="${list}">
 			<tr> 
-				<td>${dto.cardNum}</td>
-				<td>${dto.cardName}</td>
-				<td>${dto.paymentCode}</td>
-				<td>${dto.created_date}</td>
+				<td>${dto.listNum }</td>
+				<td>${dto.order_num}</td>
+				<td><a href="${pageContext.request.contextPath}${dto.articleUrl}">${dto.product_name}</a></td>
+				<td>${dto.option_name}</td>
+				<td>${dto.final_price}</td>
+			<c:if test="${dto.isUsed==1}">
+				<td>미사용</td>
+			</c:if>
+			<c:if test="${dto.isUsed==0}">
+				<td>사용</td>
+			</c:if>
+				<td>${dto.order_date}</td>
+			<td><button type="button" ${dto.isUsed=="0" ? "disabled" : ""}>리뷰작성</button></td>
 			</c:forEach>
 			<c:if test="${list==null}">
 				<td width="100">구매한 내용이 없습니다.</td>
 			</c:if>
-		</table>
-		
-		<table class="table table-footer">
-			<tr>
-				<td align="right" width="100">
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/member/payCreated';" style="color:white; background-color: skyblue;">카드추가</button>
-				</td>
-			</tr>
 		</table>
 	</div>
               

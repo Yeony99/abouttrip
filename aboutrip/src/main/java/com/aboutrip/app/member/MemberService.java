@@ -21,11 +21,13 @@ public interface MemberService {
 	public int logCount(Map<String, Object> map);
 	public int followingCount(Map<String, Object> map);
 	public int followerCount(Map<String, Object> map);
+	public int orderCount();
 	
 	public List<Member> payList(Map<String, Object> map);
 	public List<Member> logList(Map<String, Object> map);
 	public List<Member> followingList(Map<String, Object> map);
 	public List<Member> followerList(Map<String, Object> map);
+	public List<Order> orderList(Map<String, Object> map);
 
 	public void generatePwd(Member dto) throws Exception;
 	public void checkIpAddr(Member dto) throws Exception;

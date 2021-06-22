@@ -161,7 +161,20 @@ public class MemberServiceImpl implements MemberService{
 		
 		return result;
 	}
-	
+
+	@Override
+	public int orderCount() {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("member.orderCount");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
 	@Override
 	public int payCount(Map<String, Object> map) {
 		int result = 0;
@@ -343,6 +356,19 @@ public class MemberServiceImpl implements MemberService{
 		return followerList;
 	}
 
+
+	@Override
+	public List<Order> orderList(Map<String, Object> map) {
+		List<Order> list = null;
+		try {
+			list = dao.selectList("member.orderlist",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	
 	@Override
 	public void deleteFollow(Map<String, Object> map) throws Exception {
 		try {
