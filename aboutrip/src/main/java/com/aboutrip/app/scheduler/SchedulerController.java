@@ -486,9 +486,9 @@ public class SchedulerController {
 	
 	@PostMapping("deleteReview")
 	@ResponseBody
-	public Map<String, Object> deleteReview(@RequestParam int num, @RequestParam String imageFilename, HttpSession session){
+	public Map<String, Object> deleteReview(@RequestParam int num, @RequestParam String imageFileName, HttpSession session){
 		String root=session.getServletContext().getRealPath("/");
-		String path = root+"uploads"+File.separator+"Review"+File.separator+imageFilename;
+		String path = root+"uploads"+File.separator+"Review"+File.separator+imageFileName;
 		
 		String state= "true";
 		try {
