@@ -103,8 +103,8 @@ function updateOk() {
 	}
 	
 	var url = "${pageContext.request.contextPath}/admin/memManage/updateEnable";
-	var query=$("#enableForm").serialize();
-
+	var query=$("form[name=enableForm]").serialize();
+	
 	var fn = function(data){
 		$("form input[name=page]").val("${page}");
 		searchList();

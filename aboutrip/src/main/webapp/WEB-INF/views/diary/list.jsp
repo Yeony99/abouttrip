@@ -147,7 +147,8 @@ function printGuest(data) {
 		out+="    </a>";
 		out+="</td>";
 		
-		out+="<td style='line-height: 25px; margin: 10px;'>"+nickName+"</td>";
+		out+="<td style='line-height: 25px; margin: 10px;'>";
+		out+="<button type='button' class='btnAddFollow' title='팔로우'><i class='far fa-grin' style='color:${isFollow?'red;':'black;'}'></i><span id='addFollowing'>"+nickName+"</span></button></td>";
 		out+="</tr>";
 		
 		out+="<tr>";
@@ -156,7 +157,7 @@ function printGuest(data) {
 		
 		out+="<tr>";
 		out+="<td style='line-height: 25px; '>"+diaryCreated+"</td>";
-		out+="</tr></table></div>";
+		out+="</tr></table><input type='hidden' name='userNum' value='${dto.userNum}'></div>";
 	}
 	
 	$("#listDiaryBody").append(out); // html은 기존 내용이 지워지고, append는 기존 내용이 지워지지 않는다.
@@ -194,6 +195,42 @@ function searchList() {
 	var f=document.searchForm;
 	f.submit();
 }
+
+$(function(){
+	$(".btnAddFollow").click(function(){		
+		var $btn = $(this);
+		var bLike = $btn.find("i").css("color")=="rgb(255, 0, 0)";
+		var msg = "${dto.nickName}님을 팔로우합니다. ";
+		if(bLike) {
+			msg = "팔로우를 취소합니다. ";
+		}
+		
+		if( ! confirm(msg)) {
+			return false;	
+		}
+		
+		var url="${pageContext.request.contextPath}/diary/addFollowing";
+		if(bLike) {
+			url="${pageContext.request.contextPath}/diary/cancelFollowing";
+		}
+		var followingUser="${dto.userNum}";
+		var query="followingUser="+followingUser;
+		
+		var fn = function(data){
+			//console.log(data);
+			var state = data.state;
+			if(state=="true") {
+				if(bLike) {
+					$btn.find("i").css("color","black");
+				} else {
+					$btn.find("i").css("color","red");
+				}
+			}
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
 </script>
 
 <div class="body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">

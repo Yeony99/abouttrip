@@ -56,14 +56,16 @@
 	</select>
 	
 	<select id="readDiary" parameterType="Integer" resultType="com.aboutrip.app.diary.Diary">
-
 		SELECT d.diaryNum, d.userNum, nickName, diaryTitle, diaryType, diaryContent, diaryCreated, 
-    		NVL(diaryLikeCount, 0) diaryLikeCount
+    		NVL(diaryLikeCount, 0) diaryLikeCount, NVL(followerCount, 0) followerCount
 		FROM diary d
     		LEFT OUTER JOIN member1 m ON d.userNum=m.userNum
     		LEFT OUTER JOIN (
         		SELECT diaryNum, COUNT(*) diaryLikeCount FROM diaryLike GROUP BY diaryNum
     		) dl ON d.diaryNum = dl.diaryNum
+    		LEFT OUTER JOIN (
+        		SELECT followingUser, COUNT(*) followerCount FROM follow GROUP BY followingUser
+    		) f ON m.userNum = f.followingUser
 		WHERE d.diaryNum=#{diaryNum}
 
 	</select>
@@ -120,4 +122,21 @@
 		DELETE FROM diaryLike WHERE diaryNum=#{diaryNum} AND userNum=#{userNum}
 	</delete>
 	
+	<!-- 팔로잉 -->
+	<insert id="addFollowing" parameterType="map">
+		INSERT INTO follow(followingNum, following_date, followingUser, followerUser) 
+			VALUES (follow_seq.NEXTVAL, SYSDATE, #{followingUser}, #{followerUser})
+	</insert>
+	<delete id="cancelFollowing" parameterType="map">
+		DELETE FROM follow WHERE followingUser=#{followingUser}
+	</delete>
+	
+	<select id="followingCount" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(*) FROM follow WHERE followingUser=#{followingUser}
+	</select>
+	
+	<!-- 유저가 팔로우를 눌렀는지 유무 -->
+	<select id="followerCount" parameterType="map" resultType="Integer">
+		SELECT COUNT(*) FROM follow WHERE followingUser=#{followingUser} AND followerUser=#{followerUser}
+	</select>
 </mapper>

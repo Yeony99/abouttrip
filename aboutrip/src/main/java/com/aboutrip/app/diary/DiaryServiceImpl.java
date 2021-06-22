@@ -190,7 +190,7 @@ public class DiaryServiceImpl implements DiaryService {
 		int result=0;
 		
 		try {
-			result = dao.selectOne("diary.DiaryLikeCount", diaryNum);
+			result = dao.selectOne("diary.diaryLikeCount", diaryNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -222,5 +222,51 @@ public class DiaryServiceImpl implements DiaryService {
 			throw e;
 		}
 		return result;
+	}
+
+	@Override
+	public void addFollowing(Map<String, Object> map) throws Exception {
+		try {
+			dao.insertData("diary.addFollowing", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	@Override
+	public int followingCount(int followingUser) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("diary.followingCount", followingUser);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public boolean isFollow(Map<String, Object> map) {
+		boolean result=false;
+		try {
+			int cnt = dao.selectOne("diary.followerCount", map);
+			if(cnt > 0) {
+				result=true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public void cancelFollowing(Map<String, Object> map) throws Exception {
+		try {
+			dao.deleteData("diary.cancelFollowing", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }

@@ -32,83 +32,6 @@ public class DiaryController {
 	private AboutUtil aboutUtil;
 	@Autowired
 	private FileManager fm;
-	/*
-	@RequestMapping(value="list")
-	public String list(
-			@RequestParam(value="page", defaultValue = "1") int current_page,
-			@RequestParam(defaultValue = "all") String condition,
-			@RequestParam(defaultValue = "") String keyword,
-			HttpServletRequest req,
-			Model model
-			) throws Exception {
-		
-		String cp = req.getContextPath();
-		
-		int rows = 8;
-		int total_page = 0;
-		int dataCount = 0;
-		
-		if(req.getMethod().equalsIgnoreCase("GET")) { // GET 방식인 경우
-			keyword = URLDecoder.decode(keyword, "utf-8");
-		}
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("condition", condition);
-		map.put("keyword", keyword);
-		
-		dataCount = service.dataCount(map);
-		if(dataCount != 0) {
-			total_page = aboutUtil.pageCount(rows, dataCount);
-		}
-		
-		if(total_page < current_page)
-			current_page = total_page;
-		
-		int offset = (current_page - 1) * rows;
-		if(offset < 0) offset = 0;
-		map.put("offset", offset);
-		map.put("rows", rows);
-		
-		List<Diary> list = service.listDiary(map);
-		
-		int listNum, n = 0;
-        for(Diary dto : list) {
-            listNum = dataCount - (offset + n);
-            dto.setListNum(listNum);
-            n++;
-        }
-        
-        String query = "";
-        String listUrl = cp+"/diary/list";
-        String articleUrl = cp+"/diary/article?page="+current_page;
-        if(keyword.length()!=0) {
-        	query = "condition=" +condition + 
-        	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
-        }
-        
-        if(query.length()!=0) {
-        	listUrl = cp+"/diary/list?" + query;
-        	articleUrl = cp+"/diary/article?page="+current_page+"&"+query;
-        }
-        
-		String paging = aboutUtil.pagingMethod(current_page, total_page, listUrl);
-
-		model.addAttribute("list", list);
-		model.addAttribute("articleUrl", articleUrl);
-		model.addAttribute("dataCount", dataCount);
-		model.addAttribute("page", current_page);
-		model.addAttribute("total_page", total_page);
-		model.addAttribute("paging", paging);
-		
-		model.addAttribute("condition", condition);
-		model.addAttribute("keyword", keyword);
-		
-		model.addAttribute("menuIndex", 5);
-		
-		return ".diary.list";
-	}
-	*/
-	
 	
 	@RequestMapping("main")
 	public ModelAndView main() throws Exception {
@@ -216,18 +139,29 @@ public class DiaryController {
 		}
 		
 		Diary dto = service.readDiary(diaryNum);
+		
 		if(dto == null)
 			return "redirect:/diary/main?"+query;
 
 		dto.setDiaryContent(dto.getDiaryContent().replaceAll("\n","<br>"));
-		
+		int followingUser = dto.getUserNum();
 		List<Diary> listImg = service.listImg(diaryNum);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		map.put("followingUser", followingUser);
+		map.put("userNum", info.getUserNum());
+		map.put("diaryNum", diaryNum);
+		boolean b = service.isDiaryLikeUser(map);
+		boolean fol = service.isFollow(map);
 		
 		model.addAttribute("dto", dto);
 		model.addAttribute("listImg", listImg);
+		model.addAttribute("isDiaryLikeUser", b);
+		model.addAttribute("isFollow", fol);
+		
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
-		//model.addAttribute("menuIndex", 5);
 		
 		return ".diary.article";
 	}
@@ -374,118 +308,88 @@ public class DiaryController {
 	}
 	
 	// 좋아요 취소
-		@RequestMapping(value = "deleteDiaryLike", method = RequestMethod.POST)
-		@ResponseBody
-		public Map<String, Object> deleteDiaryLike(
-				@RequestParam int diaryNum,
-				HttpSession session
-				) throws Exception {
-			SessionInfo info=(SessionInfo)session.getAttribute("member");
+	@RequestMapping(value = "deleteDiaryLike", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteDiaryLike(
+			@RequestParam int diaryNum,
+			HttpSession session
+			) throws Exception {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
 			
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("diaryNum", diaryNum);
-			paramMap.put("userNum", info.getUserNum());
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("diaryNum", diaryNum);
+		paramMap.put("userNum", info.getUserNum());
 			
-			// 좋아요 취소
-			String state="true";
-			try {
-				service.diaryLikeDelete(paramMap);
-			} catch (Exception e) {
-				state="false";
-			}
-			
-			// 좋아요 개수 가져오기
-			int diaryLikeCount = service.diaryLikeCount(diaryNum);
-			
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("state", state);
-			model.put("diaryLikeCount", diaryLikeCount);
-			return model;
+		// 좋아요 취소
+		String state="true";
+		try {
+			service.diaryLikeDelete(paramMap);
+		} catch (Exception e) {
+			state="false";
 		}
+			
+		// 좋아요 개수 가져오기
+		int diaryLikeCount = service.diaryLikeCount(diaryNum);
+			
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		model.put("diaryLikeCount", diaryLikeCount);
+		return model;
+	}
 	
-	/*
-	// 세션에 있는게 userNum인지 UserId인지 다시 확인하고 수정하기
-		@PostMapping("insert")
-		public Map<String, Object> insertSubmit(
-				Diary dto,
-				HttpSession session
-				) throws Exception {
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
-			dto.setUserNum(info.getUserNum());
+	// 팔로우 추가
+	@RequestMapping(value="addFollowing", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> addFollowing(
+			@RequestParam int followingUser,
+			HttpSession session
+			) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
 			
-			String root = session.getServletContext().getRealPath("/");
-			String pathname = root+"uploads"+File.separator+"diary";
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("followingUser", followingUser);
+		paramMap.put("followerUser", info.getUserNum());
 			
-			String state = "true";
-			try {
-				service.insertDiary(dto, pathname);
-			} catch (Exception e) {
-				state = "false";
-			}
-			
-			Map<String, Object> model = new HashMap<>();
-			model.put("state", state);
-			return model;
+		String state = "true";
+		try {
+			service.addFollowing(paramMap);
+		} catch (Exception e) {
+			state="false";
 		}
+			
+		int followingCount = service.followingCount(followingUser);
+			
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		model.put("followingCount", followingCount);
+		return model;
+	}
 		
-		@GetMapping("article")
-		public Map<String, Object> article(
-				@RequestParam int diaryNum, 
-				@RequestParam(defaultValue = "all") String condition, 
-				@RequestParam(defaultValue = "") String hashTag,
-				HttpSession session
-				) throws Exception {
+	@RequestMapping(value="cancelFollowing", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> cancelFollowing(
+			@RequestParam int followingUser,
+			HttpSession session
+			) throws Exception {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
 			
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
-			hashTag = URLDecoder.decode(hashTag, "utf-8");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("followingUser", followingUser);
+		paramMap.put("followerUser", info.getUserNum());
 			
-			Map<String, Object> model = new HashMap<>();
+		String state="true";
+		try {
+			service.cancelFollowing(paramMap);
+		} catch (Exception e) {
+			state="false";
+		}			
 			
-			Diary dto = service.readDiary(diaryNum);
-			if(dto == null) {
-				model.put("state", "false");
-				return model;
-			}
-			model.put("state", "true");
+		int followingCount = service.followingCount(followingUser);
 			
-			if(info.getUserId().equals(dto.getUserId())) {
-				model.put("uid", "writer");
-			} else if(info.getUserId().equals("admin")) {
-				model.put("uid", "true");
-			} else {
-				model.put("uid", "guest");
-			}
-			
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("condition", condition);
-			map.put("hashTag", hashTag);
-			map.put("diaryNum", diaryNum);
-			model.put("dto", dto);
-			
-			return model;
-		}
-		@PostMapping("update")
-		public Map<String, Object> updateSubmit(
-				Diary dto,
-				HttpSession session
-				) throws Exception {
-			
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
-			dto.setUserId(info.getUserId());
-			
-			String root = session.getServletContext().getRealPath("/");
-			String pathname = root+"uploads"+File.separator+"diary";
-			
-			String state = "true";
-			try {
-				service.updateDiary(dto, pathname);
-			} catch (Exception e) {
-				state = "false";
-			}
-			
-			Map<String, Object> model = new HashMap<>();
-			model.put("state", state);
-			return model;
-		}
-		*/
+		Map<String, Object> model=new HashMap<String, Object>();
+		model.put("state", state);
+		model.put("followingCount", followingCount);
+		return model;
+	}
+	
 }

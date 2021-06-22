@@ -47,7 +47,7 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 	
-	<select id="readMember" parameterType="String" resultType="com.aboutrip.app.admin.memManage.Member">
+	<select id="readMember" parameterType="Integer" resultType="com.aboutrip.app.admin.memManage.Member">
 		SELECT m1.userNum, userId, nickName, userPwd, enable, 
 			TO_CHAR(birth, 'YYYY-MM-DD') birth, tel, 
 			zip, address1, address2

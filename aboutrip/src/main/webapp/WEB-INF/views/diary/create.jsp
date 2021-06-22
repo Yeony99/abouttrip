@@ -199,11 +199,11 @@ function sendOk() {
 						<button type="button" class="createBtn" onclick="sendOk();">${mode=='update'?'수정':'등록'}</button>
 						<button type="reset" class="createBtn">리셋</button>
 						<button type="button" class="createBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main';">${mode=='update'?'취소':'취소'}</button>
-							<c:if test="${mode=='update'}">
-								<input type="hidden" name="diaryNum" value="${dto.diaryNum}">
-								<input type="hidden" name="saveImgName" value="${dto.saveImgName}">
-								<input type="hidden" name="page" value="${page}">
-							</c:if>
+						<c:if test="${mode=='update'}">
+							<input type="hidden" name="diaryNum" value="${dto.diaryNum}">
+							<input type="hidden" name="saveImgName" value="${dto.saveImgName}">
+							<input type="hidden" name="page" value="${page}">
+						</c:if>
 					</td>
 				</tr>
 			</table>

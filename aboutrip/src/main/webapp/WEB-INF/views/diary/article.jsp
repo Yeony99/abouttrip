@@ -5,8 +5,8 @@
 
 <style type="text/css">
 .body-container {
-	margin-top: 80px;
-	height: 1000px;
+	height: 900px;
+	padding: 90px;
 }
 
 form {
@@ -17,9 +17,27 @@ form {
   border-radius: 4px;
   color: #b4b4b4;
   box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
-  margin: 90px auto;
+  margin: 0px auto;
 }
-
+.btnAddFollow {
+	margin: 8px;
+	box-sizing: border-box; 
+	cursor: pointer;
+	width: 55px;
+	height: 55px;
+	line-height: 55px;
+	border-radius:45px;
+	border: 1px solid #46CCFF;
+	font-weight: bold;
+	text-align: center;
+	font-size: 13px;
+	background: #f8f9fa;
+}
+.btnAddFollow:hover {
+	color: #f8f9fa;
+	border: 1px solid #f8f9fa;
+	background-color: #46CCFF;
+}
 .createBtn {
 	margin: 8px;
 	color: #46CCFF;
@@ -92,7 +110,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 $(function(){
 	$(".btnSendDiaryLike").click(function(){
 		var $btn = $(this);
-		var bLike = $btn.find("i").css("color")=="rgb(255, 0, 0)";
+		var bLike = $btn.find(".liker").css("color")=="rgb(255, 0, 0)";
 		var msg = "게시글에 공감하시겠습니까 ?";
 		if(bLike) {
 			msg = "게시글 공감을 취소하시겠습니까 ?";
@@ -112,9 +130,9 @@ $(function(){
 			var diaryLikeCount = data.diaryLikeCount;
 			if(state=="true") {
 				if(bLike) {
-					$btn.find("i").css("color","black");
+					$btn.find(".liker").css("color","black");
 				} else {
-					$btn.find("i").css("color","red");
+					$btn.find(".liker").css("color","red");
 				}
 			}
 			
@@ -126,20 +144,6 @@ $(function(){
 	});
 });
 
-/*
-function imageViewer(img) {
-	var viewer = $("#imgDiaryLayout");
-	var s="<img src='"+img+"' width=570 height=450>";
-	viewer.html(s);
-	
-	$("#dialogDiary").dialog({
-		title:"이미지",
-		width: 600,
-		height: 530,
-		modal: true
-	});
-}
-*/
 $(function(){
 	$('.slider').bxSlider({
 		auto: true,				// 자동 애니메이션 시작
@@ -150,13 +154,70 @@ $(function(){
 		captions: true			// 이미지 위에 텍스트 표시
 	});
 });
+/*
+function addFollowing() {
+	if(! $.trim($("#userNum").val()) ) {
+		$("#userNum").focus();
+		return;
+	}
+	
+	var url="${pageContext.request.contextPath}/diary/addFollowing";
+	var query=$("form[name=followForm]").serialize();
+	
+	var fn = function(data){
+		// var state = data.state;
+		
+		$("#userNum").val("");
+		
+		listPage(1);
+	};
+	
+	ajaxFun(url, "post", query, "json", fn);
+}
+*/
+
+$(function(){
+	$(".btnAddFollow").click(function(){		
+		var $btn = $(this);
+		var bLike = $btn.find(".follow").css("color")=="rgb(255, 0, 0)";
+		var msg = "${dto.nickName}님을 팔로우합니다. ";
+		if(bLike) {
+			msg = "팔로우를 취소합니다. ";
+		}
+		
+		if( ! confirm(msg)) {
+			return false;	
+		}
+		
+		var url="${pageContext.request.contextPath}/diary/addFollowing";
+		if(bLike) {
+			url="${pageContext.request.contextPath}/diary/cancelFollowing";
+		}
+		//var followingUser="${dto.userNum}";
+		var query="diaryNum=${dto.diaryNum}";
+		
+		var fn = function(data){
+			//console.log(data);
+			var state = data.state;
+			if(state=="true") {
+				if(bLike) {
+					$btn.find(".follow").css("color","black");
+				} else {
+					$btn.find(".follow").css("color","red");
+				}
+			}
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
 
 </script>
 
 <div class="body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
 	
 	<div class="body-main">
-	<form>
+	<form name="followForm" method="post" >
 		<div class="body-title">
 			<h3>다이어리</h3>
 		</div>
@@ -178,6 +239,9 @@ $(function(){
 		</div>
 		<table>
 			<tr>
+				<td align="left">${dto.nickName}</td>
+			</tr>
+			<tr>
 				<td align="left">${dto.diaryTitle}</td>
 				<td align="right">${dto.diaryCreated}</td>
 			</tr>
@@ -193,15 +257,13 @@ $(function(){
 				</td>
 			</tr>
 			-->		
-			
-			
-		
+
 			<tr>
 				<td>${dto.diaryContent}</td>
 			</tr>
 			<tr>
 				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btn btnSendDiaryLike" title="좋아요"><i class="icofont-like" style="color:${isDiaryLikeUser?'red;':'black;'}"></i>&nbsp;&nbsp;<span id="diaryLikeCount">${dto.diaryLikeCount}</span></button>
+					<button type="button" class="btn btnSendDiaryLike" title="좋아요"><i class="fas fa-thumbs-up liker" style="color:${isDiaryLikeUser?'red;':'black;'}"></i>&nbsp;&nbsp;<span id="diaryLikeCount">${dto.diaryLikeCount}</span></button>
 				</td>
 			</tr>
 
@@ -218,19 +280,22 @@ $(function(){
 			    	
 			    	<c:choose>
 			    		<c:when test="${sessionScope.member.userNum==dto.userNum || sessionScope.member.userId=='admin'}">
-			    			<button type="button" class="createBtn" class="btn" onclick="deleteDiary();">삭제</button>
+			    			<button type="button" class="createBtn" onclick="deleteDiary();">삭제</button>
 			    		</c:when>
 			    		<c:otherwise>
-			    			<button type="button" class="createBtn" class="btn" disabled="disabled">삭제</button>
+			    			<button type="button" class="createBtn" disabled="disabled">삭제</button>
 			    		</c:otherwise>
 			    	</c:choose>
 				</td>
 			
 				<td align="right">
 					<button type="button" class="createBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main?${query}';">리스트</button>
+					<!-- <button type="button" class="createBtn" onclick="addFollowing();">팔로우</button> -->
+					<button type="button" class="btn btnAddFollow" title="팔로우"><i class="far fa-grin follow" style="color:${isFollow?'red;':'black;'}"></i><span id="addFollowing">팔로우</span></button>
 				</td>
 			</tr>
 		</table>
+		<input type="hidden" name="userNum" value="${dto.userNum}">
 	</form>
     </div>
     <div id="dialogDiary">

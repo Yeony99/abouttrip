@@ -18,10 +18,12 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/Login-Form-Dark.css" type="text/css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vanilla-zoom.min.css" type="text/css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/icofont/icofont.min.css" type="text/css">
 	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 	<script	src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 	
 	<style type="text/css">
 	* {

@@ -22,4 +22,8 @@ public interface DiaryService {
 	public boolean isDiaryLikeUser(Map<String, Object> map);
 	public int diaryLikeDelete(Map<String, Object> map) throws Exception;
 	
+	public void addFollowing(Map<String, Object> map) throws Exception;
+	public void cancelFollowing(Map<String, Object> map) throws Exception;
+	public int followingCount(int followingUser);
+	public boolean isFollow(Map<String, Object> map);
 }

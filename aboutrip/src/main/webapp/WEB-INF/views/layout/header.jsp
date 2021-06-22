@@ -78,6 +78,7 @@
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/following">팔로잉 목록</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/member/follower">팔로워 목록</a>
 								<a class="dropdown-item" href="${pageContext.request.contextPath}/product/cart">장바구니</a>
+								<a class="dropdown-item" href="${pageContext.request.contextPath}/dm/receive/list">DM</a>
 							</div></li>
 						</c:if>
 					</c:if>
