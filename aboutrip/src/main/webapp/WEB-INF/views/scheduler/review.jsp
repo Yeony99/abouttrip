@@ -3,6 +3,69 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <style type="text/css">
+.allDataCount {
+	width: 100%;
+	margin: 20px auto 0px;
+	border-spacing: 0px;
+	border-bottom: 1.5px solid #111;
+	font-size: small;
+	padding-bottom: 5px;
+}
+.selectField {
+	height: 45px;
+	padding-left: 20px;
+	padding-right: 50px;
+	border: 1px solid #ddd;
+	color: #888888;
+	font-size: 15px;
+	float: left;
+	margin-right: 5px;
+	margin-top: 53px;
+}
+.boxTFdiv {
+	float: left;
+	margin-top: 53px;
+	height: 47px;
+}
+.boxTF {
+	width: 425px;
+	height: 43px;
+	padding-left: 15px;
+	border: 1px solid #ddd;
+	color: #888888;
+	float: left;
+	margin-right: 5px;
+}
+.btnSearch {
+	width: 43px;
+	height: 43px;
+	background-color: white;
+	border: 1px solid #ddd;
+	cursor: pointer;
+}
+.btnCreate {
+	width: 60px;
+	height: 40px;
+	background-color: #424242;
+	color: white;
+	border: 1px solid #ddd;
+	cursor: pointer;
+	margin-bottom: 3rem;
+	
+}
+.btnDelete {
+	background-color: white;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+
+.list {/*
+	display: flex;
+    flex-direction: column;
+    align-items: center;*/
+}
 .list ul {
 	list-style: none;
 }
@@ -39,8 +102,15 @@
 	box-sizing: border-box; width: 60%; float: left; text-align: center; padding: 15px 0;
 }
 .list-footer .item-right {
-	box-sizing: border-box; width: 20%; float: left; text-align: right; padding: 15px 0;
+	box-sizing: border-box; width: 20%; float: right; text-align: right; padding: 15px 0;
 }
+
+
+.writer {
+	margin: 0 auto;
+    max-width: 80%;
+}
+
 
 .writer .table-content tr > td:nth-child(1) {
 	width: 100px;
@@ -54,6 +124,10 @@
 	width: 97%;
 }
 
+.article {
+	width: 80%;
+    margin: 0 auto;
+}
 .article .table-content tr > td {
 	padding-left: 5px; padding-right: 5px;
 }
@@ -76,6 +150,10 @@
 	text-align: center;
 	font-size: 13px;
 	font-family: 나눔고딕
+}
+
+.item>div:hover {
+	opacity:1;
 }
 </style>
 
@@ -367,7 +445,7 @@ $(function(){
 
 	// 글보기-글삭제
 	$(".btnDelete").click(function(){
-		if(! confirm("게시글을 삭제하시 겠습니까 ?")) {
+		if(! confirm("게시글을 삭제하시겠습니까 ?")) {
 			return false;
 		}
 		
@@ -409,7 +487,7 @@ $(function(){
 </script>
 
 <div class="body-container">
-	<div class="body-main" style="margin: 8rem 0;">
+	<div class="body-main" style="margin: 4rem 0;">
 		<div style="display: flex; justify-content: center">
 			<h3>여행 후기 ✒</h3>
 			
@@ -419,24 +497,36 @@ $(function(){
 		<div class="list clear">
 			<!-- 글리스트 -->
 			<div class="list-body clear" data-pageNo="0"></div>
-			<div class="list-paging clear"></div>			
+			<div class="list-paging clear"></div>
+			<table
+			style="width: 100%; height: 120px; margin: 30px auto; border-spacing: 0px;">
+			<tr>
+				<td align="center" style="width: 100%; border-top: 2px solid #111; display: flex; justify-content: center;">
+					<form name="listSearchForm"
+						action="${pageContext.request.contextPath}/place/${pick}"
+						method="post">
+						<select name="condition" class="selectField">
+							<option value="placeName">제목</option>
+							<option value="placeContent">내용</option>
+							<option value="all">제목+내용</option>
+						</select>
+						<div class="boxTFdiv">
+							<input type="text" name="keyword" class="boxTF"
+								value="${keyword}">
+							<button type="button" class="btnSearch" onclick="searchList()">
+								<img alt=""
+									src="${pageContext.request.contextPath}/resource/images/notice_search.png"
+									style="padding-top: 5px;">
+							</button>
+						</div>
+					</form>
+				</td>
+			</tr>
+		</table>			
 			<div class="list-footer clear">
 				<ul>
 					<li class="item-left">
 						<button type="button" class="btn btnNew">새로고침</button>
-					</li>
-					<li class="item-center">
-						<form name="searchForm" method="post">
-							<select name="condition" class="selectField">
-								<option value="all">제목+내용</option>
-								<option value="subject">제목</option>
-								<option value="content">내용</option>
-								<option value="nickName">작성자</option>
-								<option value="created">등록일</option>
-							</select>
-							<input type="text" name="keyword" class="boxTF">
-							<button type="button" class="btn btnSearch">검색</button>
-						</form>
 					</li>
 					<li class="item-right">
 						<button type="button" class="btn btnInsertForm">등록하기</button>
@@ -467,7 +557,7 @@ $(function(){
 				<tr> 
 					<td valign="top">내&nbsp;&nbsp;&nbsp;&nbsp;용</td>
 					<td valign="top"> 
-						<textarea name="content" class="boxTA"></textarea>
+						<textarea name="content" class="boxTA" placeholder="이번 여행을 대표하는 사진 하나를 올려주세요!" style="min-height: 400px;"></textarea>
 					</td>
 				</tr>
 				  
@@ -500,32 +590,28 @@ $(function(){
 		<!-- 글리스트 -->
 		<div class="article clear" style="display: none;">
 			<table class="table table-border table-content">
-				<tr>
-					<td colspan="2" align="center">
-						<span class="subject"></span>
-					</td>
-				</tr>
 				
 				<tr>
-					<td width="50%" align="left">
+					<td align="left" colspan="2">
 						제목 : <span class="subject"></span>
 					</td>
-					<td width="50%" align="left">
+				</tr>
+				<tr>
+					<td width="70%" align="left">
 						이름 : <span class="name"></span>
 					</td>
-					<td width="50%" align="right">
+					<td width="30%" align="right">
 						<span class="created"></span>
 					</td>
 				</tr>
-				
 				<tr style="border-bottom: none;">
 					<td colspan="2">
-						<img class="img" style="max-width:100%; height:auto; resize:both;">
+						<img class="img" style="min-width:100%; height:auto; resize:both;">
 					</td>
 				</tr>			
 				<tr>
 					<td colspan="2">
-						<div class="content"></div>
+						<div class="content" style="min-height: 200px; "></div>
 					</td>
 				</tr>
 			</table>
