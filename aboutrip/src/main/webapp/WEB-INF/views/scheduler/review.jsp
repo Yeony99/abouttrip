@@ -139,7 +139,7 @@ $(function(){
 
 // 글리스트 및 페이징 처리
 function listPage(page) {
-	var url = "${pageContext.request.contextPath}/review/reviewlist";
+	var url = "${pageContext.request.contextPath}/scheduler/reviewlist";
 	var query = "pageNo="+page;
 	var params = $('form[name=searchForm]').serialize();
 	query = query + "&" + params;
@@ -179,12 +179,11 @@ function printList(data) {
 	var out="";
 	for(var idx=0; idx<data.list.length; idx++) {
 		var num = data.list[idx].num;
-		var userName = data.list[idx].userName;
+		var nickName = data.list[idx].nickName;
 		var subject = data.list[idx].subject;
-		var imageFilename = data.list[idx].imageFilename;
+		var imageFileName = data.list[idx].imageFileName;
 		var created = data.list[idx].created;
-
-		var src = "${pageContext.request.contextPath}/uploads/review/"+imageFilename;
+		var src = "${pageContext.request.contextPath}/uploads/Review/"+imageFileName;
 		var item = "<div class='item' style='background-image: url("+src+");' data-num='"+num+"'></div>";
 		
 		out += item;
@@ -235,7 +234,7 @@ $(function(){
 	// 리스트-글보기
 	$("body").on("click", ".list-body .item", function(){
 		var num = $(this).attr("data-num");
-		var url = "${pageContext.request.contextPath}/review/articleReview";
+		var url = "${pageContext.request.contextPath}/scheduler/articleReview";
 		var query = "num="+num;
 		var params = $('form[name=searchForm]').serialize();
 		query = query + "&" + params;
@@ -258,17 +257,16 @@ $(function(){
 		var uid = data.uid;
 		
 		var num = data.dto.num;
-		var userName = data.dto.userName;
+		var nickName = data.dto.nickName;
 		var subject = data.dto.subject;
 		var content = data.dto.content;
-		var imageFilename = data.dto.imageFilename;
+		var imageFileName = data.dto.imageFileName;
 		var created = data.dto.created;
-		
 		$(".article .subject").html(subject);
-		$(".article .name").html(userName);
+		$(".article .name").html(nickName);
 		$(".article .created").html(created);
 		$(".article .content").html(content);
-		var src = "${pageContext.request.contextPath}/uploads/review/"+imageFilename;
+		var src = "${pageContext.request.contextPath}/uploads/Review/"+imageFileName;
 		$(".article .img").attr("src",src);		
 		
 		$("form[name=reviewForm]")[0].reset();
@@ -279,13 +277,13 @@ $(function(){
 			// 등록한 사람
 			$(".article .btnUpdateForm").attr("data-num", num);
 			$(".article .btnDelete").attr("data-num", num);
-			$(".article .btnDelete").attr("data-imageFilename", imageFilename);
+			$(".article .btnDelete").attr("data-imageFileName", imageFileName);
 			
 			$("form[name=reviewForm] input[name=subject]").val(subject);
 			$("form[name=reviewForm] textarea[name=content]").val(content);
 			$("form[name=reviewForm] input[name=num]").val(num);
-			$("form[name=reviewForm] input[name=imageFilename]").val(imageFilename);
-			$("form[name=reviewForm] input[name=mode]").val("update");
+			$("form[name=reviewForm] input[name=imageFileName]").val(imageFileName);
+			$("form[name=reviewForm] input[name=mode]").val("updateReview");
 			
 			$(".writer .imgPreView").empty();
 			$(".writer .imgPreView").css("background-image", "url("+src+")");
@@ -301,7 +299,7 @@ $(function(){
 			// 관리자
 			$(".article .btnUpdateForm").prop("disabled", true);
 			$(".article .btnDelete").attr("data-num", num);
-			$(".article .btnDelete").attr("data-imageFilename", imageFilename);
+			$(".article .btnDelete").attr("data-imageFileName", imageFileName);
 		}
 	}
 });
@@ -327,7 +325,7 @@ $(function(){
 			return false;
 		}
 		
-		var url="${pageContext.request.contextPath}/review/"+mode;
+		var url="${pageContext.request.contextPath}/scheduler/"+mode;
 		var query = new FormData(f); // IE는 10이상에서만 가능
 		var fn = function(data){
 			var state=data.state;
@@ -374,9 +372,9 @@ $(function(){
 		}
 		
 		var num = $(this).attr("data-num");
-		var imageFilename = $(this).attr("data-imageFilename");		
-		var url = "${pageContext.request.contextPath}/review/deleteReview";
-		var query = "num="+num+"&imageFilename="+imageFilename;
+		var imageFileName = $(this).attr("data-imageFileName");		
+		var url = "${pageContext.request.contextPath}/scheduler/deleteReview";
+		var query = "num="+num+"&imageFileName="+imageFileName;
 
 		var fn = function(data){
 			var page = $(".list-body").attr("data-pageNo");
@@ -433,7 +431,7 @@ $(function(){
 								<option value="all">제목+내용</option>
 								<option value="subject">제목</option>
 								<option value="content">내용</option>
-								<option value="userName">작성자</option>
+								<option value="nickName">작성자</option>
 								<option value="created">등록일</option>
 							</select>
 							<input type="text" name="keyword" class="boxTF">
@@ -492,7 +490,7 @@ $(function(){
 						
 						<input type="hidden" name="mode">
 						<input type="hidden" name="num" value="0">
-						<input type="hidden" name="imageFilename">
+						<input type="hidden" name="imageFileName">
 					</td>
 				</tr>
 			</table>
@@ -509,6 +507,9 @@ $(function(){
 				</tr>
 				
 				<tr>
+					<td width="50%" align="left">
+						제목 : <span class="subject"></span>
+					</td>
 					<td width="50%" align="left">
 						이름 : <span class="name"></span>
 					</td>

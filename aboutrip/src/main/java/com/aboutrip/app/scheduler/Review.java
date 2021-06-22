@@ -5,12 +5,27 @@ import org.springframework.web.multipart.MultipartFile;
 public class Review {
 	private int listNum, num;
 	private String nickName;
-	private int userNum;
+	private int user_num;
 	private String subject;
 	private String content;
-	private String imageFilename;
+	private String imageFileName;
 	private String created;
 	private MultipartFile upload;
+	private String src;
+	
+	
+	public String getSrc() {
+		return src;
+	}
+	public void setSrc(String src) {
+		this.src = src;
+	}
+	public String getImageFileName() {
+		return imageFileName;
+	}
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
+	}
 	public int getListNum() {
 		return listNum;
 	}
@@ -29,11 +44,11 @@ public class Review {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	public int getUserNum() {
-		return userNum;
+	public int getUser_num() {
+		return user_num;
 	}
-	public void setUserNum(int userNum) {
-		this.userNum = userNum;
+	public void setUser_num(int user_num) {
+		this.user_num = user_num;
 	}
 	public String getSubject() {
 		return subject;
@@ -46,12 +61,6 @@ public class Review {
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public String getImageFilename() {
-		return imageFilename;
-	}
-	public void setImageFilename(String imageFilename) {
-		this.imageFilename = imageFilename;
 	}
 	public String getCreated() {
 		return created;

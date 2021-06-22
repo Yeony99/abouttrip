@@ -367,15 +367,18 @@ public class SchedulerController {
 	
 	@RequestMapping("review")
 	public ModelAndView review() throws Exception {
+		
 		ModelAndView mav = new ModelAndView(".scheduler.review");
 		return mav;
 	}
 	
 	@RequestMapping(value = "reviewlist")
+	@ResponseBody
 	public Map<String, Object> reviewlist(@RequestParam(value = "pageNo", defaultValue = "1") int current_page,
-			@RequestParam(defaultValue = "all") String condition,@RequestParam(defaultValue = "") String keyword) throws Exception{
+			@RequestParam(defaultValue = "all") String condition,@RequestParam(defaultValue = "") String keyword,HttpSession session) throws Exception{
 		keyword = URLDecoder.decode(keyword,"utf-8");
-		
+		String root = session.getServletContext().getRealPath("/");
+		String path = root+"uploads"+File.separator+"Review";
 		int rows = 10;
 		int total_page;
 		int dataCount;
@@ -393,7 +396,9 @@ public class SchedulerController {
 		map.put("rows", rows);
 		
 		List<Review> list = service.listreview(map);
-		
+		for(Review dto : list) {
+			dto.setSrc(path+dto.getImageFileName());
+		}
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
 		
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -410,6 +415,7 @@ public class SchedulerController {
 	}
 	
 	@PostMapping("insertReview")
+	@ResponseBody
 	public Map<String, Object> insertReview(Review dto, HttpSession session) throws Exception{
 		String root = session.getServletContext().getRealPath("/");
 		String path = root+"uploads"+File.separator+"Review";
@@ -418,7 +424,7 @@ public class SchedulerController {
 		
 		String state = "true";
 		try {
-			dto.setUserNum(info.getUserNum());
+			dto.setUser_num(info.getUserNum());
 			dto.setNickName(info.getNickName());
 			service.insertReview(dto, path);
 		} catch (Exception e) {
@@ -430,6 +436,7 @@ public class SchedulerController {
 	}
 	
 	@GetMapping("articleReview")
+	@ResponseBody
 	public Map<String, Object> reviewArticle(@RequestParam int num, @RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "")String keyword, HttpSession session) throws Exception{
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
@@ -445,7 +452,7 @@ public class SchedulerController {
 		}
 		model.put("state", "true");
 		
-		if(info.getUserNum()==dto.getUserNum()) {
+		if(info.getUserNum()==dto.getUser_num()) {
 			model.put("uid", "writer");
 		} else if(info.getUserId().equals("admin")) {
 			model.put("uid", "true");
@@ -469,6 +476,7 @@ public class SchedulerController {
 	}
 	
 	@PostMapping("updateReview")
+	@ResponseBody
 	public Map<String, Object> updateReview(Review dto, HttpSession session) throws Exception{
 		String root=session.getServletContext().getRealPath("/");
 		String path = root+"uploads"+File.separator+"Review";
@@ -486,6 +494,7 @@ public class SchedulerController {
 	}
 	
 	@PostMapping("deleteReview")
+	@ResponseBody
 	public Map<String, Object> deleteReview(@RequestParam int num, @RequestParam String imageFilename, HttpSession session){
 		String root=session.getServletContext().getRealPath("/");
 		String path = root+"uploads"+File.separator+"Review"+File.separator+imageFilename;

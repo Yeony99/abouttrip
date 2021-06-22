@@ -132,8 +132,8 @@
     
     <select id="listReview" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
     	SELECT num, r.user_num, nickName, subject, imageFilename, content 
-		       TO_CHAR(created, 'yyyy-mm-dd') created
-		FROM shceduler_review r
+		       ,TO_CHAR(created, 'yyyy-mm-dd') created
+		FROM scheduler_review r
 		JOIN member1 m ON r.user_num = m.userNum
 		<where>
 			<if test="keyword != null and keyword != ''">
@@ -144,7 +144,7 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
     </select>
     
-    <select id="preReadPhoto" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
+    <select id="preReadReview" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
 		SELECT num, subject
 		FROM scheduler_review r
 		JOIN member1 m ON r.user_num=m.userNum
@@ -158,7 +158,7 @@
 		FETCH FIRST 1 ROWS ONLY
 	</select>
 
-	<select id="nextReadPhoto" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
+	<select id="nextReadReview" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
 		SELECT num, subject
 		FROM scheduler_review r
 		JOIN member1 m ON r.user_num=m.userNum
@@ -173,7 +173,7 @@
 	</select>
 	
 	<update id="updateReview" parameterType="com.aboutrip.app.scheduler.Review">
-		UPDATE scheduler_review SET subject=#{subject}, imageFilename=#{imageFilename}, content=#{content} WHERE num = #{num}
+		UPDATE scheduler_review SET subject=#{subject}, imageFileName=#{imageFileName}, content=#{content} WHERE num = #{num}
 	</update>
 	
 	<delete id="deleteReview" parameterType="Integer">

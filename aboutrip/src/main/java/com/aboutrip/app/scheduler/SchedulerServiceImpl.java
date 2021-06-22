@@ -56,7 +56,7 @@ public class SchedulerServiceImpl implements SchedulerService{
 		try {
 			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
 			if(saveFilename!=null) {
-				dto.setImageFilename(saveFilename);
+				dto.setImageFileName(saveFilename);
 				
 				dao.insertData("scheduler.insertReview", dto);
 			}
@@ -154,12 +154,12 @@ public class SchedulerServiceImpl implements SchedulerService{
 			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
 			
 			if(saveFilename != null) {
-				if(dto.getImageFilename().length()!=0) {
-					fileManager.doFileDelete(dto.getImageFilename(), pathname);
+				if(dto.getImageFileName().length()!=0) {
+					fileManager.doFileDelete(dto.getImageFileName(), pathname);
 				}
-				dto.setImageFilename(saveFilename);
+				dto.setImageFileName(saveFilename);
 			}
-			dao.updateData("scheduler.updateReivew", dto);
+			dao.updateData("scheduler.updateReview", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
