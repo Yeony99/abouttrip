@@ -7,6 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+
+</style>
 </head>
 <script type="text/javascript">
 var check=true;
@@ -31,6 +34,24 @@ function ajaxFun(url, method, query, dataType, fn) {
 			console.log(jqXHR.responseText);
 		}
 	});
+}
+
+//페이징 처리
+$(function(){
+	listPage(1);
+});
+// 페이징한다면...
+function listPage(page) {
+	var url = "${pageContext.request.contextPath}/scheduler/listMate";
+	
+	//EL 오류?
+	var query = "num=${dto.num}&pageNo="+page;
+	var selector = "#listMate";
+	
+	var fn = function(data){
+		$(selector).html(data);
+	};
+	ajaxFun(url, "get", query, "html", fn);
 }
 function sendtest(){
 	var f = document.mateForm;
@@ -102,16 +123,16 @@ function listAnswer(data){
 		out +="<div class='answer' style='padding: 0 10 px;'>";
 		out +="<div style='clear:both; padding:10px 0;'>";
 		out +="<div style='float: left; width: 5%;'>└</div>";
-		out +="<div style='float: left; width:95%;'>";
+		out +="<div style='float: left; width:95%; min-height:50px;'>";
 		out +="<div style='float: left;'><b>"+nickName+"</b></div>";
 		out +="<div style='float: right;'>";
-		out +="<span>"+created+"</span> |";
+		out +="<span style='font-size:10px;'>"+created+"</span><br>";
 		if(uNickName===nickName||uid ==="admin"){
-			out +="<span class='deleteMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>삭제</span>|";
-			out +="<span class='updateMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>수정</span>";
+			out +="<div><span class='deleteMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>삭제</span>|";
+			out +="<span class='updateMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>수정</span></div>";
 		}
 		out +="</div></div></div>";
-		out +="<div style='clear:both; padding: 5px 5px; border-bottom: 1px solid #ccc;'>"+content+"<div id='updateMateAnswer"+reply_num+"'>";
+		out +="<div class='answers' style='clear:both; padding: 5px 25px; border-bottom: 1px solid #ccc;'>"+content+"<div id='updateMateAnswer"+reply_num+"'>";
 		out+="</div></div></div>"
 	}
 	$("#listMateAnswer").html(out);
@@ -122,13 +143,19 @@ $(function(){
 		var mate_num=$(this).attr("data-mateNum");
 		var	reply_num=$(this).attr("data-replyNum");
 		updateReply(mate_num, reply_num,check);
+		$("form[name ='updateReplyForm']").parent().show();
+		var test = $("form[name ='updateReplyForm']").parent().parent();
+		console.log(test);
+		test.css({"min-height": "200px"});
 	});
 });
 
 $(function(){
 	$("body").on("click", ".replyCancel", function(){
 		$("form[name ='replyForm']").show();
-		$("form[name ='updateReplyForm']").hide();
+		$("form[name ='updateReplyForm']").parent().hide();
+		$(".answers").css({"min-height": "inherit"});
+		
 	})
 })
 function updateReply(mate_num, reply_num,check){
@@ -252,7 +279,7 @@ function bringPeople() {
 				</tr>
 				<tr>
 					<td colspan="3">
-						<label> 제목 <input type="text" name="subject" placeholder="제목">  </label>
+						<label> 제목   </label>&nbsp;<input type="text" name="subject" placeholder="제목" style="width:80%;">
 					</td>
 				</tr>
 
@@ -280,7 +307,8 @@ function bringPeople() {
 						<tr>
 						    <td colspan='2'>
 						       <div style='clear: both;'>
-						           <div style='float: left;'><span style='color: #3EA9CD; font-weight: bold;'>메이트 찾기 ${mateCount}개</span> <span>[${pageNo}/${total_page} 페이지]</span></div>
+						           <div style='float: left;'><span style='font-weight: bold;'>메이트를 찾는 ${dataCount} 분이 계세요! 🙋🏻‍♀️</span> 
+						           <span>[${page}/${total_page} 페이지]</span></div>
 						           <div style='float: right; text-align: right;'></div>
 						       </div>
 						    </td>
@@ -289,9 +317,9 @@ function bringPeople() {
 					
 					<tbody id='listMateBody'>
 					<c:forEach var="dto" items="${list}">
-					    <tr style='background: #eee; border:1px solid #ccc;'>
+					    <tr style='background: lightskyblue;'>
 					       <td width='50%'>
-								<span><b>이름 : ${dto.nickName }</b> </span>
+								<span><b>작성자 : ${dto.nickName}</b> </span>
 					        </td>
 					       <td width='50%' align='right'>
 								<span>${dto.created}</span>
@@ -305,8 +333,9 @@ function bringPeople() {
 					    <tr>
 					        <td colspan='2' valign='top'>
 					        	<span>제목 : ${dto.subject}</span><br>
+					        	<!-- ctgNum 말고 placeName을 가져와야 합니다!ㅠ.ㅠ -->
 					        	<span>장소:  ${dto.ctgNum}</span>&nbsp;|&nbsp;<span>메이트 인원 : ${dto.people_num} </span>&nbsp;|&nbsp;<span>여행일 : ${dto.start_date} ~ ${dto.end_date}</span>
-					        	<div style="border-top: 1px solid #ccc; padding:5px;">
+					        	<div style="border-top: 1px solid #ccc; padding:5px; min-height: 150px">
 					        		${dto.content}
 					        	</div>
 					        </td>
@@ -321,8 +350,7 @@ function bringPeople() {
 					
 					    <tr class='mateAnswer' style='display: none;'>
 					        <td colspan='2'>
-					        
-					        
+
 					
 						<div id="listMateAnswer">			
 						</div>
@@ -347,6 +375,13 @@ function bringPeople() {
 					    </tr>
 					    </c:forEach>
 					</tbody>
+					<tfoot id='listMateFooter'>
+						<tr align="center">
+							<td colspan='2' >
+								${paging}
+							</td>
+						</tr>
+					</tfoot>
 				</table>
 				</div>
 			</div>			
