@@ -192,7 +192,7 @@ $(function(){
 		if(bFol) {
 			url="${pageContext.request.contextPath}/diary/cancelFollowing";
 		}
-		var followerUser="${sessionScope.member.userNum}";
+		//var followerUser="${sessionScope.member.userNum}";
 		var followingUser="${dto.userNum}";
 		var query="diaryNum=${dto.diaryNum}";
 		

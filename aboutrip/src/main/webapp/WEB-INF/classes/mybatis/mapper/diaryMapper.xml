@@ -141,6 +141,6 @@
 	<select id="followerCount" parameterType="map" resultType="Integer">
 		SELECT COUNT(*) FROM follow 
 		JOIN member1 ON followerUser=userNum
-		WHERE followingUser=#{userNum} AND followerUser=#{followerUser}
+		WHERE followingUser=#{followingUser} AND followerUser=#{userNum}
 	</select>
 </mapper>
