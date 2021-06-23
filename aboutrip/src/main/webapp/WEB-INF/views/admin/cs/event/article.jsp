@@ -55,12 +55,6 @@
 }
 
 
-.btnSendpartEvent{
-	background-color: black;
-	color: #fff;
-	border-radius: 7px;
-}
-
 a {
 	text-decoration: none;
 }
@@ -258,19 +252,19 @@ function winlistPage(page) {
 					이름 : ${dto.nickName}
 				</td>
 				<td width="90%" align="right">
-					이벤트 기간: ${dto.eventStart}  ~ ${dto.eventEnd} &nbsp; | &nbsp; 발표일: ${dto.winDate} 
+					이벤트 기간: ${dto.eventStart}  ~ ${dto.eventEnd} &nbsp; | &nbsp; 발표일: ${dto.winDate} &nbsp; | &nbsp; 당첨자수: ${dto.winCount}
 				</td>
 			</tr>
 			
 			
-			<tr style="font-weight: 600;">
-				<td colspan="2" align="right" >
-					이벤트 당첨 상품: ${dto.present} &nbsp; | &nbsp; 당첨자수: ${dto.winCount}
+			<tr>
+				<td colspan="2" align="center" >
+					이벤트 당첨 상품: ${dto.present}
 				</td>
 			</tr>
 			
 			
-			<tr style="border-bottom: 1px solid white">
+			<tr>
 				<td colspan="2" valign="top" height="200" style="padding-left: 10px;">
 					${dto.content}
 				</td>
@@ -278,10 +272,7 @@ function winlistPage(page) {
 			
 			<tr>
 				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btn btnSendpartEvent" title="이벤트 신청"> 이벤트 신청  버튼</button>
-					<br>
-					<br>
-					<p>  <span id="partCount">이벤트 참여자 수 : ${dto.partCount}  </span></p>
+					<button type="button" class="btn btnSendpartEvent" title="이벤트 신청">📌&nbsp;&nbsp;<span id="partCount">${dto.partCount}</span></button>
 				</td>
 			</tr>
 			

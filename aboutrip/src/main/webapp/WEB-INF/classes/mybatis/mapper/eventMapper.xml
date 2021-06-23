@@ -56,13 +56,13 @@
 	
 	<!-- 이벤트 글 보기 -->
 	<select id="readEvent" parameterType="Integer" resultType="com.aboutrip.app.event.Event">
-		SELECT e.num, e.adminNum, nickName, title, content, eventStart, eventEnd, winDate,
-			present, winCount, NVL(partCount, 0) partCount, partNum, p.userNum, partDate, 
-			winNum, w.userNum 
+		SELECT e.num, e.adminNum, nickName, title, content, 
+		TO_CHAR(eventStart, 'YYYY-MM-DD') eventStart, 
+		TO_CHAR(eventEnd, 'YYYY-MM-DD') eventEnd, 
+		TO_CHAR(winDate, 'YYYY-MM-DD') winDate,
+			present, winCount, NVL(partCount, 0) partCount
 			FROM userEvent e
 			JOIN member1 m ON e.adminNum = m.userNum
-			JOIN partEvent p ON e.num = p.num
-			JOIN winEvent w ON e.num  = w.num
 			LEFT OUTER JOIN(
 				SELECT num, COUNT(*) partCount FROM partEvent
 				GROUP BY num

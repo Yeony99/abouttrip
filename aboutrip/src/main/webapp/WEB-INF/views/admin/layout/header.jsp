@@ -56,11 +56,11 @@
 						data-toggle="dropdown" href="#"
 						style="color: var(- -bs-dark); text-align: left;">고객센터 관리</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/notice/list">공지사항 작성</a>
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/faq/main">FAQ 작성</a>
-						    <a class="dropdown-item" href="${pageContext.request.contextPath}/inquiry/list">문의 답변</a>
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/event/list">이벤트 작성</a>
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/sug/list">제안하기 답변</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/cs/notice/list">공지사항 작성</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/cs/faq/main">FAQ 작성</a>
+						    <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/cs/inquiry/list">문의 답변</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/cs/event/list">이벤트 작성</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/cs/sug/list">제안하기 답변</a>
 						</div></li>
 				</ul>
 			</div>
