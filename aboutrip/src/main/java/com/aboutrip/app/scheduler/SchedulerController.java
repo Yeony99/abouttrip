@@ -514,4 +514,84 @@ public class SchedulerController {
 		model.put("state", state);
 		return model;
 	}
+	
+	@RequestMapping(value = "insertReviewReply")
+	@ResponseBody
+	public Map<String, Object> insertReviewReply(ReviewReply dto, HttpSession session, @RequestParam int rev_num, @RequestParam String ReplyContent)throws Exception{
+		Map<String, Object> model = new HashMap<String, Object>();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		try {
+			dto.setRev_num(rev_num);
+			dto.setContent(ReplyContent);
+			dto.setUser_num(info.getUserNum());
+			service.insertReviewReply(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
+	
+	@RequestMapping(value = "listReviewReply")
+	@ResponseBody
+	public String listReviewReply(@RequestParam(value = "pageNo", defaultValue = "1") int current_page,HttpSession session,@RequestParam int rev_num)throws Exception{
+		
+		int rows = 10;
+		int total_page;
+		int dataCount;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		dataCount = service.reviewReplyCount(rev_num);
+		total_page = aboutUtil.pageCount(rows, dataCount);
+		
+		if(total_page< current_page) current_page= total_page;
+		int offset = (current_page-1)*rows;
+		if(offset<0) offset =0;
+		map.put("offset", offset);
+		map.put("rows", rows);
+		map.put("rev_num", rev_num);
+		List<ReviewReply> list = service.listreviewReply(map);
+		
+		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("list", list);
+		model.put("dataCount", dataCount);
+		model.put("total_page", total_page);
+		model.put("pageNo", current_page);
+		model.put("paging", paging);
+		
+		return"redirect:/scheduler/review";
+	}
+	
+	
+	@RequestMapping(value = "updateReviewReply")
+	public Map<String, Object> updateReviewReply (@RequestParam int num, @RequestParam String content) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			map.put("num", num);
+			map.put("content", content);
+			service.updateReviewReply(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Map<String, Object> model = new HashMap<String, Object>();
+		return model;
+	}
+	
+	@RequestMapping(value = "deleteReviewReply")
+	public Map<String, Object> deleteReviewReply (@RequestParam int num,@RequestParam String nickName,HttpSession session) {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		Map<String, Object> model = new HashMap<String, Object>();
+		try {
+			if(info.getNickName().equals("관리자")||info.getNickName().equals(nickName)) {
+				service.deleteReviewReply(num);
+			} else {
+				return model;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
 }

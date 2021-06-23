@@ -371,6 +371,7 @@ $(function(){
 			
 		} else if(uid=="guest"){
 			// 게스트
+			$("form[name=ReplyForm] input[name=rev_num]").val(num);
 			$(".article .btnUpdateForm").prop("disabled", true);
 			$(".article .btnDelete").attr("disabled", true);
 		} else {
@@ -380,6 +381,31 @@ $(function(){
 			$(".article .btnDelete").attr("data-imageFileName", imageFileName);
 		}
 	}
+	
+	/* function printReply(data){
+		var num = data.list.num;
+		var nickName = data.list.nickName;
+		var content = data.list.content;
+		var created = data.list.created;
+		
+		$(".reply .nickName").html(nickName);
+		$(".reply .reply_content").html(content);
+		$(".reply .reply_created").html(created);
+		$(".reply .btnUpdateReply").prop("disabled", false);
+		$(".reply .btnDeleteReply").attr("disabled", false);
+		
+		$(".reply .btnUpdateReply").attr("data-num", num);
+		$(".reply .btnDeleteReply").attr("data-num", num);
+		
+		$("form[name=reviewForm] textarea[name=reply_content]").val(content);
+		$("form[name=reviewForm] textarea[name=reply_created]").val(created);
+		if(nickName.equals("관리자")||{sessionScope.member.nickName}.equals(nickName)) {
+			$("form[name=ReplyForm] input[name=rev_num]").val(num);
+			$(".article .btnUpdateForm").prop("disabled", true);
+			$(".article .btnDelete").attr("disabled", true);
+			
+		} 
+	} */
 });
 
 $(function(){
@@ -427,8 +453,38 @@ $(function(){
 		$(".list").show(100);
 		$(".writer").hide(100);
 	});
+	
 });
 
+$(function(){
+	// 글쓰기폼-등록 완료 버튼
+	$(".btnReplyOk").click(function(){
+		var f = document.ReplyForm;
+		
+		if(! f.ReplyContent.value) {
+			f.ReplyContent.focus();
+			return false;
+		}
+		
+		var url="${pageContext.request.contextPath}/scheduler/insertReviewReply";
+		var query = new FormData(f); // IE는 10이상에서만 가능
+		var fn = function(data){
+			var state=data.state;
+	    	
+			//printReply(data);
+			
+			$(".article").show(100);
+		};
+		
+		ajaxFileFun(url, "post", query, "json", fn);		
+	});
+	
+	// 글쓰기폼-등록 취소 버튼
+	$(".btnSendCancel").click(function(){
+		$(".list").show(100);
+		$(".writer").hide(100);
+	});
+});
 
 $(function(){
 	// 글보기-글리스트
@@ -484,6 +540,12 @@ $(function(){
 		reader.readAsDataURL(file);
 	});
 });
+function insertReply(){
+	var f = document.ReviewReplyForm;
+	
+	f.action= "${pageContext.request.contextPath}/scheduler/insertReiviewReply";
+	f.submit();
+}
 </script>
 
 <div class="body-container">
@@ -588,6 +650,7 @@ $(function(){
 		</div>
 
 		<!-- 글리스트 -->
+		<form name="ReplyForm" method="post">
 		<div class="article clear" style="display: none;">
 			<table class="table table-border table-content">
 				
@@ -614,8 +677,25 @@ $(function(){
 						<div class="content" style="min-height: 200px; "></div>
 					</td>
 				</tr>
+				<tr>
+				<td>
+					<textarea name="ReplyContent" class="boxTA" placeholder="고운 댓글을 달아주세요" style="min-height: 400px;"></textarea>
+					<button type="button" class="btn btn-dark btnReplyOk">댓글 등록</button>
+					<input type="hidden" name="rev_num">
+				</td>
+				</tr>
 			</table>
-				
+				<table>
+				<tr>
+					<td class="reply"><span class="nickName" >이름 :</span></td>
+					<td class="reply"><span class="reply_content" ></span></td>
+					<td class="reply"><span class="reply_created" ></span></td>
+					<td width="50%" align="left">
+						<button type="button" class="btn btnUpdateReply">수정</button>
+		    			<button type="button" class="btn btnDeleteReply">삭제</button>
+					</td>
+				</tr>
+				</table>
 			<table class="table">
 				<tr>
 					<td width="50%" align="left">
@@ -629,7 +709,7 @@ $(function(){
 				</tr>
 			</table>
 		</div>
-
+			</form>
 	</div>
 	</div>
 </div>

@@ -187,4 +187,30 @@
 	<delete id="deleteReview" parameterType="Integer">
 		DELETE FROM scheduler_review WHERE num=#{num}
 	</delete>
+	
+	<insert id="insertReviewReply" parameterType="com.aboutrip.app.scheduler.ReviewReply">
+    	INSERT INTO scheduler_review_reply(num, user_num, rev_num, content, created) VALUES (scheduler_review_reply_seq.NEXTVAL, #{user_num}, #{rev_num}, #{content}, SYSDATE)
+    </insert>
+    
+    <select id="reviewReplyCount" parameterType="Integer" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM scheduler_review_reply
+    	WHERE rev_num = #{rev_num}
+    </select>
+    
+    <select id="listReviewReply" parameterType="map" resultType="com.aboutrip.app.scheduler.ReviewReply">
+    	SELECT rr.num, rr.user_num, rr.rev_num, rr.content, rr.created, nickName FROM scheduler_review_reply rr
+    	LEFT OUTER JOIN member1 m ON rr.user_num = m.userNum
+    	LEFT OUTER JOIN scheduler_review r ON rr.rev_num = r.num
+    	 WHERE rr.rev_num = #{rev_num}
+    	ORDER BY rr.num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+    </select>
+    
+    <update id="updateReviewReply" parameterType="com.aboutrip.app.scheduler.ReviewReply">
+		UPDATE scheduler_review_reply SET content=#{content} WHERE num = #{num} 
+	</update>
+	
+	<delete id="deleteReviewReply" parameterType="Integer">
+		DELETE FROM scheduler_review_reply WHERE num=#{num}
+	</delete>
 </mapper>

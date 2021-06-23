@@ -67,6 +67,17 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 	
 	@Override
+	public void insertReviewReply(ReviewReply dto) throws Exception {
+		try {
+			dao.insertData("scheduler.insertReviewReply", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+	
+	@Override
 	public List<Scheduler> listMonth(Map<String, Object> map) throws Exception {
 		List<Scheduler> list = null;
 		try {
@@ -126,6 +137,18 @@ public class SchedulerServiceImpl implements SchedulerService{
 		
 		return list;
 	}
+	
+	@Override
+	public List<ReviewReply> listreviewReply(Map<String, Object> map) throws Exception {
+		List<ReviewReply> list = null;
+		try {
+			list = dao.selectList("scheduler.listReviewReply",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
 
 	@Override
 	public void updateScheduler(Map<String, Object> map) throws Exception {
@@ -142,6 +165,16 @@ public class SchedulerServiceImpl implements SchedulerService{
 	public void updateReply(Map<String, Object> map) throws Exception {
 		try {
 			dao.updateData("scheduler.updateReply", map);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
+	
+	@Override
+	public void updateReviewReply(Map<String, Object> map) throws Exception {
+		try {
+			dao.updateData("scheduler.updateReviewReply", map);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -274,6 +307,19 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 
 	@Override
+	public int reviewReplyCount(int rev_num) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("scheduler.reviewReplyCount",rev_num);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public Review readReview(int num) {
 		Review dto = null;
 		try {
@@ -320,6 +366,14 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 	}
 
+	@Override
+	public void deleteReviewReply(int num) throws Exception {
+		try {
+			dao.deleteData("scheduler.deleteReviewReply", num);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }
