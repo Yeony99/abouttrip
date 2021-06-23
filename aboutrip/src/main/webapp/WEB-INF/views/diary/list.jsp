@@ -30,29 +30,6 @@ form {
 	border-radius: 3px;
 }
 
-.createBtn {
-	margin: 8px;
-	color: #46CCFF;
-	box-sizing: border-box; 
-	cursor: pointer;
-	width: 55px;
-	height: 55px;
-	line-height: 55px;
-	border-radius:45px;
-	border: none;
-	font-weight: bold;
-	text-align: center;
-	font-size: 13px;
-	background: #f8f9fa;
-	position: fixed;
-	left: 1050px; top: 222px;
-}
-
-.createBtn:hover {
-	color: #f8f9fa;
-	border: 1px solid #f8f9fa;
-	background-color: transparent;
-}
 .shape {
 	width: 500px;
   	background-color: #f8f9fa;
@@ -147,8 +124,7 @@ function printGuest(data) {
 		out+="    </a>";
 		out+="</td>";
 		
-		out+="<td style='line-height: 25px; margin: 10px;'>";
-		out+="<button type='button' class='btnAddFollow' title='팔로우'><i class='far fa-grin' style='color:${isFollow?'red;':'black;'}'></i><span id='addFollowing'>"+nickName+"</span></button></td>";
+		out+="<td style='line-height: 25px; margin: 10px;'>"+nickName+"</td>";
 		out+="</tr>";
 		
 		out+="<tr>";
@@ -195,42 +171,6 @@ function searchList() {
 	var f=document.searchForm;
 	f.submit();
 }
-
-$(function(){
-	$(".btnAddFollow").click(function(){		
-		var $btn = $(this);
-		var bLike = $btn.find("i").css("color")=="rgb(255, 0, 0)";
-		var msg = "${dto.nickName}님을 팔로우합니다. ";
-		if(bLike) {
-			msg = "팔로우를 취소합니다. ";
-		}
-		
-		if( ! confirm(msg)) {
-			return false;	
-		}
-		
-		var url="${pageContext.request.contextPath}/diary/addFollowing";
-		if(bLike) {
-			url="${pageContext.request.contextPath}/diary/cancelFollowing";
-		}
-		var followingUser="${dto.userNum}";
-		var query="followingUser="+followingUser;
-		
-		var fn = function(data){
-			//console.log(data);
-			var state = data.state;
-			if(state=="true") {
-				if(bLike) {
-					$btn.find("i").css("color","black");
-				} else {
-					$btn.find("i").css("color","red");
-				}
-			}
-		};
-		
-		ajaxFun(url, "post", query, "json", fn);
-	});
-});
 </script>
 
 <div class="body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">

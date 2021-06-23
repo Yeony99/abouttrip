@@ -132,11 +132,15 @@
 	</delete>
 	
 	<select id="followingCount" parameterType="Integer" resultType="Integer">
-		SELECT COUNT(*) FROM follow WHERE followingUser=#{followingUser}
+		SELECT COUNT(*) FROM follow 
+		JOIN member1 ON followerUser=userNum
+		WHERE followingUser=#{userNum}
 	</select>
 	
 	<!-- 유저가 팔로우를 눌렀는지 유무 -->
 	<select id="followerCount" parameterType="map" resultType="Integer">
-		SELECT COUNT(*) FROM follow WHERE followingUser=#{followingUser} AND followerUser=#{followerUser}
+		SELECT COUNT(*) FROM follow 
+		JOIN member1 ON followerUser=userNum
+		WHERE followingUser=#{userNum} AND followerUser=#{followerUser}
 	</select>
 </mapper>

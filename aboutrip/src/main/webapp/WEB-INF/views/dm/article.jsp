@@ -36,7 +36,7 @@ $(function(){
 });
 
 $(function(){
-	$(".btnReplyNote").click(function(){
+	$(".btnReplyDm").click(function(){
 		$("#reply-dialog").dialog({
 			  modal: true,
 			  height: 300,
@@ -71,7 +71,7 @@ $(function(){
 
 
 
-function deleteNote() {
+function deleteDm() {
 	var query = "dmNums=${dto.dmNum}&${query}";
 	var url = "${pageContext.request.contextPath}/dm/${menuItem}/delete?" + query;
 
@@ -83,25 +83,24 @@ function deleteNote() {
 
 </script>
 
-<div class="container body-container">
+<div class="container body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
     <div class="body-title">
 		<h2><i class="icofont-ui-messaging"></i> 쪽지함 </h2>
     </div>
     
-    <div class="body-main wx-800 ml-30 pt-15">
+     <div class="body-main wx-800 ml-30 pt-15">
 		<div>
 			<ul class="tabs">
 				<li id="tab-receive" data-tab="receive">받은 쪽지함</li>
 				<li id="tab-send" data-tab="send">보낸 쪽지함</li>
 			</ul>
 		</div>
-		<div id="tab-content" style="clear:both; padding: 20px 10px 0;">
-		
+		<div id="tab-content" style="clear:both; padding: 20px 10px 0;">	
 			<table class="table">
 				<tr>
 					<td align="left" width="50%">
 						<c:if test="${menuItem=='receive'}">
-							<button type="button" class="btn btnReplyNote" >답변</button>
+							<button type="button" class="btn btnReplyDm" >답변</button>
 							<button type="button" class="btn">스팸신고</button>
 						</c:if>
 					</td>
@@ -167,7 +166,7 @@ function deleteNote() {
 			<table class="table">
 				<tr>
 					<td width="50%">
-						<button type="button" class="btn" onclick="deleteNote();">삭제</button>
+						<button type="button" class="btn" onclick="deleteDm();">삭제</button>
 					</td>
 				
 					<td align="right">

@@ -5,6 +5,22 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tabs.css" type="text/css">
 <style type="text/css">
+.body-container {
+	height: 600px;
+}
+
+form {
+  max-width: 660px;
+  width: 90%;
+  background-color: #f8f9fa;
+  padding: 40px;
+  border-radius: 4px;
+  top: 55%;
+  left: 50%;
+  color: #b4b4b4;
+  box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
+  margin: 90px auto;
+}
 .help-block {
 	padding: 5px 0;
 }
@@ -52,6 +68,28 @@
 .dialog-footer {
 	text-align: right;
 	padding: 5px 0;
+}
+
+.createBtn {
+	color: #3CAEFF;
+	border: 1px solid #3CAEFF;
+	margin: 5px;
+	box-sizing: border-box; 
+	float: left;
+	cursor: pointer;
+	width: 55px;
+	height: 55px;
+	line-height: 55px;
+	border-radius:45px;
+	font-weight: bold;
+	text-align: center;
+	font-size: 13px;
+	background: #f8f9fa;
+}
+
+.createBtn:hover {
+	color: white;
+	background-color: #46CCFF;
 }
 </style>
 
@@ -225,56 +263,44 @@ $(function(){
 
 </script>
 
-<div class="container body-container">
-    <div class="body-title">
-		<h2><i class="icofont-ui-messaging"></i> 쪽지함 </h2>
-    </div>
-    
-    <div class="body-main wx-800 ml-30 pt-15">
-		<div>
-			<ul class="tabs">
-				<li id="tab-receive" data-tab="receive">받은 쪽지함</li>
-				<li id="tab-send" data-tab="send" class="active">보낸 쪽지함</li>
-			</ul>
-		</div>
-		<div id="tab-content" style="clear:both; padding: 20px 10px 0;">
-		
-			<form name="dmForm" method="post">
-			<table class="table table-border table-content">
-				<tr> 
-					<td>받는사람</td>
-					<td> 
-						<div>
-							<button type="button" class="btn btnReceiverDialog">추가</button>
-							<div class="forms-receiver-name"></div>
-						</div>
-						<p class="help-block">
-							한번에 보낼수 있는 최대 인원은 5명입니다.
-						</p>
-					</td>
-				</tr>
-				
-				<tr> 
-					<td valign="top">내&nbsp;&nbsp;&nbsp;&nbsp;용</td>
-					<td valign="top"> 
-						<textarea name="content" class="boxTA">${dto.content}</textarea>
-					</td>
-				</tr>
-				  
-			</table>
-				
-			<table class="table">
-				<tr> 
-					<td align="center">
-						<button type="button" class="btn btn-dark" onclick="sendOk();">보내기</button>
-						<button type="reset" class="btn">다시입력</button>
-						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/dm/send/list';">취소</button>
-						<div id="forms-receiver-list"></div>
-					</td>
-				</tr>
-			</table>
-			</form>
-		</div>
+<div class="container body-container"  style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
+
+		<form name="dmForm" method="post">
+		<h3 style="padding: 5px 5px 15px 5px;">DM 전송하기</h3>
+		<table class="table table-border table-content">
+			<tr> 
+				<td>받는사람</td>
+				<td> 
+					<div>
+						<button type="button" class="createBtn btnReceiverDialog">추가</button>
+						<div class="forms-receiver-name"></div>
+					</div>
+					<p class="help-block">
+						한번에 보낼수 있는 최대 인원은 5명입니다.
+					</p>
+				</td>
+			</tr>
+			
+			<tr> 
+				<td valign="top">내&nbsp;&nbsp;&nbsp;&nbsp;용</td>
+				<td valign="top"> 
+					<textarea name="content" class="boxTA">${dto.content}</textarea>
+				</td>
+			</tr>
+			  
+		</table>
+			
+		<table class="table">
+			<tr> 
+				<td align="center">
+					<button type="button" class="createBtn" onclick="sendOk();">전송</button>
+					<button type="reset" class="createBtn">리셋</button>
+					<button type="button" class="createBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/dm/send/list';">취소</button>
+					<div id="forms-receiver-list"></div>
+				</td>
+			</tr>
+		</table>
+		</form>
 	</div>
 	
 	<div id="receiver-dialog" style="display: none;">

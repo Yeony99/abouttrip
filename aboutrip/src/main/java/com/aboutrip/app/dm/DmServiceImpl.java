@@ -17,7 +17,7 @@ public class DmServiceImpl implements DmService {
 	public List<Dm> listFriend(Map<String, Object> map) {
 		List<Dm> list = null;
 		try {
-			list = dao.selectList("note.listFriend", map);
+			list = dao.selectList("dm.listFriend", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -175,11 +175,11 @@ public class DmServiceImpl implements DmService {
 	@Override
 	public void deleteDm(Map<String, Object> map) throws Exception {
 		try{
-		    // 삭제(삭제상태로 된경우에는 글을 삭제)
-			dao.deleteData("dm.deleteNote", map);
-			
 			// 삭제 상태가 아닌 경우는 삭제 상태로 수정
 			dao.updateData("dm.updateDeleteState", map);
+			
+		    // 삭제(삭제상태로 된경우에는 글을 삭제)
+			dao.deleteData("dm.deleteDm", map);
 	} catch(Exception e) {
 		e.printStackTrace();
 		throw e;
@@ -187,10 +187,10 @@ public class DmServiceImpl implements DmService {
 	}
 
 	@Override
-	public int newDmCount(String userNum) {
+	public int newDmCount(int userNum) {
 		int result=0;
 		try {
-			result=dao.selectOne("dm.newNoteCount", userNum);
+			result=dao.selectOne("dm.newDmCount", userNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

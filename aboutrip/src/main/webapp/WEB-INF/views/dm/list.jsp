@@ -57,14 +57,14 @@ function searchList() {
 $(function() {
     $("#chkAll").click(function() {
 	   if($(this).is(":checked")) {
-		   $("input[name=nums]").prop("checked", true);
+		   $("input[name=dmNums]").prop("checked", true);
         } else {
-		   $("input[name=nums]").prop("checked", false);
+		   $("input[name=dmNums]").prop("checked", false);
         }
     });
  
     $(".btnDelete").click(function(){
-		var cnt = $("input[name=nums]:checked").length;
+		var cnt = $("input[name=dmNums]:checked").length;
 
 		if (cnt == 0) {
 			alert("삭제할 쪽지를 먼저 선택 하세요 !!!");
@@ -117,7 +117,7 @@ $(function() {
 					
 					<c:forEach var="dto" items="${list}">
 					<tr class="${empty dto.identifyDay?'unread':''}"> 
-						<td><input type="checkbox" name="nums" value="${dto.dmNum}"> </td>
+						<td><input type="checkbox" name="dmNums" value="${dto.dmNum}"> </td>
 						<td>
 							<div class="list-content"><a href="${articleUrl}&dmNum=${dto.dmNum}">${dto.content}</a></div>
 						</td>
@@ -167,7 +167,7 @@ $(function() {
 					</td>
 				</tr>
 			</table>
-		
+		<input type="hidden" name="receiverNum" value="${dto.receiverNum}">
 		</div>
 	</div>
 </div>

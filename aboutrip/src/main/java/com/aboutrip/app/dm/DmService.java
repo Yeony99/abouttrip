@@ -22,5 +22,5 @@ public interface DmService {
 	
 	public void updateIdentifyDay(int dmNum) throws Exception;
 	public void deleteDm(Map<String, Object> map) throws Exception;
-	public int newDmCount(String userNum);
+	public int newDmCount(int userNum);
 }

@@ -16,7 +16,7 @@
 	<insert id="insertDm" parameterType="com.aboutrip.app.dm.Dm">
 		INSERT INTO dm(dmNum, content, senderNum, receiverNum,
 				sendDay, identifyDay, sendDelete, receiveDelete)
-			VALUES (note_seq.NEXTVAL, #{content}, #{senderNum}, #{receiverNum},
+			VALUES (dm_seq.NEXTVAL, #{content}, #{senderNum}, #{receiverNum},
 				SYSDATE, #{identifyDay, jdbcType=VARCHAR}, 'N', 'N')
 	</insert>
     
@@ -203,28 +203,28 @@
 	</delete>
     
 	<!-- 쪽지를삭제상태로변경 -->
-	<delete id="updateDeleteState" parameterType="map">
-		UPDATE dm SET ${field1} = 'Y'
+	<delete id="updateDeleteState" parameterType="map"> 
+		UPDATE dm SET ${field1} = 'Y' 
 		WHERE dmNum IN 
 			<foreach item="dmNum" index="index" collection="dmNumList"
 					open="(" separator="," close=")">
-				#{dmNum}
+				#{dmNum} 
 			</foreach>
 	</delete>
     
 	<!-- 쪽지삭제 -->
-	<delete id="deleteNote" parameterType="map">
-		DELETE FROM dm
-		WHERE ${field2} = 'Y' AND
+	<delete id="deleteDm" parameterType="map">
+		DELETE FROM dm 
+		WHERE ${field2} = 'Y' AND 
 			dmNum IN 
 				<foreach item="dmNum" index="index" collection="dmNumList"
-						open="(" separator="," close=")">
-					#{dmNum}
+						open="(" separator="," close=")"> 
+					#{dmNum} 
 				</foreach>
     </delete>
     
 	<!-- 새로운 쪽지 개수 -->
-	<select id="newNoteCount" parameterType="String" resultType="Integer">
+	<select id="newDmCount" parameterType="String" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM dm
 		WHERE identifyDay IS NULL AND receiverNum=#{userNum}

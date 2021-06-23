@@ -20,37 +20,36 @@ form {
   margin: 0px auto;
 }
 .btnAddFollow {
+	padding: 0px;
 	margin: 8px;
 	box-sizing: border-box; 
 	cursor: pointer;
-	width: 55px;
-	height: 55px;
-	line-height: 55px;
+	width: 60px;
+	height: 60px;
 	border-radius:45px;
-	border: 1px solid #46CCFF;
+	border: 1px solid #4682B4;
 	font-weight: bold;
 	text-align: center;
-	font-size: 13px;
+	font-size: 14px;
 	background: #f8f9fa;
 }
 .btnAddFollow:hover {
 	color: #f8f9fa;
 	border: 1px solid #f8f9fa;
-	background-color: #46CCFF;
+	background-color: #4682B4;
 }
 .createBtn {
 	margin: 8px;
-	color: #46CCFF;
+	color: #4682B4;
 	box-sizing: border-box; 
 	cursor: pointer;
-	width: 55px;
-	height: 55px;
-	line-height: 55px;
+	width: 60px;
+	height: 60px;
 	border-radius:45px;
-	border: 1px solid #46CCFF;
+	border: 1px solid #4682B4;
 	font-weight: bold;
 	text-align: center;
-	font-size: 13px;
+	font-size: 14px;
 	background: #f8f9fa;
 
 }
@@ -58,7 +57,7 @@ form {
 .createBtn:hover {
 	color: #f8f9fa;
 	border: 1px solid #f8f9fa;
-	background-color: #46CCFF;
+	background-color: #4682B4;
 }
 
 .photoSlider {
@@ -110,7 +109,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 $(function(){
 	$(".btnSendDiaryLike").click(function(){
 		var $btn = $(this);
-		var bLike = $btn.find(".liker").css("color")=="rgb(255, 0, 0)";
+		var bLike = $btn.find(".liker").css("color")=="rgb(255, 255, 0)";
 		var msg = "게시글에 공감하시겠습니까 ?";
 		if(bLike) {
 			msg = "게시글 공감을 취소하시겠습니까 ?";
@@ -132,7 +131,7 @@ $(function(){
 				if(bLike) {
 					$btn.find(".liker").css("color","black");
 				} else {
-					$btn.find(".liker").css("color","red");
+					$btn.find(".liker").css("color","yellow");
 				}
 			}
 			
@@ -179,9 +178,9 @@ function addFollowing() {
 $(function(){
 	$(".btnAddFollow").click(function(){		
 		var $btn = $(this);
-		var bLike = $btn.find(".follow").css("color")=="rgb(255, 0, 0)";
+		var bFol = $btn.find(".follow").css("color")=="rgb(255, 0, 0)";
 		var msg = "${dto.nickName}님을 팔로우합니다. ";
-		if(bLike) {
+		if(bFol) {
 			msg = "팔로우를 취소합니다. ";
 		}
 		
@@ -190,17 +189,18 @@ $(function(){
 		}
 		
 		var url="${pageContext.request.contextPath}/diary/addFollowing";
-		if(bLike) {
+		if(bFol) {
 			url="${pageContext.request.contextPath}/diary/cancelFollowing";
 		}
-		//var followingUser="${dto.userNum}";
+		var followerUser="${sessionScope.member.userNum}";
+		var followingUser="${dto.userNum}";
 		var query="diaryNum=${dto.diaryNum}";
 		
 		var fn = function(data){
 			//console.log(data);
 			var state = data.state;
 			if(state=="true") {
-				if(bLike) {
+				if(bFol) {
 					$btn.find(".follow").css("color","black");
 				} else {
 					$btn.find(".follow").css("color","red");
@@ -263,12 +263,12 @@ $(function(){
 			</tr>
 			<tr>
 				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btn btnSendDiaryLike" title="좋아요"><i class="fas fa-thumbs-up liker" style="color:${isDiaryLikeUser?'red;':'black;'}"></i>&nbsp;&nbsp;<span id="diaryLikeCount">${dto.diaryLikeCount}</span></button>
+					<button type="button" class="btn btnSendDiaryLike" title="좋아요"><i class="fas fa-thumbs-up liker" style="color:${isDiaryLikeUser?'yellow;':'black;'}"></i>&nbsp;&nbsp;<span id="diaryLikeCount">${dto.diaryLikeCount}</span></button>
 				</td>
 			</tr>
 
 			<tr>
-				<td width="50%">
+				<td align="left">
 					<c:choose>
 						<c:when test="${sessionScope.member.userNum==dto.userNum}">
 			    			<button type="button" class="createBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/update?diaryNum=${dto.diaryNum}&page=${page}';">수정</button>
@@ -290,8 +290,10 @@ $(function(){
 			
 				<td align="right">
 					<button type="button" class="createBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main?${query}';">리스트</button>
-					<!-- <button type="button" class="createBtn" onclick="addFollowing();">팔로우</button> -->
-					<button type="button" class="btn btnAddFollow" title="팔로우"><i class="far fa-grin follow" style="color:${isFollow?'red;':'black;'}"></i><span id="addFollowing">팔로우</span></button>
+					<!-- 
+					<button type="button" class="btn btnAddFollow" title="팔로우"><i class="far fa-grin follow" style="color:${isFollow?'red;':'#4682B4;'}"></i><span id="addFollowing">팔로우</span></button>
+					 -->
+					<button type="button" class="btn btnAddFollow" title="팔로우"><span class="follow" style="color:${isFollow?'red;':'#4682B4;'}" id="addFollowing">팔로우</span></button>
 				</td>
 			</tr>
 		</table>
