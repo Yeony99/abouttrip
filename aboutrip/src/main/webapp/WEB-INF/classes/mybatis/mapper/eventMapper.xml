@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="event">
+	<!-- 이벤트 글 삽입 -->
+	<insert id="insertEvent" parameterType="com.aboutrip.app.event.Event">
+		INSERT INTO userEvent(num, adminNum, title, content, 
+			eventStart, eventEnd, winDate, winCount, present) 
+			VALUES(userevent_seq.NEXTVAL, #{adminNum}, #{title}, #{content}, 
+			#{eventStart}, #{eventEnd}, #{winDate}, #{winCount}, #{present})
+	</insert>
+	
+	<sql id="where-list">
+		<choose>
+			<when test="condition == 'all' ">
+			  AND ( INSTR(title, #{keyword}) &gt; 0
+		          OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
+			</when>
+			<when test="condition == 'content'">
+			   AND  DBMS_LOB.INSTR(content, #{keyword}) &gt; 0
+			</when>
+			<otherwise>
+			   AND INSTR(${condition}, #{keyword}) &gt; 0
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 이벤트 페이지 수 -->
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM userEvent e
+		JOIN member1 m ON e.adminNum=m.userNum
+		<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+		</where>
+	</select>
+	
+	<!-- 이벤트 리스트 -->
+	<select id="listEvent" parameterType="map" resultType="com.aboutrip.app.event.Event">
+		SELECT e.num, e.adminNum, nickName, title, 
+			TO_CHAR(eventStart, 'YYYY-MM-DD') eventStart, 
+			TO_CHAR(eventEnd, 'YYYY-MM-DD') eventEnd, 
+			TO_CHAR(winDate, 'YYYY-MM-DD') winDate, present, winCount
+		FROM userEvent e
+		JOIN member1 m ON e.adminNum = m.userNum
+		<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+		</where>
+		ORDER BY num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	
+	<!-- 이벤트 글 보기 -->
+	<select id="readEvent" parameterType="Integer" resultType="com.aboutrip.app.event.Event">
+		SELECT e.num, e.adminNum, nickName, title, content, eventStart, eventEnd, winDate,
+			present, winCount, NVL(partCount, 0) partCount, partNum, p.userNum, partDate, 
+			winNum, w.userNum 
+			FROM userEvent e
+			JOIN member1 m ON e.adminNum = m.userNum
+			JOIN partEvent p ON e.num = p.num
+			JOIN winEvent w ON e.num  = w.num
+			LEFT OUTER JOIN(
+				SELECT num, COUNT(*) partCount FROM partEvent
+				GROUP BY num
+			) p ON e.num = p.num
+			WHERE e.num= #{num}
+	</select>
+	
+	<!-- 이전글 -->
+	<select id="preReadEvent" parameterType="map" resultType="com.aboutrip.app.event.Event">
+		SELECT num, title
+		FROM userEvent e
+		JOIN member1 m ON e.adminNum=m.userNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (num &gt; #{num})
+		</where>
+		ORDER BY num ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<!-- 다음글 -->
+	<select id="nextReadEvent" parameterType="map" resultType="com.aboutrip.app.event.Event">
+		SELECT num, title
+		FROM userEvent e
+		JOIN member1 m ON e.adminNum=m.userNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (num &lt; #{num})
+		</where>
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<!-- 수정 -->
+	<update id="updateEvent" parameterType="com.aboutrip.app.event.Event">
+		UPDATE userEvent SET title=#{title}, content=#{content}, 
+		eventStart=#{eventStart}, eventEnd=#{eventEnd}, winDate=#{winDate}, 
+		winCount=#{winCount}, present=#{present}
+		WHERE num = #{num}
+	</update>
+      
+	<!-- 삭제 -->
+	<delete id="deleteEvent" parameterType="Integer">
+		DELETE FROM userEvent WHERE num = #{num}
+	</delete>
+	
+	<!-- 이벤트 참여 추가 -->
+	<insert id="partEvent" parameterType="map">
+		INSERT INTO partEvent(partNum, num, userNum, partDate) 
+			VALUES (partevent_seq.NEXTVAL, #{num}, #{userNum}, SYSDATE)
+	</insert>
+	
+	<!-- 이벤트 참여 조회 -->
+	<select id="listPart" parameterType="map" resultType="com.aboutrip.app.event.Event">
+		SELECT partNum, num, userNum, nickName, partDate 
+		FROM partEvent p
+		JOIN member1 m ON p.userNum=m.userNum
+		WHERE num=#{num}
+		ORDER BY partNum DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	
+	<!-- 이벤트 참여 개수 -->
+	<select id="partCount" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(*) FROM partEvent WHERE num=#{num}
+	</select>
+		
+	<!-- 당첨자 발표 추가 -->
+	<insert id="winEvent" parameterType="map">
+		INSERT INTO winEvent(winNum, num, userNum) 
+			VALUES (winevent_seq.NEXTVAL, #{num}, #{userNum})
+	</insert>
+	
+	<!-- 당첨자 발표 조회 -->
+	<select id="listWin" parameterType="map" resultType="com.aboutrip.app.event.Event">
+		SELECT partNum, num, userNum, nickName, partDate 
+		FROM partEvent p
+		JOIN member1 m ON p.userNum=m.userNum
+		WHERE num=#{num}
+		ORDER BY partNum DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+	
+	
+</mapper>

@@ -212,15 +212,7 @@ function listPage(page) {
 		<table class="table table-footer">
 			<tr>
 				<td width="50%" align="left">
-					<c:choose>
-						<c:when test="${sessionScope.member.userNum==dto.userNum}">
-			    			<button type="button" class="btnupdate" onclick="javascript:location.href='${pageContext.request.contextPath}/sug/update?num=${dto.num}&page=${page}';">수정</button>
-			    		</c:when>
-			    		<c:otherwise>
-			    			<button type="button" class="btnupdate" disabled="disabled">수정</button>
-			    		</c:otherwise>
-			    	</c:choose>
-			    	
+							    	
 			    	<c:choose>
 			    		<c:when test="${sessionScope.member.userNum==dto.userNum || sessionScope.member.userId=='admin'}">
 			    			<button type="button" class="btndelete" onclick="deleteBoard();">삭제</button>

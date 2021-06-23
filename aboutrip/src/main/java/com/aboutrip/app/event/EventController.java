@@ -1,6 +1,5 @@
 package com.aboutrip.app.event;
 
-import java.io.File;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -16,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.member.SessionInfo;
@@ -31,6 +31,7 @@ public class EventController {
 	private AboutUtil aboutUtil;
 	
 	//이벤트 참여 리스트
+	@RequestMapping(value="list")
 	public String list(
 			@RequestParam(value="page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "all") String condition,
@@ -39,6 +40,7 @@ public class EventController {
 			HttpSession session,
 			Model model
 			) throws Exception{
+		
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		String cp= req.getContextPath();
 		
@@ -104,8 +106,8 @@ public class EventController {
 	}
 	
 	// 이벤트 참여 글 작성
-	@RequestMapping(value="create", method=RequestMethod.GET)
-	public String createForm(
+	@RequestMapping(value="created", method=RequestMethod.GET)
+	public String createdForm(
 			Model model
 			) throws Exception{
 		model.addAttribute("mode", "created");
@@ -113,15 +115,15 @@ public class EventController {
 	}
 	
 	// 이벤트 참여 글 작성
-	@RequestMapping(value="create", method=RequestMethod.POST)
-	public String createSubmit(
+	@RequestMapping(value="/event/created", method=RequestMethod.POST)
+	public String createdSubmit(
 			Event dto,
 			HttpSession session
 			) throws Exception{
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		try {
-			dto.setUserNum(info.getUserNum());
+			dto.setAdminNum(info.getUserNum());
 			service.insertEvent(dto);
 		} catch (Exception e) {
 		}
@@ -179,24 +181,48 @@ public class EventController {
 		return ".event.article";
 	}
 	
+	// 이벤트 페이지 업데이트
+	@RequestMapping(value="update", method=RequestMethod.GET)
+	public String updateForm(
+			@RequestParam int num,
+			@RequestParam String page,
+			HttpSession session,
+			Model model
+			) throws Exception {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		Event dto = service.readEvent(num);
+		if(dto==null) {
+			return "redirect:/event/list?"+page;	
+		}
+		
+		if(!info.getUserId().equals("admin")) {
+			return "redirect:/event/list?"+page;
+		}
+		
+		model.addAttribute("dto", dto);
+		model.addAttribute("mode", "update");
+		model.addAttribute("page", page);
+		
+		return ".event.created";
+	}
+	
 	// 이벤트 페이지 업데이트 
 	@RequestMapping(value="update", method=RequestMethod.POST)
 	public String updateSubmit(
 			Event dto,
-			@RequestParam String page,
-			HttpSession session) throws Exception {
-		SessionInfo info=(SessionInfo)session.getAttribute("member");
+			@RequestParam String page
+			) throws Exception {
 		
 		try {
 			service.updateEvent(dto);
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		
 		return "redirect:/event/list?page="+page;
 	}
 	
-	
+	// 이벤트 글 삭제
 	@RequestMapping(value="delete")
 	public String delete(
 			@RequestParam int num,
@@ -212,10 +238,152 @@ public class EventController {
 			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
 		}
 		
+		service.deleteEvent(num, info.getUserNum());
 		
-		return "redirect:/bbs/list?"+query;
+		return "redirect:/event/list?"+query;
 	}
 	
-
+	//이벤트 참여 신청 리스트
+	@RequestMapping(value="listPart")
+	public String listPart(
+			@RequestParam int num,
+			@RequestParam(value="page", defaultValue = "1") int current_page,
+			Model model
+			) throws Exception {
+		
+		int rows=5;
+		int total_page=0;
+		int dataCount=0;
+		
+		Map<String, Object> map=new HashMap<>();
+		map.put("num", num);
+		
+		dataCount = service.partCount(map);
+		total_page = aboutUtil.pageCount(rows, dataCount);
+		if(current_page>total_page)
+			current_page=total_page;
+		
+		int offset = (current_page-1) * rows;
+		map.put("offset", offset);
+        map.put("rows", rows);
+        List<Event> listPart = service.listPart(map);
+        
+        for(Event dto : listPart) {
+        	dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+        }
+		
+        String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
+        
+        model.addAttribute("listPart", listPart);
+        model.addAttribute("page", current_page);
+        model.addAttribute("partCount", dataCount);
+        model.addAttribute("total_page", total_page);
+        model.addAttribute("paging", paging);
+        
+        return "event/listPart";
+		
+	}
+	
+	//이벤트 참여 신청
+	@RequestMapping(value="partEvent", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> partEvent(
+			Event dto,
+			HttpSession session
+			){
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		String state="true";
+		
+		try {
+			dto.setUserNum(info.getUserNum());
+			service.partEvent(dto);
+		} catch (Exception e) {
+			state="false";
+		}
+		
+		Map<String, Object> model = new HashMap<>();
+		model.put("state", state);
+		return model;
+	}
+	
+	//이벤트 참여 취소
+	@RequestMapping(value="deletPart", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deletePart(
+			@RequestParam Map<String, Object> paramMap
+			){
+		String state="true";
+		try {
+			service.deletePart(paramMap);
+		} catch (Exception e) {
+			state="false";
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("state", state);
+		return map;
+	}
+	
+	//이벤트 당첨자 발표, 난수발생 
+	@RequestMapping(value="winEvent", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> winEvent(
+			Event dto,
+			HttpSession session
+			){
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		String state="true";
+		
+		try {
+			dto.setUserNum(info.getUserNum());
+			service.winEvent(dto);
+		} catch (Exception e) {
+			state="false";
+		}
+		
+		Map<String, Object> model = new HashMap<>();
+		model.put("state", state);
+		return model;
+	}
+	
+	//이벤트 당첨자 리스트
+	@RequestMapping(value="listWin")
+	public String listWin(
+			@RequestParam int num,
+			@RequestParam(value="page", defaultValue = "1") int current_page,
+			Model model
+			) throws Exception {
+		
+		int rows=5;
+		int total_page=0;
+		int dataCount=0;
+		
+		Map<String, Object> map=new HashMap<>();
+		map.put("num", num);
+		
+		total_page = aboutUtil.pageCount(rows, dataCount);
+		if(current_page>total_page)
+			current_page=total_page;
+		
+		int offset = (current_page-1) * rows;
+		map.put("offset", offset);
+        map.put("rows", rows);
+        List<Event> listWin = service.listWin(map);
+        
+        for(Event dto : listWin) {
+        	dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+        }
+		
+        String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
+        
+        model.addAttribute("listPart", listWin);
+        model.addAttribute("page", current_page);
+        model.addAttribute("partCount", dataCount);
+        model.addAttribute("total_page", total_page);
+        model.addAttribute("paging", paging);
+        
+        return "event/listWin";
+		
+	}
 	
 }

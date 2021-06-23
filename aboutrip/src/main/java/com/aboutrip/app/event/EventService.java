@@ -21,8 +21,7 @@ public interface EventService {
 	public int partCount(Map<String, Object> map);
 	public void deletePart(Map<String, Object> map) throws Exception;
 	
-	public void winEvent(Map<String, Object> map) throws Exception;
-	public int winEventCount(int num);
+	public void winEvent(Event dto) throws Exception;
 	public List<Event> listWin(Map<String, Object> map);
 	
 }

@@ -153,24 +153,13 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void winEvent(Map<String, Object> map) throws Exception {
+	public void winEvent(Event dto) throws Exception {
 		try {
-			dao.insertData("event.winEvent", map);
+			dao.insertData("event.winEvent", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-	}
-
-	@Override
-	public int winEventCount(int num) {
-		int result=0;
-		try {
-			result=dao.selectOne("event.winEventCount", num);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
 	}
 
 	@Override

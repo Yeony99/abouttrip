@@ -9,6 +9,7 @@ public class Event {
 	private String eventStart;
 	private String eventEnd;
 	private String winDate;
+	private int winCount;
 	private String present;
 	private int adminNum;
 	
@@ -16,10 +17,12 @@ public class Event {
 	private int partNum;
 	private int eventNum;
 	private int userNum;
+	private String nickName;
 	private String partDate;
+	private int partCount;
 	
-	//당첨자
-	private int winNum;
+	//당첨자 번호
+	private int winNum; 
 
 	public int getNum() {
 		return num;
@@ -76,6 +79,15 @@ public class Event {
 	public void setWinDate(String winDate) {
 		this.winDate = winDate;
 	}
+	
+	public int getWinCount() {
+		return winCount;
+	}
+	
+	public void setWinCount(int winCount) {
+		this.winCount = winCount;
+	}
+	
 
 	public String getPresent() {
 		return present;
@@ -117,6 +129,14 @@ public class Event {
 		this.userNum = userNum;
 	}
 
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 	public String getPartDate() {
 		return partDate;
 	}
@@ -125,6 +145,14 @@ public class Event {
 		this.partDate = partDate;
 	}
 
+	public int getPartCount() {
+		return partCount;
+	}
+
+	public void setPartCount(int partCount) {
+		this.partCount = partCount;
+	}
+	
 	public int getWinNum() {
 		return winNum;
 	}
@@ -132,6 +160,6 @@ public class Event {
 	public void setWinNum(int winNum) {
 		this.winNum = winNum;
 	}
-	
+
 	
 }
