@@ -129,9 +129,10 @@ function bringPlan() {
 							style="border-bottom: 1px solid #ddd;">
 							<td style="text-align: center;">일정</td>
 							<td style="padding-left: 10px;">
-								<select name="plan" onchange="bringPlan">
+								<!-- <select name="plan" onchange="bringPlan">
 									<option value="">선 택</option>
-								</select>
+								</select> -->
+								<input type="text" name="plan" onchange="bringPlan">
 								<input type="hidden" value="" name="planNum"> <!-- 받아올 일정 num 등... -->
 							</td>
 						</tr>
