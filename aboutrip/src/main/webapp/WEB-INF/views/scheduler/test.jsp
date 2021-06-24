@@ -325,8 +325,28 @@ function bringPeople() {
 					    <tr>
 					        <td colspan='2' valign='top'>
 					        	<span>제목 : ${dto.subject}</span><br>
-					        	<!-- ctgNum 말고 placeName을 가져와야 합니다!ㅠ.ㅠ -->
-					        	<span>장소:  ${dto.ctgNum}</span>&nbsp;|&nbsp;<span>메이트 인원 : ${dto.people_num} </span>&nbsp;|&nbsp;<span>여행일 : ${dto.start_date} ~ ${dto.end_date}</span>
+					        	<c:choose>
+								<c:when test="${dto.ctgNum==1}">
+										<span>장소 : 서울</span>
+								</c:when>
+								<c:when test="${dto.ctgNum==2}">
+										<span>장소 : 부산</span>
+								</c:when>
+								<c:when test="${dto.ctgNum==3}">
+										<span>장소 : 제주 제주시</span>
+								</c:when>
+								<c:when test="${dto.ctgNum==4}">
+										<span>장소  : 제주 서귀포</span>
+								</c:when>
+								<c:when test="${dto.ctgNum==5}">
+										<span>장소 : 제주 성산</span>
+								</c:when>
+								<c:when test="${dto.ctgNum==6}">
+										<span>장소: 제주 기타</span>
+								</c:when>
+							</c:choose>
+					        	
+					        	&nbsp;|&nbsp;<span>메이트 인원 : ${dto.people_num} </span>&nbsp;|&nbsp;<span>여행일 : ${dto.start_date} ~ ${dto.end_date}</span>
 					        	<div style="border-top: 1px solid #ccc; padding:5px; min-height: 150px">
 					        		${dto.content}
 					        	</div>

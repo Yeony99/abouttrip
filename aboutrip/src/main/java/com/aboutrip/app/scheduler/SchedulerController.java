@@ -208,16 +208,14 @@ public class SchedulerController {
 		return ".scheduler.share";
 	}
 	
-	@RequestMapping(value="create", method=RequestMethod.GET)
-	public String createdForm(Model model) throws Exception {
+	@RequestMapping(value="create")
+	public String createdForm() throws Exception {
 		
-
-		model.addAttribute("mode", "created");
 		return ".scheduler.create";
 	}
 	
 	@RequestMapping(value = "findshare")
-	public Map<String, Object> findshare(@RequestParam String search,HttpSession session,@RequestParam String color) throws Exception{
+	public String findshare(@RequestParam String search,HttpSession session,@RequestParam String color,Model model) throws Exception{
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -225,9 +223,13 @@ public class SchedulerController {
 		map.put("user_num", info.getUserNum());
 		map.put("color", color);
 		Scheduler dto = service.readScheduler(map);
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("dto", dto);
-		return model;
+		model.addAttribute("dto", dto);
+		model.addAttribute("mode", "created");
+		if(dto==null) {
+			return"redirect:/scheduler/create";
+		} else {
+			return ".scheduler.create";
+		}
 		
 	}
 	
@@ -247,7 +249,7 @@ public class SchedulerController {
 	
 	@RequestMapping(value = "shareArticle")
 	public String shareArticle(@RequestParam int num, @RequestParam String page, @RequestParam(defaultValue = "all") String condition,
-			@RequestParam(defaultValue = "")String keyword, @RequestParam String search , @RequestParam int ctgNum,
+			@RequestParam(defaultValue = "")String keyword, @RequestParam String search , 
 			Model model) throws Exception{
 		keyword = URLDecoder.decode(keyword, "utf-8");
 		
@@ -264,10 +266,14 @@ public class SchedulerController {
 		map.put("condition", condition);
 		map.put("keyword", keyword);
 		map.put("num", num);
-		map.put("ctgNum", ctgNum);
 		Share preReadDto = service.preReadShare(map);
 		Share nextReadDto = service.nextReadShare(map);
-        
+        switch(dto.getColor()) {
+        case "green" : dto.setScheduler_color("개인일정"); break;
+        case "blue" : dto.setScheduler_color("가족일정"); break;
+        case "tomato" : dto.setScheduler_color("회사일정"); break;
+        case "purple" : dto.setScheduler_color("기타일정"); break;
+        }
 		model.addAttribute("dto", dto);
 		model.addAttribute("preReadDto", preReadDto);
 		model.addAttribute("nextReadDto", nextReadDto);

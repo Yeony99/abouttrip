@@ -18,6 +18,34 @@ public class Share {
 	private String memo;
 	private String imageFileName;
 	private String created;
+	private String color;
+	private int ctgNum;
+	private String ctgName;
+	private String scheduler_color;
+	public String getScheduler_color() {
+		return scheduler_color;
+	}
+	public void setScheduler_color(String scheduler_color) {
+		this.scheduler_color = scheduler_color;
+	}
+	public String getCtgName() {
+		return ctgName;
+	}
+	public void setCtgName(String ctgName) {
+		this.ctgName = ctgName;
+	}
+	public int getCtgNum() {
+		return ctgNum;
+	}
+	public void setCtgNum(int ctgNum) {
+		this.ctgNum = ctgNum;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
 	private MultipartFile upload;
 	
 	public String getImageFileName() {
@@ -37,14 +65,6 @@ public class Share {
 	}
 	public void setUpload(MultipartFile upload) {
 		this.upload = upload;
-	}
-	private int ctgNum;
-	
-	public int getCtgNum() {
-		return ctgNum;
-	}
-	public void setCtgNum(int ctgNum) {
-		this.ctgNum = ctgNum;
 	}
 	public int getHitCount() {
 		return hitCount;

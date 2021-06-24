@@ -53,7 +53,7 @@ button[disabled] {
 							<td style="text-align: center;">제목</td>
 							<td style="padding-left: 10px;"><input type="text"
 								name="subject" maxlength="50" class="boxTF"
-								value="장소 이름" readonly="readonly"></td>
+								value="${dto.subject }" readonly="readonly"></td>
 						</tr>
 						<tr align="left" height=100px;
 							style="border-bottom: 1px solid #ddd;">
@@ -66,30 +66,17 @@ button[disabled] {
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
 							<td style="text-align: center; width: 250px;">내용</td>
+							<td><span>제목 : ${dto.scheduler_subject }</span><br>
+							<span>일정분류 : ${dto.scheduler_color }</span><br>
+							<span>날짜 : ${dto.check_in } ~ ${dto.check_out }</span><br>
+							<span>일정 만든날 : ${dto.scheduler_created }</span><br>
+							<span> 메모 : ${dto.memo } </span></td>
 							<td valign="top">
 																					<!-- dto.shareImgName 등... -->
-								<img src="${pageContext.request.contextPath}/uploads/share/dto.imgName" style="max-width:100%; height:auto; resize:both;">
-								<textarea name="content" class="boxTA">콘텐츠(내용)</textarea>
+								<img src="${pageContext.request.contextPath}/uploads/share/${dto.imageFileName}" style="max-width:100%; height:auto; resize:both;">
+								<textarea name="content" class="boxTA">${dto.content }</textarea>
 							</td>
 						</tr>
-						<!--
-						<tr>
-							<td colspan="2">
-								다음글 :
-								<c:if test="${not empty nextReadDto}">
-									<a href="${pageContext.request.contextPath}/share/list">${nextReadDto.}</a>
-								</c:if>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								이전글 :
-								<c:if test="${not empty preReadDto}">
-									<a href="${pageContext.request.contextPath}/share/list">${preReadDto}</a>
-								</c:if>
-							</td>
-						</tr>
-						-->
 					</table>
 
 					<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">

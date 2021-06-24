@@ -137,9 +137,9 @@
 							style="border-bottom: 1px solid #ddd;">
 							<td width="60">${dto.listNum}</td>
 							<td align="left" style="padding-left: 10px; text-align: center;">
-								<span>${dto.ctgName}</span><a href="">${dto.subject}</a>
+								<a href="${articleUrl }&num=${dto.num}&search=${dto.search}">${dto.subject}</a>
 							</td>
-							<td width="100">${dto.userName}</td>
+							<td width="100">${dto.nickName}</td>
 							<td width="200">${dto.created}</td>
 							<td width="107">${dto.hitCount}</td>
 					</c:forEach>

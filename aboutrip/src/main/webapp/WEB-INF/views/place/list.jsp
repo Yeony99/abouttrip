@@ -106,28 +106,6 @@
 									style="width: 100%; height: 100%; object-fit: cover;"></a>
 							</div>
 						</c:forEach>
-					<%-- <div class="bximg"
-						style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
-						<a href="#"><img class="box-img"
-							src="${pageContext.request.contextPath}/resources/img/img/busan.jpg"
-							alt="감천 문화마을" title="img1"
-							style="width: 100%; height: 100%; object-fit: cover;"></a>
-					</div>
-					<div class="bximg"
-						style="width: 300px; height: 300px; background-color: red; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
-						<a href="#"><img class="box-img"
-							src="${pageContext.request.contextPath}/resources/img/img/hwasung.jpg"
-							alt="수원 화성" title="img1"
-							style="width: 100%; height: 100%; object-fit: cover;"></a>
-					</div>
-
-					<div class="bximg"
-						style="width: 300px; height: 300px; background-color: blue; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
-						<a href="#"><img class="box-img"
-							src="${pageContext.request.contextPath}/resources/img/img/bukchon.jpg"
-							alt="북촌 한옥마을" title="img1"
-							style="width: 100%; height: 100%; object-fit: cover;"></a>
-					</div> --%>
 				</div>
 			</div>
 		</div>

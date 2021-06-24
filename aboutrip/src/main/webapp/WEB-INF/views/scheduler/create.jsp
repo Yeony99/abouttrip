@@ -99,6 +99,12 @@ function findSch(){
 	f.action="${pageContext.request.contextPath}/scheduler/findshare?color"+color+"&search="+search;
 	f.submit();
 }
+function resetSch(){
+	var f = document.listForm;
+	
+	f.action="${pageContext.request.contextPath}/scheduler/create";
+	f.submit();
+}
 </script>
 	<div style="margin-top: 8rem">
 		<div>
@@ -129,8 +135,9 @@ function findSch(){
 									<option value="tomato" ${dto.color=="tomato" ? "selected='selected'" : ""}>회사일정</option>
 									<option value="purple" ${dto.color=="purple" ? "selected='selected'" : ""}>기타일정</option>
 								</select>
-								<button type="button" class="btn" onclick="findSch();" ${mode=="update"?"'disabled=disabled'":""}>찾기</button>
-								<input type="hidden" value="" name="color"> <!-- 받아올 일정 num 등... -->
+									<button type="button" class="btn" onclick="findSch();" }>찾기</button>
+									<button type="button" class="btn" onclick="resetSch();" disabled="disabled">수정하기</button>
+								<input type="hidden" value="" name="color"> 
 							</td>
 						</tr>
 						</c:if>
@@ -147,14 +154,15 @@ function findSch(){
 							<td style="text-align: center;">일정</td>
 							<td style="padding-left: 10px;">
 								<select name="plan" onchange="bringPlan();">
-									<option value="">선 택</option>
+									<option value="" disabled="disabled">선 택</option>
 									<option value="green" ${dto.color=="green" ? "selected='selected'" : ""} disabled="disabled">개인일정</option>
 									<option value="blue" ${dto.color=="blue" ? "selected='selected'" : ""} disabled="disabled">가족일정</option>
 									<option value="tomato" ${dto.color=="tomato" ? "selected='selected'" : ""} disabled="disabled">회사일정</option>
 									<option value="purple" ${dto.color=="purple" ? "selected='selected'" : ""} disabled="disabled">기타일정</option>
 								</select>
-								<button type="button" class="btn" onclick="findSch();" ${mode=="update"?"'disabled=disabled'":""}>찾기</button>
-								<input type="hidden" value="" name="color"> <!-- 받아올 일정 num 등... -->
+								<button type="button" class="btn" onclick="findSch();" disabled="disabled">찾기</button>
+								<button type="button" class="btn" onclick="resetSch();" >수정하기</button>
+								<input type="hidden" value="${dto.color }" name="color">
 							</td>
 						</tr>
 						</c:if>
@@ -163,7 +171,7 @@ function findSch(){
 							<td style="text-align: center;">제목</td>
 							<td style="padding-left: 10px;"><input type="text"
 								name="subject" maxlength="50" class="boxTF"
-								value="${dto.subject}" placeholder="제목을 입력하세요."></td>
+								value="" placeholder="제목을 입력하세요."></td>
 						</tr>
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
