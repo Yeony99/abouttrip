@@ -18,6 +18,7 @@ public interface ProductService {
 	public List<Order> listcart(int userNum) throws Exception;
 	public List<Order> listPayment(Map<String, Object> map) throws Exception;
 	public List<Order> listCard(int user_num) throws Exception;
+	public List<Order> listReview(Map<String, Object> map) throws Exception;
 	
 	public void updateQnA(int num) throws Exception;
 	
@@ -25,6 +26,7 @@ public interface ProductService {
 	public int countcart(int user_num) throws Exception;
 	public int listCount(Map<String, Object> map) throws Exception;
 	public int countQna(int code) throws Exception;
+	public int countReview(int code) throws Exception;
 	
 	public Product readProduct(int code) throws Exception;
 	public Order readMember(int user_num) throws Exception;

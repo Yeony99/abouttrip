@@ -13,7 +13,7 @@ public class Order {
 	// 리뷰 정보
 	private int review_num;
 	private String reviewContent;
-	private int rate;
+	private double rate;
 	private int code;
 	
 	// 장바구니
@@ -103,10 +103,10 @@ public class Order {
 	public void setReviewContent(String reviewContent) {
 		this.reviewContent = reviewContent;
 	}
-	public int getRate() {
+	public double getRate() {
 		return rate;
 	}
-	public void setRate(int rate) {
+	public void setRate(double rate) {
 		this.rate = rate;
 	}
 	public int getUser_num() {

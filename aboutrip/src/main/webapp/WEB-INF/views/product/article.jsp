@@ -183,7 +183,33 @@
 		<div id="detail" style="font-size: 2rem;">상세정보</div>
 		${dto.product_detail} <br> <br>
 		<div id="review" style="font-size: 2rem;">리뷰</div>
-		<jsp:include page="/WEB-INF/views/product/review.jsp" />
+		<div>
+			<table
+				style="margin: auto; width: 80%; border-spacing: 0; border-bottom: 1px solid #ddd;">
+				<tr>
+					<th>작성자</th>
+					<th>구매옵션</th>
+					<th>내용</th>
+					<th>구매 일자</th>
+					<th>평점</th>
+				</tr>
+
+				<c:forEach var="dto" items="${revlist}">
+					<tr>
+						<th>${dto.nickName}</th>
+						<th>${dto.option_name}</th>
+						<th>${dto.reviewContent}</th>
+						<th>${dto.order_date}</th>
+						<th>${dto.rate}</th>
+					</tr>
+				</c:forEach>
+			</table>
+		</div>
+		<div>
+			<a
+				href="${pageContext.request.contextPath}/product/review?code=${dto.code}">더보기...</a>
+		</div>
+
 
 
 

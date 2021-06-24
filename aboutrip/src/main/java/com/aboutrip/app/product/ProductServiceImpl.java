@@ -259,6 +259,24 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return result;
 	}
+
+	@Override
+	public List<Order> listReview(Map<String, Object> map) throws Exception {
+		List<Order> list = null;
+		try {
+			list = dao.selectList("product.review_list", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
+
+	@Override
+	public int countReview(int code) throws Exception {
+		
+		return 0;
+	}
 	
 	
 }

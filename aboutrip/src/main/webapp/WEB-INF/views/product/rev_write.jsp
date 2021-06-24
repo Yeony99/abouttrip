@@ -36,7 +36,7 @@
 									<option value=0.0>0.0</option>
 							</select></td>
 							<td>
-								<input type="hidden" name="order_num" value="${dto.order_num}">
+								<input type="hidden" name="order_detail" value="${dto.order_detail}">
 								<button type="submit">리뷰 등록</button></td>
 						</tr>
 					</table>

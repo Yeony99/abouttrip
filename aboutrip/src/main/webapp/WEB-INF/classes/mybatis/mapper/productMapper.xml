@@ -57,8 +57,10 @@
 	<insert id="cart_insert"
 		parameterType="com.aboutrip.app.product.Order">
 		INSERT INTO
-		cart(cart_num, user_num, quantity, detail_num)
-		VALUES(cart_seq.NEXTVAL, #{user_num}, #{quantity}, #{detail_num})
+		cart(cart_num, user_num, quantity,
+		detail_num)
+		VALUES(cart_seq.NEXTVAL, #{user_num}, #{quantity},
+		#{detail_num})
 	</insert>
 
 	<insert id="orders_insert"
@@ -77,13 +79,18 @@
 		parameterType="com.aboutrip.app.product.Order">
 		INSERT INTO orderDetail(order_detail, price, discount,
 		final_price, detail_num, order_num)
-		VALUES(orderdetail_seq.NEXTVAL, #{price}, #{discount},
+		VALUES(orderdetail_seq.NEXTVAL,
+		#{price}, #{discount},
 		#{final_price}, #{detail_num}, #{order_num})
 	</insert>
-	
-	<insert id="insert_review" parameterType="com.aboutrip.app.product.Order">
-		INSERT INTO product_review(review_num, rate, reviewContent, user_num, order_num)
-		VALUES (product_review_seq.NEXTVAL, #{rate}, #{reviewContent}, #{user_num}, #{order_num} )
+
+	<insert id="insert_review"
+		parameterType="com.aboutrip.app.product.Order">
+		INSERT INTO product_review(review_num, rate,
+		reviewContent, user_num, order_detail)
+		VALUES
+		(product_review_seq.NEXTVAL, #{rate}, #{reviewContent}, #{user_num},
+		#{order_detail} )
 	</insert>
 
 	<!-- 수정 -->
@@ -150,12 +157,19 @@
 		resultType="com.aboutrip.app.product.Product">
 		SELECT p.code, product_name, TO_CHAR(sales_start,'YYYY-MM-DD')
 		sales_start, TO_CHAR(sales_end, 'YYYY-MM-DD') sales_end,
-		upload_date,ishidden, price, img_name
+		upload_date,ishidden, price, img_name, rate, rateCount
 		FROM product p
 		LEFT JOIN (SELECT
 		code, MIN(price) price FROM productdetail GROUP BY code)d ON
 		p.code=d.code
 		JOIN product_img i ON p.code=i.code
+		JOIN 
+			(select code, ROUND(avg(rate),2) rate, COUNT(rate) rateCount FROM
+				(SELECT code, option_name, rate	from product_review r
+				RIGHT OUTER JOIN orderDetail od ON od.order_detail=r.order_detail
+				RIGHT OUTER JOIN productDetail pd ON pd.detail_num = od.detail_num)
+			GROUP BY code) pr
+		ON p.code = pr.code
 		WHERE category_num IN
 		<foreach collection="list" item="code" index="index"
 			separator="," open="(" close=")">
@@ -222,12 +236,15 @@
 
 	<select id="payment_list" parameterType="map"
 		resultType="com.aboutrip.app.product.Order">
-		SELECT cart_num, quantity, price, option_name, product_name, d.detail_num
+		SELECT cart_num, quantity, price, option_name, product_name,
+		d.detail_num
 		FROM cart c
-		JOIN productDetail d ON c.detail_num = d.detail_num
+		JOIN productDetail d ON c.detail_num =
+		d.detail_num
 		JOIN product p ON
 		d.code = p.code
-		WHERE user_num = #{user_num} AND cart_num IN
+		WHERE user_num =
+		#{user_num} AND cart_num IN
 		<foreach collection="list" item="code" index="index"
 			separator="," open="(" close=")">
 			#{code}
@@ -250,7 +267,7 @@
 		<where>
 			code=${code}
 			<if test="condition=='type'">
-				INSTR(type, #{keyword}) &gt; 0
+				AND INSTR(type, #{keyword}) &gt; 0
 			</if>
 		</where>
 		ORDER BY num DESC
@@ -259,9 +276,11 @@
 
 	<select id="qna_manage_list" parameterType="map"
 		resultType="com.aboutrip.app.product.QnA">
-		SELECT num, type, title, content, c_date, answer, a_date, nickName, p.code, product_name
+		SELECT num, type, title, content, c_date, answer, a_date, nickName,
+		p.code, product_name
 		FROM product_qna q
-		JOIN member1 m ON q.user_num = m.usernum
+		JOIN member1 m ON q.user_num =
+		m.usernum
 		JOIN product p ON q.code = p.code
 		<where>
 			<if test="keyword!=0 and condition=='all'">
@@ -281,6 +300,20 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 
+	<select id="review_list" parameterType="map"
+		resultType="com.aboutrip.app.product.Order">
+		SELECT review_num, rate, reviewContent, code, option_name, nickName, TO_CHAR(order_date, 'YYYY-MM-DD') order_date
+		FROM product_review r
+		JOIN orderDetail od ON od.order_detail = r.order_detail
+		JOIN orders o ON o.order_num = od.order_num
+		JOIN productDetail pd ON pd.detail_num = od.detail_num
+		JOIN member1 m ON m.usernum = r.user_num
+		<where>
+			code=${code}
+		</where>
+		ORDER BY review_num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
 	<!-- 글 -->
 
 	<select id="product_read" parameterType="Integer"
@@ -360,7 +393,8 @@
 	<sql id="where-list">
 		<if test="condition=='all' ">
 			( INSTR(title, #{keyword}) &gt; 0
-			OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
+			OR
+			DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
 		</if>
 		<if test="condition=='title'">
 			INSTR(title, #{keyword}) &gt; 0
@@ -370,7 +404,8 @@
 		</if>
 		<if test="condition=='reg_date'">
 			( TO_CHAR(reg_date, 'YYYY-MM-DD') = #{keyword}
-			OR TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword} )
+			OR
+			TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword} )
 		</if>
 	</sql>
 </mapper>

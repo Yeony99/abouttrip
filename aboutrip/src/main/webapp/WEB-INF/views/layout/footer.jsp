@@ -28,7 +28,6 @@
                     <h5>여행상품</h5>
                     <ul>
                         <li><a href="${pageContext.request.contextPath}/booking/event">초특가 여행상품</a></li>
-                        <li><a href="${pageContext.request.contextPath}/booking/best">BEST 인기상품</a></li>
                         <li><a href="${pageContext.request.contextPath}/booking/list">단체패키지/티켓/유심&amp;wifi</a></li>
                     </ul>
                 </div>

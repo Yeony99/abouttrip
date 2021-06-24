@@ -29,14 +29,9 @@
 								href="${pageContext.request.contextPath}${dto.articleUrl}">${dto.product_name}</a></td>
 							<td>${dto.option_name}</td>
 							<td>${dto.final_price}</td>
-							<c:if test="${dto.isUsed==1}">
-								<td>미사용</td>
-							</c:if>
-							<c:if test="${dto.isUsed==0}">
-								<td>사용</td>
-							</c:if>
+							<td>${dto.isUsed==1?"미사용":"사용"}</td>
 							<td>${dto.order_date}</td>
-							<td><button type="button" onclick="location.href='${pageContext.request.contextPath}/product/rev_write?code=${dto.code}&order_num=${dto.order_num}';"
+							<td><button type="button" onclick="location.href='${pageContext.request.contextPath}/product/rev_write?code=${dto.code}&order_detail=${dto.order_detail}';"
 									${dto.review_num!="0" ? "disabled" : ""}>${dto.review_num=="0" ? "리뷰작성" : "작성완료"}</button></td>
 					</c:forEach>
 					<c:if test="${list==null}">

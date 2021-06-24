@@ -71,7 +71,7 @@ public class ProductController {
 		map.put("rows", rows);
 
 		List<Product> list = service.listProducts(map);
-
+		
 		int listNum, n = 0;
 		for (Product dto : list) {
 			listNum = dataCount - (offset + n);
@@ -109,11 +109,11 @@ public class ProductController {
 	) throws Exception {
 		Product dto = new Product();
 		List<QnA> qna = new ArrayList<QnA>();
+		List<Order> review = new ArrayList<Order>();
 		List<Product> options = new ArrayList<Product>();
 
 		dto = service.readProduct(code);
 		options = service.listOption(code);
-
 		int rows = 10; // 한 화면에 보여주는 게시물 수
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -122,10 +122,12 @@ public class ProductController {
 		map.put("rows", rows);
 		map.put("code", code);
 
+		review = service.listReview(map);
 		qna = service.listQna(map);
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		model.addAttribute("nickName", info.getNickName());
 		model.addAttribute("qnalist", qna);
+		model.addAttribute("revlist", review);
 		model.addAttribute("options", options);
 		model.addAttribute("dto", dto);
 		model.addAttribute("code", code);
@@ -310,7 +312,7 @@ public class ProductController {
 		String cp = req.getContextPath();
 
 		String query = "";
-		String listUrl = cp + "/product/article";
+		String listUrl = cp + "/product/article/qna";
 		if (keyword.length() != 0) {
 			query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
 			listUrl += query;
@@ -325,8 +327,69 @@ public class ProductController {
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("paging", paging);
 		model.addAttribute("list", list);
+		model.addAttribute("code", code);
 
 		return ".product.qna";
+	}
+	
+	@RequestMapping("review")
+	public String reviewlist(
+			@RequestParam(value = "page", defaultValue = "1") int current_page,
+			@RequestParam(defaultValue = "all") String condition,
+			@RequestParam(defaultValue = "") String keyword,
+			int code, HttpServletRequest req, Model model) throws Exception {
+		List<Order> list = new ArrayList<Order>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		int rows = 10; // 한 화면에 보여주는 게시물 수
+		int total_page = 0;
+		int dataCount = 0;
+
+		dataCount = service.countReview(code);
+
+		if (req.getMethod().equalsIgnoreCase("GET")) { // GET 방식인 경우
+			keyword = URLDecoder.decode(keyword, "utf-8");
+		}
+
+		if (dataCount != 0)
+			total_page = aboutUtil.pageCount(rows, dataCount);
+
+		// 다른 사람이 자료를 삭제하여 전체 페이지수가 변화 된 경우
+		if (total_page < current_page)
+			current_page = total_page;
+
+		// 리스트에 출력할 데이터를 가져오기
+		int offset = (current_page - 1) * rows;
+		if (offset < 0)
+			offset = 0;
+		map.put("offset", offset);
+		map.put("rows", rows);
+		map.put("code", code);
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+
+		list = service.listReview(map);
+
+		String cp = req.getContextPath();
+
+		String query = "";
+		String listUrl = cp + "/product/article/review";
+		if (keyword.length() != 0) {
+			query = "condition=" + condition + "&keyword=" + URLEncoder.encode(keyword, "utf-8");
+			listUrl += query;
+		}
+
+		String paging = aboutUtil.paging(current_page, total_page, listUrl);
+
+		model.addAttribute("page", current_page);
+		model.addAttribute("total_page", total_page);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("condition", condition);
+		model.addAttribute("dataCount", dataCount);
+		model.addAttribute("paging", paging);
+		model.addAttribute("list", list);
+		model.addAttribute("code", code);
+
+		return ".product.review";
 	}
 
 	@RequestMapping("qnasubmit")

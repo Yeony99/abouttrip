@@ -12,6 +12,9 @@
 </script>
 
 <div>
+	<span> <a
+		href="${pageContext.request.contextPath}/product/article?code=${code}">게시글로 돌아가기</a></span>
+
 	<form name="qnaForm" method="post">
 		<table>
 			<tr>

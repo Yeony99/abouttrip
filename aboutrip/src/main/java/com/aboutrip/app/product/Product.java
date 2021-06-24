@@ -31,7 +31,22 @@ public class Product {
 	private String start_date;
 	private String end_date;
 	private int price;
+	private double rate;
+	private int rateCount;
+	
 
+	public int getRateCount() {
+		return rateCount;
+	}
+	public void setRateCount(int rateCount) {
+		this.rateCount = rateCount;
+	}
+	public double getRate() {
+		return rate;
+	}
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
 	public String getSales_start() {
 		return sales_start;
 	}

@@ -135,8 +135,9 @@
 									<li><span>판매 시작 ~ 판매 종료</span></li>
 									<li><span>${dto.sales_start} ~ ${dto.sales_end}</span></li>
 									<c:if test="${dto.price!=null}">
-										<li><span>${dto.price}</span></li>
+										<li><span>${dto.price}~</span></li>
 									</c:if>
+									<li><span>${dto.rate}/5.0 [참여 : ${dto.rateCount}]</span></li>
 								</ul>
 								<ul>
 									<li>&nbsp;</li>
