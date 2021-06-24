@@ -11,6 +11,7 @@ import com.aboutrip.app.Mail.Mail;
 import com.aboutrip.app.Mail.MailSender;
 import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.common.dao.AboutDAO;
+import com.aboutrip.app.product.Order;
 
 @Service("member.memberService")
 public class MemberServiceImpl implements MemberService{

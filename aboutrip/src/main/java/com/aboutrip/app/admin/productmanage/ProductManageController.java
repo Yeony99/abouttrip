@@ -1,6 +1,7 @@
 package com.aboutrip.app.admin.productmanage;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.member.SessionInfo;
 import com.aboutrip.app.product.Product;
+import com.aboutrip.app.product.QnA;
 
 @Controller("admin.productmanage.productManageController")
 @RequestMapping("/admin/productmanage/*")
@@ -133,8 +135,6 @@ public class ProductManageController {
 		Product dto = new Product();
 		dto = service.readProduct(code);
 
-		
-		
 		model.addAttribute("dto", dto);
 		model.addAttribute("mode", "updateproduct");
 		return ".admin.productmanage.create";
@@ -191,6 +191,67 @@ public class ProductManageController {
 		}
 
 		return "redirect:/admin/productmanage/productmanagement";
+	}
+
+	@RequestMapping("qnamanage")
+	public String qnaManagement(
+			@RequestParam(value = "page", defaultValue = "1") int current_page,
+			@RequestParam(defaultValue = "all") String condition,
+			@RequestParam(defaultValue = "0") String keyword,
+			HttpServletRequest req,
+			Model model) throws Exception {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<QnA> list = null;
+		String cp = req.getContextPath();
+
+		int rows = 10;
+		int offset = (current_page - 1) * rows;
+		if (offset < 0)
+			offset = 0;
+
+		map.put("offset", offset);
+		map.put("rows", rows);
+		map.put("keyword", keyword);
+		map.put("condition", condition);
+		
+		list = service.listQnA(map);
+		
+		int dataCount = service.qnaCount(map);
+		
+		int total_page = aboutUtil.pageCount(rows, dataCount);
+		if (current_page > total_page)
+			current_page = total_page;
+		
+		String query = "";
+        String listUrl = cp+"/admin/productmanage/article?condition=" + condition;
+        
+        if(keyword.length()!=0) {
+        	query = "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
+        }
+        
+		String paging = aboutUtil.pagingMethod(current_page, total_page, listUrl);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("query", query);
+		model.addAttribute("dataCount", dataCount);
+		model.addAttribute("total_page", total_page);
+		model.addAttribute("page", current_page);
+		model.addAttribute("condition", condition);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("paging", paging);
+		
+		return ".admin.productmanage.qnamanage";
+	}
+
+	@RequestMapping("respanswer")
+	public String responseAnswer(int num, String answer) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("num", num);
+		map.put("answer", answer);
+
+		service.insertAnswer(map);
+		return "redirect:/admin/productmanage/qnamanage";
 	}
 
 }

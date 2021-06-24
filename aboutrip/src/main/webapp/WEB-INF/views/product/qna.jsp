@@ -2,25 +2,34 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<script type="text/javascript">
+	function inputqna() {
+		var d = document.qnaForm;
+
+		d.action = "${pageContext.request.contextPath}/product/qnasubmit";
+		d.submit();
+	}
+</script>
 
 <div>
-	<form method="post">
+	<form name="qnaForm" method="post">
 		<table>
 			<tr>
+				<td>${nickName}</td>
 				<td><select name="type">
 						<option value="1">상품질문</option>
 						<option value="2">교환/환불</option>
 						<option value="3">기타</option>
 				</select></td>
-				<td><input type="text" name="content" placeholder="제목을 입력하세요."></td>
+				<td><input type="text" name="title" placeholder="제목을 입력하세요."></td>
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td colspan="2"><input type="text" name="content"
 					placeholder="질문을 입력하세요."></td>
-				<td><input type="hidden" name="code" value="${code}">
-					<button type="button"
-						onclick="location:href='${pageContext.request.contextPath}/product/qnasubmit'">질문하기</button></td>
+				<td><input type="hidden" name="nickName" value="${nickName}">
+					<input type="hidden" name="code" value="${code}">
+					<button type="button" onclick="inputqna();">질문하기</button></td>
 			</tr>
 		</table>
 	</form>
@@ -30,7 +39,7 @@
 			<th>작성자</th>
 			<th>질문유형</th>
 			<th>질문 제목</th>
-			<th>&nbsj</th>
+			<th>&nbsp;</th>
 		</tr>
 		<tr>
 			<td colspan="3">질문내용</td>

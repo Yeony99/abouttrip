@@ -10,8 +10,15 @@ public class QnA {
 	private String a_date;
 	private String nickName;
 	private String code;
+	private String product_name;
 	private int user_num;
 	
+	public String getProduct_name() {
+		return product_name;
+	}
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
 	public String getCode() {
 		return code;
 	}

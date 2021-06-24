@@ -3,6 +3,8 @@ package com.aboutrip.app.member;
 import java.util.List;
 import java.util.Map;
 
+import com.aboutrip.app.product.Order;
+
 public interface MemberService {
 	public Member loginMember(String userId);
 	

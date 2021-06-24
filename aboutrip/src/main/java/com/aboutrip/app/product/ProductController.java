@@ -337,4 +337,30 @@ public class ProductController {
 		redirect.addAttribute("code", dto.getCode());
 		return "redirect:/product/article";
 	}
+	
+	@RequestMapping("rev_write")
+	public String rev_write(
+			Order dto,
+			HttpSession session,
+			Model model
+			) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		model.addAttribute("dto", dto);
+		model.addAttribute("user", info);
+		
+		return ".product.rev_write";
+	}
+	
+	@RequestMapping(value="revsubmit", method=RequestMethod.POST)
+	public String revsubmit(
+			Order dto,
+			HttpSession session,
+			Model mode
+			) throws Exception{
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		dto.setUser_num(info.getUserNum());
+		return "";
+	}
 }

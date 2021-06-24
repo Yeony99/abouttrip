@@ -13,6 +13,7 @@ public class Order {
 	// 리뷰 정보
 	private String reviewContent;
 	private int rate;
+	private int code;
 	
 	// 장바구니
 	private int user_num;
@@ -55,7 +56,27 @@ public class Order {
 	private int cPrice;
 	private String cDate;
 	
+	private int listNum;
+	private String articleUrl;
 	
+	public int getListNum() {
+		return listNum;
+	}
+	public void setListNum(int listNum) {
+		this.listNum = listNum;
+	}
+	public String getArticleUrl() {
+		return articleUrl;
+	}
+	public void setArticleUrl(String articleUrl) {
+		this.articleUrl = articleUrl;
+	}
+	public int getCode() {
+		return code;
+	}
+	public void setCode(int code) {
+		this.code = code;
+	}
 	public String getProduct_name() {
 		return product_name;
 	}

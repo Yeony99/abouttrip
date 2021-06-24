@@ -104,7 +104,7 @@
 	}
 	function inputqna() {
 		var d = document.qnaForm;
-		
+
 		d.action = "${pageContext.request.contextPath}/product/qnasubmit";
 		d.submit();
 	}
@@ -141,11 +141,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td>	
-						<input type="hidden" name="code" value="${dto.code}">
+					<td><input type="hidden" name="code" value="${dto.code}">
 						<button type="button" onclick="mycart();">장바구니</button>
-						<button type="button" onclick="">구매하기</button>
-					</td>
+						<button type="button" onclick="">구매하기</button></td>
 				</tr>
 				<tr>
 					<td style="background-color: aliceblue; padding: 20px;">
@@ -204,10 +202,10 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="2"><input type="text" name="content" placeholder="질문을 입력하세요."></td>
-					<td>
-					<input type="hidden" name="nickName" value="${nickName}">
-					<input type="hidden" name="code" value="${code}">
+					<td colspan="2"><input type="text" name="content"
+						placeholder="질문을 입력하세요."></td>
+					<td><input type="hidden" name="nickName" value="${nickName}">
+						<input type="hidden" name="code" value="${code}">
 						<button type="button" onclick="inputqna();">질문하기</button></td>
 				</tr>
 			</table>
@@ -251,11 +249,13 @@
 				</tr>
 			</c:if>
 		</table>
-			<div><a href="${pageContext.request.contextPath}/product/qna?code=${dto.code}">더보기...</a></div>
+		<div>
+			<a
+				href="${pageContext.request.contextPath}/product/qna?code=${dto.code}">더보기...</a>
+		</div>
 		<br> <br>
 		<div id="refund" style="font-size: 2rem;">반품/교환정보</div>
 		<jsp:include page="/WEB-INF/views/product/repund.jsp" />
 	</div>
-	<form name="code" method="post">
-	</form>
+	<form name="code" method="post"></form>
 </div>

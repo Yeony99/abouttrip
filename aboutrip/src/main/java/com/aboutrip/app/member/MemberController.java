@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aboutrip.app.common.AboutUtil;
+import com.aboutrip.app.product.Order;
 import com.aboutrip.app.product.ProductService;
 import com.mongodb.DuplicateKeyException;
 

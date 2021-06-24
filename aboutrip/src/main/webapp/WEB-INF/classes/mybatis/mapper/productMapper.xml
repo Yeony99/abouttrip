@@ -14,7 +14,7 @@
 		VALUES(#{code}, #{product_name}, #{product_detail}, #{isHidden},
 		#{sales_start}, #{sales_end}, SYSDATE, SYSDATE, #{category_num})
 	</insert>
-	
+
 	<insert id="insert_product_detail"
 		parameterType="com.aboutrip.app.product.Product">
 		INSERT INTO productDetail(detail_num, option_name,
@@ -43,74 +43,94 @@
 		INSERT INTO product_qna(num, type, title, content,
 		c_date, code, user_num)
 		VALUES(PRODUCTQNA_SEQ.NEXTVAL,
-		#{type}, #{title}, #{content}, SYSDATE,
+		#{type},
+		#{title}, #{content}, SYSDATE,
 		#{code}, #{user_num} )
 	</insert>
 
-	<update id="insert_product_a"
-		parameterType="com.aboutrip.app.product.QnA">
-		UPDATE product_qna SET(answer, a_date)
-		VALUES(#{answer}, #{a_date})
+	<update id="insert_product_a" parameterType="map">
+		UPDATE product_qna
+		SET answer=#{answer}, a_date = SYSDATE
 		WHERE num = #{num}
 	</update>
 
-	<insert id="cart_insert" parameterType="com.aboutrip.app.product.Order" >
-		INSERT INTO cart(cart_num, user_num, quantity, detail_num)
+	<insert id="cart_insert"
+		parameterType="com.aboutrip.app.product.Order">
+		INSERT INTO
+		cart(cart_num, user_num, quantity, detail_num)
 		VALUES(cart_seq.NEXTVAL, #{user_num}, #{quantity}, #{detail_num})
 	</insert>
-	
-	<insert id="orders_insert" parameterType="com.aboutrip.app.product.Order">
+
+	<insert id="orders_insert"
+		parameterType="com.aboutrip.app.product.Order">
 		<selectKey keyProperty="order_num" resultType="int"
 			order="BEFORE">
 			SELECT order_seq.NEXTVAL FROM dual
 		</selectKey>
-		INSERT INTO orders(order_num, order_price, order_state, order_date, isUsed, user_num)
-		VALUES(#{order_num}, #{order_price}, 1, SYSDATE, 1, #{user_num})
+		INSERT INTO orders(order_num, order_price, order_state, order_date,
+		isUsed, user_num)
+		VALUES(#{order_num}, #{order_price}, 1, SYSDATE, 1,
+		#{user_num})
 	</insert>
-	
-	<insert id="orderdetail_insert" parameterType="com.aboutrip.app.product.Order">
-		INSERT INTO orderDetail(order_detail, price, discount, final_price, detail_num, order_num)
-		VALUES(#{order_num}, #{price}, 0, #{final_price}, #{detail_num}, #{order_num})
+
+	<insert id="orderdetail_insert"
+		parameterType="com.aboutrip.app.product.Order">
+		INSERT INTO orderDetail(order_detail, price, discount,
+		final_price, detail_num, order_num)
+		VALUES(#{order_num}, #{price}, 0,
+		#{final_price}, #{detail_num}, #{order_num})
 	</insert>
-	
+
 	<!-- 수정 -->
-	<update id="update_product"	parameterType="com.aboutrip.app.product.Product">
-		UPDATE product SET product_name = #{product_name}, product_detail = #{product_detail}, isHidden = #{isHidden},
-		sales_start = #{sales_start}, sales_end=#{sales_end}, update_date=SYSDATE, category_num=#{category_num}
+	<update id="update_product"
+		parameterType="com.aboutrip.app.product.Product">
+		UPDATE product SET product_name = #{product_name},
+		product_detail = #{product_detail}, isHidden = #{isHidden},
+		sales_start = #{sales_start}, sales_end=#{sales_end},
+		update_date=SYSDATE, category_num=#{category_num}
 		WHERE code = #{code}
 	</update>
-	
-	<update id="update_product_detail"	parameterType="com.aboutrip.app.product.Product">
-		UPDATE productdetail SET option_name=#{option_name}, price=#{price}, start_date=#{start_date}, end_date=#{end_date}
-		WHERE detail_num = #{detail_num}
+
+	<update id="update_product_detail"
+		parameterType="com.aboutrip.app.product.Product">
+		UPDATE productdetail SET option_name=#{option_name},
+		price=#{price}, start_date=#{start_date}, end_date=#{end_date}
+		WHERE
+		detail_num = #{detail_num}
 	</update>
 
 	<insert id="update_product_image"
 		parameterType="com.aboutrip.app.product.Product">
-		UPDATE product_img SET img_name = #{img_name} WHERE code = #{code}
+		UPDATE product_img SET img_name = #{img_name} WHERE code
+		= #{code}
 	</insert>
 
 	<!-- 삭제 -->
 	<delete id="delete_product" parameterType="Integer">
-		DELETE FROM product WHERE code=#{code}
+		DELETE FROM product
+		WHERE code=#{code}
 	</delete>
-	
+
 	<delete id="delete_product_img" parameterType="Integer">
-		DELETE FROM product_img WHERE code=#{code}
+		DELETE FROM
+		product_img WHERE code=#{code}
 	</delete>
-	
+
 	<delete id="delete_product_detail" parameterType="Integer">
-		DELETE FROM productdetail WHERE code=#{code}
+		DELETE FROM
+		productdetail WHERE code=#{code}
 	</delete>
 
 	<delete id="delete_product_detail2" parameterType="Integer">
-		DELETE FROM productdetail WHERE detail_num=#{detail_num}
+		DELETE FROM
+		productdetail WHERE detail_num=#{detail_num}
 	</delete>
-	
+
 	<delete id="delete_cart" parameterType="Integer">
-		DELETE FROM cart WHERE cart_num=#{cart_num}
+		DELETE FROM cart WHERE
+		cart_num=#{cart_num}
 	</delete>
-	
+
 	<delete id="delete_cartlist" parameterType="map">
 		DELETE FROM cart
 		WHERE cart_num IN
@@ -119,13 +139,17 @@
 			#{code}
 		</foreach>
 	</delete>
-	
+
 	<!-- 리스트 -->
 	<select id="product_list_categories" parameterType="map"
 		resultType="com.aboutrip.app.product.Product">
-		SELECT p.code, product_name, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end, 'YYYY-MM-DD') sales_end, upload_date,ishidden, price, img_name
+		SELECT p.code, product_name, TO_CHAR(sales_start,'YYYY-MM-DD')
+		sales_start, TO_CHAR(sales_end, 'YYYY-MM-DD') sales_end,
+		upload_date,ishidden, price, img_name
 		FROM product p
-		LEFT JOIN (SELECT code, MIN(price) price FROM productdetail GROUP BY code)d ON p.code=d.code
+		LEFT JOIN (SELECT
+		code, MIN(price) price FROM productdetail GROUP BY code)d ON
+		p.code=d.code
 		JOIN product_img i ON p.code=i.code
 		WHERE category_num IN
 		<foreach collection="list" item="code" index="index"
@@ -134,66 +158,87 @@
 		</foreach>
 		AND sales_end > SYSDATE
 		ORDER BY sales_start ASC
-		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS
+		OFFSET #{offset} ROWS
+		FETCH FIRST #{rows} ROWS
 		ONLY
 	</select>
 
 	<select id="product_list_event" parameterType="Integer"
 		resultType="com.aboutrip.app.product.Product">
-		SELECT p.code, product_name, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end, 'YYYY-MM-DD') sales_end, upload_date,ishidden, price, img_name
-		FROM product p
-		LEFT JOIN (SELECT code, MIN(price) price FROM productdetail GROUP BY code)d ON p.code=d.code
+		SELECT p.code, product_name,
+		TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,
+		'YYYY-MM-DD') sales_end, upload_date,ishidden, price, img_name
+		FROM
+		product p
+		LEFT JOIN (SELECT code, MIN(price) price FROM productdetail
+		GROUP BY code)d ON p.code=d.code
 		JOIN product_img i ON p.code=i.code
 		WHERE category_num = #{category_num}
 		AND sales_end > SYSDATE
-		ORDER BY sales_start ASC
+		ORDER BY
+		sales_start ASC
 	</select>
-	
-	<select id="product_management_list" parameterType="map" resultType="com.aboutrip.app.product.Product">
-		SELECT code, product_name, category_num, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,'YYYY-MM-DD') sales_end, isHidden
+
+	<select id="product_management_list" parameterType="map"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT code, product_name, category_num,
+		TO_CHAR(sales_start,'YYYY-MM-DD') sales_start,
+		TO_CHAR(sales_end,'YYYY-MM-DD') sales_end, isHidden
 		FROM product
-		ORDER BY code DESC
+		ORDER
+		BY code DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
-	
-	<select id="option_list" parameterType="Integer" resultType="com.aboutrip.app.product.Product">
-		SELECT detail_num, option_name, option_value, price, start_date, end_date
+
+	<select id="option_list" parameterType="Integer"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT detail_num, option_name, option_value, price,
+		start_date, end_date
 		From productdetail
 		WHERE code=#{code}
 	</select>
-	
-	<select id="option_management_list" resultType="com.aboutrip.app.product.Product">
-		SELECT detail_num, option_name, option_value, price, start_date, end_date, code
+
+	<select id="option_management_list"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT detail_num, option_name, option_value, price,
+		start_date, end_date, code
 		From productdetail
 	</select>
-	
-	<select id="cart_list" resultType="com.aboutrip.app.product.Order">
+
+	<select id="cart_list"
+		resultType="com.aboutrip.app.product.Order">
 		SELECT cart_num, quantity, price, option_name, product_name
 		FROM cart c
 		JOIN productDetail d ON c.detail_num = d.detail_num
-		JOIN product p ON d.code = p.code
+		JOIN
+		product p ON d.code = p.code
 		WHERE user_num = #{user_num}
 	</select>
-	
-	<select id="payment_list" parameterType="map" resultType="com.aboutrip.app.product.Order">
+
+	<select id="payment_list" parameterType="map"
+		resultType="com.aboutrip.app.product.Order">
 		SELECT cart_num, quantity, price, option_name, product_name
 		FROM cart c
 		JOIN productDetail d ON c.detail_num = d.detail_num
-		JOIN product p ON d.code = p.code
+		JOIN product p ON
+		d.code = p.code
 		WHERE user_num = #{user_num} AND cart_num IN
 		<foreach collection="list" item="code" index="index"
 			separator="," open="(" close=")">
 			#{code}
 		</foreach>
 	</select>
-	
-	<select id="payment_method" parameterType="Integer" resultType="com.aboutrip.app.product.Order">
+
+	<select id="payment_method" parameterType="Integer"
+		resultType="com.aboutrip.app.product.Order">
 		SELECT cardnum, cardname, paymentcode
 		FROM payment
-		WHERE userNum=#{user_num}
+		WHERE
+		userNum=#{user_num}
 	</select>
-	
-	<select id="qna_list" parameterType="map" resultType="com.aboutrip.app.product.QnA">
+
+	<select id="qna_list" parameterType="map"
+		resultType="com.aboutrip.app.product.QnA">
 		SELECT num, type, title, content, c_date, answer, a_date, nickName
 		FROM product_qna q
 		JOIN member1 m ON q.user_num = m.usernum
@@ -206,11 +251,37 @@
 		ORDER BY num DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
+
+	<select id="qna_manage_list" parameterType="map"
+		resultType="com.aboutrip.app.product.QnA">
+		SELECT num, type, title, content, c_date, answer, a_date, nickName, p.code, product_name
+		FROM product_qna q
+		JOIN member1 m ON q.user_num = m.usernum
+		JOIN product p ON q.code = p.code
+		<where>
+			<if test="keyword!=0 and condition=='all'">
+				type = #{keyword}
+			</if>
+			<if test="keyword!=0 and condition!='all'">
+				type = #{keyword} AND
+			</if>
+			<if test="condition=='non-answer'">
+				length(answer) is null
+			</if>
+			<if test="condition=='on-answer'">
+				length(answer) is not null
+			</if>
+		</where>
+		ORDER BY num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+	</select>
+
 	<!-- 글 -->
-	
+
 	<select id="product_read" parameterType="Integer"
 		resultType="com.aboutrip.app.product.Product">
-		SELECT p.code, product_name, product_detail, TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,
+		SELECT p.code, product_name, product_detail,
+		TO_CHAR(sales_start,'YYYY-MM-DD') sales_start, TO_CHAR(sales_end,
 		'YYYY-MM-DD') sales_end, upload_date,
 		ishidden, category_num, img_name
 		FROM product p
@@ -218,20 +289,23 @@
 		WHERE
 		p.code=#{code}
 	</select>
-	
-	<select id="detail_read" parameterType="Integer" resultType="com.aboutrip.app.product.Product">
-		SELECT option_name, option_value, price, start_date, end_date, code
+
+	<select id="detail_read" parameterType="Integer"
+		resultType="com.aboutrip.app.product.Product">
+		SELECT option_name, option_value, price, start_date,
+		end_date, code
 		From productdetail
 		WHERE detail_num=#{detail_num}
 	</select>
-	
-	<select id="readMember" parameterType="Integer" resultType="com.aboutrip.app.product.Order">
+
+	<select id="readMember" parameterType="Integer"
+		resultType="com.aboutrip.app.product.Order">
 		SELECT userId, userName, address1, tel, zip
 		FROM member1 m1
 		JOIN member2 m2 ON m1.userNum=m2.userNum
 		WHERE m1.userNum=#{userNum}
 	</select>
-	
+
 	<!-- 카운트 -->
 	<select id="list_count" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
@@ -249,29 +323,39 @@
 		FROM productdetail
 		WHERE code=#{code}
 	</select>
-	
+
 	<select id="cart_count" parameterType="Integer"
-	resultType="Integer">
+		resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM cart
-		WHERE user_num = #{user_num}
+		WHERE user_num =
+		#{user_num}
 	</select>
-	<select id="list_count_all" parameterType="map" resultType="Integer">
+	<select id="list_count_all" parameterType="map"
+		resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM product
 	</select>
-	
-	<select id="count_qna" parameterType="Integer" resultType="Integer">
+
+	<select id="count_qna" parameterType="Integer"
+		resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM product_qna
 		WHERE code=#{code}
 	</select>
-	
+
+	<select id="count_qnamanage" parameterType="Integer"
+		resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM product_qna
+	</select>
+
+
 	<!-- 기타 -->
 	<sql id="where-list">
 		<if test="condition=='all' ">
 			( INSTR(title, #{keyword}) &gt; 0
-				OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
+			OR DBMS_LOB.INSTR(content, #{keyword}) &gt; 0 )
 		</if>
 		<if test="condition=='title'">
 			INSTR(title, #{keyword}) &gt; 0
@@ -281,7 +365,7 @@
 		</if>
 		<if test="condition=='reg_date'">
 			( TO_CHAR(reg_date, 'YYYY-MM-DD') = #{keyword}
-				OR TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword} )
+			OR TO_CHAR(reg_date, 'YYYYMMDD') = #{keyword} )
 		</if>
 	</sql>
 </mapper>

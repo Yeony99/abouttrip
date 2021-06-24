@@ -87,6 +87,5 @@
 				</tr>
 			</table>
 		</form>
-
 	</div>
 </div>
