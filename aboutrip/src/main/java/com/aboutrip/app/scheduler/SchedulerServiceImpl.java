@@ -39,7 +39,22 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 		
 	}
-
+	
+	@Override
+	public void insertShare(Share dto,String pathname) throws Exception {
+		try {
+			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
+			if(saveFilename!=null) {
+				dto.setImageFileName(saveFilename);
+				
+				dao.insertData("scheduler.insertShare", dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
 	@Override
 	public void insertReply(MateReply dto) throws Exception {
 		try {
@@ -131,6 +146,18 @@ public class SchedulerServiceImpl implements SchedulerService{
 		List<Review> list = null;
 		try {
 			list = dao.selectList("scheduler.listReview",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	@Override
+	public List<Share> sharelist(Map<String, Object> map) throws Exception {
+		List<Share> list = null;
+		try {
+			list = dao.selectList("scheduler.sharelist",map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -242,6 +269,16 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 	
 	@Override
+	public void deleteShare(int num) throws Exception {
+		try {
+			dao.updateData("scheduler.deleteShare", num);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
 	public int MateCount() {
 		int result = 0;
 		
@@ -255,6 +292,25 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 
 
+
+	@Override
+	public void updateShare(Share dto,String pathname) throws Exception {
+		try {
+			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
+		
+			if(saveFilename != null) {
+				if(dto.getImageFileName().length()!=0) {
+					fileManager.doFileDelete(dto.getImageFileName(), pathname);
+				}
+				dto.setImageFileName(saveFilename);
+			}
+			dao.selectOne("scheduler.updateShare",dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	@Override
 	public void updateCountreply(Map<String, Object> map) throws Exception {
 			
@@ -273,6 +329,19 @@ public class SchedulerServiceImpl implements SchedulerService{
 		
 		try {
 			result = dao.selectOne("scheduler.replyCount",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int shareCount(Map<String, Object> map) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("scheduler.shareCount",map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -305,6 +374,19 @@ public class SchedulerServiceImpl implements SchedulerService{
 		
 		return result;
 	}
+	
+	@Override
+	public int shareHitCount(int num) {
+		int result = 0;
+		
+		try {
+			result = dao.selectOne("scheduler.shareHitCount",num);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
 	@Override
 	public int reviewReplyCount(int rev_num) {
@@ -329,12 +411,34 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 		return dto;
 	}
-
+	
 	@Override
-	public Review preReadReview(Map<String, Object> map) {
-		Review dto = null;
+	public Share readShare(Map<String, Object> map) {
+		Share dto = null;
 		try {
-			dto = dao.selectOne("scheduler.preReadReview", map);
+			dto = dao.selectOne("scheduler.readShare",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	
+	@Override
+	public Scheduler readScheduler(Map<String, Object> map) {
+		Scheduler dto = null;
+		try {
+			dto = dao.selectOne("scheduler.readScheduler",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	
+	@Override
+	public Share preReadShare(Map<String, Object> map) {
+		Share dto = null;
+		try {
+			dto = dao.selectOne("scheduler.preReadShare", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -343,10 +447,10 @@ public class SchedulerServiceImpl implements SchedulerService{
 	}
 
 	@Override
-	public Review nextReadReview(Map<String, Object> map) {
-		Review dto = null;
+	public Share nextReadShare(Map<String, Object> map) {
+		Share dto = null;
 		try {
-			dto = dao.selectOne("scheduler.nextReadReview", map);
+			dto = dao.selectOne("scheduler.nextReadShare", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

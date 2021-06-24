@@ -2,10 +2,12 @@ package com.aboutrip.app.scheduler;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,15 +145,183 @@ public class SchedulerController {
 	}
 	
 	@RequestMapping(value = "share", method=RequestMethod.GET)
-	public String share() throws Exception {
+	public String share(@RequestParam(value = "page", defaultValue = "1") int current_page,
+			@RequestParam(defaultValue = "all") String condition,
+			@RequestParam(defaultValue = "") String keyword,
+			HttpServletRequest req, Model model) throws Exception {
+		String cp = req.getContextPath();
 		
+		int rows = 10;
+		int total_page=0;
+		int dataCount =0;
+		
+		if(req.getMethod().equalsIgnoreCase("GET")) { // GET 방식인 경우
+			keyword = URLDecoder.decode(keyword, "utf-8");
+		}
+		
+		 Map<String, Object> map = new HashMap<String, Object>();
+	     map.put("condition", condition);
+	     map.put("keyword", keyword);
+	     
+	     dataCount = service.shareCount(map);
+	     if(dataCount != 0) total_page = aboutUtil.pageCount(rows, dataCount);
+	     
+	     if(total_page<current_page) current_page = total_page;
+	     
+	     int offset = (current_page-1)*rows;
+	     if(offset<0) offset = 0;
+	     map.put("offset", offset);
+	     map.put("rows", rows);
+	     
+	     List<Share> list = service.sharelist(map);
+	     
+	     int listNum=0, n=0;
+	     for(Share dto : list) {
+	    	 listNum = dataCount -(offset+n);
+	    	 dto.setListNum(listNum);
+	    	 n++;
+	     }
+	     String query ="";
+	     String listUrl = cp+"/scheduler/share";
+	     String articleUrl = cp+"/scheduler/shareArticle?page="+current_page;
+	     if(keyword.length()!=0) {
+	        	query = "condition=" +condition + 
+	        	         "&keyword=" + URLEncoder.encode(keyword, "utf-8");	
+	        }
+	     
+	     if(query.length()!=0) {
+	        	listUrl = cp+"/scheduler/share?" + query;
+	        	articleUrl = cp+"/scheduler/shareArticle?page=" + current_page + "&"+ query;
+	        }
+	     String paging = aboutUtil.paging(current_page, total_page, listUrl);
+	     model.addAttribute("list",list);
+	     model.addAttribute("articleUrl", articleUrl);
+	     model.addAttribute("page", current_page);
+	     model.addAttribute("dataCount", dataCount);
+	     model.addAttribute("total_page", total_page);
+	     model.addAttribute("paging", paging);
+	        
+		 model.addAttribute("condition", condition);
+		 model.addAttribute("keyword", keyword);
+			
+	     
 		return ".scheduler.share";
 	}
 	
 	@RequestMapping(value="create", method=RequestMethod.GET)
-	public String createdForm() throws Exception {
+	public String createdForm(Model model) throws Exception {
 		
+
+		model.addAttribute("mode", "created");
 		return ".scheduler.create";
+	}
+	
+	@RequestMapping(value = "findshare")
+	public Map<String, Object> findshare(@RequestParam String search,HttpSession session,@RequestParam String color) throws Exception{
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("search", search);
+		map.put("user_num", info.getUserNum());
+		map.put("color", color);
+		Scheduler dto = service.readScheduler(map);
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("dto", dto);
+		return model;
+		
+	}
+	
+	@RequestMapping(value="created", method=RequestMethod.POST)
+	public String createdSubmit(Share dto, HttpSession session) throws Exception {
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		String root=session.getServletContext().getRealPath("/");
+		String pathname=root+"uploads"+File.separator+"share";
+		try {
+			dto.setUserNum(info.getUserNum());
+			service.insertShare(dto,pathname);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/scheduler/share";
+	}
+	
+	@RequestMapping(value = "shareArticle")
+	public String shareArticle(@RequestParam int num, @RequestParam String page, @RequestParam(defaultValue = "all") String condition,
+			@RequestParam(defaultValue = "")String keyword, @RequestParam String search , @RequestParam int ctgNum,
+			Model model) throws Exception{
+		keyword = URLDecoder.decode(keyword, "utf-8");
+		
+		String query="page="+page;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		}
+		service.shareHitCount(num);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("num", num);
+		map.put("search", search);
+		Share dto = service.readShare(map);
+		
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		map.put("num", num);
+		map.put("ctgNum", ctgNum);
+		Share preReadDto = service.preReadShare(map);
+		Share nextReadDto = service.nextReadShare(map);
+        
+		model.addAttribute("dto", dto);
+		model.addAttribute("preReadDto", preReadDto);
+		model.addAttribute("nextReadDto", nextReadDto);
+
+		model.addAttribute("page", page);
+		model.addAttribute("query", query);
+		
+		return".scheduler.article";
+	}
+	
+	@RequestMapping(value = "updateShare", method = RequestMethod.GET)
+	public String updateShareForm(@RequestParam int num, @RequestParam String page, HttpSession session, 
+			@RequestParam String search,Model model) throws Exception{
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("num", num);
+		map.put("search", search);
+		Share dto = service.readShare(map);
+		if(dto== null) {
+			return "redirect:/scheduler/share?page="+page;
+		}
+		model.addAttribute("dto", dto);
+		model.addAttribute("mode", "update");
+		model.addAttribute("page", page);
+		
+		
+		return ".scheduler.article";
+	}
+	
+	@RequestMapping(value = "updateShare", method = RequestMethod.POST)
+	public String updateShareSubmit(Share dto, @RequestParam String page, HttpSession session) throws Exception{
+		String root=session.getServletContext().getRealPath("/");
+		String pathname=root+"uploads"+File.separator+"share";	
+		try {
+			service.updateShare(dto,pathname);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return"redirect:/scheduler/article?page="+page;
+	}
+	
+	@RequestMapping(value = "delete")
+	public String deleteShare(@RequestParam int num, @RequestParam String page, @RequestParam(defaultValue = "all") String condition,
+			@RequestParam(defaultValue = "")String keyword, HttpSession session) throws Exception{
+		keyword = URLDecoder.decode(keyword, "utf-8");
+		String query="page="+page;
+		if(keyword.length()!=0) {
+			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
+		}
+		
+		service.deleteShare(num);
+		
+		return"redirect:/scheduler/share?"+query;
 	}
 	
 	
@@ -470,12 +640,7 @@ public class SchedulerController {
 		map.put("keyword", keyword);
 		map.put("num", num);
 		
-		Review preReadDto = service.preReadReview(map);
-		Review nextReadDto = service.nextReadReview(map);
-		
 		model.put("dto", dto);
-		model.put("preReadDto", preReadDto);
-		model.put("nextReadDto", nextReadDto);
 		
 		return model;
 	}
@@ -534,8 +699,8 @@ public class SchedulerController {
 	
 	@RequestMapping(value = "listReviewReply")
 	@ResponseBody
-	public String listReviewReply(@RequestParam(value = "pageNo", defaultValue = "1") int current_page,HttpSession session,@RequestParam int rev_num)throws Exception{
-		
+	public Map<String, Object> listReviewReply(ReviewReply dto , @RequestParam(value = "pageNo", defaultValue = "1") int current_page,HttpSession session,@RequestParam int rev_num)throws Exception{
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		int rows = 10;
 		int total_page;
 		int dataCount;
@@ -555,18 +720,27 @@ public class SchedulerController {
 		String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
 		
 		Map<String, Object> model = new HashMap<String, Object>();
+		if(info.getUserNum()==dto.getUser_num()) {
+			model.put("uid", "writer");
+		} else if(info.getUserId().equals("admin")) {
+			model.put("uid", "true");
+		} else {
+			model.put("uid", "guest");
+		}
+		
 		model.put("list", list);
 		model.put("dataCount", dataCount);
 		model.put("total_page", total_page);
 		model.put("pageNo", current_page);
 		model.put("paging", paging);
 		
-		return"redirect:/scheduler/review";
+		return model;
 	}
 	
 	
 	@RequestMapping(value = "updateReviewReply")
-	public Map<String, Object> updateReviewReply (@RequestParam int num, @RequestParam String content) {
+	@ResponseBody
+	public ModelAndView updateReviewReply (@RequestParam int num, @RequestParam String content,@RequestParam int rev_num) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			map.put("num", num);
@@ -575,20 +749,16 @@ public class SchedulerController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Map<String, Object> model = new HashMap<String, Object>();
-		return model;
+		ModelAndView mav = new ModelAndView(".scheduler.review");
+		return mav;
 	}
 	
 	@RequestMapping(value = "deleteReviewReply")
-	public Map<String, Object> deleteReviewReply (@RequestParam int num,@RequestParam String nickName,HttpSession session) {
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
+	@ResponseBody
+	public Map<String, Object> deleteReviewReply (@RequestParam int num) {
 		Map<String, Object> model = new HashMap<String, Object>();
 		try {
-			if(info.getNickName().equals("관리자")||info.getNickName().equals(nickName)) {
-				service.deleteReviewReply(num);
-			} else {
-				return model;
-			}
+			service.deleteReviewReply(num);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

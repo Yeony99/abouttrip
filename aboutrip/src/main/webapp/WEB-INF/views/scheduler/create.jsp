@@ -45,23 +45,23 @@ function sendSch(){
 	var f = document.listForm;
 	var str;
 	
-	str = f.placeName.value;
+	str = f.subject.value;
 	str = str.trim();
 	if (!str) {
 		alert("제목을 입력하세요. ");
-		f.placeName.focus();
+		f.subject.focus();
 		return;
 	}
 	
-	str = f.placeContent.value;
+	str = f.content.value;
 	str = str.trim();
 	if (!str) {
 		alert("내용을 입력하세요. ");
-		f.placeContent.focus();
+		f.content.focus();
 		return;
 	}	
 	
-	f.action = "${pageContext.request.contextPath}/place/${mode}";
+	f.action = "${pageContext.request.contextPath}/scheduler/${mode}";
 	f.submit();
 }
 function bringName() {
@@ -88,8 +88,16 @@ function bringPlan() {
 	
 	var str = f.plan.value;
 	if(str!="") {
-		f.planNum.value=str; //임의로 변수 planNum 설정했습니다! plan 구분할 수 있는 변수로 바꿔주세요. 
+		f.color.value=str; //임의로 변수 planNum 설정했습니다! plan 구분할 수 있는 변수로 바꿔주세요. 
 	}
+}
+function findSch(){
+	var f = document.listForm;
+	var color = f.plan.value;
+	var search = f.search.value;
+	
+	f.action="${pageContext.request.contextPath}/scheduler/findshare?color"+color+"&search="+search;
+	f.submit();
 }
 </script>
 	<div style="margin-top: 8rem">
@@ -102,44 +110,65 @@ function bringPlan() {
 				<form name="listForm" method="post" enctype="multipart/form-data">
 					<table
 						style="width: 100%; margin: 30px auto; border-spacing: 0px; border-collapse: collapse; border-top: 2px solid #111;">
+						<c:if test="${empty dto }">
 						<tr align="left" height=100px;
 							style="border-bottom: 1px solid #ddd;">
-							<td style="text-align: center;">지역</td>
-							<td style="padding-left: 10px;"><!-- 스케줄 말머리에 사용할 수 있을 것 같아 남겨놓습니다! -->
-								<select name="ctg" onchange="bringPlace();">
-									<option value="">선 택</option>
-									<option value="1" ${dto.ctgNum=="1" ? "selected='selected'" : ""}>서울</option>
-									<option value="2" ${dto.ctgNum=="2" ? "selected='selected'" : ""}>부산</option>
-									<option value="3" ${dto.ctgNum=="3" ? "selected='selected'" : ""}>제주 제주시</option>
-									<option value="4" ${dto.ctgNum=="4" ? "selected='selected'" : ""}>제주 서귀포</option>
-									<option value="5" ${dto.ctgNum=="5" ? "selected='selected'" : ""}>제주 성산</option>
-									<option value="6" ${dto.ctgNum=="6" ? "selected='selected'" : ""}>제주 기타</option>
-								</select>
-								<input type="hidden" value="${dto.ctgNum}" name="ctgNum">
+							<td style="text-align: center; width: 250px;">가져올 일정 제목</td>
+							<td style="padding-left: 10px;"> 
+								<input type="text" name="search" class="boxTF" value="${dto.subject }">
 							</td>
-						</tr>
-						<tr align="left" height=100px;
-							style="border-bottom: 1px solid #ddd;">
-							<td style="text-align: center;">제목</td>
-							<td style="padding-left: 10px;"><input type="text"
-								name="placeName" maxlength="50" class="boxTF"
-								value="${dto.subject}" placeholder="제목을 입력하세요."></td>
 						</tr>
 						<tr align="left" height=100px;
 							style="border-bottom: 1px solid #ddd;">
 							<td style="text-align: center;">일정</td>
 							<td style="padding-left: 10px;">
-								<!-- <select name="plan" onchange="bringPlan">
+								<select name="plan" onchange="bringPlan();">
 									<option value="">선 택</option>
-								</select> -->
-								<input type="text" name="plan" onchange="bringPlan">
-								<input type="hidden" value="" name="planNum"> <!-- 받아올 일정 num 등... -->
+									<option value="green" ${dto.color=="green" ? "selected='selected'" : ""}>개인일정</option>
+									<option value="blue" ${dto.color=="blue" ? "selected='selected'" : ""}>가족일정</option>
+									<option value="tomato" ${dto.color=="tomato" ? "selected='selected'" : ""}>회사일정</option>
+									<option value="purple" ${dto.color=="purple" ? "selected='selected'" : ""}>기타일정</option>
+								</select>
+								<button type="button" class="btn" onclick="findSch();" ${mode=="update"?"'disabled=disabled'":""}>찾기</button>
+								<input type="hidden" value="" name="color"> <!-- 받아올 일정 num 등... -->
 							</td>
+						</tr>
+						</c:if>
+						<c:if test="${not empty dto }">
+						<tr align="left" height=100px;
+							style="border-bottom: 1px solid #ddd;">
+							<td style="text-align: center; width: 250px;">가져올 일정 제목</td>
+							<td style="padding-left: 10px;"> 
+								<input type="text" name="search" class="boxTF" value="${dto.subject }" readonly="readonly">
+							</td>
+						</tr>
+						<tr align="left" height=100px;
+							style="border-bottom: 1px solid #ddd;">
+							<td style="text-align: center;">일정</td>
+							<td style="padding-left: 10px;">
+								<select name="plan" onchange="bringPlan();">
+									<option value="">선 택</option>
+									<option value="green" ${dto.color=="green" ? "selected='selected'" : ""} disabled="disabled">개인일정</option>
+									<option value="blue" ${dto.color=="blue" ? "selected='selected'" : ""} disabled="disabled">가족일정</option>
+									<option value="tomato" ${dto.color=="tomato" ? "selected='selected'" : ""} disabled="disabled">회사일정</option>
+									<option value="purple" ${dto.color=="purple" ? "selected='selected'" : ""} disabled="disabled">기타일정</option>
+								</select>
+								<button type="button" class="btn" onclick="findSch();" ${mode=="update"?"'disabled=disabled'":""}>찾기</button>
+								<input type="hidden" value="" name="color"> <!-- 받아올 일정 num 등... -->
+							</td>
+						</tr>
+						</c:if>
+						<tr align="left" height=100px;
+							style="border-bottom: 1px solid #ddd;">
+							<td style="text-align: center;">제목</td>
+							<td style="padding-left: 10px;"><input type="text"
+								name="subject" maxlength="50" class="boxTF"
+								value="${dto.subject}" placeholder="제목을 입력하세요."></td>
 						</tr>
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
 							<td style="text-align: center; width: 250px;">내용</td>
-							<td valign="top"><textarea name="placeContent" class="boxTA" placeholder="내용을 입력하세요."> 내용 </textarea>
+							<td valign="top"><textarea name="content" class="boxTA" placeholder="내용을 입력하세요."> </textarea>
 							</td>
 						</tr>
 						<tr align="left" height=100px;

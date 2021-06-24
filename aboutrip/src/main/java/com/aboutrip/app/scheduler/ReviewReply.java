@@ -6,6 +6,22 @@ public class ReviewReply {
 	private int rev_num;
 	private String content;
 	private String created;
+	private String uid;
+	private String nickName;
+	
+	
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public String getUid() {
+		return uid;
+	}
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
 	public int getNum() {
 		return num;
 	}

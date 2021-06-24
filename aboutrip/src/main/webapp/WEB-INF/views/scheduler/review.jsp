@@ -312,15 +312,24 @@ $(function(){
 	// 리스트-글보기
 	$("body").on("click", ".list-body .item", function(){
 		var num = $(this).attr("data-num");
+		var url = "${pageContext.request.contextPath}/scheduler/listReviewReply";
+		var query = "rev_num="+num;
+		
+		var fn1 = function(data){
+			printReply(data);
+		};
+		ajaxFun(url, "get", query, "json", fn1);
+		
 		var url = "${pageContext.request.contextPath}/scheduler/articleReview";
 		var query = "num="+num;
 		var params = $('form[name=searchForm]').serialize();
 		query = query + "&" + params;
 		
-		var fn = function(data){
+		var fn2 = function(data){
 			printArticle(data);
+			
 		};
-		ajaxFun(url, "get", query, "json", fn);
+		ajaxFun(url, "get", query, "json", fn2);
 	});
 	
 	function printArticle(data) {
@@ -333,7 +342,7 @@ $(function(){
 		$(".article").show(100);
 		
 		var uid = data.uid;
-		
+
 		var num = data.dto.num;
 		var nickName = data.dto.nickName;
 		var subject = data.dto.subject;
@@ -381,33 +390,104 @@ $(function(){
 			$(".article .btnDelete").attr("data-imageFileName", imageFileName);
 		}
 	}
-	
-	/* function printReply(data){
-		var num = data.list.num;
-		var nickName = data.list.nickName;
-		var content = data.list.content;
-		var created = data.list.created;
+
+	function printReply(data){
+		console.log(data);
 		
-		$(".reply .nickName").html(nickName);
-		$(".reply .reply_content").html(content);
-		$(".reply .reply_created").html(created);
-		$(".reply .btnUpdateReply").prop("disabled", false);
-		$(".reply .btnDeleteReply").attr("disabled", false);
-		
-		$(".reply .btnUpdateReply").attr("data-num", num);
-		$(".reply .btnDeleteReply").attr("data-num", num);
-		
-		$("form[name=reviewForm] textarea[name=reply_content]").val(content);
-		$("form[name=reviewForm] textarea[name=reply_created]").val(created);
-		if(nickName.equals("관리자")||{sessionScope.member.nickName}.equals(nickName)) {
-			$("form[name=ReplyForm] input[name=rev_num]").val(num);
-			$(".article .btnUpdateForm").prop("disabled", true);
-			$(".article .btnDelete").attr("disabled", true);
+		var uNickName = "${sessionScope.member.nickName}";
+		var out="";
+		for(var idx=0; idx<data.list.length; idx++){
+			var uid = data.uid;
+			var reply_num = data.list[idx].num;
+			var nickName = data.list[idx].nickName;
+			var content = data.list[idx].content;
+			var created = data.list[idx].created;
+			var rev_num = data.list[idx].rev_num;
 			
-		} 
-	} */
+			out +="<div class='answer' style='padding: 0 10 px;'>";
+			out +="<div style='clear:both; padding:10px 0;'>";
+			out +="<div style='float: left; width: 5%;'>└</div>";
+			out +="<div style='float: left; width:95%; min-height:50px;'>";
+			out +="<div style='float: left;'><b>"+nickName+"</b></div>";
+			out +="<div style='float: right;'>";
+			out +="<span style='font-size:10px;'>"+created+"</span><br>";
+			if(uNickName===nickName||uid ==="관리자"){
+				out +="<div><span class='deleteReviewAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"'>| 삭제</span> |";
+				out +="<span class='updateReviewAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"'  data-rev_num='"+rev_num+"'>수정</span></div>";
+			}
+			out +="</div></div></div>";
+			out +="<div class='answers' style='clear:both; padding: 5px 25px; border-bottom: 1px solid #ccc;'>"+content+"<div id='updateMateAnswer"+reply_num+"'>";
+			out+="</div></div></div>"
+				
+			} 
+		$("#listReviewAnswer").html(out);	
+	}
 });
 
+$(function(){
+	$("body").on("click", ".updateReviewAnswer", function(){
+		
+		var	reply_num=$(this).attr("data-replyNum");
+		var	rev_num=$(this).attr("data-rev_num");
+		updateReply(reply_num,rev_num);
+		$("form[name ='updateReplyForm']").parent().show();
+		var test = $("form[name ='updateReplyForm']").parent().parent();
+		console.log(test);
+		test.css({"min-height": "200px"});
+	});
+});
+function updateReply(reply_num,rev_num){
+	$("form[name ='replyForm']").hide();
+	var out="";
+	out+="<br><div style='clear: both; padding: 10px 10px;'> <div style='float: left; width: 5%;'>└</div> <div style='float: left; width:95%'>";
+	out+="<input type='text' name='content' placeholder='댓글작성'>";
+	out+=" <input type='hidden' name='num' value='"+reply_num+"'>";
+	out+=" <input type='hidden' name='rev_num' value='"+rev_num+"'>";
+	out+="<button type='button' class='btn' onclick='updateReviewReply();'>답글 수정</button><input type='button' class='btn replyCancel' value='답글 취소'></div></div><br>";
+	var sector = $("#updateMateAnswer"+reply_num);
+	//$("#updateMateAnswer").html(out);
+	sector.html(out);
+}
+
+$(function(){
+	$("body").on("click", ".deleteReviewAnswer", function(){
+		if(! confirm("댓글을 삭제하시겠습니까 ? ")) {
+		    return false;
+		}
+		
+		var	nickName=$(this).attr("data-nickName");
+		var	reply_num=$(this).attr("data-replyNum");;
+		
+		var url="${pageContext.request.contextPath}/scheduler/deleteReviewReply";
+		var query="num="+reply_num;
+		
+		var fn = function(data){
+			// var state=data.state;
+			$(".list-body .item").click();
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
+function updateReviewReply(){
+	var f= document.ReplyForm;
+	
+	f.action ="${pageContext.request.contextPath}/scheduler/updateReviewReply";
+	f.submit();
+}
+$(function(){
+	$("body").on("click", ".updateReviewReply", function(){
+		console.log($(this));
+		var url="${pageContext.request.contextPath}/scheduler/updateReviewReply";
+		var query=$('form[name=updateReplyForm]').serialize();
+		var fn = function(data){
+			// var state=data.state;
+			$(".list-body .item").click();
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
 $(function(){
 	// 글쓰기폼-등록 완료 버튼
 	$(".btnSendOk").click(function(){
@@ -471,9 +551,8 @@ $(function(){
 		var fn = function(data){
 			var state=data.state;
 	    	
-			//printReply(data);
-			
-			$(".article").show(100);
+			location.reload();
+			printArticle(data);
 		};
 		
 		ajaxFileFun(url, "post", query, "json", fn);		
@@ -685,24 +764,15 @@ function insertReply(){
 				</td>
 				</tr>
 			</table>
-				<table>
-				<tr>
-					<td class="reply"><span class="nickName" >이름 :</span></td>
-					<td class="reply"><span class="reply_content" ></span></td>
-					<td class="reply"><span class="reply_created" ></span></td>
-					<td width="50%" align="left">
-						<button type="button" class="btn btnUpdateReply">수정</button>
-		    			<button type="button" class="btn btnDeleteReply">삭제</button>
-					</td>
-				</tr>
-				</table>
+				<div id="listReviewAnswer"></div>
+				<div id="updateReviewAnswer"></div> 
 			<table class="table">
 				<tr>
 					<td width="50%" align="left">
 						<button type="button" class="btn btnUpdateForm">수정</button>
 		    			<button type="button" class="btn btnDelete">삭제</button>
 					</td>
-				
+					
 					<td align="right">
 						<button type="button" class="btn btnList">리스트</button>
 					</td>

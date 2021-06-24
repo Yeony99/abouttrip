@@ -41,7 +41,11 @@
 	<delete id="deleteScheduler" parameterType="map">
 		DELETE FROM scheduler WHERE num=#{num} AND user_num=#{user_num}
 	</delete>
-	
+	<select id="readScheduler" parameterType="map" resultType="com.aboutrip.app.scheduler.Scheduler">
+		SELECT num, user_num, subject, color, TO_CHAR(check_in, 'YYYY-MM-DD') check_in, TO_CHAR(check_out,'YYYY-MM-DD') check_out,
+		TO_CHAR(created, 'YYYY-MM-DD') created, memo FROM scheduler
+		WHERE subject = #{search} AND user_num = #{user_num} AND color=#{color}
+	</select>
 	<select id="scheduler_seq" resultType="Integer">
        SELECT scheduler_seq.NEXTVAL FROM dual 
     </select>
@@ -151,34 +155,6 @@
 		ORDER BY num DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
     </select>
-    
-    <select id="preReadReview" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
-		SELECT num, subject
-		FROM scheduler_review r
-		JOIN member1 m ON r.user_num=m.userNum
-		<where>
-			<if test="keyword != null and keyword != '' ">
-				<include refid="where-list"/>
-			</if>
-			AND (num &gt; #{num})
-		</where>
-		ORDER BY num ASC
-		FETCH FIRST 1 ROWS ONLY
-	</select>
-
-	<select id="nextReadReview" parameterType="map" resultType="com.aboutrip.app.scheduler.Review">
-		SELECT num, subject
-		FROM scheduler_review r
-		JOIN member1 m ON r.user_num=m.userNum
-		<where>
-			<if test="keyword != null and keyword != '' ">
-				<include refid="where-list"/>
-			</if>
-			AND (num &gt; #{num})
-		</where>
-		ORDER BY num DESC
-		FETCH FIRST 1 ROWS ONLY
-	</select>
 	
 	<update id="updateReview" parameterType="com.aboutrip.app.scheduler.Review">
 		UPDATE scheduler_review SET subject=#{subject}, imageFileName=#{imageFileName}, content=#{content} WHERE num = #{num}
@@ -206,11 +182,96 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
     </select>
     
-    <update id="updateReviewReply" parameterType="com.aboutrip.app.scheduler.ReviewReply">
+    <update id="updateReviewReply" parameterType="map">
 		UPDATE scheduler_review_reply SET content=#{content} WHERE num = #{num} 
 	</update>
 	
 	<delete id="deleteReviewReply" parameterType="Integer">
 		DELETE FROM scheduler_review_reply WHERE num=#{num}
 	</delete>
+	
+	<insert id="insertShare" parameterType="com.aboutrip.app.scheduler.Share">
+		INSERT INTO sharelist(num, userNum, subject, content, search, created,hitCount,ctgNum,color, imageFilename) 
+		VALUES(sharelist_seq.NEXTVAL, #{userNum}, #{subject}, #{content}, #{search}, SYSDATE, 0,#{ctgNum}, #{color}, #{imageFileName, jdbcType=VARCHAR})
+	</insert>
+	
+	 <select id="shareCount" parameterType="map" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM sharelist
+    	<where>
+			<if test="keyword!=null and keyword!='' ">
+				<include refid="where-list"/>
+			</if>
+		</where> 
+    </select>
+    
+     <select id="sharelist" parameterType="map" resultType="com.aboutrip.app.scheduler.Share">
+    	SELECT num, sh.userNum, nickName, subject, content, search 
+		       ,TO_CHAR(created, 'yyyy-mm-dd') created, ctgNum, color, hitCount, imageFileName
+		FROM sharelist sh
+		JOIN member1 m ON sh.userNum = m.userNum
+		<where>
+			<if test="keyword != null and keyword != ''">
+				<include refid="where-list"/>
+			</if>
+		</where>
+		ORDER BY num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+    </select>
+    
+    <update id="shareHitCount" parameterType="Integer">
+    	UPDATE sharelist SET hitCount = hitCount +1 WHERE num = #{num}
+    </update>
+    
+    <select id="readShare" parameterType="map" resultType="com.aboutrip.app.scheduler.Share">
+    	SELECT h.num, h.USERNUM, h.subject, h.content, search, TO_CHAR(h.created, 'YYYY-MM-DD') created , hitCount, nickName, s.subject scheduler_subject, ctgNum
+    	,TO_CHAR(s.created,'YYYY-MM-DD') scheduler_created, TO_CHAR(check_in,'YYYY-MM-DD') check_in, TO_CHAR(check_out, 'YYYY-MM-DD') check_out, memo,
+    	h.color, hitCount, imageFileName FROM sharelist h
+    	LEFT OUTER JOIN member1 m ON h.USERNUM = m.userNum
+    	LEFT OUTER JOiN scheduler s ON m.userNum = s.user_num
+    	WHERE h.num = #{num} AND s.subject = #{search}
+    </select>
+    
+    <select id="preReadShare" parameterType="map" resultType="com.aboutrip.app.scheduler.Share">
+		SELECT num, subject
+		FROM sharelist sh
+		JOIN member1 m ON sh.userNum=m.userNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (num &gt; #{num})
+			<if test="ctgNum != null">
+				AND ctgNum = #{ctgNum}
+			</if>
+		</where>
+		ORDER BY num ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+
+	<select id="nextReadShare" parameterType="map" resultType="com.aboutrip.app.scheduler.Share">
+		SELECT num, subject
+		FROM sharelist sh
+		JOIN member1 m ON sh.userNum=m.userNum
+		<where>
+			<if test="keyword != null and keyword != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND (num &gt; #{num})
+			<if test="ctgNum != null">
+				AND ctgNum = #{ctgNum}
+			</if>
+		</where>
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<update id="updateShare" parameterType="com.aboutrip.app.scheduler.Share">
+		UPDATE sharelist SET subject=#{subject}, content=#{content}, search=#{search}
+		WHERE num = #{num}
+	</update>
+	
+	<delete id="deleteShare" parameterType="Integer">
+		DELETE FROM sharelist WHERE num=#{num}
+	</delete>
+    
 </mapper>
