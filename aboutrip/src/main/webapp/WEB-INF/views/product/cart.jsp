@@ -3,12 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>spring</title>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <style type="text/css">
 * {
 	margin: 0;
@@ -73,7 +67,6 @@ a:active, a:hover {
 }
 </style>
 
-<script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$("#chkAll").click(function() {
@@ -202,6 +195,3 @@ a:active, a:hover {
 		</div>
 		</form>
 	</div>
-
-</body>
-</html>
