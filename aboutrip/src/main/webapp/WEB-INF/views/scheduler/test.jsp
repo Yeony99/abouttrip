@@ -2,12 +2,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
+
 <script type="text/javascript">
 var check=true;
 function ajaxFun(url, method, query, dataType, fn) {
@@ -45,6 +40,22 @@ function bringPlace() {
 		f.ctgNum.value=str;
 	}
 }
+
+$(function(){
+	listPage(1);
+});
+
+// 글리스트 및 페이징 처리
+function listPage(page) {
+	var url = "${pageContext.request.contextPath}/scheduler/matelist";
+	var query = "page="+page;
+	
+	var fn = function(data){
+		printList(data);
+	};
+	ajaxFun(url, "get", query, "json", fn);
+}
+
 $(function(){
 	$("body").on("click", ".deleteMate", function(){
 		if(! confirm("게시글을 삭제하시겠습니까 ? ")) {
@@ -64,6 +75,7 @@ $(function(){
 		ajaxFun(url, "post", query, "json", fn);
 	});
 });
+
 //댓글별 답글 리스트
 function listMateAnswer(mate_num) {
 	var url="${pageContext.request.contextPath}/scheduler/listReply";
@@ -85,7 +97,7 @@ function listAnswer(data){
 		$("#listMateAnswer").html(out);
 		return;
 	}
-	var num = data.listReply[1].mate_num;
+	var num = data.listReply[0].mate_num;
 	for(var idx=0; idx<dataCount; idx++){
 		var uNickName="${sessionScope.member.nickName}";
 		var uid="${sessionScope.member.userId}";
@@ -106,7 +118,7 @@ function listAnswer(data){
 		out +="<div style='float: right;'>";
 		out +="<span style='font-size:10px;'>"+created+"</span><br>";
 		if(uNickName===nickName||uid ==="admin"){
-			out +="<div><span class='deleteMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>삭제</span>|";
+			out +="<div><span class='deleteMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>| 삭제</span> |";
 			out +="<span class='updateMateAnswer' style='cursor: pointer;' data-replyNum='"+reply_num+"' data-mateNum='"+mate_num+"' data-answer='"+answer+"'>수정</span></div>";
 		}
 		out +="</div></div></div>";
@@ -115,6 +127,7 @@ function listAnswer(data){
 		
 	}
 	$("#listMateAnswer"+num).html(out);
+	console.log(num);
 }
 $(function(){
 	$("body").on("click", ".updateMateAnswer", function(){
@@ -367,5 +380,3 @@ function bringPeople() {
 			</div>			
 		</div>
 	</div>
-</body>
-</html>
