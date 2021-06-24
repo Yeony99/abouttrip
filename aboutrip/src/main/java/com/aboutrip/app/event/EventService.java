@@ -16,9 +16,10 @@ public interface EventService {
 	public void updateEvent(Event dto) throws Exception;
 	public void deleteEvent(int num, int userNum) throws Exception;
 	
-	public void partEvent(Event dto) throws Exception;
+	public void partEvent(Map<String, Object> map) throws Exception;
+	public Event readPart(int num, int partNum);
 	public List<Event> listPart(Map<String, Object> map);
-	public int partCount(Map<String, Object> map);
+	public int partCount(int num);
 	public void deletePart(Map<String, Object> map) throws Exception;
 	
 	public void winEvent(Event dto) throws Exception;

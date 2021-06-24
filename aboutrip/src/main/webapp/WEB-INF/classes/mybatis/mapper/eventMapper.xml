@@ -120,13 +120,21 @@
 	</insert>
 	
 	<!-- 이벤트 참여 조회 -->
+	<select id="ReadPart" parameterType="Integer" resultType="com.aboutrip.app.event.Event">
+		SELECT partNum, num, p.userNum, nickName, partDate 
+		FROM partEvent p
+		JOIN member1 m ON p.userNum=m.userNum
+		WHERE num=#{num} AND partNum=#{partNum}
+		ORDER BY partNum 
+	</select>
+	
+	<!-- 이벤트 참여 조회 -->
 	<select id="listPart" parameterType="map" resultType="com.aboutrip.app.event.Event">
 		SELECT partNum, num, p.userNum, nickName, partDate 
 		FROM partEvent p
 		JOIN member1 m ON p.userNum=m.userNum
 		WHERE num=#{num}
-		ORDER BY partNum DESC
-		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+		ORDER BY partNum 
 	</select>
 	
 	<!-- 이벤트 참여 개수 -->

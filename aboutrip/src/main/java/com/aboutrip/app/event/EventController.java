@@ -245,63 +245,34 @@ public class EventController {
 		return "redirect:/event/list?"+query;
 	}
 	
-	//이벤트 참여 신청 리스트
-	@RequestMapping(value="listPart")
-	public String listPart(
-			@RequestParam int num,
-			@RequestParam(value="page", defaultValue = "1") int current_page,
-			Model model
-			) throws Exception {
-		
-		int rows=5;
-		int total_page=0;
-		int dataCount=0;
-		
-		Map<String, Object> map=new HashMap<>();
-		map.put("num", num);
-		
-		dataCount = service.partCount(map);
-		total_page = aboutUtil.pageCount(rows, dataCount);
-		if(current_page>total_page)
-			current_page=total_page;
-		
-		int offset = (current_page-1) * rows;
-		map.put("offset", offset);
-        map.put("rows", rows);
-        List<Event> listPart = service.listPart(map);
-        
-     
-        String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
-        
-        model.addAttribute("listPart", listPart);
-        model.addAttribute("page", current_page);
-        model.addAttribute("partCount", dataCount);
-        model.addAttribute("total_page", total_page);
-        model.addAttribute("paging", paging);
-        
-        return "event/listPart";
-		
-	}
+	
 	
 	//이벤트 참여 신청
 	@RequestMapping(value="partEvent", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> partEvent(
-			Event dto,
+			@RequestParam int num,
 			HttpSession session
 			){
-		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		String state="true";
+		int partCount=0;
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("num", num);
+		paramMap.put("userNum", info.getUserNum());
 		
 		try {
-			dto.setUserNum(info.getUserNum());
-			service.partEvent(dto);
+			service.partEvent(paramMap);
 		} catch (Exception e) {
 			state="false";
 		}
 		
+		partCount = service.partCount(num);
+		
 		Map<String, Object> model = new HashMap<>();
 		model.put("state", state);
+		model.put("partCount", partCount);
 		return model;
 	}
 	

@@ -109,9 +109,9 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void partEvent(Event dto) throws Exception {
+	public void partEvent(Map<String, Object> map) throws Exception {
 		try {
-			dao.insertData("event.partEvent", dto);
+			dao.insertData("event.partEvent", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -119,6 +119,19 @@ public class EventServiceImpl implements EventService {
 		
 	}
 
+	@Override
+	public Event readPart(int num, int partNum) {
+		Event dto = null;
+		
+		try {
+			dto = dao.selectOne("event.readPart", partNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+	
 	@Override
 	public List<Event> listPart(Map<String, Object> map) {
 		List<Event> list = null;
@@ -131,10 +144,10 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public int partCount(Map<String, Object> map) {
+	public int partCount(int num) {
 		int result=0;
 		try {
-			result=dao.selectOne("event.partCount", map);
+			result=dao.selectOne("event.partCount", num);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -172,6 +185,7 @@ public class EventServiceImpl implements EventService {
 		}
 		return list;
 	}
+
 
 	
 }
