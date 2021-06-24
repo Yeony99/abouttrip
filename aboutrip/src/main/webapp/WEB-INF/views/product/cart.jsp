@@ -76,22 +76,24 @@ a:active, a:hover {
 				$("input[name=carts]").prop("checked", false);
 			}
 		});
-		
-		$("#btnpurchaseAll").click(function() {
-			$("input[name=carts]").prop("checked", true);
-			
-			if (confirm("전체상품을 구매하시겠습니까 ? ")) {
-				var f = document.cartForm;
-				f.action = "${pageContext.request.contextPath}/product/payment";
-				f.submit();
-			}
-		});
+
+		$("#btnpurchaseAll")
+				.click(
+						function() {
+							$("input[name=carts]").prop("checked", true);
+
+							if (confirm("전체상품을 구매하시겠습니까 ? ")) {
+								var f = document.cartForm;
+								f.action = "${pageContext.request.contextPath}/product/payment";
+								f.submit();
+							}
+						});
 
 		$("#btnDeleteList")
 				.click(
 						function() {
 							var cnt = $("input[name=carts]:checked").length;
-							
+
 							if (cnt == 0) {
 								alert("삭제할 상품을 먼저 선택 하세요 !!!");
 								return false;
@@ -105,25 +107,24 @@ a:active, a:hover {
 
 						});
 		$("#btnpurchaseList")
-		.click(
-				function() {
-					var cnt = $("input[name=carts]:checked").length;
-					
-					if (cnt == 0) {
-						alert("구매할 상품을 먼저 선택 하세요 !!!");
-						return false;
-					}
+				.click(
+						function() {
+							var cnt = $("input[name=carts]:checked").length;
 
-					if (confirm("선택한 상품을 구매하시겠습니까 ? ")) {
-						var f = document.cartForm;
-						f.action = "${pageContext.request.contextPath}/product/payment";
-						f.submit();
-					}
+							if (cnt == 0) {
+								alert("구매할 상품을 먼저 선택 하세요 !!!");
+								return false;
+							}
 
-				});
+							if (confirm("선택한 상품을 구매하시겠습니까 ? ")) {
+								var f = document.cartForm;
+								f.action = "${pageContext.request.contextPath}/product/payment";
+								f.submit();
+							}
+
+						});
 	});
 
-	
 	function searchList() {
 		var f = document.searchForm;
 		f.submit();
@@ -136,62 +137,71 @@ a:active, a:hover {
 			location.href = url;
 		}
 	}
-	
 </script>
 
 </head>
+
 <body>
+	<div class="body-container">
+		<section class="payment-dark"
+			style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
+			<div style="width: 700px; margin: 30px auto;">
 
-	<div style="width: 700px; margin: 30px auto;">
-		<table style="width: 100%;">
-			<tr height="50">
-				<td align="center" colspan="2"><span
-					style="font-size: 15pt; font-family: 맑은 고딕, 돋움; font-weight: bold;">장바구니</span>
-				</td>
-			</tr>
+				<form name="cartForm" method="post">
+					<table class="table table-list" style="color: white;">
+						<tr height="50">
+							<td align="center" colspan="2"><span
+								style="font-size: 15pt; font-family: 맑은 고딕, 돋움; font-weight: bold;">장바구니</span>
+							</td>
+						</tr>
 
-			<tr height="35">
-				<td width="50%">
-					<button type="button" class="btn" id="btnDeleteList">선택상품
-						삭제</button>
-				</td>
-				<td align="right">${dataCount}개품목</td>
-			</tr>
-		</table>
+						<tr height="35">
+							<td width="50%">
+								<button type="button" class="btn" id="btnDeleteList">선택상품
+									삭제</button>
+							</td>
+							<td align="right">${dataCount}개품목</td>
+						</tr>
+					</table>
+					<table class="table table-list" style="color: white;">
+						<tr height="30" align="center">
+							<th width="40"><input type="checkbox" name="chkAll"
+								id="chkAll" value="all"></th>
+							<th>상품명</th>
+							<th>옵션명</th>
+							<th>상품금액</th>
+							<th>수량</th>
+							<th>주문금액</th>
+							<th>삭제</th>
+						</tr>
+						<c:forEach var="dto" items="${list}">
+							<tr height="35" align="center">
+								<td><input type="checkbox" name="carts"
+									value="${dto.cart_num}"></td>
+								<td>${dto.product_name}</td>
+								<td>${dto.option_name}</td>
+								<td>${dto.price}</td>
+								<td>${dto.quantity}</td>
+								<td>${dto.price * dto.quantity}</td>
+								<td><a
+									href="javascript:deleteCart('${dto.cart_num}', '${dto.option_name}')">삭제</a>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
 
-		<form name="cartForm" method="post">
-			<table style="width: 100%; border-spacing: 1px; background: #cccccc;">
-				<tr height="30" bgcolor="#eeeeee" align="center">
-					<th width="40"><input type="checkbox" name="chkAll"
-						id="chkAll" value="all"></th>
-					<th>상품명</th>
-					<th>옵션명</th>
-					<th>상품금액</th>
-					<th>수량</th>
-					<th>주문금액</th>
-					<th>삭제</th>
-				</tr>
-				<c:forEach var="dto" items="${list}">
-					<tr height="35" bgcolor="#ffffff" align="center">
-						<td><input type="checkbox" name="carts" value="${dto.cart_num}">
-						</td>
-						<td>${dto.product_name}</td>
-						<td>${dto.option_name}</td>
-						<td>${dto.price}</td>
-						<td>${dto.quantity}</td>
-						<td>${dto.price * dto.quantity}</td>
-						<td><a	href="javascript:deleteCart('${dto.cart_num}', '${dto.option_name}')">삭제</a>
-						</td>
-					</tr>
-				</c:forEach>
-			</table>
-		
-		<c:if test="${dataCount==0}">
-			<div>장바구니가 비었습니다.</div>
-		</c:if>
-		<div>
-			<button type="button" class="btn" id="btnpurchaseList">선택상품 주문하기</button>
-			<button type="button" class="btn" id="btnpurchaseAll">전체상품 주문하기</button>
-		</div>
-		</form>
+					<c:if test="${dataCount==0}">
+						<div>장바구니가 비었습니다.</div>
+					</c:if>
+					<div>
+						<button type="button" class="btn" id="btnpurchaseList">선택상품
+							주문하기</button>
+						<button type="button" class="btn" id="btnpurchaseAll">전체상품
+							주문하기</button>
+					</div>
+				</form>
+			</div>
+		</section>
 	</div>
+</body>
+

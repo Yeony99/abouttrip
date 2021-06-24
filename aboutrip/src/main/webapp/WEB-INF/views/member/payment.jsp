@@ -37,7 +37,7 @@
 							</c:if>
 							<td>${dto.order_date}</td>
 							<td><button type="button" onclick="location.href='${pageContext.request.contextPath}/product/rev_write?code=${dto.code}&order_num=${dto.order_num}';"
-									${dto.isUsed=="0" ? "disabled" : ""}>${dto.isUsed=="0" ? "리뷰작성" : "리뷰보기"}</button></td>
+									${dto.review_num!="0" ? "disabled" : ""}>${dto.review_num=="0" ? "리뷰작성" : "작성완료"}</button></td>
 					</c:forEach>
 					<c:if test="${list==null}">
 						<td width="100">구매한 내용이 없습니다.</td>

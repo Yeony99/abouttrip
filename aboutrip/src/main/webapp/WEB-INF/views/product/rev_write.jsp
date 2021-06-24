@@ -10,9 +10,8 @@
 			<span>리뷰작성</span>
 
 			<div>
-				
-				<form method="post"
-					action="${pageContext.request.contextPath}/product/revsubmit">
+
+				<form method="post"	action="${pageContext.request.contextPath}/product/revsubmit">
 					<table>
 						<tr>
 							<th>작성자</th>
@@ -22,7 +21,7 @@
 						</tr>
 						<tr>
 							<td>${user.nickName}</td>
-							<td><textarea name="reviewcontent"></textarea>
+							<td><textarea name="reviewContent"></textarea>
 							<td><select name="rate">
 									<option value=5.0>5.0</option>
 									<option value=4.5>4.5</option>
@@ -36,7 +35,7 @@
 									<option value=0.5>0.5</option>
 									<option value=0.0>0.0</option>
 							</select></td>
-							<td><input type="hidden" name="code" value="${dto.code}">
+							<td>
 								<input type="hidden" name="order_num" value="${dto.order_num}">
 								<button type="submit">리뷰 등록</button></td>
 						</tr>

@@ -246,7 +246,7 @@ public class ProductController {
 
 		// orderDetail에 필요한 파라미터 불러오기
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("user-num", info.getUserNum());
+		map.put("user_num", info.getUserNum());
 		map.put("list", carts);
 
 		List<Order> list = new ArrayList<Order>();
@@ -361,6 +361,8 @@ public class ProductController {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		dto.setUser_num(info.getUserNum());
-		return "";
+		service.insertReview(dto);
+		
+		return "redirect:/member/payment";
 	}
 }

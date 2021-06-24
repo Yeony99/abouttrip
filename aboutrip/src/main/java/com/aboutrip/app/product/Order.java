@@ -11,6 +11,7 @@ public class Order {
 	
 	
 	// 리뷰 정보
+	private int review_num;
 	private String reviewContent;
 	private int rate;
 	private int code;
@@ -59,6 +60,13 @@ public class Order {
 	private int listNum;
 	private String articleUrl;
 	
+
+	public int getReview_num() {
+		return review_num;
+	}
+	public void setReview_num(int review_num) {
+		this.review_num = review_num;
+	}
 	public int getListNum() {
 		return listNum;
 	}

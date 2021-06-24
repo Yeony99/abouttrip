@@ -77,8 +77,13 @@
 		parameterType="com.aboutrip.app.product.Order">
 		INSERT INTO orderDetail(order_detail, price, discount,
 		final_price, detail_num, order_num)
-		VALUES(#{order_num}, #{price}, 0,
+		VALUES(orderdetail_seq.NEXTVAL, #{price}, #{discount},
 		#{final_price}, #{detail_num}, #{order_num})
+	</insert>
+	
+	<insert id="insert_review" parameterType="com.aboutrip.app.product.Order">
+		INSERT INTO product_review(review_num, rate, reviewContent, user_num, order_num)
+		VALUES (product_review_seq.NEXTVAL, #{rate}, #{reviewContent}, #{user_num}, #{order_num} )
 	</insert>
 
 	<!-- 수정 -->
@@ -217,7 +222,7 @@
 
 	<select id="payment_list" parameterType="map"
 		resultType="com.aboutrip.app.product.Order">
-		SELECT cart_num, quantity, price, option_name, product_name
+		SELECT cart_num, quantity, price, option_name, product_name, d.detail_num
 		FROM cart c
 		JOIN productDetail d ON c.detail_num = d.detail_num
 		JOIN product p ON
