@@ -170,6 +170,7 @@ public class EventController {
 
         Event preReadDto = service.preReadEvent(map);
         Event nextReadDto = service.nextReadEvent(map);
+        List<Event> listPart = service.listPart(map);
         
         
 		model.addAttribute("dto", dto);
@@ -177,6 +178,7 @@ public class EventController {
 		model.addAttribute("nextReadDto", nextReadDto);
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
+		model.addAttribute("listPart", listPart);
 		
 		return ".event.article";
 	}
@@ -268,10 +270,7 @@ public class EventController {
         map.put("rows", rows);
         List<Event> listPart = service.listPart(map);
         
-        for(Event dto : listPart) {
-        	dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
-        }
-		
+     
         String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
         
         model.addAttribute("listPart", listPart);
@@ -328,15 +327,20 @@ public class EventController {
 	@RequestMapping(value="winEvent", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> winEvent(
-			Event dto,
+			@RequestParam int num,
 			HttpSession session
 			){
-		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		String state="true";
 		
 		try {
-			dto.setUserNum(info.getUserNum());
+			Event dto = service.readEvent(num);
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("num", num);
+			map.put("winCount",dto.getWinCount());
+			
 			service.winEvent(dto);
+			
 		} catch (Exception e) {
 			state="false";
 		}

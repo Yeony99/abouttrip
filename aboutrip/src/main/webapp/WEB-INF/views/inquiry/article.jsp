@@ -182,7 +182,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 		<table class="table table-content">
 			<tr>
 				<td colspan="2" align="center" style="color: blue; font-weight: 600;">
-				 <span class="questionQ">Q</span><span class="questionSubject"> ${dto.num} &nbsp; | &nbsp; ${dto.type} &nbsp; | &nbsp;  ${dto.title} &nbsp; </span>
+				 <span class="questionQ">Q</span><span class="questionSubject"> &nbsp; ${dto.type} &nbsp; | &nbsp;  ${dto.title} &nbsp; </span>
 				</td>
 			</tr>
 			

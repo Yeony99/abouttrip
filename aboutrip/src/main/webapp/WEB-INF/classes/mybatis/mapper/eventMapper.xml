@@ -121,7 +121,7 @@
 	
 	<!-- 이벤트 참여 조회 -->
 	<select id="listPart" parameterType="map" resultType="com.aboutrip.app.event.Event">
-		SELECT partNum, num, userNum, nickName, partDate 
+		SELECT partNum, num, p.userNum, nickName, partDate 
 		FROM partEvent p
 		JOIN member1 m ON p.userNum=m.userNum
 		WHERE num=#{num}
@@ -135,18 +135,22 @@
 	</select>
 		
 	<!-- 당첨자 발표 추가 -->
-	<insert id="winEvent" parameterType="map">
-		INSERT INTO winEvent(winNum, num, userNum) 
-			VALUES (winevent_seq.NEXTVAL, #{num}, #{userNum})
-	</insert>
+	<update id="winEvent" parameterType="map">
+	  INSERT INTO winEvent (winNum, num, userNum)   
+         SELECT tb.* FROM (
+                SELECT winevent_seq.NEXTVAL,userNum FROM partEvent
+		 WHERE num=#{num}
+                ORDER BY DBMS_RANDOM.VALUE
+         ) tb WHERE ROWNUM &lt;= #{winCount}
+	</update>
 	
 	<!-- 당첨자 발표 조회 -->
 	<select id="listWin" parameterType="map" resultType="com.aboutrip.app.event.Event">
-		SELECT partNum, num, userNum, nickName, partDate 
-		FROM partEvent p
-		JOIN member1 m ON p.userNum=m.userNum
+		SELECT winNum, num, w.userNum, nickName
+		FROM winEvent w
+		JOIN member1 m ON w.userNum=m.userNum
 		WHERE num=#{num}
-		ORDER BY partNum DESC
+		ORDER BY winNum DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 	

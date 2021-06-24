@@ -156,7 +156,7 @@ function listPage(page) {
 		<table class="table table-content">
 			<tr>
 				<td colspan="2" align="center" style="color: blue; font-weight: 600;">
-					${dto.num} &nbsp;&nbsp; | &nbsp;&nbsp; ${dto.title}
+					${dto.title}
 				</td>
 			</tr>
 			
