@@ -45,12 +45,9 @@ public class DiaryController {
 		    @RequestParam(value="page", defaultValue="1") int current_page,
 		    @RequestParam(defaultValue = "all") String condition,
 			@RequestParam(defaultValue = "") String keyword,
-			HttpSession session,
 			HttpServletRequest req
 		    ) throws Exception {
 		String cp = req.getContextPath();
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		Diary dto = new Diary();
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		int rows=5;
@@ -63,12 +60,7 @@ public class DiaryController {
 		if(offset < 0) offset = 0;
         map.put("offset", offset);
         map.put("rows", rows);
-        
-        int followingUser = dto.getUserNum();
-		map.put("followingUser", followingUser);
-		map.put("followerUser", info.getUserNum());
-		boolean fol = service.isFollow(map);
-		
+
 		List<Diary> list=service.listDiary(map);
 		
 		String query = "";
@@ -92,7 +84,6 @@ public class DiaryController {
 		model.put("total_page", total_page);
 		model.put("page", current_page);
 		model.put("paging", paging); // 페이징
-		model.put("isFollow", fol);
 		
 		model.put("condition", condition);
 		model.put("keyword", keyword);

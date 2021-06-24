@@ -5,6 +5,16 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tabs.css" type="text/css">
 <style type="text/css">
+.body-title{
+	color: #F0F8FF;
+	width: 800px;
+	margin: 20px auto 0px;
+	padding: 10px;
+}
+.body-main {
+	width: 800px;
+	margin: 10px auto;
+}
 .table-content tr {
 	text-align: center;
 }
@@ -26,7 +36,14 @@
 	vertical-align: middle;
 }
 .unread{
-	background: #fff;
+	background: #F0F8FF;
+}
+.tabs {
+	color: #F0F8FF;
+}
+
+.btn {
+	color: #F0F8FF;
 }
 </style>
 
@@ -80,7 +97,7 @@ $(function() {
 });
 </script>
 
-<div class="container body-container">
+<div class="container body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
     <div class="body-title">
 		<h2><i class="icofont-ui-messaging"></i> 쪽지함 </h2>
     </div>
@@ -105,7 +122,7 @@ $(function() {
 				</tr>
 			</table>
 			
-			<form name="listForm" method="post">
+			<form name="listForm" method="post" style="background: #fff;">
 				<table class="table table-border table-content">
 					<tr> 
 						<th width="40"><input type="checkbox" name="chkAll" id="chkAll" style="margin-top: 3px;"> </th>
@@ -134,7 +151,7 @@ $(function() {
 		
 			<table class="table">
 				<tr>
-					<td align="center">${dataCount==0?"쪽지함이 비었습니다.":paging}</td>
+					<td align="center" style="color: #F0F8FF;">${dataCount==0?"쪽지함이 비었습니다.":paging}</td>
 				</tr>
 			</table>
 			

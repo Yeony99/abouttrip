@@ -51,9 +51,7 @@ form {
 	text-align: center;
 	font-size: 14px;
 	background: #f8f9fa;
-
 }
-
 .createBtn:hover {
 	color: #f8f9fa;
 	border: 1px solid #f8f9fa;
@@ -194,7 +192,7 @@ $(function(){
 		}
 		//var followerUser="${sessionScope.member.userNum}";
 		var followingUser="${dto.userNum}";
-		var query="diaryNum=${dto.diaryNum}";
+		var query="diaryNum=${dto.diaryNum}&followingUser=${dto.userNum}";
 		
 		var fn = function(data){
 			//console.log(data);

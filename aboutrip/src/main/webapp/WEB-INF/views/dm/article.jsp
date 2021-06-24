@@ -14,6 +14,21 @@
 	white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 	vertical-align: middle;
 }
+
+.body-container {
+	height: 780px;
+	padding: 45px;
+}
+form {
+  max-width: 650px;
+  width: 90%;
+  background-color: #f8f9fa;
+  padding: 40px;
+  border-radius: 4px;
+  color: #b4b4b4;
+  box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
+  margin: 0px auto;
+}
 </style>
 
 <script type="text/javascript">
@@ -84,6 +99,7 @@ function deleteDm() {
 </script>
 
 <div class="container body-container" style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju.jpg&quot;);">
+    <form>
     <div class="body-title">
 		<h2><i class="icofont-ui-messaging"></i> 쪽지함 </h2>
     </div>
@@ -177,6 +193,7 @@ function deleteDm() {
 		
 		</div>
 	</div>
+	</form>
 	
 	<div id="reply-dialog" style="display: none;">
 		<form name="replyForm" method="post">

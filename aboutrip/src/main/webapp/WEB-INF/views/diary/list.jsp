@@ -38,9 +38,28 @@ form {
   	box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
   	margin: 20px auto;
   	padding: 15px;
-  	
 }
-
+.createBtn {
+	margin: 8px;
+	color: #4682B4;
+	box-sizing: border-box; 
+	cursor: pointer;
+	width: 60px;
+	height: 60px;
+	border-radius:45px;
+	border: 1px solid #4682B4;
+	font-weight: bold;
+	text-align: center;
+	font-size: 14px;
+	background: #f8f9fa;
+	position: fixed;
+	left: 1050px; top: 222px;
+}
+.createBtn:hover {
+	color: #f8f9fa;
+	border: 1px solid #f8f9fa;
+	background-color: #4682B4;
+}
 </style>
 
 <script type="text/javascript">
