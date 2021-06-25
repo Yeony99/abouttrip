@@ -70,6 +70,7 @@
 	list-style: none;
 }
 .list-body {
+	margin: 0 auto;
 	display: grid;
 	width: 700px;
 	grid-template: repeat(2, auto) / repeat(4, auto);
@@ -155,6 +156,11 @@
 .item>div:hover {
 	opacity:1;
 }
+
+.btnReplyOk {
+	float :right;
+}
+
 </style>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.form.js"></script>
@@ -272,7 +278,7 @@ function printList(data) {
 }
 
 function reload() {
-	var f=document.searchForm;
+	var f=document.listSearchForm;
 	f.condition.value = "all";
 	f.keyword.value = "";
 	
@@ -647,9 +653,9 @@ function insertReply(){
 						action="${pageContext.request.contextPath}/place/${pick}"
 						method="post">
 						<select name="condition" class="selectField">
-							<option value="placeName">제목</option>
-							<option value="placeContent">내용</option>
-							<option value="all">제목+내용</option>
+							<option value="placeName" ${condition=="subject"?"selected='selected'":""}>제목</option>
+							<option value="placeContent" ${condition=="content"?"selected='selected'":""}>내용</option>
+							<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
 						</select>
 						<div class="boxTFdiv">
 							<input type="text" name="keyword" class="boxTF"
@@ -757,8 +763,8 @@ function insertReply(){
 					</td>
 				</tr>
 				<tr>
-				<td>
-					<textarea name="ReplyContent" class="boxTA" placeholder="고운 댓글을 달아주세요" style="min-height: 400px;"></textarea>
+				<td colspan="2">
+					<textarea name="ReplyContent" class="boxTA" placeholder="고운 댓글을 달아주세요" style="min-height: 100px; width: 100%"></textarea>
 					<button type="button" class="btn btn-dark btnReplyOk">댓글 등록</button>
 					<input type="hidden" name="rev_num">
 				</td>

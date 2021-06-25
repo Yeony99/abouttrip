@@ -1,5 +1,6 @@
 package com.aboutrip.app.event;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -119,18 +120,7 @@ public class EventServiceImpl implements EventService {
 		
 	}
 
-	@Override
-	public Event readPart(int num, int partNum) {
-		Event dto = null;
-		
-		try {
-			dto = dao.selectOne("event.readPart", partNum);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return dto;
-	}
+
 	
 	@Override
 	public List<Event> listPart(Map<String, Object> map) {
@@ -155,9 +145,12 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void deletePart(int num, int partNum) throws Exception {
+	public void deletePart(int num, int userNum) throws Exception {
 		try {
-			dao.deleteData("event.deletePart", partNum);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("num", num);
+			map.put("userNum", userNum);
+			dao.deleteData("event.deletePart", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -168,7 +161,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public void winEvent(Event dto) throws Exception {
 		try {
-			dao.insertData("event.winEvent", dto);
+			dao.updateData("event.winEvent", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -184,6 +177,19 @@ public class EventServiceImpl implements EventService {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public Event readPart(int num) {
+		Event dto = null;
+		
+		try {
+			dto=dao.selectOne("event.readPart", num);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
 	}
 
 
