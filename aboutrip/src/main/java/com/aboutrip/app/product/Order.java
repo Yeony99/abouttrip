@@ -52,11 +52,7 @@ public class Order {
 	private int detail_num;
 	
 	// 결제취소
-	private int cKey;
-	private String whyCancel;
-	private int cPrice;
-	private String cDate;
-	
+	private int repundKey;
 	private int listNum;
 	private String articleUrl;
 	
@@ -253,30 +249,12 @@ public class Order {
 	public void setDetail_num(int detail_num) {
 		this.detail_num = detail_num;
 	}
-	public int getcKey() {
-		return cKey;
+	public int getRepundKey() {
+		return repundKey;
 	}
-	public void setcKey(int cKey) {
-		this.cKey = cKey;
+	public void setRepundKey(int repundKey) {
+		this.repundKey = repundKey;
 	}
-	public String getWhyCancel() {
-		return whyCancel;
-	}
-	public void setWhyCancel(String whyCancel) {
-		this.whyCancel = whyCancel;
-	}
-	public int getcPrice() {
-		return cPrice;
-	}
-	public void setcPrice(int cPrice) {
-		this.cPrice = cPrice;
-	}
-	public String getcDate() {
-		return cDate;
-	}
-	public void setcDate(String cDate) {
-		this.cDate = cDate;
-	}	
 	public String getUserId() {
 		return userId;
 	}

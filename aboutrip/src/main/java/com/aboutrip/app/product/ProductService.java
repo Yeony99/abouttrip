@@ -9,6 +9,7 @@ public interface ProductService {
 	public void insertQuestion(QnA dto) throws Exception;
 	public void insertAnswer(QnA dto) throws Exception;
 	public void insertcart(Order dto) throws Exception;
+	public void repundPayment(Payment dto) throws Exception;
 	
 	public List<Product> listProducts(Map<String, Object> map) throws Exception;
 	public List<Order> listOrder(int code) throws Exception;
@@ -30,6 +31,7 @@ public interface ProductService {
 	
 	public Product readProduct(int code) throws Exception;
 	public Order readMember(int user_num) throws Exception;
+	public Order readOrder(int order_detail) throws Exception;
 
 	public void deletecart(int cart_num) throws Exception;
 	public void deletecart(Map<String, Object> map) throws Exception;

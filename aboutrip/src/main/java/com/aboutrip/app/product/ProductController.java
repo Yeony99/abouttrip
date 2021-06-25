@@ -236,6 +236,11 @@ public class ProductController {
 		model.addAttribute("carts", carts);
 		return ".product.payment";
 	}
+	@RequestMapping("payCancle")
+	public String payCancle() throws Exception {
+
+		return ".product.payCancle";
+	}
 
 	@RequestMapping("complete")
 	public String paymentComplete(@RequestParam String payment_name, @RequestParam int final_price,
@@ -261,15 +266,13 @@ public class ProductController {
 		service.completePayment(dto, list);
 		service.deletecart(map);
 
-		redirect.addAttribute("payment_name", payment_name);
-		redirect.addAttribute("final_price", final_price);
+		redirect.addAttribute("message", payment_name + "\n" + final_price + "원이 결제 완료되었습니다.");
 		return "redirect:/product/completed";
 	}
 
 	@RequestMapping("completed")
-	public String paymentcompleted(@RequestParam String payment_name, @RequestParam int final_price, Model model)
+	public String paymentcompleted(@RequestParam String message, Model model)
 			throws Exception {
-		String message = payment_name + "\n" + final_price + "원이 결제 완료되었습니다.";
 		model.addAttribute("message", message);
 		return ".product.complete";
 	}
@@ -427,5 +430,35 @@ public class ProductController {
 		service.insertReview(dto);
 		
 		return "redirect:/member/payment";
+	}
+	
+	@RequestMapping(value="repund", method=RequestMethod.GET)
+	public String repund(
+			int order_detail,
+			Model model
+			) throws Exception{
+		Order dto = new Order();
+		
+		dto = service.readOrder(order_detail);
+		model.addAttribute("dto", dto);
+		
+		return ".product.payCancle";
+	}
+	
+	@RequestMapping(value="repund", method=RequestMethod.POST)
+	public String repundsubmit(
+			Payment dto,
+			RedirectAttributes redirect
+			) throws Exception{
+		try {
+			service.repundPayment(dto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			redirect.addAttribute("message","결제 취소에 실패했습니다.");
+		}
+		redirect.addAttribute("message", dto.getCancel_request_amount() + "원 이 정상적으로 취소 처리되었습니다.");
+		
+		return "redirect:/product/complete";
 	}
 }

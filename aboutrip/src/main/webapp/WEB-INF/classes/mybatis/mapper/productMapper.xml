@@ -92,6 +92,10 @@
 		(product_review_seq.NEXTVAL, #{rate}, #{reviewContent}, #{user_num},
 		#{order_detail} )
 	</insert>
+	<insert id ="repundPayment" parameterType="com.aboutrip.app.product.Payment">
+		INSERT INTO payCancel (cKey, whyCancel, cPrice, cDate, order_detail)
+		VALUES (cancel_req.NEXTVAL, #{whyCancel}, #{cPrice}, SYSDATE, #{order_detail})
+	</insert>
 
 	<!-- 수정 -->
 	<update id="update_product"
@@ -116,7 +120,11 @@
 		UPDATE product_img SET img_name = #{img_name} WHERE code
 		= #{code}
 	</insert>
-
+	
+	<insert id="" parameterType="com.aboutrip.app.product.Payment">
+		INSERT INTO payCancel(repund_key, reason, cancel_request_amount, refund_date, refund_account, refund_bank, order_detail)
+		VALUES(cancel_seq.NEXTVAL, #{reason}, ${cancel_request_amount}, SYSDATE, #{refund_account}, #{refund_bank}, #{order_detail} )
+	</insert>
 	<!-- 삭제 -->
 	<delete id="delete_product" parameterType="Integer">
 		DELETE FROM product
@@ -344,6 +352,13 @@
 		WHERE m1.userNum=#{userNum}
 	</select>
 
+	<select id="readOrderDetail" parameterType="Integer" resultType="com.aboutrip.app.product.Order">
+		SELECT option_name, od.price, order_date, od.order_detail
+		FROM orderDetail od
+		JOIN productDetail pd ON od.detail_num = pd.detail_num
+		JOIN orders o ON o.order_num = od.order_num
+		WHERE order_detail = ${order_detail}
+	</select>
 	<!-- 카운트 -->
 	<select id="list_count" parameterType="map" resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
@@ -386,6 +401,14 @@
 		resultType="Integer">
 		SELECT NVL(COUNT(*), 0)
 		FROM product_qna
+	</select>
+	<select id="count_rev" parameterType="Integer"
+		resultType="Integer">
+		SELECT NVL(COUNT(*),0)
+		FROM product_review r
+		JOIN orderDetail od ON od.order_num = r.order_detail
+		JOIN productDetail pd ON pd.detail_num = od.detail_num
+		WHERE code=${code}
 	</select>
 
 

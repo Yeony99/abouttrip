@@ -144,13 +144,14 @@
 		DELETE FROM payment WHERE paymentCode = #{paymentCode} AND userNum = #{userNum}
 	</delete>
 	<select id="orderlist" parameterType="map" resultType="com.aboutrip.app.product.Order">
-		SELECT o.order_num, od.order_detail, TO_CHAR(order_date,'YYYY-MM-DD') order_date, isUsed, o.user_num,
-		final_price, option_name, product_name, p.code, review_num
+		SELECT o.order_num, od.order_detail, TO_CHAR(order_date,'YYYY-MM-DD') order_date, isUsed, o.user_num, 
+		final_price, option_name, product_name, p.code, review_num, repund_key
 		FROM orders o
 		LEFT OUTER JOIN orderDetail od ON o.order_num = od.order_num
 		LEFT OUTER JOIN productdetail pd ON pd.detail_num = od.detail_num
         LEFT OUTER JOIN product p ON p.code = pd.code
         LEFT OUTER JOIN product_review r ON r.order_detail = od.order_detail
+        LEFT OUTER JOIN repund rp ON od.order_detail = rp.order_detail
 		WHERE o.user_num = #{user_num}
 		ORDER BY o.order_num
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY

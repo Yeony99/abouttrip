@@ -19,6 +19,7 @@
 						<th width="100">사용유무</th>
 						<th width="100">주문날짜</th>
 						<th width="100">리뷰작성</th>
+						<th width="100">제품상태</th>
 					</tr>
 
 					<c:forEach var="dto" items="${list}">
@@ -31,15 +32,17 @@
 							<td>${dto.final_price}</td>
 							<td>${dto.isUsed==1?"미사용":"사용"}</td>
 							<td>${dto.order_date}</td>
-							<td><button type="button" onclick="location.href='${pageContext.request.contextPath}/product/rev_write?code=${dto.code}&order_detail=${dto.order_detail}';"
+							<td><button type="button"
+									onclick="location.href='${pageContext.request.contextPath}/product/rev_write?code=${dto.code}&order_detail=${dto.order_detail}';"
 									${dto.review_num!="0" ? "disabled" : ""}>${dto.review_num=="0" ? "리뷰작성" : "작성완료"}</button></td>
+							<td>${dto.repundKey==""?"결제완료":"결제취소완료"}
+							</td>
 					</c:forEach>
 					<c:if test="${list==null}">
 						<td width="100">구매한 내용이 없습니다.</td>
 					</c:if>
 				</table>
 			</div>
-
 		</form>
 	</section>
 </div>

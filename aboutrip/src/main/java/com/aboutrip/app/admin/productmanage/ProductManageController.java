@@ -254,4 +254,10 @@ public class ProductManageController {
 		return "redirect:/admin/productmanage/qnamanage";
 	}
 
+	@RequestMapping(value="salemanage")
+	public String salemanage() throws Exception{
+		
+		return ".admin.productmanage.salemanage";
+	}
+	
 }

@@ -274,8 +274,36 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public int countReview(int code) throws Exception {
-		
-		return 0;
+		int result=0;
+		try {
+			result = dao.selectOne("product.count_rev", code);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
+	}
+
+	@Override
+	public Order readOrder(int order_detail) throws Exception {
+		Order dto = null;
+		try {
+			dto = dao.selectOne("product.readOrderDetail", order_detail);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return dto;
+	}
+
+	@Override
+	public void repundPayment(Payment dto) throws Exception {
+		try {
+			dao.insertData("product.repundPayment", dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 	
 	
