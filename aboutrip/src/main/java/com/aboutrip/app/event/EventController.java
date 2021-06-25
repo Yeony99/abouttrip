@@ -278,11 +278,13 @@ public class EventController {
 	@ResponseBody
 	public Map<String, Object> deletePart(
 			@RequestParam int num,
-			@RequestParam int partNum
+			HttpSession session
 			){
+		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		String state="true";
 		try {
-			service.deletePart(num, partNum);
+			
+			service.deletePart(num, info.getUserNum());
 		} catch (Exception e) {
 			state="false";
 		}

@@ -179,10 +179,9 @@ $(function(){
 			return false;
 		}
 		
-		var url="${pageContext.request.contextPath}/event/deletePart?";
+		var url="${pageContext.request.contextPath}/event/deletePart";
 		var num="${dto.num}";
-		var partNum="${dto.partNum}";
-		var query="num="+num+"&partNum="+partNum;
+		var query="num="+num;
 		
 		var fn = function(data){
 			var state=data.state;
@@ -199,7 +198,7 @@ $(function(){
 });
 
 
-//이벤트 당첨 버튼 
+// 이벤트 당첨 버튼 
 $(function(){
 	$(".btnSendwinEvent").click(function(){		
 		var url="${pageContext.request.contextPath}/event/winEvent";
@@ -290,20 +289,20 @@ $(function(){
 				</tr>
 				<tr>		
 					<td align="center" style="background: #EAEAEA "> 
-						참가번호 | 회원 번호 | 회원 이름 | 참여일
+						회원 번호 | 회원 이름 | 참여일
 					</td>
 				</tr>		
 						<c:forEach var="dto" items="${listPart}">
 							<tr>
 								<td align="center">
-									${dto.partNum} | ${dto.userNum} | ${dto.nickName} | ${dto.partDate}
+									${dto.userNum} | ${dto.nickName} | ${dto.partDate}
 								</td>
 							</tr>
 						</c:forEach>
 				
 				<tr>
 					<td align="center" style="padding-top: 30px; border-bottom: 1px solid white">
-					<button type="button" class="btn btnSendwinEvent" title="당첨자 추출"> 📌 당첨차 주출 버튼</button>
+					<button type="button" class="btn btnSendwinEvent" title="당첨자 추출"> 📌 당첨자 추출 버튼</button>
 					</td>
 				</tr>
 			</table>
@@ -318,12 +317,12 @@ $(function(){
 				</tr>
 				<tr>
 					<td align="center" style="background: #EAEAEA ">
-						당첨번호 | 회원 번호 | 회원 이름
+						회원 번호 | 회원 이름
 					</td>
 						<c:forEach var="dto" items="${listWin}">
 							<tr>
 								<td align="center" >
-									${dto.winNum} | ${dto.userNum} | ${dto.nickName}
+									${dto.userNum} | ${dto.nickName}
 								</td>
 							</tr>
 						</c:forEach>
