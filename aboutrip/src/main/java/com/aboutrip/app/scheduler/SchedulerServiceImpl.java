@@ -297,13 +297,7 @@ public class SchedulerServiceImpl implements SchedulerService{
 	public void updateShare(Share dto,String pathname) throws Exception {
 		try {
 			String saveFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
-		
-			if(saveFilename != null) {
-				if(dto.getImageFileName().length()!=0) {
-					fileManager.doFileDelete(dto.getImageFileName(), pathname);
-				}
-				dto.setImageFileName(saveFilename);
-			}
+			dto.setImageFileName(saveFilename);
 			dao.selectOne("scheduler.updateShare",dto);
 		} catch (Exception e) {
 			e.printStackTrace();

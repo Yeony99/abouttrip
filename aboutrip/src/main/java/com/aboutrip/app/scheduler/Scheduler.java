@@ -13,6 +13,15 @@ public class Scheduler {
 	private String memo;
 	private String start, end;
 	private String title;
+	private String search;
+
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
 
 	public String getTitle() {
 		return title;

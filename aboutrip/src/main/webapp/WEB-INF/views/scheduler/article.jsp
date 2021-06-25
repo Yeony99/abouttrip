@@ -88,7 +88,7 @@ button[disabled] {
 								<button type="button" class="btn"
 									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/updateShare?num=${dto.num}&search=${dto.search}&page=${page}';">글 수정</button>
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/deleteshare">글삭제</button>
+									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/deleteshare?num=${dto.num}&page=${page}';">글삭제</button>
 							</c:if>
 							</td>
 						</tr>

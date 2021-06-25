@@ -203,6 +203,7 @@ public class SchedulerController {
 	        
 		 model.addAttribute("condition", condition);
 		 model.addAttribute("keyword", keyword);
+		 model.addAttribute("msg","true");
 			
 	     
 		return ".scheduler.share";
@@ -215,7 +216,7 @@ public class SchedulerController {
 	}
 	
 	@RequestMapping(value = "findshare")
-	public String findshare(@RequestParam String search,HttpSession session,@RequestParam String color, String msg, Model model) throws Exception{
+	public String findshare(@RequestParam String search,HttpSession session,@RequestParam String color,Model model) throws Exception{
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -223,26 +224,28 @@ public class SchedulerController {
 		map.put("user_num", info.getUserNum());
 		map.put("color", color);
 		Scheduler dto = service.readScheduler(map);
-		model.addAttribute("dto", dto);
-		model.addAttribute("mode", "created");
-		model.addAttribute("msg","true");
 		if(dto==null) {
 			model.addAttribute("msg","false");
 			return"redirect:/scheduler/create";
-		} else {
-			return ".scheduler.create";
-		}
+		} 
+		model.addAttribute("dto", dto);
+		model.addAttribute("mode", "created");
+		model.addAttribute("msg","true");
+		
+		return ".scheduler.create";
+		
 		
 		
 	}
 	
 	@RequestMapping(value="created", method=RequestMethod.POST)
-	public String createdSubmit(Share dto, HttpSession session) throws Exception {
+	public String createdSubmit(Share dto, HttpSession session,@RequestParam String search) throws Exception {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		String root=session.getServletContext().getRealPath("/");
 		String pathname=root+"uploads"+File.separator+"share";
 		try {
 			dto.setUserNum(info.getUserNum());
+			dto.setSearch(search);
 			service.insertShare(dto,pathname);
 		} catch (Exception e) {
 			e.printStackTrace();

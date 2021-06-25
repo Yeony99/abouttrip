@@ -260,7 +260,7 @@
 	</select>
 	
 	<update id="updateShare" parameterType="com.aboutrip.app.scheduler.Share">
-		UPDATE sharelist SET subject=#{subject}, content=#{content}, search=#{search}
+		UPDATE sharelist SET subject=#{subject}, content=#{content}, search=#{search}, imageFilename=#{imageFileName, jdbcType=VARCHAR}
 		WHERE num = #{num}
 	</update>
 	

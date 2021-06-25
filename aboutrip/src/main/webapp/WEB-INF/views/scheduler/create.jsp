@@ -42,27 +42,34 @@
 </style>
 <script>
 function sendSch(){
-   var f = document.listForm;
-   var str;
-   
-   str = f.subject.value;
-   str = str.trim();
-   if (!str) {
-      alert("제목을 입력하세요. ");
-      f.subject.focus();
-      return;
-   }
-   
-   str = f.content.value;
-   str = str.trim();
-   if (!str) {
-      alert("내용을 입력하세요. ");
-      f.content.focus();
-      return;
-   }   
-   
-   f.action = "${pageContext.request.contextPath}/scheduler/${mode}";
-   f.submit();
+	var f = document.listForm;
+	var str;
+	var search = f.search.value;
+	var page = f.page.value;
+	var mode = f.mode.value;
+	var num = f.num.value;
+	
+	str = f.subject.value;
+	str = str.trim();
+	if (!str) {
+		alert("제목을 입력하세요. ");
+		f.subject.focus();
+		return;
+	}
+	
+	str = f.content.value;
+	str = str.trim();
+	if (!str) {
+		alert("내용을 입력하세요. ");
+		f.content.focus();
+		return;
+	}	
+	if(mode == "updateShare"){
+		f.action="${pageContext.request.contextPath}/scheduler/updateShare?page"+page+"&search="+search+"&num="+num;	
+	} else {
+		f.action = "${pageContext.request.contextPath}/scheduler/${mode}?search="+search;
+	}
+	f.submit();
 }
 function bringName() {
    var f = document.listForm;
@@ -92,14 +99,12 @@ function bringPlan() {
    }
 }
 function findSch(){
-   var f = document.listForm;
-   var color = f.plan.value;
-   var search = f.search.value;
-   
-	f.action = "${pageContext.request.contextPath}/scheduler/findshare?color"
-			+ color + "&search=" + search;
+	var f = document.listForm;
+	var color = f.plan.value;
+	var search = f.search.value;
+	
+	f.action="${pageContext.request.contextPath}/scheduler/findshare?color"+color+"&search="+search;
 	f.submit();
-	msgAlert();
 }
 
 function resetSch() {
@@ -108,7 +113,8 @@ function resetSch() {
 	f.submit();
 }
 function msgAlert() {
-	var msg = "${msg}";
+	var f = document.listForm;
+	var msg = f.msg.value;
 	if(!msg) {
 		alert("오류! 일정을 찾을 수 없습니다. '캘린더'에서 확인해주세요.")
 	} 
@@ -129,7 +135,7 @@ function msgAlert() {
                      style="border-bottom: 1px solid #ddd;">
                      <td style="text-align: center; width: 250px;">가져올 일정 제목</td>
                      <td style="padding-left: 10px;"> 
-                        <input type="text" name="search" class="boxTF" value="${dto.subject}">
+                        <input type="text" name="search" class="boxTF" value="${dto.search}">
                      </td>
                   </tr>
                   <input type="hidden" name="msg" value="${msg}">
@@ -146,7 +152,10 @@ function msgAlert() {
                         </select>
                            <button type="button" class="btn" onclick="findSch();">찾기</button>
                            <button type="button" class="btn" onclick="resetSch();" disabled="disabled">수정하기</button>
-                        <input type="hidden" value="" name="color"> 
+                        <input type="hidden" value="" name="color">
+						<input type="hidden" value="${page}" name="page">
+						<input type="hidden" value="${mode}" name="mode">
+						<input type="hidden" value="${dto.num}" name="num">
                      </td>
                   </tr>
                   </c:if>
@@ -171,8 +180,10 @@ function msgAlert() {
                         </select>
                         <button type="button" class="btn" onclick="findSch();" disabled="disabled">찾기</button>
                         <button type="button" class="btn" onclick="resetSch();" >수정하기</button>
-                        <div>${msg}</div>
                         <input type="hidden" value="${dto.color }" name="color">
+						<input type="hidden" value="${page}" name="page">
+						<input type="hidden" value="${mode}" name="mode">
+						<input type="hidden" value="${dto.num}" name="num">
                      </td>
                   </tr>
                   </c:if>
@@ -202,14 +213,10 @@ function msgAlert() {
                <table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
                   <tr height="60">
                      <td align="center" style="padding-bottom: 30px;">
-                        <button type="button" class="btn" onclick="sendSch();">${mode=='update'?'수정':'등록'}</button>
+                        <button type="button" class="btn" onclick="sendSch();">${mode=='updateShare'?'수정':'등록'}</button>
                         <button type="button" class="btn"
-                           onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/share';">${mode=='update'?'수정취소':'등록취소'}</button>
-                        <button type="reset" class="btn">재입력</button> 
-                        <c:if
-                           test="${mode=='update'}">
-                           <input type="hidden" name="placeNum" value="">
-                        </c:if></td>
+                           onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/share';">${mode=='updateShare'?'수정취소':'등록취소'}</button>
+                        <button type="reset" class="btn">재입력</button> </td>
                   </tr>
                </table>
             </form>
