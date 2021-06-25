@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<c:if test="${sessionScope.member.userId=='admin'}">
 <div class="container">
 	<div class="page-footer dark">
         <div class="container">
@@ -12,7 +13,7 @@
                     <ul>
                         <li><a href="${pageContext.request.contextPath}/place/mdPick">AboutTrip pick</a></li>
                         <li><a href="${pageContext.request.contextPath}/place/list">한국관광공사 pick</a></li>
-                        <li><a href="${pageContext.request.contextPath}/diary/main">여행 다이어리</a></li>
+                        <li><a href="${pageContext.request.contextPath}/admin/diaryManage/list">여행 다이어리</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
@@ -35,7 +36,7 @@
                     <h5>고객센터</h5>
                     <ul>
                         <li><a href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
-                        <li><a href="${pageContext.request.contextPath}/faq/list">FAQ</a></li>
+                        <li><a href="${pageContext.request.contextPath}/faq/main">FAQ</a></li>
                         <li><a href="${pageContext.request.contextPath}/qna/list">문의하기</a></li>
                         <li><a href="${pageContext.request.contextPath}/event/list">이벤트</a></li>
                         <li><a href="${pageContext.request.contextPath}/sug/list">시스템 개선/제안</a></li>
@@ -53,4 +54,8 @@
         </div>
 	</div>
 </div>
+</c:if>
 
+<c:if test="${sessionScope.member.userId!='admin'}">
+
+</c:if>
