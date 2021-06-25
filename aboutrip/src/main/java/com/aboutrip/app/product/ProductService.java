@@ -35,5 +35,5 @@ public interface ProductService {
 
 	public void deletecart(int cart_num) throws Exception;
 	public void deletecart(Map<String, Object> map) throws Exception;
-	public void completePayment(Order dto, List<Order> list) throws Exception;
+	public void completePayment(Order dto, List<Order> list, Payment pay) throws Exception;
 }

@@ -9,7 +9,6 @@ public class Order {
 	private String tel;
 	private String zip;
 	
-	
 	// 리뷰 정보
 	private int review_num;
 	private String reviewContent;
@@ -35,14 +34,7 @@ public class Order {
 	private int order_state;
 	private String order_date;
 	private int isUsed;
-	
-	// 결제
-	private int paymentcode;
-	private String pat_date;
-	private String cardName;
-	private int cardnum;
-	private int card_ok_num;
-	
+
 	// 주문 상세
 	private int order_detail;
 	private int quantity;
@@ -51,8 +43,13 @@ public class Order {
 	private int final_price;
 	private int detail_num;
 	
+	// 결제
+	private int payment_key;
+	
 	// 결제취소
 	private int repund_Key;
+	private String repund_date;
+	
 	private int listNum;
 	private String articleUrl;
 	
@@ -183,35 +180,17 @@ public class Order {
 	public void setIsUsed(int isUsed) {
 		this.isUsed = isUsed;
 	}
-	public int getPaymentcode() {
-		return paymentcode;
+	public int getPayment_key() {
+		return payment_key;
 	}
-	public void setPaymentcode(int paymentcode) {
-		this.paymentcode = paymentcode;
+	public void setPayment_key(int payment_key) {
+		this.payment_key = payment_key;
 	}
-	public String getPat_date() {
-		return pat_date;
+	public String getRepund_date() {
+		return repund_date;
 	}
-	public void setPat_date(String pat_date) {
-		this.pat_date = pat_date;
-	}
-	public String getCardName() {
-		return cardName;
-	}
-	public void setCardName(String cardName) {
-		this.cardName = cardName;
-	}
-	public int getCardnum() {
-		return cardnum;
-	}
-	public void setCardnum(int cardnum) {
-		this.cardnum = cardnum;
-	}
-	public int getCard_ok_num() {
-		return card_ok_num;
-	}
-	public void setCard_ok_num(int card_ok_num) {
-		this.card_ok_num = card_ok_num;
+	public void setRepund_date(String repund_date) {
+		this.repund_date = repund_date;
 	}
 	public int getOrder_detail() {
 		return order_detail;

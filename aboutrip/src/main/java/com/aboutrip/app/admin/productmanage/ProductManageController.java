@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aboutrip.app.common.AboutUtil;
 import com.aboutrip.app.member.SessionInfo;
+import com.aboutrip.app.product.Order;
 import com.aboutrip.app.product.Product;
 import com.aboutrip.app.product.QnA;
 
@@ -261,4 +262,46 @@ public class ProductManageController {
 		return ".admin.productmanage.salemanage";
 	}
 	
+	@RequestMapping(value="paymentmanage")
+	public String paymentmanage(@RequestParam(value = "page", defaultValue = "1") int current_page,
+			HttpServletRequest req,
+			Model model) throws Exception{
+		List<Order> list = new ArrayList<Order>();
+		List<Order> options = new ArrayList<Order>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String cp = req.getContextPath();
+
+		int rows = 10;
+		int offset = (current_page - 1) * rows;
+		if (offset < 0)
+			offset = 0;
+
+		map.put("offset", offset);
+		map.put("rows", rows);
+		
+		
+		list = service.list_Allpayment(map);
+		options = service.list_Allpayment_Option();
+		
+		int dataCount = service.paymentCount();
+		
+		int total_page = aboutUtil.pageCount(rows, dataCount);
+		if (current_page > total_page)
+			current_page = total_page;
+		
+
+        String listUrl = cp+"/admin/productmanage/paymentmanage";
+
+		String paging = aboutUtil.pagingMethod(current_page, total_page, listUrl);
+		
+		model.addAttribute("list",list);
+		model.addAttribute("options",options);
+		model.addAttribute("dataCount", dataCount);
+		model.addAttribute("total_page", total_page);
+		model.addAttribute("page", current_page);
+		model.addAttribute("paging", paging);
+		
+		return ".admin.productmanage.paymentmanage";
+	}
 }

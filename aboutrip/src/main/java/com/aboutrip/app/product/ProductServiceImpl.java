@@ -234,10 +234,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void completePayment(Order dto, List<Order> list) throws Exception {
+	public void completePayment(Order dto, List<Order> list, Payment pay) throws Exception {
 	
 		try {
 			dao.insertData("product.orders_insert", dto);
+			dao.insertData("product.payCharge_insert", pay);
 			for(int i = 0; i<list.size(); i++) {
 				list.get(i).setOrder_num(dto.getOrder_num());
 				dao.insertData("orderdetail_insert", list.get(i));

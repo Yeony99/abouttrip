@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.aboutrip.app.common.FileManager;
 import com.aboutrip.app.common.dao.AboutDAO;
+import com.aboutrip.app.product.Order;
 import com.aboutrip.app.product.Product;
 import com.aboutrip.app.product.QnA;
 
@@ -217,6 +218,42 @@ public class ProductManageServiceImpl implements ProductManageService {
 		int result = 0;
 		try {
 			result = dao.selectOne("product.count_qnamanage", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
+	}
+
+	@Override
+	public List<Order> list_Allpayment(Map<String,Object> map) throws Exception {
+		List<Order> list = null;
+		try {
+			list = dao.selectList("product.list_Allpayment", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
+
+	@Override
+	public List<Order> list_Allpayment_Option() throws Exception {
+		List<Order> list = null;
+		try {
+			list = dao.selectList("product.list_Allpayment_Option");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return list;
+	}
+
+	@Override
+	public int paymentCount() throws Exception{
+		int result = 0;
+		try {
+			result = dao.selectOne("product.count_payment");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

@@ -3,6 +3,7 @@ package com.aboutrip.app.admin.productmanage;
 import java.util.List;
 import java.util.Map;
 
+import com.aboutrip.app.product.Order;
 import com.aboutrip.app.product.Product;
 import com.aboutrip.app.product.QnA;
 
@@ -23,8 +24,11 @@ public interface ProductManageService {
 	public List<Product> listProduct(Map<String,Object> map) throws Exception;
 	public List<Product> listOptions() throws Exception;
 	public List<QnA> listQnA(Map<String, Object> map) throws Exception;
+	public List<Order> list_Allpayment(Map<String, Object> map) throws Exception;
+	public List<Order> list_Allpayment_Option() throws Exception;
 	
 	public int listCount(Map<String, Object> map);
 	public int countOption(int code) throws Exception;
 	public int qnaCount(Map<String, Object> map) throws Exception;
+	public int paymentCount() throws Exception;
 }

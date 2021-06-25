@@ -262,8 +262,11 @@ public class ProductController {
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setFinal_price(list.get(i).getPrice() * list.get(i).getQuantity());
 		}
-
-		service.completePayment(dto, list);
+		Payment pay = new Payment();
+		pay.setPaid_amount(dto.getOrder_price());
+		pay.setOrder_num(dto.getOrder_num());
+		
+		service.completePayment(dto, list, pay);
 		service.deletecart(map);
 
 		redirect.addAttribute("message", payment_name + "\n" + final_price + "원이 결제 완료되었습니다.");

@@ -103,6 +103,13 @@
 		#{order_detail})
 	</insert>
 
+	<insert id="payCharge_insert"
+		parameterType="com.aboutrip.app.product.Payment">
+		INSERT INTO payCharge(payment_key, pay_date,
+		paid_amount, order_num)
+		VALUES(payCharge.NEXTVAL, SYSDATE,
+		#{paid_amount}, #{order_num})
+	</insert>
 	<!-- 수정 -->
 	<update id="update_product"
 		parameterType="com.aboutrip.app.product.Product">
@@ -175,10 +182,14 @@
 		p.code=d.code
 		JOIN product_img i ON p.code=i.code
 		JOIN
-		(select code, ROUND(avg(rate),2) rate, COUNT(rate) rateCount FROM
-		(SELECT code, option_name, rate from product_review r
-		RIGHT OUTER JOIN orderDetail od ON od.order_detail=r.order_detail
-		RIGHT OUTER JOIN productDetail pd ON pd.detail_num = od.detail_num)
+		(select
+		code, ROUND(avg(rate),2) rate, COUNT(rate) rateCount FROM
+		(SELECT code,
+		option_name, rate from product_review r
+		RIGHT OUTER JOIN orderDetail od
+		ON od.order_detail=r.order_detail
+		RIGHT OUTER JOIN productDetail pd ON
+		pd.detail_num = od.detail_num)
 		GROUP BY code) pr
 		ON p.code = pr.code
 		WHERE category_num IN
@@ -330,6 +341,27 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS
 		ONLY
 	</select>
+
+	<select id="list_Allpayment" parameterType="map"
+		resultType="com.aboutrip.app.product.Order">
+		SELECT o.order_num, TO_CHAR(order_date,'YYYY-MM-DD') order_date, order_price, payment_key, nickName
+		FROM orders o
+		JOIN payCharge pc ON pc.order_num = o.order_num
+		JOIN member1 m ON o.user_num = m.usernum
+		ORDER BY o.order_num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS
+		ONLY
+	</select>
+
+	<select id="list_Allpayment_Option"
+		resultType="com.aboutrip.app.product.Order">
+		SELECT order_num, option_name, od.price, repund_Key, repund_date, product_name
+		FROM orderDetail od
+		LEFT OUTER JOIN repund rp ON rp.order_detail = od.order_detail
+		LEFT OUTER JOIN productDetail pd ON pd.detail_num = od.detail_num
+        LEFT OUTER JOIN product p ON p.code = pd.code
+	</select>
+
 	<!-- 글 -->
 
 	<select id="product_read" parameterType="Integer"
@@ -346,7 +378,9 @@
 
 	<select id="detail_read" parameterType="Integer"
 		resultType="com.aboutrip.app.product.Product">
-		SELECT option_name, option_value, price, TO_CHAR(start_date,'YYYY-MM-DD') start_date, TO_CHAR(end_date, 'YYYY-MM-DD') end_date, pd.code, product_name
+		SELECT option_name, option_value, price,
+		TO_CHAR(start_date,'YYYY-MM-DD') start_date, TO_CHAR(end_date,
+		'YYYY-MM-DD') end_date, pd.code, product_name
 		From productdetail pd
 		JOIN product p ON p.code = pd.code
 		WHERE detail_num=#{detail_num}
@@ -424,6 +458,10 @@
 		WHERE code=${code}
 	</select>
 
+	<select id="count_payment" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM payCharge
+	</select>
 
 	<!-- 기타 -->
 	<sql id="where-list">
