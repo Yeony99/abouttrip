@@ -9,7 +9,6 @@
    font-weight: 200;
 }
 .btn {
-   width: 60px;
    height: 40px;
    background-color: #424242;
    color: white;
@@ -49,9 +48,11 @@ textarea {
                   <tr align="left" height=100px;
                      style="border-bottom: 1px solid #ddd;">
                      <td style="text-align: center;">제목</td>
-                     <td style="padding-left: 10px;"><input type="text"
-                        name="subject" maxlength="50" class="boxTF"
-                        value="${dto.subject }" readonly="readonly"></td>
+                     <td style="padding-left: 10px;">
+                     <span>${dto.subject}</span>
+                     <input type="hidden"
+                        name="subject" maxlength="50" 
+                        value="${dto.subject }"></td>
                   </tr>
                   <tr align="left" height=100px;
                      style="border-bottom: 1px solid #ddd;">
