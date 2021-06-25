@@ -41,6 +41,9 @@
 }
 </style>
 <script>
+$(document).ready(function(){
+	msgAlert();
+});
 function sendSch(){
 	var f = document.listForm;
 	var str;
@@ -115,7 +118,7 @@ function resetSch() {
 function msgAlert() {
 	var f = document.listForm;
 	var msg = f.msg.value;
-	if(!msg) {
+	if(msg=="false") {
 		alert("오류! 일정을 찾을 수 없습니다. '캘린더'에서 확인해주세요.")
 	} 
 }

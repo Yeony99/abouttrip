@@ -194,6 +194,7 @@ public class SchedulerController {
 	        	articleUrl = cp+"/scheduler/shareArticle?page=" + current_page + "&"+ query;
 	        }
 	     String paging = aboutUtil.paging(current_page, total_page, listUrl);
+	     
 	     model.addAttribute("list",list);
 	     model.addAttribute("articleUrl", articleUrl);
 	     model.addAttribute("page", current_page);
@@ -203,15 +204,16 @@ public class SchedulerController {
 	        
 		 model.addAttribute("condition", condition);
 		 model.addAttribute("keyword", keyword);
-		 model.addAttribute("msg","true");
 			
 	     
 		return ".scheduler.share";
 	}
 	
 	@RequestMapping(value="create")
-	public String createdForm() throws Exception {
+	public String createdForm(Model model) throws Exception {
+		String msg = "";
 		
+		 model.addAttribute("msg",msg);
 		return ".scheduler.create";
 	}
 	
@@ -224,13 +226,14 @@ public class SchedulerController {
 		map.put("user_num", info.getUserNum());
 		map.put("color", color);
 		Scheduler dto = service.readScheduler(map);
+		String msg = "true";
 		if(dto==null) {
-			model.addAttribute("msg","false");
-			return"redirect:/scheduler/create";
+			msg = "false";
+			model.addAttribute("msg",msg);
 		} 
 		model.addAttribute("dto", dto);
 		model.addAttribute("mode", "created");
-		model.addAttribute("msg","true");
+		model.addAttribute("msg",msg);
 		
 		return ".scheduler.create";
 		
