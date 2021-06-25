@@ -138,7 +138,7 @@ public class ProductManageServiceImpl implements ProductManageService {
 	@Override
 	public void updateOption(Product dto) throws Exception {
 		try {
-			dao.updateData("update_product_detail", dto);
+			dao.updateData("product.update_product_detail", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

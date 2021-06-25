@@ -92,9 +92,15 @@
 		(product_review_seq.NEXTVAL, #{rate}, #{reviewContent}, #{user_num},
 		#{order_detail} )
 	</insert>
-	<insert id ="repundPayment" parameterType="com.aboutrip.app.product.Payment">
-		INSERT INTO payCancel (cKey, whyCancel, cPrice, cDate, order_detail)
-		VALUES (cancel_req.NEXTVAL, #{whyCancel}, #{cPrice}, SYSDATE, #{order_detail})
+
+	<insert id="repundPayment"
+		parameterType="com.aboutrip.app.product.Payment">
+		INSERT INTO repund (repund_key, reason,
+		cancel_request_amount, refund_date, refund_account, refund_bank,
+		order_detail)
+		VALUES (CANCEL_SEQ.NEXTVAL,#{reason},
+		#{cancel_request_amount}, SYSDATE, #{refund_account}, #{refund_bank},
+		#{order_detail})
 	</insert>
 
 	<!-- 수정 -->
@@ -120,11 +126,7 @@
 		UPDATE product_img SET img_name = #{img_name} WHERE code
 		= #{code}
 	</insert>
-	
-	<insert id="" parameterType="com.aboutrip.app.product.Payment">
-		INSERT INTO payCancel(repund_key, reason, cancel_request_amount, refund_date, refund_account, refund_bank, order_detail)
-		VALUES(cancel_seq.NEXTVAL, #{reason}, ${cancel_request_amount}, SYSDATE, #{refund_account}, #{refund_bank}, #{order_detail} )
-	</insert>
+
 	<!-- 삭제 -->
 	<delete id="delete_product" parameterType="Integer">
 		DELETE FROM product
@@ -168,15 +170,16 @@
 		upload_date,ishidden, price, img_name, rate, rateCount
 		FROM product p
 		LEFT JOIN (SELECT
-		code, MIN(price) price FROM productdetail GROUP BY code)d ON
+		code, MIN(price) price FROM productdetail GROUP BY
+		code)d ON
 		p.code=d.code
 		JOIN product_img i ON p.code=i.code
-		JOIN 
-			(select code, ROUND(avg(rate),2) rate, COUNT(rate) rateCount FROM
-				(SELECT code, option_name, rate	from product_review r
-				RIGHT OUTER JOIN orderDetail od ON od.order_detail=r.order_detail
-				RIGHT OUTER JOIN productDetail pd ON pd.detail_num = od.detail_num)
-			GROUP BY code) pr
+		JOIN
+		(select code, ROUND(avg(rate),2) rate, COUNT(rate) rateCount FROM
+		(SELECT code, option_name, rate from product_review r
+		RIGHT OUTER JOIN orderDetail od ON od.order_detail=r.order_detail
+		RIGHT OUTER JOIN productDetail pd ON pd.detail_num = od.detail_num)
+		GROUP BY code) pr
 		ON p.code = pr.code
 		WHERE category_num IN
 		<foreach collection="list" item="code" index="index"
@@ -310,17 +313,22 @@
 
 	<select id="review_list" parameterType="map"
 		resultType="com.aboutrip.app.product.Order">
-		SELECT review_num, rate, reviewContent, code, option_name, nickName, TO_CHAR(order_date, 'YYYY-MM-DD') order_date
+		SELECT review_num, rate, reviewContent, code, option_name, nickName,
+		TO_CHAR(order_date, 'YYYY-MM-DD') order_date
 		FROM product_review r
-		JOIN orderDetail od ON od.order_detail = r.order_detail
-		JOIN orders o ON o.order_num = od.order_num
-		JOIN productDetail pd ON pd.detail_num = od.detail_num
+		JOIN
+		orderDetail od ON od.order_detail = r.order_detail
+		JOIN orders o ON
+		o.order_num = od.order_num
+		JOIN productDetail pd ON pd.detail_num =
+		od.detail_num
 		JOIN member1 m ON m.usernum = r.user_num
 		<where>
 			code=${code}
 		</where>
 		ORDER BY review_num DESC
-		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS
+		ONLY
 	</select>
 	<!-- 글 -->
 
@@ -338,9 +346,9 @@
 
 	<select id="detail_read" parameterType="Integer"
 		resultType="com.aboutrip.app.product.Product">
-		SELECT option_name, option_value, price, start_date,
-		end_date, code
-		From productdetail
+		SELECT option_name, option_value, price, TO_CHAR(start_date,'YYYY-MM-DD') start_date, TO_CHAR(end_date, 'YYYY-MM-DD') end_date, pd.code, product_name
+		From productdetail pd
+		JOIN product p ON p.code = pd.code
 		WHERE detail_num=#{detail_num}
 	</select>
 
@@ -352,12 +360,15 @@
 		WHERE m1.userNum=#{userNum}
 	</select>
 
-	<select id="readOrderDetail" parameterType="Integer" resultType="com.aboutrip.app.product.Order">
+	<select id="readOrderDetail" parameterType="Integer"
+		resultType="com.aboutrip.app.product.Order">
 		SELECT option_name, od.price, order_date, od.order_detail
 		FROM orderDetail od
-		JOIN productDetail pd ON od.detail_num = pd.detail_num
+		JOIN productDetail pd ON od.detail_num =
+		pd.detail_num
 		JOIN orders o ON o.order_num = od.order_num
-		WHERE order_detail = ${order_detail}
+		WHERE
+		order_detail = ${order_detail}
 	</select>
 	<!-- 카운트 -->
 	<select id="list_count" parameterType="map" resultType="Integer">
@@ -406,8 +417,10 @@
 		resultType="Integer">
 		SELECT NVL(COUNT(*),0)
 		FROM product_review r
-		JOIN orderDetail od ON od.order_num = r.order_detail
-		JOIN productDetail pd ON pd.detail_num = od.detail_num
+		JOIN orderDetail
+		od ON od.order_num = r.order_detail
+		JOIN productDetail pd ON
+		pd.detail_num = od.detail_num
 		WHERE code=${code}
 	</select>
 

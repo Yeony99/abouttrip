@@ -34,8 +34,10 @@
 							<td>${dto.order_date}</td>
 							<td><button type="button"
 									onclick="location.href='${pageContext.request.contextPath}/product/rev_write?code=${dto.code}&order_detail=${dto.order_detail}';"
-									${dto.review_num!="0" ? "disabled" : ""}>${dto.review_num=="0" ? "리뷰작성" : "작성완료"}</button></td>
-							<td>${dto.repundKey==""?"결제완료":"결제취소완료"}
+									${dto.review_num!="0" || dto.repund_Key!="0"? "disabled" : ""}>${dto.review_num=="0" ? "리뷰작성" : "작성완료"}</button></td>
+							<td>${dto.repund_Key==""?"결제완료":""}
+								<button type='button' onclick="location.href='${pageContext.request.contextPath}/product/repund?order_detail=${dto.order_detail}';" 
+								${dto.repund_Key!="0" ? "disabled" : ""}>${dto.repund_Key!="0" ? "환불완료" : "환불요청"}</button>
 							</td>
 					</c:forEach>
 					<c:if test="${list==null}">

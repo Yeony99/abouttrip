@@ -120,13 +120,13 @@
 							<c:if test="${status.index !=0 && status.index%3 ==0}">
 								<c:out value="</tr><tr>" escapeXml="false" />
 							</c:if>
-							<td width="210" align="center" style="border-top: 1px solid #ddd">
-								<div class="imgLayout"
-									style="margin-top: 12px; margin-bottom: 9px;">
-									<img
-										src="${pageContext.request.contextPath}/uploads/photo/${dto.img_name}"
-										style="width:230; height:230;"><br>
-								</div>
+							<td width="210" align="center"
+									style="border-top: 1px solid #ddd">
+									<div style="margin: 10px 0   border: 1px solid #ccc;">
+										<img
+											src="${pageContext.request.contextPath}/uploads/product/${dto.img_name}"
+											style="width: 229px; height:229;">
+									</div>
 							</td>
 							<td>
 								<ul>

@@ -88,8 +88,8 @@ public class ProductManageController {
 	@RequestMapping(value = "inputproduct", method = RequestMethod.POST)
 	public String createSubmit(Product dto, HttpSession session) throws Exception {
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "product";
-
+		String pathname = root+"uploads"+File.separator+"product";
+		
 		try {
 			service.insertProduct(dto, pathname);
 		} catch (Exception e) {
@@ -134,7 +134,7 @@ public class ProductManageController {
 	public String updateproduct(@RequestParam int code, Model model) throws Exception {
 		Product dto = new Product();
 		dto = service.readProduct(code);
-
+		
 		model.addAttribute("dto", dto);
 		model.addAttribute("mode", "updateproduct");
 		return ".admin.productmanage.create";
@@ -158,8 +158,9 @@ public class ProductManageController {
 		Product dto = new Product();
 		dto = service.readDetail(detail_num);
 
+		model.addAttribute("detail_num", detail_num);
 		model.addAttribute("dto", dto);
-		model.addAttribute("mode", "updateproduct");
+		model.addAttribute("mode", "updatedetail");
 		return ".admin.productmanage.createdetail";
 	}
 

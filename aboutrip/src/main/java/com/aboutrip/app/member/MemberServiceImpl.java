@@ -164,11 +164,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public int orderCount() {
+	public int orderCount(int user_num) {
 		int result = 0;
 		
 		try {
-			result = dao.selectOne("member.orderCount");
+			result = dao.selectOne("member.orderCount", user_num);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

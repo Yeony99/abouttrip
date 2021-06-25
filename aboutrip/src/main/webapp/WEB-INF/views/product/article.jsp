@@ -117,7 +117,7 @@
 				<tr>
 					<td style="width: 50%; height: 500px;" rowspan="2"><img
 						class="box-img"
-						src="${pageContext.request.contextPath}/resources/img/img/${dto.img_name}"
+						src="${pageContext.request.contextPath}/uploads/product/${dto.img_name}"
 						alt="${dto.product_name}" title="${dto.product_name}"
 						style="width: 100%; height: 100%; object-fit: cover;"></td>
 					<td>

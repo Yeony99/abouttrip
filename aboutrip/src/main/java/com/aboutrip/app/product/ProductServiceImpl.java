@@ -237,7 +237,7 @@ public class ProductServiceImpl implements ProductService {
 	public void completePayment(Order dto, List<Order> list) throws Exception {
 	
 		try {
-			dao.insertData("orders_insert", dto);
+			dao.insertData("product.orders_insert", dto);
 			for(int i = 0; i<list.size(); i++) {
 				list.get(i).setOrder_num(dto.getOrder_num());
 				dao.insertData("orderdetail_insert", list.get(i));

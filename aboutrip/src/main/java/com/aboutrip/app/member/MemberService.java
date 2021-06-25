@@ -23,7 +23,7 @@ public interface MemberService {
 	public int logCount(Map<String, Object> map);
 	public int followingCount(Map<String, Object> map);
 	public int followerCount(Map<String, Object> map);
-	public int orderCount();
+	public int orderCount(int user_num);
 	
 	public List<Member> payList(Map<String, Object> map);
 	public List<Member> logList(Map<String, Object> map);

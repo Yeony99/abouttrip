@@ -482,7 +482,8 @@ public class MemberController {
 		int rows = 10;
 		int total_page=0;
 		int dataCount =0;
-		dataCount = service.orderCount();
+		int user_num=info.getUserNum();
+		dataCount = service.orderCount(user_num);
 		if(dataCount !=0) total_page = aboutUtil.pageCount(rows, dataCount);
 		
 		if(total_page<current_page) current_page=total_page;

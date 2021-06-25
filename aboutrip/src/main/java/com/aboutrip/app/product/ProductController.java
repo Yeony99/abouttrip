@@ -442,7 +442,7 @@ public class ProductController {
 		dto = service.readOrder(order_detail);
 		model.addAttribute("dto", dto);
 		
-		return ".product.payCancle";
+		return ".product.payCancel";
 	}
 	
 	@RequestMapping(value="repund", method=RequestMethod.POST)
@@ -459,6 +459,6 @@ public class ProductController {
 		}
 		redirect.addAttribute("message", dto.getCancel_request_amount() + "원 이 정상적으로 취소 처리되었습니다.");
 		
-		return "redirect:/product/complete";
+		return "redirect:/product/completed";
 	}
 }

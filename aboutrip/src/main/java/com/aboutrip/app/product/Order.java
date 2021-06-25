@@ -52,7 +52,7 @@ public class Order {
 	private int detail_num;
 	
 	// 결제취소
-	private int repundKey;
+	private int repund_Key;
 	private int listNum;
 	private String articleUrl;
 	
@@ -249,11 +249,11 @@ public class Order {
 	public void setDetail_num(int detail_num) {
 		this.detail_num = detail_num;
 	}
-	public int getRepundKey() {
-		return repundKey;
+	public int getRepund_Key() {
+		return repund_Key;
 	}
-	public void setRepundKey(int repundKey) {
-		this.repundKey = repundKey;
+	public void setRepund_Key(int repund_Key) {
+		this.repund_Key = repund_Key;
 	}
 	public String getUserId() {
 		return userId;

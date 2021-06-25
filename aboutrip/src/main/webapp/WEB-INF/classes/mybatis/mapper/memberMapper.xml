@@ -157,7 +157,10 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
 	</select>
 	
-	<select id="orderCount" resultType="Integer">
-		SELECT NVL(COUNT(*),0) FROM orders
+	<select id="orderCount" parameterType="Integer" resultType="Integer">
+		SELECT NVL(COUNT(*),0)
+		FROM orderdetail od
+		JOIN orders o ON od.order_num = o.order_num
+		WHERE user_num = #{user_num}
 	</select>
 </mapper>
