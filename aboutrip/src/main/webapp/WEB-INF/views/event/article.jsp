@@ -61,10 +61,20 @@
 	border-radius: 7px;
 }
 
+.btnSendpartEvent:hover{
+	background-color: black;
+	color: #87CEFA;
+	border-radius: 7px;
+}
+
 .btnSendwinEvent{
-	background-color: #87CEFA;
+	background-color: #055ada;
 	color: #fff;
 	border-radius: 7px;
+}
+
+.btnSenddeleteEvent{
+	border: 1px solid #EAEAEA;
 }
 
 a {
@@ -127,7 +137,7 @@ $(function(){
 });
 
 function listPage(page) {
-	var url = "${pageContext.request.contextPath}/event/listPart";
+	var url = "${pageContext.request.contextPath}/event/list";
 	var query = "num=${dto.num}&page="+page;
 	var selector = "#listPart";
 	
@@ -151,8 +161,6 @@ $(function(){
 		var fn = function(data){
 			var state=data.state;
 			if(state==="true") {
-				var count = data.partCount;
-				$("#partCount").text(count);
 				alert("이벤트에 참여했습니다.");
 				location.reload();
 			} else if(state==="false") {
@@ -171,9 +179,10 @@ $(function(){
 			return false;
 		}
 		
-		var url="${pageContext.request.contextPath}/event/deletePart?"+query;
+		var url="${pageContext.request.contextPath}/event/deletePart?";
 		var num="${dto.num}";
-		var query="num="+num+"partNum="+partNum;
+		var partNum="${dto.partNum}";
+		var query="num="+num+"&partNum="+partNum;
 		
 		var fn = function(data){
 			var state=data.state;
@@ -193,25 +202,16 @@ $(function(){
 //이벤트 당첨 버튼 
 $(function(){
 	$(".btnSendwinEvent").click(function(){		
-		var num="${dto.num}";
-		var $tb = $(this).closest("table");
-		var content=$tb.find("btnWin").val().trim();
-		if(! content) {
-			$tb.find("btnWin").focus();
-			return false;
-		}
-		alert("이벤트 당첨버튼 ");
-		content = encodeURIComponent(content);
-		
 		var url="${pageContext.request.contextPath}/event/winEvent";
-		var query="num="+num+"&content="+content;
+		var num="${dto.num}";
+		var query="num="+num;
 		
 		var fn = function(data){
-			$tb.find("btnPart").val("");
 			
 			var state=data.state;
 			if(state==="true") {
-				listPage(1);
+				alert("이벤트에 당첨 추출에 성공했습니다.");
+				location.reload();
 			} else if(state==="false") {
 				alert("이벤트 당첨추출에 실패했습니다.");
 			}
@@ -221,17 +221,6 @@ $(function(){
 	});
 });
 
-//이벤트 당첨자 리스트
-function winlistPage(page) {
-	var url = "${pageContext.request.contextPath}/event/listwin";
-	var query = "num=${dto.num}&page="+page;
-	var selector = "#listWin";
-	
-	var fn = function(data){
-		$(selector).html(data);
-	};
-	ajaxFun(url, "get", query, "html", fn);
-}
 
 
 </script>
@@ -254,16 +243,10 @@ function winlistPage(page) {
 					이름 : ${dto.nickName}
 				</td>
 				<td width="90%" align="right">
-					이벤트 기간: ${dto.eventStart}  ~ ${dto.eventEnd} &nbsp; | &nbsp; 발표일: ${dto.winDate} 
+					이벤트 기간: ${dto.eventStart}  ~ ${dto.eventEnd} &nbsp; | &nbsp; 발표일: ${dto.winDate} &nbsp; | &nbsp; 이벤트 당첨 상품: ${dto.present}
 				</td>
 			</tr>
 			
-			
-			<tr style="font-weight: 600;">
-				<td colspan="2" align="right" >
-					이벤트 당첨 상품: ${dto.present} &nbsp; | &nbsp; 당첨자수: ${dto.winCount}
-				</td>
-			</tr>
 			
 			
 			<tr style="border-bottom: 1px solid white">
@@ -272,14 +255,6 @@ function winlistPage(page) {
 				</td>
 			</tr>
 			
-			<tr>
-				<td colspan="2" style="padding-bottom: 15px;" align="center">
-					<button type="button" class="btnSendpartEvent" title="이벤트 신청"> ❤ 이벤트 신청  버튼</button> 
-					<button type="button" class="btnSenddeleteEvent" title="이벤스 신청 취소"> 🗑 이벤트 신청 취소 버튼</button>
-					<br><br>
-					<p>  <span id="partCount">이벤트 참여자 수 : ${dto.partCount}  </span></p>
-				</td>
-			</tr>
 			
 			<tr>
 				<td colspan="2">
@@ -298,16 +273,22 @@ function winlistPage(page) {
 					</c:if>
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2" style="padding-bottom: 15px;" align="center">
+					<button type="button" class="btn btnSendpartEvent" title="이벤트 신청"> ❤ 이벤트 신청  버튼</button> 
+					<button type="button" class="btn btnSenddeleteEvent" title="이벤스 신청 취소"> 🗑 이벤트 신청 취소 버튼</button>
+				</td>
+			</tr>
 		</table>
 			
 		<c:if test="${not empty dto.partNum && sessionScope.member.userId=='admin'}">
 			<table class="table table-content">
 				<tr>
-					<td align="center" style="background: #87CEFA ">
-						이벤트 참가자 수 : ${dto.partCount} 
-					</td>
+					<td align="center" style="background: #87CEFA  "> 
+						<span id="partCount">참가자 수: ${dto.partCount}</span>
+					</td>				
 				</tr>
-				<tr>	
+				<tr>		
 					<td align="center" style="background: #EAEAEA "> 
 						참가번호 | 회원 번호 | 회원 이름 | 참여일
 					</td>
@@ -321,10 +302,8 @@ function winlistPage(page) {
 						</c:forEach>
 				
 				<tr>
-					<td align="center" style="padding-top: 20px; border-bottom: 1px solid white">
+					<td align="center" style="padding-top: 30px; border-bottom: 1px solid white">
 					<button type="button" class="btn btnSendwinEvent" title="당첨자 추출"> 📌 당첨차 주출 버튼</button>
-					<br><br>
-					<p><span id="winEvent">당첨자 수: ${dto.winCount}</span></p>
 					</td>
 				</tr>
 			</table>
@@ -333,19 +312,21 @@ function winlistPage(page) {
 		<c:if test="${not empty dto.winNum && sessionScope.member.userId=='admin'}">
 			<table class="table table-content" style="width: 100%; padding-top: 5px;">
 				<tr>
-					<td align="center" >
-						당첨번호 | 회원 번호 | 회원 이름 | 참여일
+					<td align="center" style="background: #87CEFA  "> 
+						<span id="winEvent">당첨자 수: ${dto.winCount}</span>
+					</td>				
+				</tr>
+				<tr>
+					<td align="center" style="background: #EAEAEA ">
+						당첨번호 | 회원 번호 | 회원 이름
 					</td>
-						<c:forEach var="dto" items="${winlist}">
+						<c:forEach var="dto" items="${listWin}">
 							<tr>
 								<td align="center" >
-									${dto.winNum} | ${dto.userNum} | ${dto.nickName} | ${dto.partDate}
+									${dto.winNum} | ${dto.userNum} | ${dto.nickName}
 								</td>
 							</tr>
 						</c:forEach>
-					<td>
-					
-					</td>	
 				</tr>
 			</table>
 		</c:if>	

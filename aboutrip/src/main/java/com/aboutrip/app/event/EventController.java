@@ -150,16 +150,12 @@ public class EventController {
 			query+="&condition="+condition+"&keyword="+URLEncoder.encode(keyword, "UTF-8");
 		}
 		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		Event dto = service.readEvent(num);
 		
 		if(dto==null) {
 			return "redirect:/event/list?"+query;	
 		}
 		
-		if(!info.getUserId().equals("admin")) {
-			return "redirect:/event/list?"+query;
-		}
 		
 		dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 		
@@ -171,7 +167,7 @@ public class EventController {
         Event preReadDto = service.preReadEvent(map);
         Event nextReadDto = service.nextReadEvent(map);
         List<Event> listPart = service.listPart(map);
-        
+        List<Event> listWin = service.listWin(map);
         
 		model.addAttribute("dto", dto);
 		model.addAttribute("preReadDto", preReadDto);
@@ -179,6 +175,7 @@ public class EventController {
 		model.addAttribute("page", page);
 		model.addAttribute("query", query);
 		model.addAttribute("listPart", listPart);
+		model.addAttribute("listWin", listWin);
 		
 		return ".event.article";
 	}
@@ -277,14 +274,15 @@ public class EventController {
 	}
 	
 	//이벤트 참여 취소
-	@RequestMapping(value="deletPart", method = RequestMethod.POST)
+	@RequestMapping(value="deletePart", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> deletePart(
-			@RequestParam Map<String, Object> paramMap
+			@RequestParam int num,
+			@RequestParam int partNum
 			){
 		String state="true";
 		try {
-			service.deletePart(paramMap);
+			service.deletePart(num, partNum);
 		} catch (Exception e) {
 			state="false";
 		}
@@ -294,7 +292,7 @@ public class EventController {
 		return map;
 	}
 	
-	//이벤트 당첨자 발표, 난수발생 
+	//이벤트 당첨자 추출, 난수발생 
 	@RequestMapping(value="winEvent", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> winEvent(
@@ -321,44 +319,6 @@ public class EventController {
 		return model;
 	}
 	
-	//이벤트 당첨자 리스트
-	@RequestMapping(value="listWin")
-	public String listWin(
-			@RequestParam int num,
-			@RequestParam(value="page", defaultValue = "1") int current_page,
-			Model model
-			) throws Exception {
-		
-		int rows=5;
-		int total_page=0;
-		int dataCount=0;
-		
-		Map<String, Object> map=new HashMap<>();
-		map.put("num", num);
-		
-		total_page = aboutUtil.pageCount(rows, dataCount);
-		if(current_page>total_page)
-			current_page=total_page;
-		
-		int offset = (current_page-1) * rows;
-		map.put("offset", offset);
-        map.put("rows", rows);
-        List<Event> listWin = service.listWin(map);
-        
-        for(Event dto : listWin) {
-        	dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
-        }
-		
-        String paging = aboutUtil.pagingMethod(current_page, total_page, "listPage");
-        
-        model.addAttribute("listPart", listWin);
-        model.addAttribute("page", current_page);
-        model.addAttribute("partCount", dataCount);
-        model.addAttribute("total_page", total_page);
-        model.addAttribute("paging", paging);
-        
-        return "event/listWin";
-		
-	}
+
 	
 }

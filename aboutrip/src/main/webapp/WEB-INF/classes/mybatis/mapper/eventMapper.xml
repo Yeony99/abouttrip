@@ -116,10 +116,11 @@
 	<!-- 이벤트 참여 추가 -->
 	<insert id="partEvent" parameterType="map">
 		INSERT INTO partEvent(partNum, num, userNum, partDate) 
-			VALUES (partevent_seq.NEXTVAL, #{num}, #{userNum}, SYSDATE)
+			VALUES (partevent_seq.NEXTVAL, #{num}, #{userNum}, SYSDATE) 
+			
 	</insert>
 	
-	<!-- 이벤트 참여 조회 -->
+	<!-- 이벤트 개별 참여 조회 -->
 	<select id="ReadPart" parameterType="Integer" resultType="com.aboutrip.app.event.Event">
 		SELECT partNum, num, p.userNum, nickName, partDate 
 		FROM partEvent p
@@ -128,7 +129,7 @@
 		ORDER BY partNum 
 	</select>
 	
-	<!-- 이벤트 참여 조회 -->
+	<!-- 이벤트 전체 참여 조회 -->
 	<select id="listPart" parameterType="map" resultType="com.aboutrip.app.event.Event">
 		SELECT partNum, num, p.userNum, nickName, partDate 
 		FROM partEvent p
@@ -139,15 +140,22 @@
 	
 	<!-- 이벤트 참여 개수 -->
 	<select id="partCount" parameterType="Integer" resultType="Integer">
-		SELECT COUNT(*) FROM partEvent WHERE num=#{num}
+		SELECT COUNT(*) FROM partEvent 
 	</select>
+	
+	<!-- 이벤트 참여 삭제 -->
+	<delete id="deletePart" parameterType="Integer">
+		DELETE FROM partEvent 
+			WHERE num=#{num} AND partNum=#{partNum}
+	</delete>
 		
 	<!-- 당첨자 발표 추가 -->
 	<update id="winEvent" parameterType="map">
 	  INSERT INTO winEvent (winNum, num, userNum)   
          SELECT tb.* FROM (
-                SELECT winevent_seq.NEXTVAL,userNum FROM partEvent
-		 WHERE num=#{num}
+                SELECT winevent_seq.NEXTVAL, num, userNum 
+                FROM partEvent
+				WHERE num=#{num}
                 ORDER BY DBMS_RANDOM.VALUE
          ) tb WHERE ROWNUM &lt;= #{winCount}
 	</update>
@@ -158,8 +166,7 @@
 		FROM winEvent w
 		JOIN member1 m ON w.userNum=m.userNum
 		WHERE num=#{num}
-		ORDER BY winNum DESC
-		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
+		ORDER BY winNum
 	</select>
 	
 	

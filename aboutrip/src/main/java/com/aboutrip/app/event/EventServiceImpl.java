@@ -155,9 +155,9 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void deletePart(Map<String, Object> map) throws Exception {
+	public void deletePart(int num, int partNum) throws Exception {
 		try {
-			dao.deleteData("event.deletePart", map);
+			dao.deleteData("event.deletePart", partNum);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -179,7 +179,7 @@ public class EventServiceImpl implements EventService {
 	public List<Event> listWin(Map<String, Object> map) {
 		List<Event> list = null;
 		try {
-			list = dao.selectList("event.listEvent", map);
+			list = dao.selectList("event.listWin", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

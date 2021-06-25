@@ -20,7 +20,7 @@ public interface EventService {
 	public Event readPart(int num, int partNum);
 	public List<Event> listPart(Map<String, Object> map);
 	public int partCount(int num);
-	public void deletePart(Map<String, Object> map) throws Exception;
+	public void deletePart(int num, int partNum) throws Exception;
 	
 	public void winEvent(Event dto) throws Exception;
 	public List<Event> listWin(Map<String, Object> map);
