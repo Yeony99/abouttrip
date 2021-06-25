@@ -215,7 +215,7 @@ public class SchedulerController {
 	}
 	
 	@RequestMapping(value = "findshare")
-	public String findshare(@RequestParam String search,HttpSession session,@RequestParam String color,Model model) throws Exception{
+	public String findshare(@RequestParam String search,HttpSession session,@RequestParam String color, String msg, Model model) throws Exception{
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -225,11 +225,14 @@ public class SchedulerController {
 		Scheduler dto = service.readScheduler(map);
 		model.addAttribute("dto", dto);
 		model.addAttribute("mode", "created");
+		model.addAttribute("msg","true");
 		if(dto==null) {
+			model.addAttribute("msg","false");
 			return"redirect:/scheduler/create";
 		} else {
 			return ".scheduler.create";
 		}
+		
 		
 	}
 	
