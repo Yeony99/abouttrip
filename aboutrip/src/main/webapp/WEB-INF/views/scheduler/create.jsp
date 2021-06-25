@@ -44,6 +44,11 @@
 function sendSch(){
 	var f = document.listForm;
 	var str;
+
+	var search = f.search.value;
+	var page = f.page.value;
+	var mode = f.mode.value;
+	var num = f.num.value;
 	
 	str = f.subject.value;
 	str = str.trim();
@@ -60,8 +65,12 @@ function sendSch(){
 		f.content.focus();
 		return;
 	}	
-	
-	f.action = "${pageContext.request.contextPath}/scheduler/${mode}";
+
+	if(mode == "updateShare"){
+		f.action="${pageContext.request.contextPath}/scheduler/updateShare?page"+page+"&search="+search+"&num="+num;	
+	} else {
+		f.action = "${pageContext.request.contextPath}/scheduler/${mode}";
+	}
 	f.submit();
 }
 function bringName() {
@@ -94,7 +103,6 @@ function bringPlan() {
 function findSch(){
 	var f = document.listForm;
 	var color = f.plan.value;
-	var search = f.search.value;
 	
 	f.action="${pageContext.request.contextPath}/scheduler/findshare?color"+color+"&search="+search;
 	f.submit();
@@ -121,7 +129,7 @@ function resetSch(){
 							style="border-bottom: 1px solid #ddd;">
 							<td style="text-align: center; width: 250px;">가져올 일정 제목</td>
 							<td style="padding-left: 10px;"> 
-								<input type="text" name="search" class="boxTF" value="${dto.subject }">
+								<input type="text" name="search" class="boxTF" value="${dto.search }">
 							</td>
 						</tr>
 						<tr align="left" height=100px;
@@ -146,7 +154,7 @@ function resetSch(){
 							style="border-bottom: 1px solid #ddd;">
 							<td style="text-align: center; width: 250px;">가져올 일정 제목</td>
 							<td style="padding-left: 10px;"> 
-								<input type="text" name="search" class="boxTF" value="${dto.subject }" readonly="readonly">
+								<input type="text" name="search" class="boxTF" value="${dto.search }" readonly="readonly">
 							</td>
 						</tr>
 						<tr align="left" height=100px;
@@ -163,6 +171,9 @@ function resetSch(){
 								<button type="button" class="btn" onclick="findSch();" disabled="disabled">찾기</button>
 								<button type="button" class="btn" onclick="resetSch();" >수정하기</button>
 								<input type="hidden" value="${dto.color }" name="color">
+								<input type="hidden" value="${page}" name="page">
+								<input type="hidden" value="${mode}" name="mode">
+								<input type="hidden" value="${dto.num}" name="num">
 							</td>
 						</tr>
 						</c:if>
@@ -171,12 +182,12 @@ function resetSch(){
 							<td style="text-align: center;">제목</td>
 							<td style="padding-left: 10px;"><input type="text"
 								name="subject" maxlength="50" class="boxTF"
-								value="" placeholder="제목을 입력하세요."></td>
+								value="${dto.subject }" placeholder="제목을 입력하세요."></td>
 						</tr>
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
 							<td style="text-align: center; width: 250px;">내용</td>
-							<td valign="top"><textarea name="content" class="boxTA" placeholder="내용을 입력하세요."> </textarea>
+							<td valign="top"><textarea name="content" class="boxTA" placeholder="내용을 입력하세요.">${dto.content } </textarea>
 							</td>
 						</tr>
 						<tr align="left" height=100px;
@@ -192,9 +203,9 @@ function resetSch(){
 					<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
 						<tr height="60">
 							<td align="center" style="padding-bottom: 30px;">
-								<button type="button" class="btn" onclick="sendSch();">${mode=='update'?'수정':'등록'}</button>
+								<button type="button" class="btn" onclick="sendSch();">${mode=='updateShare'?'수정':'등록'}</button>
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/share';">${mode=='update'?'수정취소':'등록취소'}</button>
+									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/share';">${mode=='updateShare'?'수정취소':'등록취소'}</button>
 								<button type="reset" class="btn">재입력</button> 
 								<c:if
 									test="${mode=='update'}">

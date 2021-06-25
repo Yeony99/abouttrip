@@ -82,15 +82,13 @@ button[disabled] {
 					<table style="width: 100%; margin: 0px auto; border-spacing: 0px;">
 						<tr height="60">
 							<td align="center" style="padding-bottom: 30px;">
-									<input type="hidden" name="placeNum" value="장소 값">
-									<input type="hidden" name="page" value="페이지">
 									<input type="hidden" name="condition" value="${condition}">
 									<input type="hidden" name="keyword" value="${keyword}">
-							<c:if test="${sessionScope.member.userId=='admin'}">
+							<c:if test="${sessionScope.member.userId=='admin'||sessionScope.member.nickName==dto.nickName}">
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/share/update?placeNum=${dto.placeNum}&page=${page };">글 수정</button>
+									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/updateShare?num=${dto.num}&search=${dto.search}&page=${page}';">글 수정</button>
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/share/delete?placeNum=${dto.placeNum}&page=${page }';">글삭제</button>
+									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/deleteshare">글삭제</button>
 							</c:if>
 							</td>
 						</tr>

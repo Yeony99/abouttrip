@@ -296,15 +296,16 @@ public class SchedulerController {
 			return "redirect:/scheduler/share?page="+page;
 		}
 		model.addAttribute("dto", dto);
-		model.addAttribute("mode", "update");
+		model.addAttribute("mode", "updateShare");
 		model.addAttribute("page", page);
 		
 		
-		return ".scheduler.article";
+		return ".scheduler.create";
 	}
 	
 	@RequestMapping(value = "updateShare", method = RequestMethod.POST)
-	public String updateShareSubmit(Share dto, @RequestParam String page, HttpSession session) throws Exception{
+	public String updateShareSubmit(Share dto, @RequestParam String page, HttpSession session, @RequestParam int num,
+			@RequestParam String search) throws Exception{
 		String root=session.getServletContext().getRealPath("/");
 		String pathname=root+"uploads"+File.separator+"share";	
 		try {
@@ -313,7 +314,7 @@ public class SchedulerController {
 			e.printStackTrace();
 		}
 		
-		return"redirect:/scheduler/article?page="+page;
+		return"redirect:/scheduler/shareArticle?page="+page+"&num="+num+"&search="+search;
 	}
 	
 	@RequestMapping(value = "delete")
