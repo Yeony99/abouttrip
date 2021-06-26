@@ -8,6 +8,7 @@ public class Order {
 	private String address1;
 	private String tel;
 	private String zip;
+	private String profile_pic;
 	
 	// 리뷰 정보
 	private int review_num;
@@ -54,6 +55,12 @@ public class Order {
 	private String articleUrl;
 	
 
+	public String getProfile_pic() {
+		return profile_pic;
+	}
+	public void setProfile_pic(String profile_pic) {
+		this.profile_pic = profile_pic;
+	}
 	public int getReview_num() {
 		return review_num;
 	}

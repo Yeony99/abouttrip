@@ -48,6 +48,16 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> list = null;
 		try {
 			list = dao.selectList("product.product_list_categories", map);
+			for(Product dto : list) {
+				switch (dto.getCategory_num()) {
+				case 1: dto.setCategory_name("패키지"); break;
+				case 2: dto.setCategory_name("티켓/투어"); break;
+				case 3: dto.setCategory_name("모바일"); break;
+				case 4: dto.setCategory_name("패키지 이벤트"); break;
+				case 5: dto.setCategory_name("티켓/투어 이벤트"); break;
+				case 6: dto.setCategory_name("모바일 이벤트"); break;
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

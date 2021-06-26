@@ -11,8 +11,16 @@ public class QnA {
 	private String nickName;
 	private String code;
 	private String product_name;
+	private String profile_pic;
 	private int user_num;
 	
+	
+	public String getProfile_pic() {
+		return profile_pic;
+	}
+	public void setProfile_pic(String profile_pic) {
+		this.profile_pic = profile_pic;
+	}
 	public String getProduct_name() {
 		return product_name;
 	}

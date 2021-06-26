@@ -206,6 +206,13 @@ public class ProductManageServiceImpl implements ProductManageService {
 		List<QnA> list = null;
 		try {
 			list = dao.selectList("product.qna_manage_list", map);
+			for(int i=0; i<list.size(); i++) {
+				switch(list.get(i).getType()) {
+				case "1" : list.get(i).setType("상품질문"); break;
+				case "2" : list.get(i).setType("교환/환불"); break;
+				case "3" : list.get(i).setType("기타"); break;
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

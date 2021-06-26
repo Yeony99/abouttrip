@@ -115,9 +115,9 @@
 	</div>
 	<div class="body-main">
 		<div id="main-container" style="background-color: rgb(240, 240, 240);">
-			<div>
-				<table style="margin:auto; width: 80%; border-spacing: 0; border-bottom: 1px solid #ddd;">
-					<tr>
+			<div style="padding:50px 30px">
+				<table class="table table-list">
+					<tr style="background-color: rgb(220,220,220);">
 						<th>판매코드</th>
 						<th>판매상품</th>
 						<th>분류</th>
@@ -126,7 +126,7 @@
 						<th>공개여부</th>
 						<th><button type="button" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/inputproduct';">상품추가</button></th>
 					</tr>
-					<tr>
+					<tr style="color:gray; background-color: rgb(220,220,220);">
 						<td>&nbsp;</td>
 						<td>옵션번호</td>
 						<td colspan="3">옵션명</td>
@@ -134,7 +134,7 @@
 					</tr>
 					<c:forEach var="dto" items="${list}">
 						<tr class="product">
-							<td>${dto.code}</td>
+							<td style="text-align: center;">${dto.code}</td>
 							<td>${dto.product_name}</td>
 							<td>${dto.category_name}</td>
 							<td>${dto.sales_start}</td>
@@ -148,7 +148,7 @@
 						</tr>
 						<c:forEach var="option" items="${options}">
 							<c:if test="${option.code==dto.code}">
-								<tr class="option">
+								<tr class="option" style="color:gray;">
 									<td>&nbsp;</td>
 									<td>${option.option_value}</td>
 									<td colspan="3">${option.option_name}</td>

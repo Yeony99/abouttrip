@@ -12,67 +12,50 @@
 </script>
 
 <div>
-	<span> <a
-		href="${pageContext.request.contextPath}/product/article?code=${code}">게시글로 돌아가기</a></span>
-
-	<form name="qnaForm" method="post">
-		<table>
-			<tr>
-				<td>${nickName}</td>
-				<td><select name="type">
-						<option value="1">상품질문</option>
-						<option value="2">교환/환불</option>
-						<option value="3">기타</option>
-				</select></td>
-				<td><input type="text" name="title" placeholder="제목을 입력하세요."></td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2"><input type="text" name="content"
-					placeholder="질문을 입력하세요."></td>
-				<td><input type="hidden" name="nickName" value="${nickName}">
-					<input type="hidden" name="code" value="${code}">
-					<button type="button" onclick="inputqna();">질문하기</button></td>
-			</tr>
-		</table>
-	</form>
-	<table
-		style="margin: auto; width: 80%; border-spacing: 0; border-bottom: 1px solid #ddd;">
-		<tr>
-			<th>작성자</th>
-			<th>질문유형</th>
-			<th>질문 제목</th>
-			<th>&nbsp;</th>
-		</tr>
-		<tr>
-			<td colspan="3">질문내용</td>
-			<td>질문 등록일</td>
-		</tr>
-		<tr>
-			<td colspan="3">답변 내용</td>
-			<td>답변 등록일</td>
-		</tr>
-		<c:forEach var="dto" items="${list}">
-			<tr class="product">
-				<td>${dto.nickName}</td>
-				<td>${dto.type}</td>
-				<td>${dto.title}</td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="3">${dto.content}</td>
-				<td>${dto.c_date}</td>
-			</tr>
-			<tr>
-				<td colspan="3">${dto.answer==null? '답변준비중입니다' : dto.answer}</td>
-				<td>${dto.a_date}</td>
-			</tr>
-			<tr style="border-bottom: 1px solid gray"></tr>
-		</c:forEach>
-	</table>
+	
+	<div>
+		<div>QNA ${qnaCount}건</div>
+		<div style="border: 1px solid rgb(240, 240, 240);">
+			<c:forEach var="dto" items="${list}">
+				<div
+					style="border-bottom: 2px solid rgb(220, 220, 220); padding: 20px; margin-bottom: 10px;">
+					<c:if test="${dto.profile_pic!=null}">
+						<img id="preImageView"
+							style="vertical-align: middle; width: 50px; border-radius: 25px; border: 1px solid #eee; float: left; margin-right: 30px;"
+							width="50" height="50"
+							src="${pageContext.request.contextPath}/uploads/member/${dto.profile_pic}">
+					</c:if>
+					<c:if test="${dto.profile_pic==null}">
+						<img id="preImageView"
+							style="vertical-align: middle; width: 50px; border-radius: 25px; border: 1px solid #eee; float: left; margin-right: 30px;"
+							width="50" height="50"
+							src="${pageContext.request.contextPath}/resources/img/img/profile_img_none.png">
+					</c:if>
+					<div>
+						<div>질문제목 : ${dto.title}</div>
+						<div style="font-size: 12px; color: gray;">작성자 :
+							${dto.nickName}&nbsp;&nbsp;|&nbsp;&nbsp;질문 유형 : ${dto.type}</div>
+						<div style="font-size: 12px; color: gray;">질문 날짜 :
+							${dto.c_date}</div>
+					</div>
+					<div style="padding: 20px 80px; margin: 30px 0px;">${dto.content}</div>
+					<c:if test="${dto.answer!=null}">
+						<div style="border: 1px solid rgb(235, 235, 235);">
+							<div style="padding: 20px 80px;">답변</div>
+							<div style="font-size: 12px; color: gray; padding: 0px 80px;">답변
+								날짜 : ${dto.a_date}</div>
+							<div style="padding: 20px 80px; margin: 30px 0px;">${dto.answer}</div>
+						</div>
+					</c:if>
+				</div>
+			</c:forEach>
+		</div>
+	</div>
 	<table class="table">
 		<tr>
-			<td align="center">${qnaCount==0?"등록된 게시물이 없습니다.":qnapaging}</td>
+			<td align="center">${qnaCount==0?"등록된 게시물이 없습니다.":paging}</td>
 		</tr>
 	</table>
+	<span> <a class="btn" href="${pageContext.request.contextPath}/product/article?code=${code}">게시글로
+			돌아가기</a></span>
 </div>

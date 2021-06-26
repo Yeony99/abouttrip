@@ -121,7 +121,9 @@ public class ProductController {
 		map.put("offset", offset);
 		map.put("rows", rows);
 		map.put("code", code);
-
+		
+		int revCount = service.countReview(code);
+		int qnaCount = service.countQna(code);
 		review = service.listReview(map);
 		qna = service.listQna(map);
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -130,6 +132,8 @@ public class ProductController {
 		model.addAttribute("revlist", review);
 		model.addAttribute("options", options);
 		model.addAttribute("dto", dto);
+		model.addAttribute("revCount", revCount);
+		model.addAttribute("qnaCount", qnaCount);
 		model.addAttribute("code", code);
 
 		return ".product.article";

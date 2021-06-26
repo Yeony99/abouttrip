@@ -174,7 +174,7 @@
 		resultType="com.aboutrip.app.product.Product">
 		SELECT p.code, product_name, TO_CHAR(sales_start,'YYYY-MM-DD')
 		sales_start, TO_CHAR(sales_end, 'YYYY-MM-DD') sales_end,
-		upload_date,ishidden, price, img_name, rate, rateCount
+		upload_date,ishidden, price, img_name, rate, rateCount, category_num
 		FROM product p
 		LEFT JOIN (SELECT
 		code, MIN(price) price FROM productdetail GROUP BY
@@ -283,7 +283,7 @@
 
 	<select id="qna_list" parameterType="map"
 		resultType="com.aboutrip.app.product.QnA">
-		SELECT num, type, title, content, c_date, answer, a_date, nickName
+		SELECT num, type, title, content, c_date, answer, a_date, nickName, profile_pic
 		FROM product_qna q
 		JOIN member1 m ON q.user_num = m.usernum
 		<where>
@@ -324,7 +324,7 @@
 
 	<select id="review_list" parameterType="map"
 		resultType="com.aboutrip.app.product.Order">
-		SELECT review_num, rate, reviewContent, code, option_name, nickName,
+		SELECT review_num, rate, reviewContent, code, option_name, nickName, profile_pic,
 		TO_CHAR(order_date, 'YYYY-MM-DD') order_date
 		FROM product_review r
 		JOIN
@@ -449,13 +449,11 @@
 	</select>
 	<select id="count_rev" parameterType="Integer"
 		resultType="Integer">
-		SELECT NVL(COUNT(*),0)
-		FROM product_review r
-		JOIN orderDetail
-		od ON od.order_num = r.order_detail
-		JOIN productDetail pd ON
-		pd.detail_num = od.detail_num
-		WHERE code=${code}
+		SELECT nvl(COUNT(*),0)
+		FROM product_review r 
+		JOIN orderDetail od ON od.order_detail = r.order_detail
+		JOIN productDetail pd ON pd.detail_num = od.detail_num
+		WHERE code=#{code}
 	</select>
 
 	<select id="count_payment" resultType="Integer">

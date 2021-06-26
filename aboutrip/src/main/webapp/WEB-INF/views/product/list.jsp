@@ -68,6 +68,10 @@
 	border-radius: 10px;
 	cursor: pointer;
 }
+
+ul {
+	list-style: none;
+}
 </style>
 <script type="text/javascript">
 	function searchList() {
@@ -120,24 +124,24 @@
 							<c:if test="${status.index !=0 && status.index%3 ==0}">
 								<c:out value="</tr><tr>" escapeXml="false" />
 							</c:if>
-							<td width="210" align="center"
-									style="border-top: 1px solid #ddd">
-									<div style="margin: 10px 0   border: 1px solid #ccc;">
-										<img
-											src="${pageContext.request.contextPath}/uploads/product/${dto.img_name}"
-											style="width: 229px; height:229;">
-									</div>
+							<td width="210" align="center" style="border-top: 1px solid #ddd">
+								<div style="margin: 10px 0 border: 1px solid #ccc;">
+									<img
+										src="${pageContext.request.contextPath}/uploads/product/${dto.img_name}"
+										style="width: 229px; height: 229;">
+								</div>
 							</td>
-							<td>
+							<td style="padding: 45px 35px">
 								<ul>
-									<li><span>${dto.category_name}</span></li>
-									<li><span>${dto.product_name}</span></li>
-									<li><span>판매 시작 ~ 판매 종료</span></li>
-									<li><span>${dto.sales_start} ~ ${dto.sales_end}</span></li>
+									<li><span
+										style="color: white; background-color: skyblue; padding: 3px 10px;">${dto.category_name}</span></li>
+									<li><span style="font-size: xx-large;">${dto.product_name}</span></li>
+									<li>&nbsp;</li>
+									<li><span style="margin-left: 40px;">판매 시작 ~ 판매 종료 : ${dto.sales_start} ~ ${dto.sales_end}</span></li>
 									<c:if test="${dto.price!=null}">
-										<li><span>${dto.price}~</span></li>
+										<li><span style="margin-left: 40px;">${dto.price} 원부터 시작</span></li>
 									</c:if>
-									<li><span>${dto.rate}/5.0 [참여 : ${dto.rateCount}]</span></li>
+									<li><span style="margin-left: 40px;">평점 : ${dto.rate}/5.0 [참여 : ${dto.rateCount}]</span></li>
 								</ul>
 								<ul>
 									<li>&nbsp;</li>
@@ -158,10 +162,10 @@
 							<tr>
 								<td width="210" align="center"
 									style="border-top: 1px solid #ddd">
-									<div style="margin: 10px 0   border: 1px solid #ccc;">
+									<div style="margin: 10px 0 border: 1px solid #ccc;">
 										<img
 											src="${pageContext.request.contextPath}/resources/img/product_soon.png"
-											style="width: 229px; height:229;">
+											style="width: 229px; height: 229;">
 									</div>
 								</td>
 								<td style="border-top: 1px solid #ddd">
@@ -173,8 +177,9 @@
 					</c:if>
 					<c:if test="${n!=0}">
 						<c:out value="</tr>" escapeXml="false" />
-					</c:if> 				</table>
-			
+					</c:if>
+				</table>
+
 			</div>
 		</div>
 	</div>
