@@ -645,31 +645,7 @@ function insertReply(){
 			<!-- 글리스트 -->
 			<div class="list-body clear" data-pageNo="0"></div>
 			<div class="list-paging clear"></div>
-			<table
-			style="width: 100%; height: 120px; margin: 30px auto; border-spacing: 0px;">
-			<tr>
-				<td align="center" style="width: 100%; border-top: 2px solid #111; display: flex; justify-content: center;">
-					<form name="listSearchForm"
-						action="${pageContext.request.contextPath}/place/${pick}"
-						method="post">
-						<select name="condition" class="selectField">
-							<option value="placeName" ${condition=="subject"?"selected='selected'":""}>제목</option>
-							<option value="placeContent" ${condition=="content"?"selected='selected'":""}>내용</option>
-							<option value="all" ${condition=="all"?"selected='selected'":""}>제목+내용</option>
-						</select>
-						<div class="boxTFdiv">
-							<input type="text" name="keyword" class="boxTF"
-								value="${keyword}">
-							<button type="button" class="btnSearch" onclick="searchList()">
-								<img alt=""
-									src="${pageContext.request.contextPath}/resource/images/notice_search.png"
-									style="padding-top: 5px;">
-							</button>
-						</div>
-					</form>
-				</td>
-			</tr>
-		</table>			
+					
 			<div class="list-footer clear">
 				<ul>
 					<li class="item-left">

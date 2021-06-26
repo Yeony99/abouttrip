@@ -136,9 +136,7 @@
 							<input type="text" name="keyword" class="boxTF"
 								value="${keyword}">
 							<button type="button" class="btnSearch" onclick="searchList()">
-								<img alt=""
-									src="${pageContext.request.contextPath}/resource/images/notice_search.png"
-									style="padding-top: 5px;">
+								검&nbsp;색
 							</button>
 						</div>
 					</form>
@@ -206,7 +204,7 @@
 
 			<span style="display: flex; justify-content: flex-end;"> <c:if test="${sessionScope.member.userId=='admin'}">
 					<button type="button" class="btnCreate"
-						onclick="javascript:location.href='${pageContext.request.contextPath}/place/create';">등록</button>
+						onclick="javascript:location.href='${pageContext.request.contextPath}/place/${mode }';">등록</button>
 				</c:if>
 			</span>
 		</div>

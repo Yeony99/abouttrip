@@ -94,6 +94,7 @@ public class PlaceController {
         	listUrl = cp+"/place/list?" + query;
         	articleUrl = cp+"/place/listArticle?page=" + current_page + "&"+ query;
         }
+        String mode= "create";
         String paging = aboutUtil.paging(current_page, total_page, listUrl);
         model.addAttribute("clist", currentList);
         model.addAttribute("list", list);
@@ -107,6 +108,7 @@ public class PlaceController {
 		model.addAttribute("mdPick",mdPick);
 		model.addAttribute("pick",pick);
 		model.addAttribute("ctg",ctg);
+		model.addAttribute("mode", mode);
 		return ".place.list";
 	}
 	
@@ -167,7 +169,7 @@ public class PlaceController {
         	listUrl = cp+"/place/list?" + query;
         	articleUrl =  cp+"/place/listArticle?mdPick="+mdPick+"&page=" + current_page + "&"+ query;
         }
-        
+        String mode = "createMd";
         String paging = aboutUtil.paging(current_page, total_page, listUrl);
         model.addAttribute("clist", currentList);
         model.addAttribute("list", list);
@@ -181,6 +183,7 @@ public class PlaceController {
 		model.addAttribute("mdPick",mdPick);
 		model.addAttribute("pick",pick);
 		model.addAttribute("ctg",ctg);
+		model.addAttribute("mode",mode);
 		return ".place.list";
 	}
 	
@@ -197,6 +200,11 @@ public class PlaceController {
 		try {
 			String root= session.getServletContext().getRealPath("/");
 			String pathname = root+"uploads"+File.separator+"place";
+			if(pick.equals("list")) {
+				dto.setMdPick(0);
+			} else {
+				dto.setMdPick(1);
+			}
 			service.insertPlace(dto,pathname);
 			model.addAttribute("pick",pick);
 		} catch (Exception e) {

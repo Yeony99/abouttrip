@@ -141,6 +141,7 @@ function bringPlace() {
 										<input type="hidden" name="saveFilename" value="${dto.savePlace}">
 										<input type="hidden" name="originalFilename" value="${dto.placeImgName}">
 										<input type="hidden" name="page" value="${page}">
+										<input type="hidden" name="mdPick" value="${mdPick}">
 									</c:if>
 								<button type="button" class="btn"
 									onclick="javascript:location.href='${pageContext.request.contextPath}/place/${pick}';">${mode=='update'?'수정취소':'등록취소'}</button>
