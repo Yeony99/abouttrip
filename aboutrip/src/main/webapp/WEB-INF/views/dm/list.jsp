@@ -176,7 +176,7 @@ $(function() {
 								</c:choose>
 							</select>
 							<input type="text" name="keyword" value="${keyword}" class="boxTF">
-							<button type="button" class="btn" onclick="searchList()" title="검색"> <i class="icofont-search-1"></i> </button>
+							<button type="button" class="btn" onclick="searchList()" title="검색"> 새로고침<i class="icofont-search-1"></i> </button>
 						</form>
 					</td>
 					<td align="right" width="100">

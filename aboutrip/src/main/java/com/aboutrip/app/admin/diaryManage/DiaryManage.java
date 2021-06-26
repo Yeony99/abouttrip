@@ -14,7 +14,6 @@ public class DiaryManage {
 	private String diaryCreated;
 	private int diaryLikeCount;
 	
-	
 	private int diaryImgNum;
 	private String saveImgName;
 	private List<MultipartFile> upload;

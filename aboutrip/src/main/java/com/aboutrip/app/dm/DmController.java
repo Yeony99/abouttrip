@@ -226,8 +226,8 @@ public class DmController {
 		
 		Map<String, Object> map=new HashMap<String, Object>();
 		if(menuItem.equals("receive")) {
-			map.put("feild1", "receiveDelete");
-			map.put("feild2", "sendDelete");
+			map.put("field1", "receiveDelete");
+			map.put("field2", "sendDelete");
 		} else {
 			map.put("field1", "sendDelete");
 			map.put("field2", "receiveDelete");
