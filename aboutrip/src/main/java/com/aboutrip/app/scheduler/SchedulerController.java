@@ -131,6 +131,13 @@ public class SchedulerController {
 		String state = "true";
 		try {
 			Map<String, Object> map=new HashMap<>();
+			List<Scheduler> list = service.listMonth(num);
+			for(Scheduler dto : list) {
+				map.put("search", dto.getSubject());
+			}
+			map.put("userNum", info.getUserNum());
+			Share sdto = service.readShareUser(map);
+			service.deleteShare(sdto.getNum());
 			map.put("user_num", info.getUserNum());
 			map.put("num", num);
 			service.deleteSchedule(map);
@@ -175,8 +182,17 @@ public class SchedulerController {
 	     
 	     List<Share> list = service.sharelist(map);
 	     
+	     map.put("offset", offset);
+	     List<Share> listmain = service.sharemainlist(map);
 	     int listNum=0, n=0;
 	     for(Share dto : list) {
+	    	 listNum = dataCount -(offset+n);
+	    	 dto.setListNum(listNum);
+	    	 n++;
+	     }
+	     listNum=0;
+	     n=0;
+	     for(Share dto : listmain) {
 	    	 listNum = dataCount -(offset+n);
 	    	 dto.setListNum(listNum);
 	    	 n++;
@@ -195,6 +211,7 @@ public class SchedulerController {
 	        }
 	     String paging = aboutUtil.paging(current_page, total_page, listUrl);
 	     
+	     model.addAttribute("listmain",listmain);
 	     model.addAttribute("list",list);
 	     model.addAttribute("articleUrl", articleUrl);
 	     model.addAttribute("page", current_page);

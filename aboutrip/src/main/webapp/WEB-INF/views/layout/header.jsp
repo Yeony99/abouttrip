@@ -38,6 +38,7 @@
 						style="color: var(- -bs-dark); text-align: left;">페이지 관리</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/diaryManage/list">다이어리</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/share">여행루트공유</a>
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/mate">트립메이트</a>
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/scheduler/review">여행후기</a>
 						</div></li>

@@ -651,9 +651,11 @@ function insertReply(){
 					<li class="item-left">
 						<button type="button" class="btn btnNew">새로고침</button>
 					</li>
+					<c:if test="${sessionScope.member.userId!='admin'}">
 					<li class="item-right">
 						<button type="button" class="btn btnInsertForm">등록하기</button>
 					</li>
+					</c:if>
 				</ul>
 			</div>
 		</div>

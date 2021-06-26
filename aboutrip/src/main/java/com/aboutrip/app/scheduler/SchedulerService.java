@@ -12,8 +12,10 @@ public interface SchedulerService {
 	public void insertReviewReply(ReviewReply dto) throws Exception;
 	
 	public List<Scheduler> listMonth(Map<String, Object> map) throws Exception;
+	public List<Scheduler> listMonth(int num) throws Exception;
 	public List<Mate> listMate(Map<String, Object> map) throws Exception;
 	public List<Share> sharelist(Map<String, Object> map) throws Exception;
+	public List<Share> sharemainlist(Map<String, Object> map) throws Exception;
 	public List<Mate> readMate(int userNum) throws Exception;
 	public List<MateReply> listReply(Map<String, Object> map) throws Exception;
 	public List<Review> listreview(Map<String, Object> map)	throws Exception;
@@ -46,6 +48,7 @@ public interface SchedulerService {
 	public Scheduler readScheduler(Map<String, Object> map);
 	public Review readReview(int num);
 	public Share readShare(Map<String, Object> map);
+	public Share readShareUser(Map<String, Object> map);
 	
 	public Share preReadShare(Map<String, Object> map);
 	public Share nextReadShare(Map<String, Object> map);

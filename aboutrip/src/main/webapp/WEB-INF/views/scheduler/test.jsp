@@ -237,6 +237,7 @@ function bringPeople() {
 		</div>
 		
 		<div class="mate" style="width: 70vw; margin:2rem auto">
+		<c:if test="${sessionScope.member.userId!='admin'}">
 			<form name="mateForm" method="post" accept-charset="utf-8">
 			<table class="table table-mate">
 				<tr> 
@@ -280,7 +281,6 @@ function bringPeople() {
 						<textarea class='boxTA' style='width:100%; height: 300px;' id="content" name="content" placeholder="즐거운 여행이 될 수 있도록 자세한 계획을 알려주세요!"></textarea>
 					</td>
 				</tr>
-				
 				<tr>
 				   <td align='right' colspan="3">
 				        <button type='button' class='btn' style='padding:7px 20px;' onclick="sendtest();">등록</button>
@@ -289,7 +289,7 @@ function bringPeople() {
 				 </tr>
 			</table>
 			</form>
-			
+			</c:if>
 			
 			
 			

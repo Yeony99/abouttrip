@@ -31,6 +31,14 @@
 		WHERE	user_num = #{user_num}
 		ORDER BY check_in ASC, num DESC
 	</select>
+	
+	<select id="listMonthNum" parameterType="map" resultType="com.aboutrip.app.scheduler.Scheduler">
+		select num, user_num, subject, TO_CHAR(created,'YYYY-MM-DD') created, color, 
+		TO_CHAR(check_in,'YYYY-MM-DD')check_in, TO_CHAR(check_out,'YYYY-MM-DD')check_out, memo FROM scheduler
+		WHERE	num= #{num}
+		ORDER BY check_in ASC, num DESC
+	</select>
+	
 	<update id="updateScheduler" parameterType="map">
 		UPDATE scheduler SET
 			subject=#{subject}, color=#{color}, check_in=#{check_in, jdbcType=VARCHAR}, 
@@ -218,6 +226,15 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{rows} ROWS ONLY
     </select>
     
+    <select id="sharemainlist"  parameterType="map" resultType="com.aboutrip.app.scheduler.Share">
+    	SELECT num, sh.userNum, nickName, subject, content, search 
+		       ,TO_CHAR(created, 'yyyy-mm-dd') created, color, hitCount, imageFileName
+		FROM sharelist sh
+		JOIN member1 m ON sh.userNum = m.userNum
+		ORDER BY hitCount ASC
+		OFFSET #{offset} ROWS FETCH FIRST 3 ROWS ONLY
+    </select>
+    
     <update id="shareHitCount" parameterType="Integer">
     	UPDATE sharelist SET hitCount = hitCount +1 WHERE num = #{num}
     </update>
@@ -229,6 +246,15 @@
     	LEFT OUTER JOIN member1 m ON h.USERNUM = m.userNum
     	LEFT OUTER JOiN scheduler s ON m.userNum = s.user_num
     	WHERE h.num = #{num} AND s.subject = #{search}
+    </select>
+    
+     <select id="readShareUser" parameterType="map" resultType="com.aboutrip.app.scheduler.Share">
+    	SELECT h.num, h.USERNUM, h.subject, h.content, search, TO_CHAR(h.created, 'YYYY-MM-DD') created , hitCount, nickName, s.subject scheduler_subject,
+    	TO_CHAR(s.created,'YYYY-MM-DD') scheduler_created, TO_CHAR(check_in,'YYYY-MM-DD') check_in, TO_CHAR(check_out, 'YYYY-MM-DD') check_out, memo,
+    	h.color, hitCount, imageFileName FROM sharelist h
+    	LEFT OUTER JOIN member1 m ON h.USERNUM = m.userNum
+    	LEFT OUTER JOiN scheduler s ON m.userNum = s.user_num
+    	WHERE h.userNum = #{userNum} AND s.subject = #{search}
     </select>
     
     <select id="preReadShare" parameterType="map" resultType="com.aboutrip.app.scheduler.Share">

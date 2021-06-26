@@ -105,6 +105,21 @@ public class SchedulerServiceImpl implements SchedulerService{
 		return list;
 	}
 
+	
+	@Override
+	public List<Scheduler> listMonth(int num) throws Exception {
+		List<Scheduler> list = null;
+		try {
+			list = dao.selectList("scheduler.listMonthNum",num);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return list;
+	}
+	
+	
 	@Override
 	public List<Mate> listMate(Map<String, Object> map) throws Exception {
 		List<Mate> list = null;
@@ -158,6 +173,18 @@ public class SchedulerServiceImpl implements SchedulerService{
 		List<Share> list = null;
 		try {
 			list = dao.selectList("scheduler.sharelist",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	@Override
+	public List<Share> sharemainlist(Map<String, Object> map) throws Exception {
+		List<Share> list = null;
+		try {
+			list = dao.selectList("scheduler.sharemainlist",map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -411,6 +438,17 @@ public class SchedulerServiceImpl implements SchedulerService{
 		Share dto = null;
 		try {
 			dto = dao.selectOne("scheduler.readShare",map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	
+	@Override
+	public Share readShareUser(Map<String, Object> map) {
+		Share dto = null;
+		try {
+			dto = dao.selectOne("scheduler.readShareUser",map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

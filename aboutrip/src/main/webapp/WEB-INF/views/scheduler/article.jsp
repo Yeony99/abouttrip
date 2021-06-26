@@ -102,9 +102,11 @@ textarea {
 									<input type="hidden" name="keyword" value="${keyword}">
 							<c:if test="${sessionScope.member.userId=='admin'||sessionScope.member.nickName==dto.nickName}">
 								<button type="button" class="btn"
-									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/updateShare?num=${dto.num}&search=${dto.search}&page=${page}';">글 수정</button>
-								<button type="button" class="btn"
 									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/delete?num=${dto.num}&page=${page}&condition=${condition }&keyword=${keyword }';">글삭제</button>
+							</c:if>
+							<c:if test="${sessionScope.member.nickName==dto.nickName}">
+								<button type="button" class="btn"
+									onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/updateShare?num=${dto.num}&search=${dto.search}&page=${page}';">글 수정</button>
 							</c:if>
 							</td>
 						</tr>

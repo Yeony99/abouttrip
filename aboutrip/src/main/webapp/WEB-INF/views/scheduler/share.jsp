@@ -84,7 +84,17 @@
 			<div class="img-container">
 				<div class="imgs"
 					style="display: flex; flex-direction: row; align-content: stretch; justify-content: space-evenly; flex-wrap: wrap;">
-					<div class="bximg"
+					<c:forEach var="best" items="${listmain }">
+						<div class="bximg"
+						style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
+						<div class="rank" style="position: absolute; font-size: 4rem;">🥇</div>
+						<a href="${articleUrl }&num=${best.num}&search=${best.search}"><img class="box-img"
+							src="${pageContext.request.contextPath}/uploads/share/${best.imageFileName }"
+							title="img${best.listNum }"
+							style="width: 100%; height: 100%; object-fit: cover;"></a>
+						</div>					
+					</c:forEach>
+					<%-- <div class="bximg"
 						style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
 						<div class="rank" style="position: absolute; font-size: 4rem;">🥇</div>
 						<a href="#"><img class="box-img"
@@ -109,7 +119,7 @@
 							src="${pageContext.request.contextPath}/resources/img/img/bukchon.jpg"
 							alt="3위 스케줄" title="img1"
 							style="width: 100%; height: 100%; object-fit: cover;"></a>
-					</div>
+					</div> --%>
 				</div>
 			</div>
 		</div>
@@ -153,7 +163,7 @@
 				</tr>
 			</table>
 
-			<span style="display: flex; justify-content: flex-end;"> <c:if test="${sessionScope.member.userId!=null}">
+			<span style="display: flex; justify-content: flex-end;"> <c:if test="${sessionScope.member.userId!=null||sessionScope.member.userId!='admin'}">
 					<button type="button" class="btnCreate"
 						onclick="javascript:location.href='${pageContext.request.contextPath}/scheduler/create';">등록</button>
 				</c:if>
