@@ -78,7 +78,7 @@
 <div class="body-container">
 	<div class="body-main" style="margin-top: 8rem;">
 		<div style="display: flex; justify-content: center">
-			<h3>한국 관광공사의 추천 🛫</h3>
+			<h3> ${pick=="mdPick" ? "Md의 추천 🛫" : "한국 관광공사의 추천 🛫"}</h3>
 			<input type="hidden" name="mdPick" value="${mdPick }">
 			<input type="hidden" name="pick" value="${pick }">
 		</div>

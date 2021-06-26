@@ -65,7 +65,7 @@ button[disabled] {
 							style="border-bottom: 1px solid #ddd;">
 							<td style="text-align: center;">작성자</td>
 							<td style="padding-left: 10px;">
-								${sessionScope.member.nickName}</td>
+								관리자</td>
 						</tr>
 						
 						
