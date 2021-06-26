@@ -87,39 +87,21 @@
 					<c:forEach var="best" items="${listmain }">
 						<div class="bximg"
 						style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
-						<div class="rank" style="position: absolute; font-size: 4rem;">🥇</div>
+						<c:if test="${best.listNum==1 }">
+							<div class="rank" style="position: absolute; font-size: 4rem;">🥇</div>
+						</c:if>
+						<c:if test="${best.listNum==2 }">
+							<div class="rank" style="position: absolute; font-size: 4rem;">🥈</div>
+						</c:if>
+						<c:if test="${best.listNum==3 }">
+							<div class="rank" style="position: absolute; font-size: 4rem;">🥉</div>
+						</c:if>
 						<a href="${articleUrl }&num=${best.num}&search=${best.search}"><img class="box-img"
 							src="${pageContext.request.contextPath}/uploads/share/${best.imageFileName }"
 							title="img${best.listNum }"
 							style="width: 100%; height: 100%; object-fit: cover;"></a>
 						</div>					
 					</c:forEach>
-					<%-- <div class="bximg"
-						style="width: 300px; height: 300px; background-color: pink; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
-						<div class="rank" style="position: absolute; font-size: 4rem;">🥇</div>
-						<a href="#"><img class="box-img"
-							src="${pageContext.request.contextPath}/resources/img/img/busan.jpg"
-							alt="1위 스케줄" title="img1"
-							style="width: 100%; height: 100%; object-fit: cover;"></a>
-					</div>
-
-					<div class="bximg"
-						style="width: 300px; height: 300px; background-color: red; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
-						<div class="rank" style="position: absolute; font-size: 4rem;">🥈</div>
-						<a href="#"><img class="box-img"
-							src="${pageContext.request.contextPath}/resources/img/img/hwasung.jpg"
-							alt="2위 스케줄" title="img1"
-							style="width: 100%; height: 100%; object-fit: cover;"></a>
-					</div>
-
-					<div class="bximg"
-						style="width: 300px; height: 300px; background-color: blue; overflow: hidden; border-radius: 1rem; margin-top: 10px;">
-						<div class="rank" style="position: absolute; font-size: 4rem;">🥉</div>
-						<a href="#"><img class="box-img"
-							src="${pageContext.request.contextPath}/resources/img/img/bukchon.jpg"
-							alt="3위 스케줄" title="img1"
-							style="width: 100%; height: 100%; object-fit: cover;"></a>
-					</div> --%>
 				</div>
 			</div>
 		</div>

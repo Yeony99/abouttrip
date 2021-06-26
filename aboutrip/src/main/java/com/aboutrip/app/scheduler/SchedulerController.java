@@ -190,10 +190,9 @@ public class SchedulerController {
 	    	 dto.setListNum(listNum);
 	    	 n++;
 	     }
-	     listNum=0;
-	     n=0;
+	     n=1;
 	     for(Share dto : listmain) {
-	    	 listNum = dataCount -(offset+n);
+	    	 listNum = n;
 	    	 dto.setListNum(listNum);
 	    	 n++;
 	     }
