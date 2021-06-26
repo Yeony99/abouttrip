@@ -158,7 +158,7 @@ $(function() {
 			<table class="table">
 				<tr>
 					<td align="left" width="100">
-						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/dm/${menuItem}/list';" title="새로고침"> <i class="icofont-ui-reply"></i> </button>
+						<button type="button" class="btn" style="font-size: 15px; padding: 0px;" onclick="javascript:location.href='${pageContext.request.contextPath}/dm/${menuItem}/list';" title="새로고침"> 새로고침<i class="icofont-ui-reply"></i> </button>
 					</td>
 					<td align="center">
 						<form name="searchForm" action="${pageContext.request.contextPath}/dm/${menuItem}/list" method="post">
@@ -176,7 +176,7 @@ $(function() {
 								</c:choose>
 							</select>
 							<input type="text" name="keyword" value="${keyword}" class="boxTF">
-							<button type="button" class="btn" onclick="searchList()" title="검색"> 새로고침<i class="icofont-search-1"></i> </button>
+							<button type="button" class="btn" onclick="searchList()" title="검색"> <i class="icofont-search-1"></i> </button>
 						</form>
 					</td>
 					<td align="right" width="100">

@@ -53,7 +53,7 @@ form {
 	font-size: 14px;
 	background: #f8f9fa;
 	position: fixed;
-	left: 1050px; top: 222px;
+	left: 1080px; top: 223px;
 }
 .createBtn:hover {
 	color: #f8f9fa;
@@ -216,7 +216,7 @@ function searchList() {
 		<table style="border-bottom: 2px solid white;">
 			<tr>
 				<td>
-					<button type="button" style="margin: 0px 0px 0px 13px;" class="diaryBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main';">새로고침</button>
+					<button type="button" style="margin: 0px 0px 0px 12px;" class="diaryBtn" onclick="javascript:location.href='${pageContext.request.contextPath}/diary/main';">새로고침</button>
 				</td>
 				<td>
 					<form name="searchForm" action="${pageContext.request.contextPath}/diary/list" method="post">
@@ -226,7 +226,7 @@ function searchList() {
 							<option value="diaryContent" ${condition=="diaryContent"?"selected='selected'":""}>내용</option>
 						</select>
 						<input type="text" style="width: 250px;" name="keyword" value="${keyword}">
-						<button type="button" style="margin: 0px 0px 0px 14px;" class="diaryBtn" onclick="searchList()">검색</button>
+						<button type="button" style="margin: 0px 0px 0px 12px;" class="diaryBtn" onclick="searchList()">검색</button>
 					</form>
 				</td>
 				<td>

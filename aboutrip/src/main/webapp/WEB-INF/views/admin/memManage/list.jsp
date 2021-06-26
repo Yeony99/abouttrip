@@ -5,7 +5,7 @@
 
 <style type="text/css">
 main {
-	margin: 60px auto 0px;
+	margin: 20px auto 0px;
 }
 .title-tr{
 	box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
@@ -174,7 +174,7 @@ function updateOk() {
 			<table class="table">
 				<tr>
 					<td align="left" width="100">
-						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/memManage/list';">새로고침</button>
+						<button type="button" class="btn" style="font-size: 17px; padding: 3px;" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/memManage/list';">새로고침</button>
 					</td>
 					<td align="center">
 						<form name="searchForm" action="${pageContext.request.contextPath}/admin/memManage/list" method="post">

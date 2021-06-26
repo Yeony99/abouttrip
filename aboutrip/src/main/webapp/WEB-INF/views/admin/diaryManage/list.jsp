@@ -188,7 +188,7 @@ function imageViewer(img) {
 			<table class="table">
 				<tr>
 					<td align="left" width="100">
-						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/diaryManage/list';">새로고침</button>
+						<button type="button" class="btn" style="padding: 3px;" onclick="javascript:location.href='${pageContext.request.contextPath}/admin/diaryManage/list';">새로고침</button>
 					</td>
 					<td align="center">
 						<form name="searchForm" action="${pageContext.request.contextPath}/admin/diaryManage/list" method="post">
