@@ -189,24 +189,6 @@ function listPage(page) {
 					</c:if>
 				</td>
 			</tr>
-			
-			<tr>
-				<td colspan="2">
-					이전글 :
-					<c:if test="${not empty preReadDto}">
-						<a href="${pageContext.request.contextPath}/sug/article?${query}&num=${preReadDto.num}">${preReadDto.title}</a>
-					</c:if>
-				</td>
-			</tr>
-			
-			<tr>
-				<td colspan="2">
-					다음글 :
-					<c:if test="${not empty nextReadDto}">
-						<a href="${pageContext.request.contextPath}/sug/article?${query}&num=${nextReadDto.num}">${nextReadDto.title}</a>
-					</c:if>
-				</td>
-			</tr>
 		</table>
 			
 		<table class="table table-footer">
