@@ -10,11 +10,11 @@
 		Highcharts.chart('container', {
 
 			title : {
-				text : 'Solar Employment Growth by Sector, 2010-2016'
+				text : '어바웃트립 매출현황 분석 '
 			},
 
 			subtitle : {
-				text : 'Source: thesolarfoundation.com'
+				text : 'Source: aboutrip'
 			},
 
 			yAxis : {

@@ -217,9 +217,7 @@ function listPage(page) {
 			    		<c:when test="${sessionScope.member.userNum==dto.userNum || sessionScope.member.userId=='admin'}">
 			    			<button type="button" class="btndelete" onclick="deleteBoard();">삭제</button>
 			    		</c:when>
-			    		<c:otherwise>
-			    			<button type="button" class="btndelete" disabled="disabled">삭제</button>
-			    		</c:otherwise>
+			    		
 			    	</c:choose>
 				</td>
 			

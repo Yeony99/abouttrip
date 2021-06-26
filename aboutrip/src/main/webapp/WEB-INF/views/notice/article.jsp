@@ -137,18 +137,14 @@ a {
 						<c:when test="${sessionScope.member.userId=='admin'}">
 			    			<button type="button" class="btnupdate" onclick="javascript:location.href='${pageContext.request.contextPath}/notice/update?num=${dto.num}&page=${page}';">수정</button>
 			    		</c:when>
-			    		<c:otherwise>
-			    			<button type="button" class="btnupdate" disabled="disabled">수정</button>
-			    		</c:otherwise>
+			    		
 			    	</c:choose>
 			    	
 			    	<c:choose>
 			    		<c:when test="${sessionScope.member.userId=='admin'}">
 			    			<button type="button" class="btndelete" onclick="deleteSend();">삭제</button>
 			    		</c:when>
-			    		<c:otherwise>
-			    			<button type="button" class="btndelete" disabled="disabled">삭제</button>
-			    		</c:otherwise>
+			    		
 			    	</c:choose>
 				</td>
 			
