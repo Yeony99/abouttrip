@@ -77,7 +77,7 @@ a {
 }
 
 </style>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/se/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
     function sendOk() {
         var f = document.eventForm;
@@ -86,54 +86,54 @@ a {
         if(!str) {
             alert("제목을 입력하세요. ");
             f.title.focus();
-            return;
+            return false;
         }
 
     	str = f.content.value;
         if(!str) {
             alert("내용을 입력하세요. ");
             f.content.focus();
-            return;
+            return false;
         }
         
         str= f.eventStart.value;
         if(! str){
         	 alert("이벤트 시작일을 입력하세요. ");
              f.eventStart.focus();
-             return;
+             return false;
         }
         
         str= f.eventEnd.value;
         if(! str){
         	 alert("이벤트 종료일을 입력하세요. ");
              f.eventEnd.focus();
-             return;
+             return false;
         }
         
         str= f.winDate.value;
         if(! str){
         	 alert("발표일을 입력하세요. ");
              f.winDate.focus();
-             return;
+             return false;
         }
         
         str= f.winCount.value;
         if(! str){
         	 alert("당첨자 수를 입력하세요. ");
              f.winCount.focus();
-             return;
+             return false;
         }
         
         str= f.present.value;
         if(! str){
         	 alert("당첨자 상품을 입력하세요. ");
              f.present.focus();
-             return;
+             return false;
         }
 
     	f.action="${pageContext.request.contextPath}/event/${mode}";
 
-        f.submit();
+    	return true;
     }
 </script>
 
@@ -143,7 +143,7 @@ a {
 	</div>
     
 	<div class="body-main" style="padding-bottom: 50px;">
-		<form name="eventForm" method="post">
+		<form name="eventForm" method="post" onsubmit="return submitContents(this);">
 		 <table class="table table-content">
 			<tr> 
 				<td>제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
@@ -162,7 +162,7 @@ a {
 			<tr> 
 				<td valign="top">내&nbsp;&nbsp;&nbsp;&nbsp;용</td>
 				<td valign="top"> 
-					<textarea name="content" class="boxTA">${dto.content}</textarea>
+					<textarea name="content" id="content" class="boxTA">${dto.content}</textarea>
 				</td>
 			</tr>
 			  
@@ -206,7 +206,7 @@ a {
 		<table class="table table-footer">
 			<tr> 
 				<td align="center">
-					<button type="button" class="btnCreate" onclick="sendOk();">${mode=='update'?'수정완료':'등록하기'}</button>
+					<button type="submit" class="btnCreate">${mode=='update'?'수정완료':'등록하기'}</button>
 					<button type="reset" class="btnReset">다시입력</button>
 					<button type="button" class="btnList" onclick="javascript:location.href='${pageContext.request.contextPath}/event/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 						<c:if test="${mode=='update'}">
@@ -218,5 +218,49 @@ a {
 		</table>
 		</form>
 	</div>
-    
+        <script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors,
+	elPlaceHolder: "content",
+	sSkinURI: "${pageContext.request.contextPath}/resources/se/SmartEditor2Skin.html",	
+	htParams : {bUseToolbar : true,
+		fOnBeforeUnload : function(){
+			
+		}
+	}, //boolean
+	fOnAppLoad : function(){
+		//예제 코드
+		//oEditors.getById["content"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+	},
+	fCreator: "createSEditor2"
+});
+
+function pasteHTML() {
+	var sHTML = "<span style='color:#FF0000;'>이미지도 같은 방식으로 삽입합니다.<\/span>";
+	oEditors.getById["content"].exec("PASTE_HTML", [sHTML]);
+}
+
+function showHTML() {
+	var sHTML = oEditors.getById["content"].getIR();
+	alert(sHTML);
+}
+	
+function submitContents(elClickedObj) {
+	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);	// 에디터의 내용이 textarea에 적용됩니다.
+	
+	// 에디터의 내용에 대한 값 검증은 이곳에서 document.getElementById("content").value를 이용해서 처리하면 됩니다.
+	
+	try {
+		// elClickedObj.form.submit();
+		return check();
+	} catch(e) {}
+}
+
+function setDefaultFont() {
+	var sDefaultFont = '돋움';
+	var nFontSize = 24;
+	oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
+}
+</script> 
 </div>

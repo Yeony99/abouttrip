@@ -251,7 +251,7 @@ function ajaxFun(url, method, query, dataType, fn) {
 					</tr>
 					<tr>
 						<td>
-							<textarea name="answer" class="answer" placeholder="답변내용을 입력해주세요."></textarea>
+							<textarea name="answer" class="answer" placeholder="답변내용을 입력해주세요." style="resize: none;"></textarea>
 						</td>
 					</tr>
 					<tr>
