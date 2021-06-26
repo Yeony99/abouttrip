@@ -37,7 +37,7 @@
                     <ul>
                         <li><a href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
                         <li><a href="${pageContext.request.contextPath}/faq/main">FAQ</a></li>
-                        <li><a href="${pageContext.request.contextPath}/qna/list">문의하기</a></li>
+                        <li><a href="${pageContext.request.contextPath}/inquiry/list">문의하기</a></li>
                         <li><a href="${pageContext.request.contextPath}/event/list">이벤트</a></li>
                         <li><a href="${pageContext.request.contextPath}/sug/list">시스템 개선/제안</a></li>
                     </ul>
@@ -90,7 +90,7 @@
                     <ul>
                         <li><a href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
                         <li><a href="${pageContext.request.contextPath}/faq/main">FAQ</a></li>
-                        <li><a href="${pageContext.request.contextPath}/qna/list">문의하기</a></li>
+                        <li><a href="${pageContext.request.contextPath}/inquiry/list">문의하기</a></li>
                         <li><a href="${pageContext.request.contextPath}/event/list">이벤트</a></li>
                         <li><a href="${pageContext.request.contextPath}/sug/list">시스템 개선/제안</a></li>
                     </ul>
