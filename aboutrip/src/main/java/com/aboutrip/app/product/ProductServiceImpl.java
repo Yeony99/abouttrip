@@ -102,18 +102,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return result;
 	}
-
-	@Override
-	public void updateQnA(int num) throws Exception {
-
-	}
-
-	@Override
-	public int countProduct(Map<String, Object> map) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 	@Override
 	public Product readProduct(int code) throws Exception {
 		Product dto = null;

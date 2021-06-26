@@ -27,8 +27,8 @@
 							<tr
 								style="font-size: 23px; background-color: rgb(220, 220, 220);">
 								<th>구매자</th>
-								<th>주문총금액</th>
 								<th>주문날짜</th>
+								<th>주문총금액</th>
 								<th>결제상태</th>
 								<th>비고</th>
 							</tr>
@@ -43,8 +43,8 @@
 							<c:forEach var="dto" items="${list}">
 								<tr style="font-size: 23px">
 									<td>${dto.nickName}</td>
-									<td>${dto.order_price}</td>
 									<td>${dto.order_date}</td>
+									<td>${dto.order_price}</td>
 									<td>${dto.payment_key!=0?"결제완료":""}</td>
 									<td></td>
 								</tr>

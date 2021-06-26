@@ -49,7 +49,6 @@
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/productmanage/productmanagement">여행상품 관리</a>
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/productmanage/paymentmanage">회원구매 및 취소내역관리</a>
-							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/productmanage/salemanage">매출현황 분석</a>	
 							<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/productmanage/qnamanage">상품별 QNA 관리</a>	
 						</div></li>
 					<li class="nav-item dropdown" style="text-align: right;"><a

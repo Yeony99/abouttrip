@@ -20,10 +20,7 @@ public interface ProductService {
 	public List<Order> listPayment(Map<String, Object> map) throws Exception;
 	public List<Order> listCard(int user_num) throws Exception;
 	public List<Order> listReview(Map<String, Object> map) throws Exception;
-	
-	public void updateQnA(int num) throws Exception;
-	
-	public int countProduct(Map<String, Object> map) throws Exception;
+		
 	public int countcart(int user_num) throws Exception;
 	public int listCount(Map<String, Object> map) throws Exception;
 	public int countQna(int code) throws Exception;

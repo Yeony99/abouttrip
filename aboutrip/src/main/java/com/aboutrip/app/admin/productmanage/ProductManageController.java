@@ -255,12 +255,6 @@ public class ProductManageController {
 		service.insertAnswer(map);
 		return "redirect:/admin/productmanage/qnamanage";
 	}
-
-	@RequestMapping(value="salemanage")
-	public String salemanage() throws Exception{
-		
-		return ".admin.productmanage.salemanage";
-	}
 	
 	@RequestMapping(value="paymentmanage")
 	public String paymentmanage(@RequestParam(value = "page", defaultValue = "1") int current_page,

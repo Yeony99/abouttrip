@@ -137,11 +137,14 @@ ul {
 										style="color: white; background-color: skyblue; padding: 3px 10px;">${dto.category_name}</span></li>
 									<li><span style="font-size: xx-large;">${dto.product_name}</span></li>
 									<li>&nbsp;</li>
-									<li><span style="margin-left: 40px;">판매 시작 ~ 판매 종료 : ${dto.sales_start} ~ ${dto.sales_end}</span></li>
+									<li><span style="margin-left: 40px;">판매 시작 ~ 판매 종료
+											: ${dto.sales_start} ~ ${dto.sales_end}</span></li>
 									<c:if test="${dto.price!=null}">
-										<li><span style="margin-left: 40px;">${dto.price} 원부터 시작</span></li>
+										<li><span style="margin-left: 40px;">${dto.price}
+												원부터 시작</span></li>
 									</c:if>
-									<li><span style="margin-left: 40px;">평점 : ${dto.rate}/5.0 [참여 : ${dto.rateCount}]</span></li>
+									<li><span style="margin-left: 40px;">평점 :
+											${dto.rate}/5.0 [참여 : ${dto.rateCount}]</span></li>
 								</ul>
 								<ul>
 									<li>&nbsp;</li>
@@ -179,7 +182,11 @@ ul {
 						<c:out value="</tr>" escapeXml="false" />
 					</c:if>
 				</table>
-
+				<table class="table">
+					<tr>
+						<td align="center">${qnaCount==0?"등록된 게시물이 없습니다.":paging}</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>
