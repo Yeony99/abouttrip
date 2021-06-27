@@ -137,7 +137,7 @@ $(function(){
 });
 
 function listPage(page) {
-	var url = "${pageContext.request.contextPath}/event/list";
+	var url = "${pageContext.request.contextPath}/event/listPart";
 	var query = "num=${dto.num}&page="+page;
 	var selector = "#listPart";
 	
