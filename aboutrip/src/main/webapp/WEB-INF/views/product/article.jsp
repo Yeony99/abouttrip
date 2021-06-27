@@ -298,7 +298,7 @@
 				</div>
 				<div>
 					<textarea name="content" placeholder="질문을 입력하세요."
-						style="margin-top: 20px; width: 920px; height: 100px; resize: none;"></textarea>
+						style="margin-top: 20px; width: 800px; height: 100px; resize: none;"></textarea>
 					<input type="hidden" name="nickName" value="${nickName}"> <input
 						type="hidden" name="code" value="${code}">
 					<button class="btn" type="button" onclick="inputqna();">질문하기</button>

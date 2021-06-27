@@ -107,7 +107,7 @@
 		parameterType="com.aboutrip.app.product.Payment">
 		INSERT INTO payCharge(payment_key, pay_date,
 		paid_amount, order_num)
-		VALUES(payCharge.NEXTVAL, SYSDATE,
+		VALUES(payCharge_seq.NEXTVAL, SYSDATE,
 		#{paid_amount}, #{order_num})
 	</insert>
 	<!-- 수정 -->

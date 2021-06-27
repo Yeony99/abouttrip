@@ -237,6 +237,7 @@ public class ProductServiceImpl implements ProductService {
 	
 		try {
 			dao.insertData("product.orders_insert", dto);
+			pay.setOrder_num(dto.getOrder_num());
 			dao.insertData("product.payCharge_insert", pay);
 			for(int i = 0; i<list.size(); i++) {
 				list.get(i).setOrder_num(dto.getOrder_num());

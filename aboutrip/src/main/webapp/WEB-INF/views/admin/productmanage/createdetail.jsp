@@ -26,6 +26,11 @@
 		f.submit();
 	}
 </script>
+<style>
+td {
+	color: white;
+}
+</style>
 <div class="body-container">
 	<section class="payment-dark"
 		style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
@@ -41,8 +46,7 @@
 					<table class="table table-content">
 						<tr>
 							<td>제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
-							<td><input type="hidden" value="${dto.code}" name="code"></input>
-								${dto.product_name}</td>
+							<td>${dto.product_name}</td>
 						</tr>
 						<tr>
 							<td valign="top">옵션명</td>
@@ -68,12 +72,13 @@
 
 					<table class="table table-footer">
 						<tr>
-							<td><input type="hidden" value="${detail_num}"
-								name="detail_num"> <input type="hidden"
-								value="${option_value}" name="option_value">
-								<button type="button" class="btn" onclick="sendOk();">${mode=='updatedetail'?'수정완료':'등록하기'}</button>
-								<button type="reset" class="btn">다시입력</button>
-								<button type="button" class="btn"
+							<td><c:if test="${mode=='updatedetail'}">
+									<input type="hidden" value="${detail_num}" name="detail_num">
+								</c:if> <input type="hidden" value="${dto.code}" name="code"></input> <input
+								type="hidden" value="${option_value}" name="option_value">
+								<button type="button" onclick="sendOk();">${mode=='updatedetail'?'수정완료':'등록하기'}</button>
+								<button type="reset">다시입력</button>
+								<button type="button"
 									onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/productmanagement';">${mode=='updatedetail'?'수정취소':'등록취소'}</button>
 							</td>
 						</tr>

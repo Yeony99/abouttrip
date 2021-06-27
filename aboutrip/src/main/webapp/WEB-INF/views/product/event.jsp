@@ -128,8 +128,8 @@
 									style="width: 330px; height: 310px; margin-top: 10px; padding-left: 15px; padding-right: 15px;">
 									<div class="bximg"
 										style="border-radius: 1rem; background-color: white; overflow: hidden;">
-										<a href="#"><img class="box-img"
-											src="${pageContext.request.contextPath}/resources/img/img/${dto.img_name}"
+										<a href="${pageContext.request.contextPath}/product/article?code=${dto.code}"><img class="box-img"
+											src="${pageContext.request.contextPath}/uploads/product/${dto.img_name}"
 											alt="${dto.product_name}" title="${dto.product_name}"
 											style="width: 100%; height: 200px; object-fit: cover;">
 										</a>
@@ -192,8 +192,8 @@
 									style="width: 330px; height: 310px; margin-top: 10px; padding-left: 15px; padding-right: 15px;">
 									<div class="bximg"
 										style="border-radius: 1rem; background-color: white; overflow: hidden;">
-										<a href="#"><img class="box-img"
-											src="${pageContext.request.contextPath}/resources/img/img/${dto.img_name}"
+										<a href="${pageContext.request.contextPath}/product/article?code=${dto.code}"><img class="box-img"
+											src="${pageContext.request.contextPath}/uploads/product/${dto.img_name}"
 											alt="${dto.product_name}" title="${dto.product_name}"
 											style="width: 100%; height: 200px; object-fit: cover;">
 										</a>
@@ -253,8 +253,8 @@
 									style="width: 330px; height: 310px; margin-top: 10px; padding-left: 15px; padding-right: 15px;">
 									<div class="bximg"
 										style="border-radius: 1rem; background-color: white; overflow: hidden;">
-										<a href="#"><img class="box-img"
-											src="${pageContext.request.contextPath}/resources/img/img/${dto.img_name}"
+										<a href="${pageContext.request.contextPath}/product/article?code=${dto.code}"><img class="box-img"
+											src="${pageContext.request.contextPath}/uploads/product/${dto.img_name}"
 											alt="${dto.product_name}" title="${dto.product_name}"
 											style="width: 100%; height: 200px; object-fit: cover;">
 										</a>

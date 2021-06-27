@@ -26,6 +26,12 @@
 		f.submit();
 	}
 </script>
+<style>
+td{
+	color: white;
+}
+
+</style>
 <div class="body-container">
 	<section class="payment-dark"
 		style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
@@ -85,11 +91,12 @@
 					<table class="table table-footer">
 						<tr>
 							<td><input type="hidden" name="img_name"
-								value="${dto.img_name}"> <input type="hidden"
-								name="code" value="${dto.code}">
-								<button type="button" class="btn" onclick="sendOk();">${mode=='updateproduct'?'수정완료':'등록하기'}</button>
-								<button type="reset" class="btn">다시입력</button>
-								<button type="button" class="btn"
+								value="${dto.img_name}"> 
+								<c:if test="${mode=='updateproduct'}"><input type="hidden" name="code" value="${dto.code}">
+								</c:if>
+								<button type="button" onclick="sendOk();">${mode=='updateproduct'?'수정완료':'등록하기'}</button>
+								<button type="reset" >다시입력</button>
+								<button type="button" 
 									onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/productmanagement';">${mode=='updateproduct'?'수정취소':'등록취소'}</button>
 							</td>
 						</tr>

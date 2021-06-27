@@ -52,14 +52,15 @@
 	<section class="payment-dark"
 		style="background-image: url(&quot;${pageContext.request.contextPath}/resources/img/star-sky.jpg&quot;);">
 		<div>
-			<form method="post" action="${pageContext.request.contextPath}/product/complete">
+			<form method="post"
+				action="${pageContext.request.contextPath}/product/complete">
 				<table>
 					<tr>
-						<th>상품명</th>
-						<th>상품옵션</th>
-						<th>상품금액</th>
-						<th>수량</th>
-						<th>주문금액</th>
+						<th width="450">상품명</th>
+						<th width="280">상품옵션</th>
+						<th width="100">상품금액</th>
+						<th width="70">수량</th>
+						<th width="100">주문금액</th>
 					</tr>
 					<c:forEach var="dto" items="${list}">
 						<tr>
@@ -71,13 +72,13 @@
 						</tr>
 					</c:forEach>
 				</table>
-				<div>배송지 정보</div>
+				<div style="margin: 30px 0px 10px; font-size: x-large;">배송지 정보</div>
 				<input type="hidden" id="final_price" name="final_price"
 					value="${final_price}"> <input type="hidden"
 					id="payment_name" name="payment_name" value="${payment_name}">
 				<table>
 					<tr>
-						<td>구매자 이름</td>
+						<td style="padding-right : 40px">구매자 이름</td>
 						<td><input type="text" id="userName" name="userName"
 							value="${member.userName}"></td>
 					</tr>
@@ -101,12 +102,12 @@
 						<td><input type="text" id="zip" name="zip"
 							value="${member.zip}" readonly="readonly"></td>
 					</tr>
-
 				</table>
+				<br>
 				<c:forEach var="cart" items="${carts}">
 					<input type="hidden" name="carts" value="${cart}">
 				</c:forEach>
-				<button type="button" onclick="inisis()">결제하기(이니시스)</button>
+				<button type="button" onclick="inisis()" style="float:right;">결제하기(이니시스)</button>
 				<button type="submit">결제하기</button>
 			</form>
 		</div>

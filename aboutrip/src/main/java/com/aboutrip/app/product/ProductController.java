@@ -418,7 +418,10 @@ public class ProductController {
 			Model model
 			) throws Exception {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		Product product = new Product();
+		product = service.readProduct(dto.getCode());
 		
+		model.addAttribute("product", product);
 		model.addAttribute("dto", dto);
 		model.addAttribute("user", info);
 		
