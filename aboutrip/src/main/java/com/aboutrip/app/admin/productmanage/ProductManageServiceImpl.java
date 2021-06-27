@@ -15,7 +15,7 @@ import com.aboutrip.app.product.QnA;
 @Service("admin.productmanage.productManageService")
 public class ProductManageServiceImpl implements ProductManageService {
 	@Autowired
-	AboutDAO dao;
+	private AboutDAO dao;
 
 	@Autowired
 	private FileManager fileManager;

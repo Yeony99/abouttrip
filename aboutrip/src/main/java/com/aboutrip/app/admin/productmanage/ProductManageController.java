@@ -28,10 +28,10 @@ import com.aboutrip.app.product.QnA;
 public class ProductManageController {
 
 	@Autowired
-	AboutUtil aboutUtil;
+	private AboutUtil aboutUtil;
 
 	@Autowired
-	ProductManageService service;
+	private ProductManageService service;
 
 	@RequestMapping("productmanagement")
 	public String productlist(@RequestParam(value = "page", defaultValue = "1") int current_page,

@@ -19,7 +19,7 @@
 			<c:if test="${mode==follower }">
 				<td>${dto.followingNickname }</td>
 			</c:if>
-				<td>${dto.followingNickname }</td>
+				<td>${dto.followerNickname }</td>
 				<td>${dto.following_date}</td>
 			</tr>
 			</c:forEach>
@@ -27,14 +27,6 @@
 			<c:if test="${list==null}">
 				<td width="100">No card</td>
 			</c:if>
-		</table>
-		
-		<table class="table table-footer">
-			<tr>
-				<td align="left" width="100">
-					<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/member/mypage';" style="color:white; background-color: skyblue;">되돌아가기</button>
-				</td>
-			</tr>
 		</table>
 	</div>
               

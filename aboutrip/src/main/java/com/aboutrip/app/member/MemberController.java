@@ -230,45 +230,6 @@ public class MemberController {
 		
 		return"redirect:/member/main";
 	}
-	/*
-	 * @RequestMapping(value = "payment") public String paymentForm(Model model,
-	 * HttpSession session,HttpServletRequest req,
-	 * 
-	 * @RequestParam(value="page", defaultValue="1") int current_page) { SessionInfo
-	 * info=(SessionInfo)session.getAttribute("member"); String cp =
-	 * req.getContextPath();
-	 * 
-	 * int rows = 10; int total_page = 0; int dataCount = 0;
-	 * 
-	 * 
-	 * Map<String, Object> map = new HashMap<String, Object>(); map.put("userNum",
-	 * info.getUserNum()); dataCount = service.payCount(map); if(dataCount != 0)
-	 * total_page = aboutUtil.pageCount(rows, dataCount) ;
-	 * 
-	 * 
-	 * if(total_page < current_page) current_page = total_page;
-	 * 
-	 * 
-	 * int offset = (current_page-1) * rows; if(offset < 0) offset = 0;
-	 * map.put("offset", offset); map.put("rows", rows); map.put("userNum",
-	 * info.getUserNum());
-	 * 
-	 * List<Member> list = service.payList(map);
-	 * 
-	 * 
-	 * int listNum, n = 0; for(Member dto : list) { listNum = dataCount - (offset +
-	 * n); dto.setCardNum(listNum); n++; }
-	 * 
-	 * String listUrl = cp+"/member/payment";
-	 * 
-	 * String paging = aboutUtil.paging(current_page, total_page, listUrl);
-	 * 
-	 * model.addAttribute("list", list); model.addAttribute("page", current_page);
-	 * model.addAttribute("dataCount", dataCount); model.addAttribute("total_page",
-	 * total_page); model.addAttribute("paging", paging);
-	 * 
-	 * return ".member.payment"; }
-	 */
 	
 	@RequestMapping(value = "payCreated", method = RequestMethod.GET)
 	public String createdPayment(Member dto, HttpSession session, Model model) {
