@@ -80,7 +80,7 @@ a {
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/se/js/HuskyEZCreator.js" charset="utf-8"></script>
 
 <script type="text/javascript">
-    function sendOk() {
+    function check() {
         var f = document.sugForm;
 
     	var str = f.title.value;

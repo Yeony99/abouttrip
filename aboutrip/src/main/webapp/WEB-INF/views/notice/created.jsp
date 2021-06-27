@@ -115,7 +115,7 @@ $(function(){
 </script>
 
 <script type="text/javascript">
-    function sendOk() {
+    function check() {
         var f = document.noticeForm;
 
     	var str = f.title.value;

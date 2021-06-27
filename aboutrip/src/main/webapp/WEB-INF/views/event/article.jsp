@@ -131,21 +131,6 @@ function ajaxFun(url, method, query, dataType, fn) {
 	});
 }
 
-// 페이징 처리
-$(function(){
-	listPage(1);
-});
-
-function listPage(page) {
-	var url = "${pageContext.request.contextPath}/event/listPart";
-	var query = "num=${dto.num}&page="+page;
-	var selector = "#listPart";
-	
-	var fn = function(data){
-		$(selector).html(data);
-	};
-	ajaxFun(url, "get", query, "html", fn);
-}
 
 //이벤트 신청
 $(function(){

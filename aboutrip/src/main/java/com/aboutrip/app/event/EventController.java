@@ -138,7 +138,6 @@ public class EventController {
 			@RequestParam String page,
 			@RequestParam(defaultValue="all") String condition,
 			@RequestParam(defaultValue="") String keyword,
-			HttpServletRequest resp,
 			HttpSession session,
 			Model model
 			) throws Exception{
@@ -190,13 +189,14 @@ public class EventController {
 			) throws Exception {
 		SessionInfo info=(SessionInfo)session.getAttribute("member");
 		
-		Event dto = service.readEvent(num);
-		if(dto==null) {
-			return "redirect:/event/list?"+page;	
-		}
 		
 		if(!info.getUserId().equals("admin")) {
 			return "redirect:/event/list?"+page;
+		}
+		
+		Event dto = service.readEvent(num);
+		if(dto==null) {
+			return "redirect:/event/list?page="+page;	
 		}
 		
 		model.addAttribute("dto", dto);
