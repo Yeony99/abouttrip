@@ -10,11 +10,11 @@
 }
 
 .container {
-	padding: 30px 0px 0px 80px;
+	padding: 30px 0px 0px 0;
 }
 
 .btn {
-	width: 60px;
+	width: 80px;
 	height: 40px;
 	background-color: #424242;
 	color: white;
