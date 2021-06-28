@@ -52,7 +52,7 @@ textarea {
                      <span>${dto.subject}</span>
                      <input type="hidden"
                         name="subject" maxlength="50" 
-                        value="${dto.subject }"></td>
+                        value="${dto.subject}"></td>
                   </tr>
                   <tr align="left" height=100px;
                      style="border-bottom: 1px solid #ddd;">
@@ -91,7 +91,7 @@ textarea {
                      <td valign="top"><img
                         src="${pageContext.request.contextPath}/uploads/share/${dto.imageFileName}"
                         style="max-width: 100%; height: auto; resize: both;"> <textarea
-                           name="content" class="boxTA">${dto.content}</textarea></td>
+                           name="content" class="boxTA" readonly="readonly">${dto.content}</textarea></td>
                   </tr>
                </table>
 

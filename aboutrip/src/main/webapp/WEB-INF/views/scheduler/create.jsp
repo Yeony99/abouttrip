@@ -167,7 +167,7 @@ function msgAlert() {
                      style="border-bottom: 1px solid #ddd;">
                      <td style="text-align: center; width: 250px;">가져올 일정 제목</td>
                      <td style="padding-left: 10px;"> 
-                        <input type="text" name="search" class="boxTF" value="${dto.subject }" readonly="readonly" disabled="disabled">
+                        <input type="text" name="search" class="boxTF" value="${dto.scheduler_subject}" readonly="readonly" disabled="disabled">
                      </td>
                   </tr>
                   <tr align="left" height=100px;
@@ -194,13 +194,12 @@ function msgAlert() {
                      style="border-bottom: 1px solid #ddd;">
                      <td style="text-align: center;">제목</td>
                      <td style="padding-left: 10px;"><input type="text"
-                        name="subject" maxlength="50" class="boxTF"
-                        value="" placeholder="제목을 입력하세요."></td>
+                        name="subject" maxlength="50" class="boxTF"  placeholder="제목을 입력하세요." value="${dto.subject}"></td>
                   </tr>
                   <tr align="left"
                      style="border-bottom: 1px solid #ddd; height: 355px;">
                      <td style="text-align: center; width: 250px;">내용</td>
-                     <td valign="top"><textarea name="content" class="boxTA" placeholder="내용을 입력하세요."> </textarea>
+                     <td valign="top"><textarea name="content" class="boxTA" placeholder="내용을 입력하세요.">${dto.content}</textarea>
                      </td>
                   </tr>
                   <tr align="left" height=100px;

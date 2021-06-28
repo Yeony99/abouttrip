@@ -72,9 +72,9 @@ button[disabled] {
 						<tr align="left"
 							style="border-bottom: 1px solid #ddd; height: 355px;">
 							<td style="text-align: center; width: 250px;">내용</td>
-							<td valign="top">
-								<img src="${pageContext.request.contextPath}/uploads/place/${dto.placeImgName}" style="max-width:100%; height:auto; resize:both;">
-								<textarea name="content" class="boxTA">${dto.placeContent}</textarea>
+							<td valign="top" style="display: flex; flex-direction: column;">
+								<img src="${pageContext.request.contextPath}/uploads/place/${dto.placeImgName}" style="min-width:100%; height:auto; resize:both;">
+								<textarea name="content" class="boxTA" style="min-height: 300px;">${dto.placeContent}</textarea>
 							</td>
 						</tr>
 						
