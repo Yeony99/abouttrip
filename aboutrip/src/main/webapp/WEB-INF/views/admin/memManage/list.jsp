@@ -5,7 +5,7 @@
 
 <style type="text/css">
 main {
-	margin: 20px auto 0px;
+	margin: 0px auto;
 }
 .title-tr{
 	box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
@@ -117,12 +117,19 @@ function updateOk() {
 </script>
 
 <main>
-	<h1>관리자 페이지입니다.</h1><br>
 	
 	<div class="body-container">
-	    <div class="body-title">
-			<h2><i class="icofont-users"></i> 회원 관리 </h2>
-	    </div>
+	    <div class="body-main">
+		<section class="clean-block clean-hero"
+			style="min-height:400px; background-image: url(&quot;${pageContext.request.contextPath}/resources/img/img/jeju_tour1.jpg&quot;);color: rgba(100, 100, 255, 0.1);">
+			<div class="text">
+				<h2 style="font-size: 55px; color: skyblue; font-weight: bold">ABOUTRIP</h2>
+				<br>
+				<h6 style="font-size: 26px; color: white; font-weight: 600">회원관리
+					페이지 입니다.</h6>
+			</div>
+		</section>
+		</div>
 	    
 	    <div class="body-main wx-800 ml-30">
 				

@@ -60,6 +60,7 @@ form {
 	border: 1px solid #f8f9fa;
 	background-color: #4682B4;
 }
+
 </style>
 
 <script type="text/javascript">
@@ -240,7 +241,6 @@ function searchList() {
 				<tbody id="listDiaryBody" data-page="0" data-totalPage="0"></tbody>
 				<tfoot id="listDiaryFooter">
 					<tr>
-						<td width="50%">&nbsp;</td>
 						<td width="50%" align="right">
 							<span class="more">더보기</span>
 						</td>
