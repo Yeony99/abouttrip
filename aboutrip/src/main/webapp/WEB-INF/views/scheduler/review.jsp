@@ -277,11 +277,7 @@ function printList(data) {
 	$(".list-paging").html(paging);
 }
 
-function reload() {
-	var f=document.listSearchForm;
-	f.condition.value = "all";
-	f.keyword.value = "";
-	
+function reload() {	
 	listPage(1);
 }
 
