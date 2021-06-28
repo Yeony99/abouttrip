@@ -50,7 +50,7 @@ td {
 						</tr>
 						<tr>
 							<td valign="top">옵션명</td>
-							<td valign="top"><textarea name="option_name" class="boxTA">${dto.option_name}</textarea>
+							<td valign="top"><input type="text" name="option_name" style="width:500px"class="boxTA" value="${dto.option_name}">
 							</td>
 						</tr>
 						<tr>

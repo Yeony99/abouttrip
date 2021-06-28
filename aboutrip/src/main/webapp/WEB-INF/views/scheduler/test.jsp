@@ -388,13 +388,6 @@ function bringPeople() {
 					    </tr>
 					    </c:forEach>
 					</tbody>
-					<tfoot id='listMateFooter'>
-						<tr align="center">
-							<td colspan='2' >
-								${paging}
-							</td>
-						</tr>
-					</tfoot>
 				</table>
 				</div>
 			</div>			

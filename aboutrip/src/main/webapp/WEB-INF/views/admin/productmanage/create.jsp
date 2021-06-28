@@ -27,10 +27,9 @@
 	}
 </script>
 <style>
-td{
+td {
 	color: white;
 }
-
 </style>
 <div class="body-container">
 	<section class="payment-dark"
@@ -48,12 +47,12 @@ td{
 						<tr>
 							<td>제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
 							<td><input type="text" name="product_name" maxlength="100"
-								class="boxTF" value="${dto.product_name}"></td>
+								class="boxTF" style="width: 500px;" value="${dto.product_name}"></td>
 						</tr>
 						<tr>
 							<td valign="top">세부사항</td>
 							<td valign="top"><textarea name="product_detail"
-									class="boxTA">${dto.product_detail}</textarea></td>
+									class="boxTA" style="width: 700px; height: 300px;">${dto.product_detail}</textarea></td>
 						</tr>
 						<tr>
 							<td valign="top">카테고리</td>
@@ -91,12 +90,13 @@ td{
 					<table class="table table-footer">
 						<tr>
 							<td><input type="hidden" name="img_name"
-								value="${dto.img_name}"> 
-								<c:if test="${mode=='updateproduct'}"><input type="hidden" name="code" value="${dto.code}">
+								value="${dto.img_name}"> <c:if
+									test="${mode=='updateproduct'}">
+									<input type="hidden" name="code" value="${dto.code}">
 								</c:if>
 								<button type="button" onclick="sendOk();">${mode=='updateproduct'?'수정완료':'등록하기'}</button>
-								<button type="reset" >다시입력</button>
-								<button type="button" 
+								<button type="reset">다시입력</button>
+								<button type="button"
 									onclick="javascript:location.href='${pageContext.request.contextPath}/admin/productmanage/productmanagement';">${mode=='updateproduct'?'수정취소':'등록취소'}</button>
 							</td>
 						</tr>
