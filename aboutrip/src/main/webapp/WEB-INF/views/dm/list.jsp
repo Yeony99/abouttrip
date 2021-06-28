@@ -45,6 +45,9 @@
 .btn {
 	color: #F0F8FF;
 }
+.tabs {
+	list-style: none;
+}
 </style>
 
 <script type="text/javascript">

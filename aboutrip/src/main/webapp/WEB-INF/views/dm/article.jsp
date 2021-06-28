@@ -29,6 +29,9 @@ form {
   box-shadow: 3px 3px 4px rgba(0,0,0,0.2);
   margin: 0px auto;
 }
+.tabs {
+	list-style: none;
+}
 </style>
 
 <script type="text/javascript">
@@ -117,11 +120,7 @@ function deleteDm() {
 					<td align="left" width="50%">
 						<c:if test="${menuItem=='receive'}">
 							<button type="button" class="btn btnReplyDm" >답변</button>
-							<button type="button" class="btn">스팸신고</button>
 						</c:if>
-					</td>
-					<td align="right">
-						<button type="button" class="btn" onclick="javascript:location.href='${pageContext.request.contextPath}/dm/write';">쪽지 쓰기</button>
 					</td>
 				</tr>
 			</table>
