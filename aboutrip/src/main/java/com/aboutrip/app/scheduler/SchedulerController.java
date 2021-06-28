@@ -409,7 +409,7 @@ public class SchedulerController {
 		return "redirect:/scheduler/mate";
 	}
 	
-	@RequestMapping(value = "matelist",method = RequestMethod.POST)
+	@RequestMapping(value = "matelist")
 	public String matelist(
 		    @RequestParam(value="page", defaultValue="1") int current_page,HttpSession session,Model model) throws Exception{
 		int row =5;
