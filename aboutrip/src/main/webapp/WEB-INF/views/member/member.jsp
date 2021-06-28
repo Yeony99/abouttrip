@@ -141,7 +141,15 @@ function imageView() {
                 <h5 class="visually-hidden">sign up</h5>
                 <br>
                 <div class="mb-3">
-                <div class="mb-3" style="text-align: center;"><img id="preImageView" style="vertical-align: middle;" width="120" height="100" src="${pageContext.request.contextPath}/uploads/member/${dto.profile_pic}"> <div class="preImageViewLayout" style="display: inline-block;"></div></div>
+                <div class="mb-3" style="text-align: center;">
+					<c:if test="${empty dto.profile_pic}">               
+               			 <img id="preImageView" style="vertical-align: middle;" width="120" height="100">
+                	</c:if>
+                	<c:if test="${not empty dto.profile_pic}">               
+               			 <img id="preImageView" style="vertical-align: middle;" width="120" height="100" src="${pageContext.request.contextPath}/uploads/member/${dto.profile_pic}">
+                	</c:if>	
+                	 <div class="preImageViewLayout" style="display: inline-block;">
+                </div></div>
             	<div class="mb-3"><input type="file" name="selectFile" onchange="imageView()"></div>
                 
                 <select name="selectEmail" onchange="bringEmail();">
